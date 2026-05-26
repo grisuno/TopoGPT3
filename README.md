@@ -18,6 +18,10 @@ internal structure (recursion, composition, scope, repeated motifs), and
 complex-valued parameters may encode phase relationships that capture this
 structure more compactly than real-valued weights of equal count.
 
+## Checkpoints
+
+- [https://huggingface.co/grisiscomeback/TopoGPT3/tree/main/checkpoints_topogpt3/last](https://huggingface.co/grisiscomeback/TopoGPT3/tree/main/checkpoints_topogpt3/last)
+
 ## Architecture summary
 
 - Autoregressive transformer with complex-valued spectral operators.
