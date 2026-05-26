@@ -145,7 +145,7 @@ GitHub:
 
 ```
 pip install topogpt3
-pip install git+https://github.com/grisun0/topogpt3
+pip install git+https://github.com/grisuno/topogpt3
 ```
 
 The install registers three console scripts:
@@ -275,7 +275,7 @@ training duration.
 If you build on this work, please cite:
 
 ```
-grisun0, "TopoGPT3: Exploring Complex-Valued Representations in Small
+grisuno, "TopoGPT3: Exploring Complex-Valued Representations in Small
 Code Models", May 2026.
 ```
 
