@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "topogpt3"
+version = "0.1.0"
+description = "Complex-valued spectral language model for code with Grassmannian training diagnostics and hierarchical recursive reasoning inference."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "GPL-3.0-or-later" }
+authors = [
+    { name = "grisun0" },
+]
+keywords = [
+    "language-model",
+    "code-generation",
+    "complex-valued",
+    "quaternion",
+    "spectral",
+    "grassmannian",
+    "hrm",
+    "transformer",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "torch>=2.1",
+    "numpy>=1.24",
+    "safetensors>=0.4",
+    "tiktoken>=0.5",
+]
+
+[project.optional-dependencies]
+train = [
+    "datasets>=2.14",
+    "huggingface-hub>=0.20",
+]
+dev = [
+    "pytest>=7",
+    "ruff>=0.4",
+]
+
+[project.urls]
+Homepage = "https://github.com/grisun0/topogpt3"
+Documentation = "https://github.com/grisun0/topogpt3#readme"
+Issues = "https://github.com/grisun0/topogpt3/issues"
+
+[project.scripts]
+topogpt3-train = "topogpt3.train:main"
+topogpt3-infer = "topogpt3.inference:main"
+topogpt3-infer-hrm = "topogpt3.inference_hrm:main"
+
+[tool.setuptools.packages.find]
+include = ["topogpt3*"]
+exclude = ["tests*", "checkpoints_topogpt3*", "data*"]
