@@ -284,6 +284,8 @@ A 25M-parameter Transformer implementation designed to study language acquisitio
 
 If you build on this work, please cite:
 
+- [https://doi.org/10.5281/zenodo.20388757](https://doi.org/10.5281/zenodo.20388757)
+
 ```
 grisuno, "TopoGPT3: Exploring Complex-Valued Representations in Small
 Code Models", May 2026.
