@@ -145,7 +145,7 @@ GitHub:
 
 ```
 pip install topogpt3
-pip install git+https://github.com/grisuno/topogpt3
+pip install git+https://github.com/grisuno/TopoGPT3
 ```
 
 The install registers three console scripts:
