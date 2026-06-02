@@ -8,13 +8,13 @@ The work is documented in detail in `topogpt3.md`.
 
 ## Documentation
 
-- [Quick Start](quickstart.md) — Get running in under five minutes.
-- [Tutorial](tutorial.md) — Step-by-step guide from installation to custom training.
-- [Essential Concepts](essentials.md) — Core ideas behind complex-valued spectral operators, Grassmannian diagnostics, and HRM.
-- [Command Cheatsheet](cheatsheet.md) — Quick reference for CLI commands and Python API.
-- [Comparison](comparison.md) — How TopoGPT3 relates to similar small-scale and code-focused models.
-- [Claude Integration Guide](claude.md) — Using TopoGPT3 with Anthropic models and hybrid pipelines.
-- [Technical Paper](topogpt3.md) — Full experimental write-up and results.
+- [Quick Start](../quickstart.md) — Get running in under five minutes.
+- [Tutorial](../tutorial.md) — Step-by-step guide from installation to custom training.
+- [Essential Concepts](../essentials.md) — Core ideas behind complex-valued spectral operators, Grassmannian diagnostics, and HRM.
+- [Command Cheatsheet](../cheatsheet.md) — Quick reference for CLI commands and Python API.
+- [Comparison](../comparison.md) — How TopoGPT3 relates to similar small-scale and code-focused models.
+- [Claude Integration Guide](../claude.md) — Using TopoGPT3 with Anthropic models and hybrid pipelines.
+- [Technical Paper](../topogpt3.md) — Full experimental write-up and results.
 
 ## Motivation
 
