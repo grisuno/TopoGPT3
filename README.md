@@ -9,6 +9,16 @@ reasoning sampler (HRM) that requires no extra trained parameters.
 
 The work is documented in detail in `topogpt3.md`.
 
+## Documentation
+
+- [Quick Start](quickstart.md) — Get running in under five minutes.
+- [Tutorial](tutorial.md) — Step-by-step guide from installation to custom training.
+- [Essential Concepts](essentials.md) — Core ideas behind complex-valued spectral operators, Grassmannian diagnostics, and HRM.
+- [Command Cheatsheet](cheatsheet.md) — Quick reference for CLI commands and Python API.
+- [Comparison](comparison.md) — How TopoGPT3 relates to similar small-scale and code-focused models.
+- [Claude Integration Guide](claude.md) — Using TopoGPT3 with Anthropic models and hybrid pipelines.
+- [Technical Paper](topogpt3.md) — Full experimental write-up and results.
+
 ## Motivation
 
 Most code language models scale through size. TopoGPT3 explores the
@@ -117,7 +127,15 @@ high-level convergence events are rare.
 ├── pyproject.toml             package metadata, dependencies, console scripts
 ├── README.md                  this file
 ├── topogpt3.md                full paper write-up
-└── synthetic_dataset.py       optional synthetic dataset helper
+├── quickstart.md              five-minute getting started guide
+├── tutorial.md                step-by-step usage tutorial
+├── essentials.md              core concepts explained
+├── cheatsheet.md              command and API quick reference
+├── comparison.md              comparison with similar models
+├── claude.md                  integration guide for Claude and Anthropic
+├── synthetic_dataset.py       optional synthetic dataset helper
+├── docs/                      HTML documentation and assets
+└── workflows/                 GitHub Actions workflows
 ```
 
 ## Requirements
