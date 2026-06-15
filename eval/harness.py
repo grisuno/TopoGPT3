@@ -103,59 +103,55 @@ def extract_candidate(prompt: str, completion: str) -> str:
     belongs inside the function body. We strip leading blank lines and
     then concatenate; we also stop at the first top-level `def ` or
     `class ` to avoid the model continuing with extra functions.
+
+    Robustness fixes:
+      - Strip the special <|endoftext|> (GPT-2 EOT) token that the model
+        emits at the end of every generation. Leaving it in the candidate
+        produces a SyntaxError and zeroes the pass rate.
+      - Drop any training-format delimiters (### Response, <|assistant|>,
+        <|user|>) that leak from the instruction-tuning corpus.
+      - Cut at the first top-level def/class/__main__ guard after the
+        function body has started.
     """
-    completion = completion.split("<|endoftext|>")[0]
+    # 1. Remove the EOS sentinel and any text after it.
+    completion = re.split(r"<\|endoftext\|>", completion, maxsplit=1)[0]
+
+    # 2. Drop common instruction-format artifacts that contaminate code
+    #    generations from the mixed corpus the model was trained on.
+    for artifact in ("### Response", "### Instruction", "### Input",
+                     "<|user|>", "<|assistant|>", "<|system|>"):
+        completion = completion.split(artifact)[0]
+
+    # 3. Separate the body from the prompt. If the decoded completion does
+    #    not start with the prompt (e.g. tokenizer whitespace drift), keep
+    #    only the generated suffix and re-attach the canonical prompt.
     if completion.startswith(prompt):
         body = completion[len(prompt):]
     else:
+        # Sometimes the model repeats the signature; avoid double prompts.
         body = completion
+        if prompt in completion:
+            body = completion[completion.index(prompt) + len(prompt):]
 
-    # The body is supposed to be the inside of the function (already
-    # indented) or the rest of the module. We just concat as-is, then cut
-    # at the first top-level def / class / main guard that is NOT part
-    # of the docstring / body.
+    # 4. Build the full source and cut after the entry-point function.
     code = prompt + body
-    # Find the end of the entry-point function.
-    # We rely on the fact that the docstring closes before the body. Cut
-    # at the first top-level def/class after the function's last line.
-    lines = code.splitlines(keepends=True)
-    out_lines: List[str] = []
-    in_string = None
-    triple = False
-    started_body = False
-    for i, line in enumerate(lines):
-        out_lines.append(line)
-        stripped = line.lstrip()
-        # Heuristic: once the prompt's signature has been closed, any
-        # subsequent top-level `def ` or `class ` belongs to a new
-        # function and we stop there.
-        if started_body and not line.startswith((" ", "\t")) and (
-            stripped.startswith("def ") or stripped.startswith("class ")
-            or stripped.startswith("if __name__")
-        ):
-            out_lines.pop()  # drop the new top-level def
-            break
-        # Mark the start of the body: the line after the closing `"""` of
-        # the docstring, or the line after the signature if no docstring.
-        if not started_body:
-            if i >= 1 and stripped == '"""':
-                started_body = True
-            elif i >= 1 and line.startswith("def ") and i + 1 < len(lines):
-                # The next non-docstring line is the body
-                if not lines[i + 1].lstrip().startswith(('"""', "'", '"')):
-                    started_body = True
-    return "".join(out_lines)
+    match = _END_OF_FUNCTION_RE.search(code[len(prompt):])
+    if match:
+        code = code[:len(prompt) + match.start()]
+
+    return code.rstrip() + "\n"
 
 
 # ---------------------------------------------------------------------------
 # Test execution (HumanEval canonical protocol)
 # ---------------------------------------------------------------------------
 
-def run_one_test(problem: dict, candidate_src: str, timeout: float) -> Tuple[bool, str]:
+def run_one_test(problem: dict, candidate_src: str, timeout: float) -> Tuple[bool, str, str, str, str]:
     """Execute the candidate against the hidden test.
 
-    Returns (passed, message). We follow HumanEval's `evaluate` function:
-    build namespace, exec the candidate, exec the test, expect `check(candidate) == None`.
+    Returns (passed, message, stdout, stderr, traceback). We follow HumanEval's
+    `evaluate` function: build namespace, exec the candidate, exec the test,
+    expect `check(candidate) == None`.
     """
     entry_point = problem["entry_point"]
     test_code = problem["test"] + f"\ncheck({entry_point})\n"
@@ -165,11 +161,11 @@ def run_one_test(problem: dict, candidate_src: str, timeout: float) -> Tuple[boo
     try:
         with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
             exec(compile(program, "<humaneval-eval>", "exec"), ns, ns)
-        return True, "ok"
+        return True, "ok", stdout.getvalue(), stderr.getvalue(), ""
     except Exception as exc:
-        tb = traceback.format_exc(limit=2)
+        full_tb = traceback.format_exc()
         msg = f"{type(exc).__name__}: {exc}"
-        return False, (msg + "\n" + (stderr.getvalue() or "") + "\n" + tb).strip()
+        return False, msg, stdout.getvalue(), stderr.getvalue(), full_tb
 
 
 # ---------------------------------------------------------------------------
@@ -276,18 +272,25 @@ def evaluate_problem(problem: dict, loader: ModelLoader, args, sample_idx: int =
         repetition_penalty=args.repetition_penalty,
     )
     candidate = extract_candidate(prompt, raw)
-    passed, msg = run_one_test(problem, candidate, timeout=20.0)
+    passed, msg, stdout, stderr, full_tb = run_one_test(problem, candidate, timeout=20.0)
+    error_type = "ok" if passed else msg.split(":", 1)[0]
     return {
         "task_id": problem["task_id"],
         "sample_idx": sample_idx,
         "entry_point": problem["entry_point"],
         "passed": bool(passed),
+        "error_type": error_type,
         "error": None if passed else msg,
+        "traceback": full_tb,
+        "stdout": stdout,
+        "stderr": stderr,
+        "prompt": prompt,
+        "test_code": problem["test"] + f"\ncheck({problem['entry_point']})\n",
         "candidate_first_line": candidate.splitlines()[0] if candidate else "",
         "candidate_len": len(candidate),
         "new_tokens": m["new_tokens"],
         "elapsed_s": m["elapsed_s"],
-        "completion": raw,  # full text (prompt + generated)
+        "completion": raw,
         "candidate": candidate,
     }
 
@@ -340,7 +343,13 @@ def main():
                         "sample_idx": s_idx,
                         "entry_point": problem["entry_point"],
                         "passed": False,
+                        "error_type": type(exc).__name__,
                         "error": f"runner_crash: {type(exc).__name__}: {exc}",
+                        "traceback": traceback.format_exc(),
+                        "stdout": "",
+                        "stderr": "",
+                        "prompt": build_prompt(problem),
+                        "test_code": problem["test"] + f"\ncheck({problem['entry_point']})\n",
                         "candidate_first_line": "",
                         "candidate_len": 0,
                         "new_tokens": 0,
