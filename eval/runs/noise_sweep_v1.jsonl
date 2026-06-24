@@ -1,0 +1,4 @@
+{"sigma": 0.0, "n_problems": 50, "n_pass": 2, "pass_at_1": 0.04, "wall_s": 76.83480906486511, "noise_info": {"tensors_noised": 0, "params_noised": 0}}
+{"sigma": 0.0001, "n_problems": 50, "n_pass": 2, "pass_at_1": 0.04, "wall_s": 76.62817573547363, "noise_info": {"tensors_noised": 96, "params_noised": 2359296}}
+{"sigma": 0.001, "n_problems": 50, "n_pass": 2, "pass_at_1": 0.04, "wall_s": 75.20243430137634, "noise_info": {"tensors_noised": 96, "params_noised": 2359296}}
+{"sigma": 0.01, "n_problems": 50, "n_pass": 2, "pass_at_1": 0.04, "wall_s": 77.86965870857239, "noise_info": {"tensors_noised": 96, "params_noised": 2359296}}

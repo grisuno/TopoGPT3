@@ -1,0 +1,71 @@
+{
+  "global_step": 51712,
+  "completed_tiers": [],
+  "tier_metrics": {},
+  "config": {
+    "SCALE": "small",
+    "DEVICE": "cuda",
+    "RANDOM_SEED": 42,
+    "USE_AMP": true,
+    "GRADIENT_CHECKPOINTING": true,
+    "BATCH_SIZE": 4,
+    "GRAD_ACCUM_STEPS": 8,
+    "LEARNING_RATE": 0.0003,
+    "WEIGHT_DECAY": 0.1,
+    "GRADIENT_CLIP_NORM": 1.0,
+    "WARMUP_RATIO": 0.05,
+    "TIER_EPOCHS": [
+      2,
+      2,
+      3,
+      3
+    ],
+    "TIER_SEQ_LEN": [
+      128,
+      192,
+      256,
+      256
+    ],
+    "TIER_NAMES": [
+      "codealpaca",
+      "code_feedback",
+      "magicoder_evol",
+      "tiny_the_stack"
+    ],
+    "HF_CODEALPACA": "sahil2801/CodeAlpaca-20k",
+    "HF_CODE_FEEDBACK": "m-a-p/CodeFeedback-Filtered-Instruction",
+    "HF_MAGICODER": "ise-uiuc/Magicoder-Evol-Instruct-110K",
+    "HF_TINY_STACK": "bigcode/the-stack-smol",
+    "HF_TINY_STACK_FALLBACKS": [
+      "codeparrot/codeparrot-clean-valid",
+      "flytech/python-codes-25k",
+      "iamtarun/python_code_instructions_18k_alpaca"
+    ],
+    "VAL_FRACTION": 0.05,
+    "HOLDOUT_FRACTION": 0.05,
+    "SPLIT_SEED": 1337,
+    "MAX_TOKENS_PER_TIER": [
+      20000000,
+      80000000,
+      100000000,
+      500000000
+    ],
+    "GRASS_TRACK_EVERY": 200,
+    "GRASS_MAX_RANK": 16,
+    "GRASS_ELBOW_RATIO": 0.05,
+    "GRASS_FISHER_BATCHES": 40,
+    "GRASS_FISHER_GRADS": 64,
+    "USE_GAUSS_COMPLEX_MULT": true,
+    "EFFICIENCY_THROUGHPUT_BATCHES": 20,
+    "GRADIENT_CHECKPOINTING_FACTOR": 12,
+    "DATA_CACHE": "data_topogpt3",
+    "CHECKPOINT_DIR": "checkpoints_topogpt3",
+    "LOG_FILE": "topogpt3_history.jsonl",
+    "LOG_INTERVAL_STEPS": 50,
+    "CHECKPOINT_EVERY_MIN": 15,
+    "MAX_CHECKPOINTS": 5,
+    "MAX_TRAIN_BATCHES_PER_EPOCH": 0,
+    "MAX_EVAL_BATCHES": 200
+  },
+  "saved_at": "2026-05-26T01:10:05.030546"
+}

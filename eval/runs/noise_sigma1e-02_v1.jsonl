@@ -1,0 +1,50 @@
+{"task_id": "HumanEval/0", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.30692529678344727}
+{"task_id": "HumanEval/1", "passed": false, "error": "NameError: name 'word_string' is not defined", "elapsed_s": 0.975975751876831}
+{"task_id": "HumanEval/2", "passed": false, "error": "SyntaxError: invalid syntax (<humaneval-eval>, line 12)", "elapsed_s": 0.5250446796417236}
+{"task_id": "HumanEval/3", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.300692081451416}
+{"task_id": "HumanEval/4", "passed": false, "error": "SyntaxError: invalid syntax (<humaneval-eval>, line 13)", "elapsed_s": 8.734216213226318}
+{"task_id": "HumanEval/5", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6554501056671143}
+{"task_id": "HumanEval/6", "passed": false, "error": "NameError: name 'self' is not defined", "elapsed_s": 0.9933891296386719}
+{"task_id": "HumanEval/7", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.9117779731750488}
+{"task_id": "HumanEval/8", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.4429953098297119}
+{"task_id": "HumanEval/9", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.63527512550354}
+{"task_id": "HumanEval/10", "passed": false, "error": "AssertionError: ", "elapsed_s": 2.9976677894592285}
+{"task_id": "HumanEval/11", "passed": false, "error": "SyntaxError: '(' was never closed (<humaneval-eval>, line 10)", "elapsed_s": 0.854428768157959}
+{"task_id": "HumanEval/12", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.510920524597168}
+{"task_id": "HumanEval/13", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.3792002201080322}
+{"task_id": "HumanEval/14", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6499900817871094}
+{"task_id": "HumanEval/15", "passed": false, "error": "RecursionError: maximum recursion depth exceeded", "elapsed_s": 0.4875969886779785}
+{"task_id": "HumanEval/16", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.48541951179504395}
+{"task_id": "HumanEval/17", "passed": false, "error": "NameError: name 'input_string' is not defined", "elapsed_s": 2.54113507270813}
+{"task_id": "HumanEval/18", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.5580921173095703}
+{"task_id": "HumanEval/19", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.8217658996582031}
+{"task_id": "HumanEval/20", "passed": false, "error": "NameError: name 'nums' is not defined", "elapsed_s": 0.661949872970581}
+{"task_id": "HumanEval/21", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6721572875976562}
+{"task_id": "HumanEval/22", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6739840507507324}
+{"task_id": "HumanEval/23", "passed": false, "error": "RecursionError: maximum recursion depth exceeded", "elapsed_s": 0.49841833114624023}
+{"task_id": "HumanEval/24", "passed": false, "error": "AssertionError: ", "elapsed_s": 1.3763995170593262}
+{"task_id": "HumanEval/25", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.9565198421478271}
+{"task_id": "HumanEval/26", "passed": false, "error": "TypeError: argument of type 'type' is not iterable", "elapsed_s": 0.7284808158874512}
+{"task_id": "HumanEval/27", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.5785312652587891}
+{"task_id": "HumanEval/28", "passed": false, "error": "NameError: name 'string' is not defined", "elapsed_s": 0.9051289558410645}
+{"task_id": "HumanEval/29", "passed": false, "error": "AssertionError: ", "elapsed_s": 1.6543500423431396}
+{"task_id": "HumanEval/30", "passed": true, "error": null, "elapsed_s": 0.7253115177154541}
+{"task_id": "HumanEval/31", "passed": false, "error": "NameError: name 'num' is not defined", "elapsed_s": 1.8559205532073975}
+{"task_id": "HumanEval/32", "passed": false, "error": "SyntaxError: closing parenthesis ']' does not match opening parenthesis '(' (<humaneval-eval>, line 24)", "elapsed_s": 1.4969801902770996}
+{"task_id": "HumanEval/33", "passed": false, "error": "TypeError: 'int' object is not subscriptable", "elapsed_s": 0.7406895160675049}
+{"task_id": "HumanEval/34", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6716971397399902}
+{"task_id": "HumanEval/35", "passed": true, "error": null, "elapsed_s": 3.254887342453003}
+{"task_id": "HumanEval/36", "passed": false, "error": "RecursionError: maximum recursion depth exceeded", "elapsed_s": 0.5389745235443115}
+{"task_id": "HumanEval/37", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.4493370056152344}
+{"task_id": "HumanEval/38", "passed": false, "error": "NameError: name 'chars' is not defined", "elapsed_s": 0.5979063510894775}
+{"task_id": "HumanEval/39", "passed": false, "error": "AssertionError: ", "elapsed_s": 3.9990527629852295}
+{"task_id": "HumanEval/40", "passed": false, "error": "IndentationError: unindent does not match any outer indentation level (<humaneval-eval>, line 35)", "elapsed_s": 9.018671751022339}
+{"task_id": "HumanEval/41", "passed": false, "error": "UnboundLocalError: cannot access local variable 'points' where it is not associated with a value", "elapsed_s": 8.941788911819458}
+{"task_id": "HumanEval/42", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.7188229560852051}
+{"task_id": "HumanEval/43", "passed": false, "error": "NameError: name 'lst' is not defined", "elapsed_s": 3.7459516525268555}
+{"task_id": "HumanEval/44", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.3774747848510742}
+{"task_id": "HumanEval/45", "passed": false, "error": "NameError: name 'b' is not defined", "elapsed_s": 0.795297384262085}
+{"task_id": "HumanEval/46", "passed": false, "error": "AssertionError: ", "elapsed_s": 2.5388944149017334}
+{"task_id": "HumanEval/47", "passed": false, "error": "AssertionError: ", "elapsed_s": 1.767554521560669}
+{"task_id": "HumanEval/48", "passed": false, "error": "AssertionError: ", "elapsed_s": 1.4046638011932373}
+{"task_id": "HumanEval/49", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6566355228424072}

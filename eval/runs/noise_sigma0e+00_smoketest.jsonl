@@ -1,0 +1,3 @@
+{"task_id": "HumanEval/0", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.42401981353759766}
+{"task_id": "HumanEval/1", "passed": false, "error": "NameError: name 'word_string' is not defined", "elapsed_s": 0.9571599960327148}
+{"task_id": "HumanEval/2", "passed": false, "error": "SyntaxError: invalid syntax (<humaneval-eval>, line 12)", "elapsed_s": 0.5152385234832764}

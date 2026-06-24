@@ -1,0 +1,50 @@
+{"task_id": "HumanEval/0", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.359058141708374}
+{"task_id": "HumanEval/1", "passed": false, "error": "NameError: name 'word_string' is not defined", "elapsed_s": 1.061370849609375}
+{"task_id": "HumanEval/2", "passed": false, "error": "SyntaxError: invalid syntax (<humaneval-eval>, line 12)", "elapsed_s": 0.5619411468505859}
+{"task_id": "HumanEval/3", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.3427543640136719}
+{"task_id": "HumanEval/4", "passed": false, "error": "SyntaxError: unterminated triple-quoted string literal (detected at line 31) (<humaneval-eval>, line 14)", "elapsed_s": 9.088846921920776}
+{"task_id": "HumanEval/5", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6325888633728027}
+{"task_id": "HumanEval/6", "passed": false, "error": "NameError: name 'self' is not defined", "elapsed_s": 0.9632892608642578}
+{"task_id": "HumanEval/7", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.8317959308624268}
+{"task_id": "HumanEval/8", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.4619321823120117}
+{"task_id": "HumanEval/9", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6322381496429443}
+{"task_id": "HumanEval/10", "passed": false, "error": "AssertionError: ", "elapsed_s": 2.7704460620880127}
+{"task_id": "HumanEval/11", "passed": false, "error": "SyntaxError: '(' was never closed (<humaneval-eval>, line 10)", "elapsed_s": 0.7991368770599365}
+{"task_id": "HumanEval/12", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.46060752868652344}
+{"task_id": "HumanEval/13", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.3575704097747803}
+{"task_id": "HumanEval/14", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6065540313720703}
+{"task_id": "HumanEval/15", "passed": false, "error": "RecursionError: maximum recursion depth exceeded", "elapsed_s": 0.45157814025878906}
+{"task_id": "HumanEval/16", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.4765326976776123}
+{"task_id": "HumanEval/17", "passed": false, "error": "SyntaxError: unterminated triple-quoted string literal (detected at line 54) (<humaneval-eval>, line 35)", "elapsed_s": 8.755966424942017}
+{"task_id": "HumanEval/18", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.5122277736663818}
+{"task_id": "HumanEval/19", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.7637424468994141}
+{"task_id": "HumanEval/20", "passed": false, "error": "NameError: name 'nums' is not defined", "elapsed_s": 0.6519119739532471}
+{"task_id": "HumanEval/21", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6286561489105225}
+{"task_id": "HumanEval/22", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6213290691375732}
+{"task_id": "HumanEval/23", "passed": false, "error": "RecursionError: maximum recursion depth exceeded", "elapsed_s": 0.47205352783203125}
+{"task_id": "HumanEval/24", "passed": false, "error": "AssertionError: ", "elapsed_s": 1.3112154006958008}
+{"task_id": "HumanEval/25", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.8143491744995117}
+{"task_id": "HumanEval/26", "passed": false, "error": "TypeError: argument of type 'type' is not iterable", "elapsed_s": 0.689812183380127}
+{"task_id": "HumanEval/27", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.37479186058044434}
+{"task_id": "HumanEval/28", "passed": false, "error": "NameError: name 'string' is not defined", "elapsed_s": 0.582582950592041}
+{"task_id": "HumanEval/29", "passed": false, "error": "AssertionError: ", "elapsed_s": 1.0788681507110596}
+{"task_id": "HumanEval/30", "passed": true, "error": null, "elapsed_s": 0.6270601749420166}
+{"task_id": "HumanEval/31", "passed": false, "error": "NameError: name 'num' is not defined", "elapsed_s": 1.7212541103363037}
+{"task_id": "HumanEval/32", "passed": false, "error": "SyntaxError: closing parenthesis ']' does not match opening parenthesis '(' (<humaneval-eval>, line 24)", "elapsed_s": 1.5028343200683594}
+{"task_id": "HumanEval/33", "passed": false, "error": "TypeError: 'int' object is not subscriptable", "elapsed_s": 0.7109718322753906}
+{"task_id": "HumanEval/34", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6437344551086426}
+{"task_id": "HumanEval/35", "passed": true, "error": null, "elapsed_s": 2.501535654067993}
+{"task_id": "HumanEval/36", "passed": false, "error": "RecursionError: maximum recursion depth exceeded", "elapsed_s": 0.5531830787658691}
+{"task_id": "HumanEval/37", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.43678784370422363}
+{"task_id": "HumanEval/38", "passed": false, "error": "NameError: name 'chars' is not defined", "elapsed_s": 0.5464963912963867}
+{"task_id": "HumanEval/39", "passed": false, "error": "AssertionError: ", "elapsed_s": 3.838458776473999}
+{"task_id": "HumanEval/40", "passed": false, "error": "NameError: name 'lst' is not defined", "elapsed_s": 3.654667854309082}
+{"task_id": "HumanEval/41", "passed": false, "error": "UnboundLocalError: cannot access local variable 'points' where it is not associated with a value", "elapsed_s": 8.624049663543701}
+{"task_id": "HumanEval/42", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6906743049621582}
+{"task_id": "HumanEval/43", "passed": false, "error": "NameError: name 'lst' is not defined", "elapsed_s": 3.5949018001556396}
+{"task_id": "HumanEval/44", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.3708791732788086}
+{"task_id": "HumanEval/45", "passed": false, "error": "NameError: name 'b' is not defined", "elapsed_s": 0.7759418487548828}
+{"task_id": "HumanEval/46", "passed": false, "error": "AssertionError: ", "elapsed_s": 2.487980604171753}
+{"task_id": "HumanEval/47", "passed": false, "error": "AssertionError: ", "elapsed_s": 1.721627950668335}
+{"task_id": "HumanEval/48", "passed": false, "error": "AssertionError: ", "elapsed_s": 1.3699312210083008}
+{"task_id": "HumanEval/49", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6687233448028564}

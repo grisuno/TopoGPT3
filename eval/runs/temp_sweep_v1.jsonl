@@ -1,0 +1,4 @@
+{"n_problems": 30, "n_samples": 5, "pass@1": 0.0, "pass@5": 0.0, "any_pass_rate": 0.0, "T": 0.0, "top_k": 0, "wall_s": 183.9353597164154}
+{"n_problems": 30, "n_samples": 5, "pass@1": 0.0, "pass@5": 0.0, "any_pass_rate": 0.0, "T": 0.2, "top_k": 40, "wall_s": 160.34996461868286}
+{"n_problems": 30, "n_samples": 5, "pass@1": 0.0, "pass@5": 0.03333333333333333, "any_pass_rate": 0.03333333333333333, "T": 0.5, "top_k": 40, "wall_s": 226.705904006958}
+{"n_problems": 30, "n_samples": 5, "pass@1": 0.0, "pass@5": 0.03333333333333333, "any_pass_rate": 0.03333333333333333, "T": 0.8, "top_k": 40, "wall_s": 263.5093879699707}

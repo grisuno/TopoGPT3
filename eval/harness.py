@@ -45,6 +45,7 @@ from topogpt3 import (  # noqa: F401
     BPETokenizer,
     set_seed,
 )
+from eval.samplers import make_sampler, list_samplers  # noqa: F401
 from safetensors.torch import load_file
 
 
@@ -168,24 +169,36 @@ def run_one_test(problem: dict, candidate_src: str, timeout: float) -> Tuple[boo
         return False, msg, stdout.getvalue(), stderr.getvalue(), full_tb
 
 
+def run_one_test_sandboxed(
+    problem: dict, candidate_src: str, timeout: float,
+    sandbox_cfg=None,
+) -> Tuple[bool, str, str, str, str]:
+    """Sandboxed variant of `run_one_test`. Runs the candidate in a
+    subprocess with stripped builtins, AST pre-check, and OS-enforced
+    timeout. Drop-in replacement: same 5-tuple return.
+
+    Enable by passing `--sandbox` to `harness.py` (not yet wired) or
+    by calling this function directly from your own evaluation script.
+    """
+    from eval.sandbox import safe_exec, SandboxConfig
+    cfg = sandbox_cfg or SandboxConfig(timeout=timeout)
+    entry_point = problem["entry_point"]
+    test_code = problem["test"] + f"\ncheck({entry_point})\n"
+    program = candidate_src + "\n" + test_code
+    return safe_exec(program, cfg)
+
+
 # ---------------------------------------------------------------------------
 # Sampler wrappers (return raw completion text only — no banners)
 # ---------------------------------------------------------------------------
 
-def make_sampler(mode: str, settings_kwargs: dict):
-    if mode == "standard":
-        settings = InferenceSettings(**settings_kwargs)
-        return InferencePipeline(settings)
-    if mode == "hrm":
-        # Move reasoning into a sub-key
-        reasoning_cfg = settings_kwargs.pop("reasoning", None)
-        if reasoning_cfg is None:
-            reasoning_cfg = RecursiveReasoningConfig(
-                max_high_level_iters=2, max_low_level_iters=3, low_level_window=2,
-            )
-        settings = HRMInferenceSettings(reasoning=reasoning_cfg, **settings_kwargs)
-        return HRMInferencePipeline(settings)
-    raise ValueError(f"unknown mode {mode}")
+def make_sampler(mode: str, settings_kwargs: dict):  # type: ignore[no-untyped-def]
+    """Backwards-compatible shim. The real implementation lives in
+    `eval.samplers` as a decorator-based registry. We re-export here
+    so existing imports of `from eval.harness import make_sampler`
+    keep working. New code should import from `eval.samplers`."""
+    from eval.samplers import build_sampler
+    return build_sampler(mode, settings_kwargs)
 
 
 def completion_for_problem(sampler, prompt: str) -> Tuple[str, dict]:

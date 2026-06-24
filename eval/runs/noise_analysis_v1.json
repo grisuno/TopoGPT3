@@ -1,0 +1,20 @@
+{
+  "n_problems": 50,
+  "always_pass": 2,
+  "always_fail": 48,
+  "mixed_outcome": 0,
+  "pairwise_agreement": {
+    "agreement_0.0_vs_0.0001": 1.0,
+    "agreement_0.0_vs_0.001": 1.0,
+    "agreement_0.0_vs_0.01": 1.0,
+    "agreement_0.0001_vs_0.001": 1.0,
+    "agreement_0.0001_vs_0.01": 1.0,
+    "agreement_0.001_vs_0.01": 1.0
+  },
+  "per_sigma_pass": {
+    "0.0": 2,
+    "0.0001": 2,
+    "0.001": 2,
+    "0.01": 2
+  }
+}

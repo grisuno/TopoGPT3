@@ -1,0 +1,50 @@
+{"task_id": "HumanEval/0", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.32543301582336426}
+{"task_id": "HumanEval/1", "passed": false, "error": "NameError: name 'word_string' is not defined", "elapsed_s": 0.9644105434417725}
+{"task_id": "HumanEval/2", "passed": false, "error": "SyntaxError: invalid syntax (<humaneval-eval>, line 12)", "elapsed_s": 0.523327112197876}
+{"task_id": "HumanEval/3", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.3028380870819092}
+{"task_id": "HumanEval/4", "passed": false, "error": "SyntaxError: unterminated triple-quoted string literal (detected at line 31) (<humaneval-eval>, line 14)", "elapsed_s": 8.638173341751099}
+{"task_id": "HumanEval/5", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6337661743164062}
+{"task_id": "HumanEval/6", "passed": false, "error": "NameError: name 'self' is not defined", "elapsed_s": 0.9425258636474609}
+{"task_id": "HumanEval/7", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.8364758491516113}
+{"task_id": "HumanEval/8", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.46070098876953125}
+{"task_id": "HumanEval/9", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6545424461364746}
+{"task_id": "HumanEval/10", "passed": false, "error": "AssertionError: ", "elapsed_s": 2.8550848960876465}
+{"task_id": "HumanEval/11", "passed": false, "error": "SyntaxError: '(' was never closed (<humaneval-eval>, line 10)", "elapsed_s": 0.8810224533081055}
+{"task_id": "HumanEval/12", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.5118451118469238}
+{"task_id": "HumanEval/13", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.37413740158081055}
+{"task_id": "HumanEval/14", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6158695220947266}
+{"task_id": "HumanEval/15", "passed": false, "error": "RecursionError: maximum recursion depth exceeded", "elapsed_s": 0.4502274990081787}
+{"task_id": "HumanEval/16", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.44939303398132324}
+{"task_id": "HumanEval/17", "passed": false, "error": "SyntaxError: unterminated triple-quoted string literal (detected at line 54) (<humaneval-eval>, line 35)", "elapsed_s": 8.651607990264893}
+{"task_id": "HumanEval/18", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.49440884590148926}
+{"task_id": "HumanEval/19", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.7634158134460449}
+{"task_id": "HumanEval/20", "passed": false, "error": "NameError: name 'nums' is not defined", "elapsed_s": 0.6045715808868408}
+{"task_id": "HumanEval/21", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6293950080871582}
+{"task_id": "HumanEval/22", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6211564540863037}
+{"task_id": "HumanEval/23", "passed": false, "error": "RecursionError: maximum recursion depth exceeded", "elapsed_s": 0.47482752799987793}
+{"task_id": "HumanEval/24", "passed": false, "error": "AssertionError: ", "elapsed_s": 1.3156063556671143}
+{"task_id": "HumanEval/25", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.8115620613098145}
+{"task_id": "HumanEval/26", "passed": false, "error": "TypeError: argument of type 'type' is not iterable", "elapsed_s": 0.6658201217651367}
+{"task_id": "HumanEval/27", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.38104867935180664}
+{"task_id": "HumanEval/28", "passed": false, "error": "NameError: name 'string' is not defined", "elapsed_s": 0.5828595161437988}
+{"task_id": "HumanEval/29", "passed": false, "error": "AssertionError: ", "elapsed_s": 1.061800241470337}
+{"task_id": "HumanEval/30", "passed": true, "error": null, "elapsed_s": 0.6392064094543457}
+{"task_id": "HumanEval/31", "passed": false, "error": "NameError: name 'num' is not defined", "elapsed_s": 1.6929926872253418}
+{"task_id": "HumanEval/32", "passed": false, "error": "SyntaxError: closing parenthesis ']' does not match opening parenthesis '(' (<humaneval-eval>, line 24)", "elapsed_s": 1.451483964920044}
+{"task_id": "HumanEval/33", "passed": false, "error": "TypeError: 'int' object is not subscriptable", "elapsed_s": 0.717146635055542}
+{"task_id": "HumanEval/34", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6553802490234375}
+{"task_id": "HumanEval/35", "passed": true, "error": null, "elapsed_s": 2.4745545387268066}
+{"task_id": "HumanEval/36", "passed": false, "error": "RecursionError: maximum recursion depth exceeded", "elapsed_s": 0.5232484340667725}
+{"task_id": "HumanEval/37", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.40279245376586914}
+{"task_id": "HumanEval/38", "passed": false, "error": "NameError: name 'chars' is not defined", "elapsed_s": 0.548253059387207}
+{"task_id": "HumanEval/39", "passed": false, "error": "AssertionError: ", "elapsed_s": 4.129922389984131}
+{"task_id": "HumanEval/40", "passed": false, "error": "NameError: name 'lst' is not defined", "elapsed_s": 3.8532533645629883}
+{"task_id": "HumanEval/41", "passed": false, "error": "UnboundLocalError: cannot access local variable 'points' where it is not associated with a value", "elapsed_s": 9.114839315414429}
+{"task_id": "HumanEval/42", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.7589602470397949}
+{"task_id": "HumanEval/43", "passed": false, "error": "NameError: name 'lst' is not defined", "elapsed_s": 4.368889093399048}
+{"task_id": "HumanEval/44", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.40241575241088867}
+{"task_id": "HumanEval/45", "passed": false, "error": "NameError: name 'b' is not defined", "elapsed_s": 0.814058780670166}
+{"task_id": "HumanEval/46", "passed": false, "error": "AssertionError: ", "elapsed_s": 2.6323719024658203}
+{"task_id": "HumanEval/47", "passed": false, "error": "AssertionError: ", "elapsed_s": 1.814232349395752}
+{"task_id": "HumanEval/48", "passed": false, "error": "AssertionError: ", "elapsed_s": 1.434065341949463}
+{"task_id": "HumanEval/49", "passed": false, "error": "AssertionError: ", "elapsed_s": 0.6816103458404541}
