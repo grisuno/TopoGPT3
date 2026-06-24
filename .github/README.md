@@ -1,6 +1,6 @@
 # TopoGPT3
 
-A 24.5M parameter complex-valued autoregressive language model for code, instrumented with spectral and geometric diagnostics over training dynamics.
+From the creators of LazyOwn Redteam Framework comes a free and open-source 24.5M parameter complex-valued autoregressive language model for code, instrumented with spectral and geometric diagnostics over training dynamics.
 
 This repository contains the model definition, the curriculum trainer, and two inference engines: a standard sampler and a hierarchical recursive reasoning sampler (HRM) that requires no extra trained parameters.
 
