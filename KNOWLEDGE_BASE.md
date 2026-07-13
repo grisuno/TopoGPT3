@@ -127,21 +127,16 @@ Most architecturally central files ranked by combined import/export degree and s
 
 Files grouped by import-based community detection. Cohesion measures how tightly connected each community is internally.
 
-### topogpt3 (Cohesion: 0.95)
+### topogpt3 (Cohesion: 0.62)
 
-**13 files** in this community:
+**8 files** in this community:
 
 - `app.py` (py, 5 symbols)
 - `diag_static.py` (py, 4 symbols)
 - `synthetic_dataset.py` (py, 35 symbols)
-- `test_jlens.py` (py, 51 symbols)
-- `test_lens_model.py` (py, 34 symbols)
 - `__init__.py` (py, 0 symbols)
-- `__main__.py` (py, 1 symbols)
 - `inference.py` (py, 54 symbols)
 - `inference_hrm.py` (py, 76 symbols)
-- `jlens.py` (py, 29 symbols)
-- `lens_model.py` (py, 29 symbols)
 - `model.py` (py, 185 symbols)
 - `train.py` (py, 62 symbols)
 
@@ -152,22 +147,27 @@ Files grouped by import-based community detection. Cohesion measures how tightly
 - `governor.py` (py, 20 symbols)
 - `governor_smoke.py` (py, 7 symbols)
 
-### eval (Cohesion: 0.71)
+### eval (Cohesion: 0.88)
 
-**5 files** in this community:
+**7 files** in this community:
 
 - `harness.py` (py, 12 symbols)
 - `integration_smoke.py` (py, 1 symbols)
 - `noise_sweep.py` (py, 4 symbols)
 - `samplers.py` (py, 7 symbols)
-- `temp_sweep.py` (py, 5 symbols)
-
-### eval (Cohesion: 0.50)
-
-**2 files** in this community:
-
 - `sandbox.py` (py, 9 symbols)
 - `sandbox_smoke.py` (py, 1 symbols)
+- `temp_sweep.py` (py, 5 symbols)
+
+### topogpt3 (Cohesion: 0.64)
+
+**5 files** in this community:
+
+- `test_jlens.py` (py, 51 symbols)
+- `test_lens_model.py` (py, 34 symbols)
+- `__main__.py` (py, 1 symbols)
+- `jlens.py` (py, 29 symbols)
+- `lens_model.py` (py, 29 symbols)
 
 ---
 
@@ -175,11 +175,11 @@ Files grouped by import-based community detection. Cohesion measures how tightly
 
 Files in different communities connected through 3+ indirect hops.
 
-- `app.py` <-> `sandbox_smoke.py` (6 hops, across 3 communities)
+- `app.py` <-> `sandbox_smoke.py` (6 hops, across 2 communities)
 - `sandbox_smoke.py` <-> `test_jlens.py` (6 hops, across 3 communities)
 - `sandbox_smoke.py` <-> `__main__.py` (6 hops, across 3 communities)
-- `sandbox_smoke.py` <-> `inference.py` (6 hops, across 3 communities)
-- `sandbox_smoke.py` <-> `inference_hrm.py` (6 hops, across 3 communities)
+- `sandbox_smoke.py` <-> `inference.py` (6 hops, across 2 communities)
+- `sandbox_smoke.py` <-> `inference_hrm.py` (6 hops, across 2 communities)
 
 ---
 
@@ -190,8 +190,8 @@ Auto-generated exploration prompts based on graph structure:
 - What does model.py depend on, and what depends on it? (7 connections)
 - What does lens_model.py depend on, and what depends on it? (6 connections)
 - What does __init__.py depend on, and what depends on it? (7 connections)
-- How are the 13 files in 'topogpt3' related to each other?
-- Why are app.py and sandbox_smoke.py connected through 6 hops across 3 communities?
+- How are the 8 files in 'topogpt3' related to each other?
+- Why are app.py and sandbox_smoke.py connected through 6 hops across 2 communities?
 
 ---
 
@@ -274,6 +274,8 @@ graph TD
     topogpt3_train_py_EfficiencyMetrics["EfficiencyMetrics"]
     class topogpt3_train_py_EfficiencyMetrics cls;
     topogpt3_train_py --> topogpt3_train_py_EfficiencyMetrics
+    end
+    subgraph community_3 ["topogpt3"]
     tests_test_lens_model_py["test_lens_model.py (py)"]
     class tests_test_lens_model_py mod;
     tests_test_lens_model_py_TestTopoGPT3LensConfig["TestTopoGPT3LensConfig"]
@@ -423,8 +425,6 @@ graph TD
     topogpt3_inference_py_SourceModuleLoader["SourceModuleLoader"]
     class topogpt3_inference_py_SourceModuleLoader cls;
     topogpt3_inference_py --> topogpt3_inference_py_SourceModuleLoader
-    end
-    subgraph community_3 ["eval"]
     eval_sandbox_py["sandbox.py (py)"]
     class eval_sandbox_py mod;
     eval_sandbox_py_SandboxConfig["SandboxConfig"]
