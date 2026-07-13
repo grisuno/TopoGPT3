@@ -70,6 +70,53 @@ Reported results from the first tier (CodeAlpaca, two epochs):
 
 The dominant kernels do not grow only in magnitude; their evolution shows persistent directional structure in phase space. Angular drift statistics stay bounded and accumulate coherently rather than diffusing like an unconstrained random walk. This is treated as an empirical observation, not as evidence of a formal topological invariant.
 
+## Topo J-Lens
+
+```python
+❯  python3 -m topogpt3.jlens
+Loading model from checkpoints_topogpt3/last (d_model=256, n_layers=6, device=cpu)
+  loaded 24,457,622 parameters in 0.6s
+
+Fitting Jacobian lens on 2 prompts, 5 source layers...
+  fitted in 27.3s: JacobianLens(d_model=256, n_prompts=2, source_layers=[0..4] (5 layers))
+
+Jacobian norms (diagonal dominance indicates reliable transport):
+  layer     ||J||     max_diag   min_diag   ||J - I||
+  ------------------------------------------
+       0      22.20     1.0924     0.3867      17.21
+       1      20.38     1.1276     0.5782      13.53
+       2      18.56     1.0943     0.6139      10.14
+       3      17.99     1.1119     0.6583       7.61
+       4      17.00     1.0679     0.9422       4.89
+
+Computing slice for prompt: 'def fibonacci(n):\n    '
+ pos input token           L0 top-1                   L2 top-1                   L4 top-1                   L5 top-1                 
+-------------------------------------------------------------------------------------------------------------------------------------
+   0 def                   def              3.39%      def              0.09%       find            2.78%       find            7.23%    
+   1  fib                  on               12.40%      on               63.49%      on               92.08%      on               95.33%    
+   2 on                    on               84.84%      acci             21.03%      acci             93.29%      acci             99.62%    
+   3 acci                  acci             35.38%      (                39.68%      (                94.84%      (                88.46%    
+   4 (                     ):               2.45%      n                65.24%      n                82.16%      n                91.28%    
+   5 n                     n                30.93%      umbers           16.97%      ):               97.23%      ):               97.46%    
+   6 ):                    ):               64.79%      ):               78.69%      
+                92.09%      
+                80.98%    
+   7 
+                      super           0.13%                       31.64%                       75.16%                       95.50%    
+   8                                        38.25%                       84.25%                       56.59%                       81.16%    
+   9                                        46.50%                       49.94%                       97.22%                       98.47%    
+  10                                        58.45%       """             49.04%       if              41.36%       if              48.04%    
+  11                                        57.73%                       31.70%                       74.12%                       64.06%    
+
+
+Summary:
+  Fitted on 2 prompts, 5 layers
+  Layer transport: ['L0->L5', 'L1->L5', 'L2->L5', 'L3->L5', 'L4->L5']
+  Prompt: 'def fibonacci(n):\n    ' (12 tokens)
+  To explore interactively: from topogpt3.jlens import compute_slice, text_slice
+
+```
+
 ## Inference
 
 Two engines share the same checkpoint:
