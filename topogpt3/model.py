@@ -132,7 +132,7 @@ class TopoGPT2Config:
 
     # --- Corpus ---
     CORPUS: str = 'directory'            # 'directory' | 'file'
-    CORPUS_ROOT: str = '/home/grisun0/src_note'
+    CORPUS_ROOT: str = './src'
     CORPUS_FILE: str = ''                # Path if CORPUS='file'
     CORPUS_MIN_FILE_CHARS: int = 30      # minimum chars to include a file
     DATA_DIR: str = 'data_topogpt2'
@@ -1783,7 +1783,6 @@ class SpeculativeDecoder:
                 else:
                     token_ids = torch.cat([token_ids, target_tok], dim=1)
                     generated.extend(accepted)
-                    generated = [token_ids.shape[1] - token_ids.shape[0]]
                     break
             else:
                 for t in range(k):
@@ -2133,7 +2132,7 @@ class CheckpointManager:
 
     def _load_optimizer(self, optimizer, directory: str, device: str) -> None:
         path = os.path.join(directory, 'optimizer.pt')
-        sd = torch.load(path, map_location=device, weights_only=False)
+        sd = torch.load(path, map_location=device, weights_only=True)
         optimizer.load_state_dict(sd)
 
     # ------------------------------------------------------------------

@@ -88,7 +88,12 @@ HRM is intended to study iterative latent transport at inference time. At the cu
 │   ├── model.py               base TopoGPT2 architecture, tokenizer, helpers
 │   ├── train.py               curriculum trainer + Grassmannian diagnostics
 │   ├── inference.py           standard autoregressive sampler
-│   └── inference_hrm.py       hierarchical recursive reasoning sampler
+│   ├── inference_hrm.py       hierarchical recursive reasoning sampler
+│   ├── lens_model.py          Jacobian-lens model adapter (LensModel protocol)
+│   └── jlens.py               Jacobian lens fitting + application pipeline
+├── tests/                     BDD test suite
+│   ├── test_lens_model.py     adapter contract tests
+│   └── test_jlens.py          fitting + application contract tests
 ├── app.py                     example entry point for downstream projects
 ├── pyproject.toml             package metadata, dependencies, console scripts
 ├── README.md                  this file
@@ -176,6 +181,34 @@ settings = HRMInferenceSettings(
 )
 report = HRMInferencePipeline(settings).execute()
 print(report.output)
+```
+
+### Jacobian Lens
+
+Read out intermediate residual activations in the final-layer basis using the average input-output Jacobian. Based on the [jacobian-lens](https://github.com/anthropics/jacobian-lens) library (Anthropic, Apache 2.0).
+
+```python
+from topogpt3.lens_model import TopoGPT3LensModel
+from topogpt3.jlens import fit, JacobianLens
+
+model = TopoGPT3LensModel.from_checkpoint("checkpoints_topogpt3/last")
+
+prompts = [
+    "def fibonacci(n):\n    if n <= 1:\n        return n\n",
+    "def factorial(n):\n    if n <= 1:\n        return 1\n",
+]
+
+lens = fit(model, prompts, source_layers=[0, 1, 2, 3, 4], dim_batch=8, max_seq_len=128)
+
+lens_logits, model_logits, input_ids = lens.apply(
+    model, "def hello(", layers=[0, 2, 4], use_jacobian=True
+)
+```
+
+Run the test suite (no GPU required):
+
+```bash
+pytest tests/test_lens_model.py tests/test_jlens.py -v --tb=short
 ```
 
 `app.py` at the repository root is a complete, runnable example that wires both inference modes plus the trainer behind a tiny `--mode` CLI. It is intended to be copied into downstream projects and adapted.

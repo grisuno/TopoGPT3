@@ -1,0 +1,37 @@
+from __future__ import annotations
+
+import sys
+
+
+def main() -> None:
+    """TopoGPT3 entry point. Delegates to subcommands."""
+    if len(sys.argv) < 2:
+        print(
+            "TopoGPT3: complex-valued spectral language model\n"
+            "\n"
+            "Usage:\n"
+            "  python3 -m topogpt3            this help\n"
+            "  python3 -m topogpt3.lens_model  test model loading\n"
+            "  python3 -m topogpt3.jlens       Jacobian lens demo\n"
+            "  python3 -m topogpt3.inference   standard sampling\n"
+            "  python3 -m topogpt3.train       curriculum training\n"
+        )
+        return
+    subcommand = sys.argv[1]
+    sys.argv = sys.argv[1:]
+    if subcommand == "jlens":
+        from .jlens import _demo_jlens
+        _demo_jlens()
+    elif subcommand == "lens":
+        from .jlens import _demo_jlens
+        _demo_jlens()
+    elif subcommand == "check":
+        from .lens_model import TopoGPT3LensModel
+        m = TopoGPT3LensModel.from_checkpoint("checkpoints_topogpt3/last")
+        print(f"OK: n_layers={m.n_layers}, d_model={m.d_model}")
+    else:
+        print(f"Unknown subcommand: {subcommand}")
+
+
+if __name__ == "__main__":
+    main()

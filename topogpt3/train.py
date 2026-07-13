@@ -1080,7 +1080,7 @@ class CheckpointStore:
         sd = st_load(str(latest / "model.safetensors"))
         model.load_state_dict(sd, strict=False)
         if (latest / "optim.pt").exists():
-            optimizer.load_state_dict(torch.load(latest / "optim.pt", map_location="cpu"))
+            optimizer.load_state_dict(torch.load(latest / "optim.pt", map_location="cpu", weights_only=True))
         with open(latest / "state.json", "r", encoding="utf-8") as f:
             state = json.load(f)
         self.logger.info(f"Reanudado desde {latest}")

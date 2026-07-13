@@ -46,6 +46,9 @@ train = [
     "datasets>=2.14",
     "huggingface-hub>=0.20",
 ]
+lens = [
+    "huggingface-hub>=0.20",
+]
 dev = [
     "pytest>=7",
     "ruff>=0.4",
@@ -60,6 +63,7 @@ Issues = "https://github.com/grisun0/topogpt3/issues"
 topogpt3-train = "topogpt3.train:main"
 topogpt3-infer = "topogpt3.inference:main"
 topogpt3-infer-hrm = "topogpt3.inference_hrm:main"
+topogpt3-jlens = "topogpt3.jlens:_demo_jlens"
 
 [tool.setuptools.packages.find]
 include = ["topogpt3*"]
