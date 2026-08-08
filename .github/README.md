@@ -15,6 +15,7 @@ The work is documented in detail in `topogpt3.md`.
 - [Comparison](../comparison.md) — How TopoGPT3 relates to similar small-scale and code-focused models.
 - [Claude Integration Guide](../claude.md) — Using TopoGPT3 with Anthropic models and hybrid pipelines.
 - [Technical Paper](../topogpt3.md) — Full experimental write-up and results.
+- [KonwleadgeBase](https://github.com/grisuno/TopoGPT3/blob/main/KNOWLEDGE_BASE.md) — Documentation and source code diagram
 
 ## Motivation
 
