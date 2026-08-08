@@ -162,8 +162,88 @@ def static_kappa(K: torch.Tensor) -> Dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# main
+# Context-length diagnostics: Fisher gap + phase drift vs sequence length
 # ---------------------------------------------------------------------------
+
+_CONTEXT_LENGTHS = (128, 256, 512, 1024, 2048)
+
+
+def context_length_diagnostic(
+    model: TopoGPT2,
+    tracker: GrassmannianTracker,
+    device: str = "cuda",
+    lengths: tuple[int, ...] = _CONTEXT_LENGTHS,
+) -> Dict[str, Any]:
+    runtime_cfg = model.config
+    original_seq = runtime_cfg.MAX_SEQ_LEN
+
+    results: Dict[str, Any] = {
+        "context_lengths": list(lengths),
+        "fisher_gap": [],
+        "kappa_F": [],
+        "delta_max": [],
+        "delta_mean": [],
+        "sigma_top4": [],
+        "note": "Fisher gap and phase discretization as function of input context length. "
+                "If delta collapses to 0 at long contexts, phase wrapping/destructive "
+                "interference is degrading long-range coherence.",
+    }
+
+    for ctx_len in lengths:
+        if ctx_len > original_seq and original_seq > 0:
+            current_len = original_seq
+        else:
+            current_len = ctx_len
+
+        print(f"  ctx_len={current_len} ...")
+        B = 4
+        dummy_ids = torch.randint(
+            0, runtime_cfg.VOCAB_SIZE, (B, current_len),
+            dtype=torch.long, device=device,
+        )
+        dummy_targets = torch.randint(
+            0, runtime_cfg.VOCAB_SIZE, (B, current_len),
+            dtype=torch.long, device=device,
+        )
+        dummy_loader = [(dummy_ids, dummy_targets)]
+
+        try:
+            gap, eigs, r_eff = tracker.estimate_fisher_gap(
+                model, dummy_loader,
+                vocab_size=runtime_cfg.VOCAB_SIZE,
+                r_target=runtime_cfg.D_MODEL // 4,
+            )
+            if eigs.numel() > 1:
+                kappa_f = float(eigs[0].item() / max(eigs[-1].item(), 1e-12))
+            else:
+                kappa_f = float("inf")
+        except Exception as exc:
+            print(f"    WARN: Fisher gap failed at ctx_len={current_len}: {exc}")
+            gap, kappa_f, eigs = float("nan"), float("nan"), torch.zeros(2)
+            r_eff = 0
+
+        results["fisher_gap"].append(float(gap) if not (isinstance(gap, float) and math.isnan(gap)) else None)
+        results["kappa_F"].append(float(kappa_f) if not (isinstance(kappa_f, float) and math.isnan(kappa_f)) else None)
+        results["sigma_top4"].append(
+            [float(x) for x in eigs[:4].tolist()] if eigs.numel() >= 4 else
+            [float(x) for x in eigs.tolist()]
+        )
+
+        K = tracker._stack_spectral_kernels(model)
+        d = phase_discretization(K, n_samples=512)
+        results["delta_max"].append(d["delta_max"])
+        results["delta_mean"].append(d["delta_mean"])
+
+    runtime_cfg.MAX_SEQ_LEN = original_seq
+
+    collapse_at = None
+    for i, (ctx, dm) in enumerate(zip(lengths, results["delta_max"])):
+        if dm is not None and dm < 0.01 and i > 0:
+            collapse_at = ctx
+            break
+    results["phase_collapse_at_ctx"] = collapse_at
+
+    return results
 
 def main():
     parser = argparse.ArgumentParser()
@@ -171,6 +251,9 @@ def main():
     parser.add_argument("--checkpoint-name", default="last")
     parser.add_argument("--out", default=None)
     parser.add_argument("--n-phase-samples", type=int, default=1024)
+    parser.add_argument("--context-diagnostic", action="store_true",
+                        help="Run Fisher gap vs context-length analysis "
+                             "(requires model forward passes at increasing lengths).")
     args = parser.parse_args()
 
     out_path = Path(args.out) if args.out else (
@@ -234,6 +317,25 @@ def main():
         "W_note": "synthetic: window sweep over frequency modes, NOT temporal training trajectory",
         "sv_top32": sv_top,
     }
+
+    if args.context_diagnostic:
+        print("\n=== Context-Length Diagnostic ===")
+        from topogpt3.train import TopoGPT3Config
+        tracker_cfg = TopoGPT3Config(SCALE="small", GRASS_FISHER_BATCHES=40, GRASS_FISHER_GRADS=64)
+        tracker = GrassmannianTracker(tracker_cfg, __import__("logging").getLogger("ctx_diag"))
+        dev = str(next(model.parameters()).device)
+        ctx_results = context_length_diagnostic(model, tracker, device=dev)
+        record["context_diagnostic"] = ctx_results
+        print("  Fisher gap vs context:")
+        for i, ctx_len in enumerate(ctx_results["context_lengths"]):
+            fg = ctx_results["fisher_gap"][i]
+            dm = ctx_results["delta_max"][i]
+            print(f"    ctx={ctx_len:>5}  fisher_gap={fg!s:>16}  delta_max={dm:.4f}")
+
+        if ctx_results.get("phase_collapse_at_ctx"):
+            print(f"  WARNING: phase collapse detected at ctx={ctx_results['phase_collapse_at_ctx']}")
+        else:
+            print("  No phase collapse detected within tested lengths.")
 
     with open(out_path, "w") as f:
         f.write(json.dumps(record) + "\n")

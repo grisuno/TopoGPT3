@@ -72,6 +72,9 @@ class InferenceSettings:
     temperature: float = 0.3
     top_k: int = 50
     repetition_penalty: float = 1.1
+    auto_continue: bool = False
+    max_continuations: int = 3
+    continuation_tail_lines: int = 2
 
     log_level: str = "INFO"
     log_name: str = "TopoGPT3Inference"
@@ -101,13 +104,13 @@ class InferenceSettings:
         """Return the architecture preset table indexed by scale name."""
         return {
             "micro":  ScalePreset(d_model=64,  n_heads=4,  n_layers=2,
-                                  max_seq_len=128),
-            "small":  ScalePreset(d_model=256, n_heads=8,  n_layers=6,
                                   max_seq_len=256),
-            "medium": ScalePreset(d_model=512, n_heads=8,  n_layers=12,
+            "small":  ScalePreset(d_model=256, n_heads=8,  n_layers=6,
                                   max_seq_len=512),
-            "gpt2":   ScalePreset(d_model=768, n_heads=12, n_layers=12,
+            "medium": ScalePreset(d_model=512, n_heads=8,  n_layers=12,
                                   max_seq_len=1024),
+            "gpt2":   ScalePreset(d_model=768, n_heads=12, n_layers=12,
+                                  max_seq_len=2048),
         }
 
     def preset(self) -> ScalePreset:
@@ -495,13 +498,25 @@ class GenerationEngine:
         )
 
         start = time.time()
-        output_ids = model.generate(
-            input_ids,
-            max_new_tokens=policy.max_new_tokens,
-            temperature=policy.temperature,
-            top_k=policy.top_k,
-            repetition_penalty=policy.repetition_penalty,
-        )
+        if self._settings.auto_continue:
+            output_ids = model.generate_with_continuation(
+                input_ids,
+                tokenizer=tokenizer,
+                max_new_tokens=policy.max_new_tokens,
+                temperature=policy.temperature,
+                top_k=policy.top_k,
+                repetition_penalty=policy.repetition_penalty,
+                max_continuations=self._settings.max_continuations,
+                tail_lines=self._settings.continuation_tail_lines,
+            )
+        else:
+            output_ids = model.generate(
+                input_ids,
+                max_new_tokens=policy.max_new_tokens,
+                temperature=policy.temperature,
+                top_k=policy.top_k,
+                repetition_penalty=policy.repetition_penalty,
+            )
         elapsed = time.time() - start
 
         full_text = tokenizer.decode(output_ids[0].tolist())
@@ -664,6 +679,15 @@ class CliArgumentParser:
             help="Deterministic seed for sampling reproducibility.",
         )
         parser.add_argument(
+            "--auto-continue", "-C", action="store_true",
+            default=defaults.auto_continue,
+            help="Auto-continue truncated responses by feeding tail lines back.",
+        )
+        parser.add_argument(
+            "--max-continuations", type=int, default=defaults.max_continuations,
+            help="Max number of continuation rounds (requires --auto-continue).",
+        )
+        parser.add_argument(
             "--log-level", type=str, default=defaults.log_level,
             choices=["DEBUG", "INFO", "WARNING", "ERROR"],
             help="Logging verbosity.",
@@ -688,6 +712,8 @@ class CliArgumentParser:
             apply_gauss_patch_at_load=not namespace.no_gauss,
             strict_state_dict=namespace.strict_load,
             seed=namespace.seed,
+            auto_continue=namespace.auto_continue,
+            max_continuations=namespace.max_continuations,
             log_level=namespace.log_level,
         )
 

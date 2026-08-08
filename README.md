@@ -29,6 +29,8 @@ Most code language models scale through size. TopoGPT3 explores the opposite dir
 - Autoregressive transformer with complex-valued spectral operators.
 - Quaternion-inspired layers for parameter efficiency.
 - A Gauss-style optimization for complex multiplication: three real multiplications per contraction instead of four.
+- Sliding window attention (`ATTN_WINDOW`) with configurable window size to control KV-cache memory footprint in long sequences. Set to 0 for full attention or a positive integer for local attention with O(W * S) complexity.
+- Latent memory tokens (`N_MEMORY_TOKENS`) for fixed-size context compression across long sequence segments.
 - Approximately 24.5M parameters at the default `small` scale.
 
 The base architecture lives in `topogpt3/model.py`. The curriculum trainer and the Grassmannian / Fisher / phase diagnostics live in `topogpt3/train.py`.
@@ -69,6 +71,16 @@ Reported results from the first tier (CodeAlpaca, two epochs):
 - maximum observed `|W|`: about `0.55`
 
 The dominant kernels do not grow only in magnitude; their evolution shows persistent directional structure in phase space. Angular drift statistics stay bounded and accumulate coherently rather than diffusing like an unconstrained random walk. This is treated as an empirical observation, not as evidence of a formal topological invariant.
+
+### Context-length diagnostic
+
+A static analysis mode evaluates Fisher gap and phase discretization as a function of input sequence length. This helps detect phase collapse -- the degrading of long-range coherence when distant tokens suffer destructive interference in the complex-valued attention space:
+
+```
+python eval/diag_static.py --context-diagnostic
+```
+
+Output is a JSON record at `eval/runs/diag_static_<timestamp>.jsonl` containing Fisher gap, kappa, delta (phase discretization), and leading singular values for each tested context length. A `phase_collapse_at_ctx` field signals whether delta drops below 0.01 at any context length, indicating that phase wrapping or destructive interference may be impeding long-range dependencies.
 
 ## Topo J-Lens
 
@@ -197,13 +209,48 @@ Endpoints:
 
 ### Configuring Pi
 
+Pi discovers models through `~/.pi/agent/models.json`. Create it with the TopoGPT3 provider pointing at your local API server:
+
 ```bash
-export PI_BASE_URL="http://localhost:8800/v1"
-export PI_API_KEY="sk-my-secret-key-12345"
+make pi-setup
 ```
 
-No other configuration is needed. Pi will discover the model via
-`/v1/models` and use `/v1/chat/completions` for inference.
+This writes a `models.json` that declares the `topogpt3` provider with the OpenAI-compatible completions API. Alternatively, create the file manually:
+
+```json
+{
+  "providers": {
+    "topogpt3": {
+      "baseUrl": "http://127.0.0.1:8800/v1",
+      "api": "openai-completions",
+      "apiKey": "$TOPOGPT3_API_KEY",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false
+      },
+      "models": [
+        {
+          "id": "topogpt3",
+          "name": "TopoGPT3 (Local)",
+          "reasoning": false,
+          "input": ["text"],
+          "contextWindow": 512,
+          "maxTokens": 512,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        }
+      ]
+    }
+  }
+}
+```
+
+Then run Pi with:
+
+```bash
+TOPOGPT3_API_KEY="sk-local" make pi-run
+```
+
+The Makefile passes a minimal system prompt to conserve the limited context window.
 
 ### Configuring other agents
 
@@ -258,6 +305,24 @@ Two engines share the same checkpoint:
 
 HRM is intended to study iterative latent transport at inference time. At the current training stage it preserves syntactic coherence and formatting but does not yield large qualitative improvements in algorithmic correctness; the diagnostics remain stable while high-level convergence events are rare.
 
+### Auto-continuation
+
+When the model hits the end-of-text token (EOS) before producing a structurally complete response, the engine can feed the last incomplete lines back as a continuation prefix and resume generation. This is controlled by the `--auto-continue` flag, with `--max-continuations` (default 3) setting the upper bound on continuation rounds.
+
+Detection heuristics check for unclosed code fences (` ``` `), unclosed brackets/parentheses, trailing punctuation like `,` or `:`, and a minimum character threshold.
+
+```bash
+python -m topogpt3.inference --auto-continue --max-new 512 --prompt "def main("
+```
+
+### Thinking mode (HRM)
+
+`--thinking` enables a deeper reasoning configuration in the HRM engine. When active, the hierarchical reasoner increases its high-level iterations to 4 and low-level iterations to 8 per emitted token, trading latency for deeper iterative latent refinement. Combines naturally with auto-continuation:
+
+```bash
+python -m topogpt3.inference_hrm --thinking --auto-continue --max-new 512
+```
+
 ## Repository layout
 
 ```
@@ -268,6 +333,7 @@ HRM is intended to study iterative latent transport at inference time. At the cu
 │   ├── train.py               curriculum trainer + Grassmannian diagnostics
 │   ├── inference.py           standard autoregressive sampler
 │   ├── inference_hrm.py       hierarchical recursive reasoning sampler
+│   ├── continuation.py        auto-continuation engine (detect + resume truncated output)
 │   ├── lens_model.py          Jacobian-lens model adapter (LensModel protocol)
 │   ├── jlens.py               Jacobian lens fitting + application pipeline
 │   └── api_server.py          OpenAI-compatible HTTP API server (hardened)
@@ -278,7 +344,8 @@ HRM is intended to study iterative latent transport at inference time. At the cu
 │   ├── harness.py             evaluation pipeline
 │   ├── samplers.py            sampler registry (standard / HRM)
 │   ├── sandbox.py             sandboxed test executor
-│   └── analysis.py            pass@k / metrics reporting
+│   ├── analysis.py            pass@k / metrics reporting
+│   └── diag_static.py         static checkpoint diagnostics (kappa, delta, winding, context-length)
 ├── app.py                     example entry point for downstream projects
 ├── Makefile                   convenience targets for all common commands
 ├── pyproject.toml             package metadata, dependencies, console scripts
@@ -446,11 +513,23 @@ Standard inference from the latest checkpoint:
 topogpt3-infer --prompt "def fibonacci(" --max-new 200
 ```
 
+Inference with auto-continuation:
+
+```
+topogpt3-infer --auto-continue --max-new 512 --prompt "def main("
+```
+
 Hierarchical recursive inference:
 
 ```
 topogpt3-infer-hrm --prompt "def fibonacci(" \
     --hrm-h-iters 2 --hrm-l-iters 3 --hrm-l-window 2 --max-new 200
+```
+
+HRM thinking mode with auto-continuation:
+
+```
+topogpt3-infer-hrm --thinking --auto-continue --max-new 512 --prompt "def main("
 ```
 
 Jacobian lens visualization:
@@ -478,29 +557,45 @@ python -m topogpt3 api_server --help
 python app.py --mode infer --prompt "def main(" --max-new 64
 ```
 
+Or through the unified dispatcher:
+
+```
+python -m topogpt3 infer --auto-continue --max-new 512
+python -m topogpt3 infer-hrm --thinking --auto-continue
+python -m topogpt3 train
+python -m topogpt3 api
+```
+
 ### Makefile
 
 A `Makefile` at the repo root wraps every common task. Run `make help`
 to see all targets.
 
 ```
-make install          pip install -e ".[train,lens,api,dev]"
-make test             run full test suite
-make lint             ruff check + format
-make train            full curriculum training
-make infer            standard inference (prompt=def fibonacci)
-make infer-hrm        HRM inference
-make jlens            Jacobian lens demo (fit 4 prompts)
-make api              start API server on port 8800
-make api-auth         start API server with authentication
-make eval             HumanEval benchmark (all 164 problems)
-make eval-sample      HumanEval single problem
-make clean            remove __pycache__ and .pyc files
+make install           pip install -e ".[train,lens,api,dev]"
+make test              run full test suite
+make lint              ruff check + format
+make train             full curriculum training
+make infer             standard inference (prompt=def fibonacci)
+make infer-continue    inference with auto-continuation
+make infer-hrm         HRM inference
+make infer-think       HRM thinking mode with auto-continuation
+make jlens             Jacobian lens demo (fit 4 prompts)
+make api               start API server on port 8800 (no auth)
+make api-auth          start API server with authentication
+make eval              HumanEval benchmark (all 164 problems)
+make eval-sample       HumanEval single problem
+make pi                clone, build, and configure Pi agent
+make pi-setup          write TopoGPT3 provider config to ~/.pi/agent/models.json
+make pi-run            launch Pi pointed at local TopoGPT3 API
+make clean             remove __pycache__ and .pyc files
 ```
 
 ## Checkpoint compatibility
 
 The model is always built with the maximum sequence length across all curriculum tiers, so positional embeddings keep a fixed shape regardless of which tier is used as the entry point. Existing safetensors weights load without shape mismatch when restarting at a different tier.
+
+As of the 2026-08 sliding window update, the RoPE (Rotary Position Embedding) caches are stored as non-persistent buffers under the names `_cos_cache` and `_sin_cache`. Checkpoints from earlier versions that contain `cos_cache` and `sin_cache` are safely ignored during loading with `strict=False`. The caches are recomputed to match the current `MAX_SEQ_LEN` configuration at model instantiation time. Memory tokens (`memory_tokens`) are a new parameter introduced alongside the latent compression feature; missing this key in older checkpoints is harmless and produces a warning during load.
 
 ## Limitations
 

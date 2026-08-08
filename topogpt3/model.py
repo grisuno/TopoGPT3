@@ -108,6 +108,13 @@ class TopoGPT2Config:
     CURRICULUM_SHORT_LINES: int = 50     # tier 1: short files
     CURRICULUM_MED_LINES: int = 300      # tier 2: medium files
 
+    # --- Sliding Window Attention ---
+    ATTN_WINDOW: int = 0                # 0 = full attention; N = sliding window of N tokens
+
+    # --- Latent Memory Tokens (context compression) ---
+    N_MEMORY_TOKENS: int = 0            # number of learnable memory tokens for context compression
+    MEMORY_SEGMENT_LEN: int = 0         # segment length for memory-token processing (0 = disabled)
+
     # --- Progressive Sequence Length ---
     PROGRESSIVE_SEQ: bool = True        # warm up with shorter sequences
     PROGRESSIVE_SEQ_STEPS: Tuple[int, int, int] = (128, 256, 512)  # len per phase
@@ -153,10 +160,10 @@ class TopoGPT2Config:
 
     def __post_init__(self):
         presets = {
-            'micro':  dict(D_MODEL=64,  N_HEADS=4,  N_LAYERS=2,  MAX_SEQ_LEN=128),
-            'small':  dict(D_MODEL=256, N_HEADS=8,  N_LAYERS=6,  MAX_SEQ_LEN=256),
-            'medium': dict(D_MODEL=512, N_HEADS=8,  N_LAYERS=12, MAX_SEQ_LEN=512),
-            'gpt2':   dict(D_MODEL=768, N_HEADS=12, N_LAYERS=12, MAX_SEQ_LEN=1024),
+            'micro':  dict(D_MODEL=64,  N_HEADS=4,  N_LAYERS=2,  MAX_SEQ_LEN=256,  ATTN_WINDOW=64, N_MEMORY_TOKENS=16, MEMORY_SEGMENT_LEN=64),
+            'small':  dict(D_MODEL=256, N_HEADS=8,  N_LAYERS=6,  MAX_SEQ_LEN=512,  ATTN_WINDOW=128, N_MEMORY_TOKENS=32, MEMORY_SEGMENT_LEN=128),
+            'medium': dict(D_MODEL=512, N_HEADS=8,  N_LAYERS=12, MAX_SEQ_LEN=1024, ATTN_WINDOW=256, N_MEMORY_TOKENS=64, MEMORY_SEGMENT_LEN=256),
+            'gpt2':   dict(D_MODEL=768, N_HEADS=12, N_LAYERS=12, MAX_SEQ_LEN=2048, ATTN_WINDOW=256, N_MEMORY_TOKENS=64, MEMORY_SEGMENT_LEN=256),
         }
         if self.SCALE in presets:
             for k, v in presets[self.SCALE].items():
@@ -678,8 +685,13 @@ class QuaternionTorusBrain(nn.Module):
 class RotaryEmbedding(nn.Module):
     """
     Rotary Position Embeddings (RoPE) - Su et al., 2021.
-    Codifica la posición como rotaciones del espacio de atención,
-    naturalmente relativas y sin parámetros extra.
+    Codifica la posicion como rotaciones del espacio de atencion,
+    naturalmente relativas y sin parametros extra.
+
+    Las caches _cos/_sin se registran como buffers no-persistentes con
+    nombres que no colisionan con checkpoints antiguos (que usaban
+    'cos_cache'/'sin_cache'). Esto permite cambiar MAX_SEQ_LEN sin
+    errores de shape al cargar checkpoints previos.
     """
 
     def __init__(self, d_head: int, max_seq_len: int = 2048, base: int = 10000):
@@ -689,11 +701,12 @@ class RotaryEmbedding(nn.Module):
         self._build_cache(max_seq_len)
 
     def _build_cache(self, seq_len: int):
-        t = torch.arange(seq_len, device=self.inv_freq.device).float()
+        device = self.inv_freq.device
+        t = torch.arange(seq_len, device=device).float()
         freqs = torch.outer(t, self.inv_freq)
-        emb = torch.cat([freqs, freqs], dim=-1)  # [seq_len, d_head]
-        self.register_buffer('cos_cache', emb.cos())
-        self.register_buffer('sin_cache', emb.sin())
+        emb = torch.cat([freqs, freqs], dim=-1)
+        self.register_buffer('_cos_cache', emb.cos(), persistent=False)
+        self.register_buffer('_sin_cache', emb.sin(), persistent=False)
 
     def _rotate_half(self, x: torch.Tensor) -> torch.Tensor:
         x1, x2 = x[..., :x.shape[-1]//2], x[..., x.shape[-1]//2:]
@@ -707,13 +720,13 @@ class RotaryEmbedding(nn.Module):
         Aplica posiciones [offset .. offset+S-1] a q y k.
         """
         needed = offset + max(q.shape[2], k.shape[2])
-        if needed > self.cos_cache.shape[0]:
+        if needed > self._cos_cache.shape[0]:
             self._build_cache(needed * 2)
         sq, sk = q.shape[2], k.shape[2]
-        cos_q = self.cos_cache[offset:offset + sq].unsqueeze(0).unsqueeze(0)
-        sin_q = self.sin_cache[offset:offset + sq].unsqueeze(0).unsqueeze(0)
-        cos_k = self.cos_cache[offset:offset + sk].unsqueeze(0).unsqueeze(0)
-        sin_k = self.sin_cache[offset:offset + sk].unsqueeze(0).unsqueeze(0)
+        cos_q = self._cos_cache[offset:offset + sq].unsqueeze(0).unsqueeze(0)
+        sin_q = self._sin_cache[offset:offset + sq].unsqueeze(0).unsqueeze(0)
+        cos_k = self._cos_cache[offset:offset + sk].unsqueeze(0).unsqueeze(0)
+        sin_k = self._sin_cache[offset:offset + sk].unsqueeze(0).unsqueeze(0)
         q_rot = q * cos_q + self._rotate_half(q) * sin_q
         k_rot = k * cos_k + self._rotate_half(k) * sin_k
         return q_rot, k_rot
@@ -891,6 +904,7 @@ class MultiHeadAttention(nn.Module):
         self.n_kv     = config.N_KV_HEADS   # cabezas K/V (GQA)
         self.n_groups = config.GQA_GROUPS    # n_heads // n_kv
         self.d_head   = d_model // n_heads
+        self.window_size = config.ATTN_WINDOW  # 0 = full attention
 
         # Q con n_heads completo; K/V con n_kv (GQA)
         self.q_proj = nn.Linear(d_model, n_heads * self.d_head, bias=False)
@@ -928,6 +942,27 @@ class MultiHeadAttention(nn.Module):
         if past_kv is not None:
             K = torch.cat([past_kv[0], K], dim=2)
             V = torch.cat([past_kv[1], V], dim=2)
+
+        attn_mask = None
+        use_causal = (is_causal and past_kv is None)
+
+        if self.window_size > 0:
+            if past_kv is None:
+                S_q = Q.shape[2]
+                S_kv = K.shape[2]
+                if S_kv > self.window_size:
+                    row = torch.arange(S_q, device=Q.device).unsqueeze(1)
+                    col = torch.arange(S_kv, device=Q.device).unsqueeze(0)
+                    upper = row < col
+                    outside = (row - col) >= self.window_size
+                    attn_mask = upper | outside
+                    use_causal = False
+            else:
+                if K.shape[2] > self.window_size:
+                    K = K[:, :, -self.window_size:, :]
+                    V = V[:, :, -self.window_size:, :]
+                use_causal = False
+
         kv_cache = (K, V)
         K_full = K
 
@@ -942,9 +977,9 @@ class MultiHeadAttention(nn.Module):
 
         out = F.scaled_dot_product_attention(
             Q, K_full, V_exp,
-            attn_mask=None,
+            attn_mask=attn_mask,
             dropout_p=self.dropout_p if self.training else 0.0,
-            is_causal=(is_causal and past_kv is None),
+            is_causal=use_causal,
             scale=scale.item(),
         )  # [B, n_heads, S, d_head]
 
@@ -1031,6 +1066,12 @@ class TopoGPT2(nn.Module):
         # Weight tying (GPT-2 style): embedding y cabeza de lenguaje comparten pesos
         self.lm_head.weight = self.token_embed.weight
 
+        self.memory_tokens: Optional[nn.Parameter] = None
+        if config.N_MEMORY_TOKENS > 0:
+            self.memory_tokens = nn.Parameter(
+                torch.randn(1, config.N_MEMORY_TOKENS, config.D_MODEL) * 0.02
+            )
+
         self._init_weights()
 
     def _init_weights(self):
@@ -1062,6 +1103,56 @@ class TopoGPT2(nn.Module):
         x = self.final_norm(x)
         logits = self.lm_head(x)
         return logits, total_aux / len(self.layers), new_kvs
+
+    def forward_with_memory(
+        self, token_ids: torch.Tensor
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
+        """Process long sequences with latent memory-token context compression.
+
+        Splits `token_ids` [B, S] into segments of size MEMORY_SEGMENT_LEN.
+        Each segment is processed with N_MEMORY_TOKENS prepended. The output
+        at memory-token positions after segment k becomes the memory-state
+        input for segment k+1, compressing all prior context into a fixed-size
+        latent vector.
+
+        Returns (logits [B, S, VOCAB_SIZE], aux_loss).
+        """
+        cfg = self.config
+        B, S = token_ids.shape
+        N_mem = cfg.N_MEMORY_TOKENS
+        seg_len = cfg.MEMORY_SEGMENT_LEN
+
+        if self.memory_tokens is None or N_mem == 0 or seg_len == 0:
+            logits, aux, _ = self.forward(token_ids)
+            return logits, aux
+
+        device = token_ids.device
+        mem = self.memory_tokens.expand(B, -1, -1)
+
+        all_logits = []
+        total_aux = torch.tensor(0.0, device=device)
+
+        for seg_start in range(0, S, seg_len):
+            seg_end = min(seg_start + seg_len, S)
+            seg_ids = token_ids[:, seg_start:seg_end]
+            seg_emb = self.token_embed(seg_ids)
+
+            x = torch.cat([mem, seg_emb], dim=1)
+
+            for layer in self.layers:
+                x, al, _ = layer(x)
+                total_aux = total_aux + al
+
+            seg_out = x[:, N_mem:, :]
+            mem = x[:, :N_mem, :]
+
+            seg_out = self.final_norm(seg_out)
+            seg_logits = self.lm_head(seg_out)
+            all_logits.append(seg_logits)
+
+        logits = torch.cat(all_logits, dim=1)
+        aux_loss = total_aux / len(self.layers)
+        return logits, aux_loss
 
     def count_params(self) -> Dict[str, int]:
         total = sum(p.numel() for p in self.parameters())
@@ -1118,6 +1209,46 @@ class TopoGPT2(nn.Module):
                 break
 
         return token_ids
+
+    @torch.no_grad()
+    def generate_with_continuation(self, token_ids: torch.Tensor,
+                                   tokenizer: Any, max_new_tokens: int = 200,
+                                   temperature: float = 0.8, top_k: int = 50,
+                                   repetition_penalty: float = 1.0,
+                                   max_continuations: int = 3,
+                                   tail_lines: int = 2) -> torch.Tensor:
+        full_ids = token_ids.clone()
+        continuations = 0
+
+        while continuations <= max_continuations:
+            n_new = max_new_tokens - (full_ids.shape[1] - token_ids.shape[1]) if continuations > 0 else max_new_tokens
+            if n_new <= 0:
+                break
+
+            out = self.generate(full_ids, max_new_tokens=n_new,
+                                temperature=temperature, top_k=top_k,
+                                repetition_penalty=repetition_penalty)
+            full_ids = out
+
+            out_text = tokenizer.decode(out[0].tolist())
+            prompt_text = tokenizer.decode(token_ids[0].tolist())
+            generated = out_text[len(prompt_text):]
+
+            from .continuation import is_response_complete, extract_tail_for_continuation
+
+            if is_response_complete(generated):
+                break
+
+            tail = extract_tail_for_continuation(generated, tail_lines=tail_lines)
+            if not tail:
+                break
+
+            continuations += 1
+            full_text = prompt_text + tail
+            full_ids = torch.tensor([tokenizer.encode(full_text)],
+                                    dtype=torch.long, device=full_ids.device)
+
+        return full_ids
 
 
 # ============================================================================

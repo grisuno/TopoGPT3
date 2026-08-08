@@ -298,6 +298,8 @@ class CompletionRequest(BaseModel):
     repetition_penalty: float = Field(default=1.1, ge=0.5, le=3.0)
     stop: Any = None
     stream: bool = False
+    auto_continue: bool = False
+    max_continuations: int = Field(default=3, ge=0, le=10)
 
     @field_validator("stop", mode="before")
     @classmethod
@@ -321,6 +323,8 @@ class ChatCompletionRequest(BaseModel):
     repetition_penalty: float = Field(default=1.1, ge=0.5, le=3.0)
     stop: Any = None
     stream: bool = False
+    auto_continue: bool = False
+    max_continuations: int = Field(default=3, ge=0, le=10)
 
     @field_validator("stop", mode="before")
     @classmethod
@@ -350,6 +354,8 @@ class ServerModel:
         top_k: int = 50,
         repetition_penalty: float = 1.1,
         stop: list[str] | None = None,
+        auto_continue: bool = False,
+        max_continuations: int = 3,
     ) -> str:
         ids = self.tokenizer.encode(prompt)
         if not ids:
@@ -357,13 +363,24 @@ class ServerModel:
         max_ctx = self.model.config.MAX_SEQ_LEN
         ids = ids[-max_ctx:]
         x = torch.tensor([ids], dtype=torch.long, device=self.device)
-        out = self.model.generate(
-            x,
-            max_new_tokens=max_new_tokens,
-            temperature=temperature,
-            top_k=top_k,
-            repetition_penalty=repetition_penalty,
-        )
+        if auto_continue:
+            out = self.model.generate_with_continuation(
+                x,
+                tokenizer=self.tokenizer,
+                max_new_tokens=max_new_tokens,
+                temperature=temperature,
+                top_k=top_k,
+                repetition_penalty=repetition_penalty,
+                max_continuations=max_continuations,
+            )
+        else:
+            out = self.model.generate(
+                x,
+                max_new_tokens=max_new_tokens,
+                temperature=temperature,
+                top_k=top_k,
+                repetition_penalty=repetition_penalty,
+            )
         text = self.tokenizer.decode(out[0].tolist())
         if stop:
             for s in stop:
@@ -382,6 +399,8 @@ class ServerModel:
         top_k: int = 50,
         repetition_penalty: float = 1.1,
         stop: list[str] | None = None,
+        auto_continue: bool = False,
+        max_continuations: int = 3,
     ):
         ids = self.tokenizer.encode(prompt)
         if not ids:
@@ -393,40 +412,72 @@ class ServerModel:
         prev_text = self.tokenizer.decode(x[0].tolist())
         prev_bytes = len(prev_text.encode("utf-8"))
         out = x
-        for _ in range(max_tokens):
-            with torch.no_grad():
-                logits, _, _ = self.model(out)
-            logits = logits[:, -1, :] / max(temperature, 1e-6)
-            if top_k > 0:
-                v, _ = torch.topk(logits, min(top_k, logits.size(-1)))
-                logits[logits < v[:, -1:]] = float("-inf")
-            probs = torch.softmax(logits, dim=-1)
-            if repetition_penalty != 1.0:
-                for idx in set(out[0].tolist()):
-                    probs[0, idx] /= repetition_penalty
-                    probs[0, idx] = probs[0, idx].clamp(min=1e-30)
-                probs = probs / probs.sum()
-            next_id = torch.multinomial(probs, 1)
-            if self._is_eos(next_id.item()):
-                break
-            out = torch.cat([out, next_id], dim=1)
-            full_text = self.tokenizer.decode(out[0].tolist())
-            chunk = full_text[prev_bytes:]
-            prev_bytes = len(full_text.encode("utf-8"))
-            if not chunk:
-                continue
-            if stop:
-                stopped = False
-                for s in stop:
-                    idx_s = chunk.find(s)
-                    if idx_s != -1:
-                        chunk = chunk[:idx_s]
-                        stopped = True
-                        break
-                if stopped:
-                    yield chunk
+        continuation_count = 0
+
+        while True:
+            stopped_on_eos = False
+            for _ in range(max_tokens):
+                with torch.no_grad():
+                    logits, _, _ = self.model(out)
+                logits = logits[:, -1, :] / max(temperature, 1e-6)
+                if top_k > 0:
+                    v, _ = torch.topk(logits, min(top_k, logits.size(-1)))
+                    logits[logits < v[:, -1:]] = float("-inf")
+                probs = torch.softmax(logits, dim=-1)
+                if repetition_penalty != 1.0:
+                    for idx in set(out[0].tolist()):
+                        probs[0, idx] /= repetition_penalty
+                        probs[0, idx] = probs[0, idx].clamp(min=1e-30)
+                    probs = probs / probs.sum()
+                next_id = torch.multinomial(probs, 1)
+                if self._is_eos(next_id.item()):
+                    stopped_on_eos = True
                     break
-            yield chunk
+                out = torch.cat([out, next_id], dim=1)
+                full_text = self.tokenizer.decode(out[0].tolist())
+                chunk = full_text[prev_bytes:]
+                prev_bytes = len(full_text.encode("utf-8"))
+                if not chunk:
+                    continue
+                if stop:
+                    stopped = False
+                    for s in stop:
+                        idx_s = chunk.find(s)
+                        if idx_s != -1:
+                            chunk = chunk[:idx_s]
+                            stopped = True
+                            break
+                    if stopped:
+                        yield chunk
+                        return
+                yield chunk
+
+            if not auto_continue or not stopped_on_eos:
+                break
+
+            from .continuation import is_response_complete, extract_tail_for_continuation
+
+            out_text = self.tokenizer.decode(out[0].tolist())
+            prompt_text = prev_text
+            generated = out_text[len(prompt_text):]
+
+            if is_response_complete(generated):
+                break
+
+            tail = extract_tail_for_continuation(generated, tail_lines=2)
+            if not tail:
+                break
+
+            continuation_count += 1
+            if continuation_count > max_continuations:
+                break
+
+            tail_text = prompt_text + tail
+            tail_ids = self.tokenizer.encode(tail_text)
+            tail_ids = tail_ids[-max_ctx:]
+            out = torch.tensor([tail_ids], dtype=torch.long, device=self.device)
+            prev_text = tail_text
+            prev_bytes = len(tail_text.encode("utf-8"))
 
     def _is_eos(self, token_id: int) -> bool:
         try:
@@ -646,6 +697,7 @@ async def completions(req: CompletionRequest, request: Request):
             _stream_completion(
                 req.prompt, req.max_tokens, req.temperature,
                 req.top_k, req.repetition_penalty, req.stop,
+                req.auto_continue, req.max_continuations,
             ),
             media_type="text/event-stream",
         )
@@ -658,6 +710,8 @@ async def completions(req: CompletionRequest, request: Request):
         top_k=req.top_k,
         repetition_penalty=req.repetition_penalty,
         stop=req.stop,
+        auto_continue=req.auto_continue,
+        max_continuations=req.max_continuations,
     )
     elapsed = time.monotonic() - t0
     prompt_tokens = len(_MODEL.tokenizer.encode(req.prompt[:MAX_PROMPT_CHARS]))
@@ -700,6 +754,7 @@ async def chat_completions(req: ChatCompletionRequest, request: Request):
             _stream_chat(
                 int(time.time() * 1000), prompt, req.max_tokens,
                 req.temperature, req.top_k, req.repetition_penalty, req.stop,
+                req.auto_continue, req.max_continuations,
             ),
             media_type="text/event-stream",
         )
@@ -712,6 +767,8 @@ async def chat_completions(req: ChatCompletionRequest, request: Request):
         top_k=req.top_k,
         repetition_penalty=req.repetition_penalty,
         stop=req.stop,
+        auto_continue=req.auto_continue,
+        max_continuations=req.max_continuations,
     )
     response_text = text[len(prompt):]
     return {
@@ -772,12 +829,14 @@ def _extract_text(content: str | list[dict] | Any) -> str:
 async def _stream_completion(
     prompt: str, max_tokens: int, temperature: float,
     top_k: int, repetition_penalty: float, stop: list[str],
+    auto_continue: bool = False, max_continuations: int = 3,
 ):
     t0 = int(time.time())
     short_id = _short_id()
     for chunk_text in _MODEL.stream_complete(
         prompt, max_new_tokens=max_tokens, temperature=temperature,
         top_k=top_k, repetition_penalty=repetition_penalty, stop=stop,
+        auto_continue=auto_continue, max_continuations=max_continuations,
     ):
         data = {
             "id": f"cmpl-{short_id}",
@@ -805,10 +864,12 @@ async def _stream_completion(
 async def _stream_chat(
     t0_ms: int, prompt: str, max_tokens: int, temperature: float,
     top_k: int, repetition_penalty: float, stop: list[str],
+    auto_continue: bool = False, max_continuations: int = 3,
 ):
     for chunk_text in _MODEL.stream_complete(
         prompt, max_new_tokens=max_tokens, temperature=temperature,
         top_k=top_k, repetition_penalty=repetition_penalty, stop=stop,
+        auto_continue=auto_continue, max_continuations=max_continuations,
     ):
         data = {
             "id": f"chatcmpl-{_short_id()}",

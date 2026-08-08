@@ -10,7 +10,7 @@ EVAL_OUT        := eval/results.jsonl
 PY              := python
 PI_DIR          := .pi
 
-.PHONY: help install install-min install-all test lint train infer infer-hrm jlens api api-auth eval eval-sample clean pi
+.PHONY: help install install-min install-all test lint train infer infer-continue infer-hrm infer-think jlens api api-auth eval eval-sample clean pi pi-setup pi-run pi-update
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
@@ -57,19 +57,37 @@ eval-holdout: ## Evaluate on combined holdout
 # ── Inference ────────────────────────────────────────────────────────────────
 
 infer: ## Standard autoregressive inference
-	$(PY) -m topogpt3 inference \
-		--checkpoint-dir $(CKPT) \
+	$(PY) -m topogpt3.inference \
+		--ckpt-dir $(CKPT) \
 		--prompt "$(PROMPT)" \
 		--max-new 200
 
-infer-hrm: ## Hierarchical recursive reasoning inference
-	$(PY) -m topogpt3 inference_hrm \
-		--checkpoint-dir $(CKPT) \
+infer-continue: ## Inference with auto-continuation
+	$(PY) -m topogpt3.inference \
+		--ckpt-dir $(CKPT) \
 		--prompt "$(PROMPT)" \
-		--hr-h-iters 2 \
-		--hr-l-iters 3 \
-		--hr-l-window 2 \
+		--max-new 512 \
+		--auto-continue
+
+infer-hrm: ## Hierarchical recursive reasoning inference
+	$(PY) -m topogpt3.inference_hrm \
+		--ckpt-dir $(CKPT) \
+		--prompt "$(PROMPT)" \
+		--hrm-h-iters 2 \
+		--hrm-l-iters 3 \
+		--hrm-l-window 2 \
 		--max-new 200
+
+infer-think: ## HRM thinking mode with auto-continuation
+	$(PY) -m topogpt3.inference_hrm \
+		--ckpt-dir $(CKPT) \
+		--prompt "$(PROMPT)" \
+		--hrm-h-iters 2 \
+		--hrm-l-iters 3 \
+		--hrm-l-window 2 \
+		--max-new 512 \
+		--thinking \
+		--auto-continue
 
 # ── Jacobian Lens ────────────────────────────────────────────────────────────
 
@@ -138,13 +156,40 @@ eval-sample: ## Run HumanEval on a single problem (set PROBLEM_ID=HumanEval/0)
 
 PI_REPO := https://github.com/earendil-works/pi.git
 
-pi: $(PI_DIR) ## Clone and build pi coding agent
-	@echo "[pi] building..."
+pi: $(PI_DIR) ## Clone, build, and configure pi for local TopoGPT3
 	cd $(PI_DIR) && npm install --ignore-scripts && npm run build
-	@echo "[pi] ready. Run with: PI_BASE_URL=http://localhost:$(API_PORT)/v1 PI_API_KEY=sk-local make pi-run"
+	@$(MAKE) pi-setup
 
 $(PI_DIR):
 	git clone --depth 1 $(PI_REPO) $(PI_DIR)
+
+pi-setup: ## Configure pi to use the local TopoGPT3 API (writes ~/.pi/agent/models.json)
+	@mkdir -p "$$HOME/.pi/agent"
+	@echo '{' > "$$HOME/.pi/agent/models.json"
+	@echo '  "providers": {' >> "$$HOME/.pi/agent/models.json"
+	@echo '    "topogpt3": {' >> "$$HOME/.pi/agent/models.json"
+	@echo '      "baseUrl": "http://$(API_HOST):$(API_PORT)/v1",' >> "$$HOME/.pi/agent/models.json"
+	@echo '      "api": "openai-completions",' >> "$$HOME/.pi/agent/models.json"
+	@echo '      "apiKey": "$$TOPOGPT3_API_KEY",' >> "$$HOME/.pi/agent/models.json"
+	@echo '      "compat": {' >> "$$HOME/.pi/agent/models.json"
+	@echo '        "supportsDeveloperRole": false,' >> "$$HOME/.pi/agent/models.json"
+	@echo '        "supportsReasoningEffort": false' >> "$$HOME/.pi/agent/models.json"
+	@echo '      },' >> "$$HOME/.pi/agent/models.json"
+	@echo '      "models": [' >> "$$HOME/.pi/agent/models.json"
+	@echo '        {' >> "$$HOME/.pi/agent/models.json"
+	@echo '          "id": "topogpt3",' >> "$$HOME/.pi/agent/models.json"
+	@echo '          "name": "TopoGPT3 (Local)",' >> "$$HOME/.pi/agent/models.json"
+	@echo '          "reasoning": false,' >> "$$HOME/.pi/agent/models.json"
+	@echo '          "input": ["text"],' >> "$$HOME/.pi/agent/models.json"
+	@echo '          "contextWindow": 512,' >> "$$HOME/.pi/agent/models.json"
+	@echo '          "maxTokens": 512,' >> "$$HOME/.pi/agent/models.json"
+	@echo '          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }' >> "$$HOME/.pi/agent/models.json"
+	@echo '        }' >> "$$HOME/.pi/agent/models.json"
+	@echo '      ]' >> "$$HOME/.pi/agent/models.json"
+	@echo '    }' >> "$$HOME/.pi/agent/models.json"
+	@echo '  }' >> "$$HOME/.pi/agent/models.json"
+	@echo '}' >> "$$HOME/.pi/agent/models.json"
+	@echo "[pi] wrote ~/.pi/agent/models.json"
 
 pi-update: ## Update pi to latest (git pull + rebuild)
 	@test -d $(PI_DIR) || { echo "Run 'make pi' first to clone pi."; exit 1; }
@@ -153,9 +198,12 @@ pi-update: ## Update pi to latest (git pull + rebuild)
 pi-run: ## Launch pi pointed at the local TopoGPT3 API server
 	@test -d $(PI_DIR) || { echo "Run 'make pi' first to clone pi."; exit 1; }
 	cd $(PI_DIR) && \
-		TOPOGPT3_BASE_URL="http://$(API_HOST):$(API_PORT)/v1" \
 		TOPOGPT3_API_KEY="$${TOPOGPT3_API_KEY:-sk-local}" \
-		node packages/coding-agent/dist/cli.js
+		node packages/coding-agent/dist/cli.js \
+			--provider topogpt3 \
+			--model topogpt3 \
+			--api-key "$${TOPOGPT3_API_KEY:-sk-local}" \
+			--system-prompt "You are a coding assistant. Write concise, correct code. Reply briefly."
 
 clean: ## Remove bytecode and cache files
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true

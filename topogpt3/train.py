@@ -150,6 +150,9 @@ class TopoGPT3Config:
     # 12 corresponde a Q,K,V,attn-out + 2 FFN + residuales por capa.
     GRADIENT_CHECKPOINTING_FACTOR: int = 12
 
+    # --- Progressive Window Sizes (Sliding Window Attention) ---
+    PROGRESSIVE_WINDOW: Tuple[int, int, int, int] = (64, 96, 128, 128)
+
     # --- Paths ---
     DATA_CACHE: str = "data_topogpt3"
     CHECKPOINT_DIR: str = "checkpoints_topogpt3"
@@ -164,7 +167,8 @@ class TopoGPT3Config:
     MAX_TRAIN_BATCHES_PER_EPOCH: int = 0   # 0 = sin limite
     MAX_EVAL_BATCHES: int = 200            # cap a evaluacion para no saturar
 
-    def build_topogpt2_config(self, max_seq_len: int) -> TopoGPT2Config:
+    def build_topogpt2_config(self, max_seq_len: int,
+                              attn_window: Optional[int] = None) -> TopoGPT2Config:
         cfg = TopoGPT2Config(
             DEVICE=self.DEVICE,
             RANDOM_SEED=self.RANDOM_SEED,
@@ -181,6 +185,8 @@ class TopoGPT3Config:
             DATA_DIR=self.DATA_CACHE,
         )
         cfg.MAX_SEQ_LEN = max_seq_len
+        if attn_window is not None and attn_window > 0:
+            cfg.ATTN_WINDOW = attn_window
         return cfg
 
 
@@ -1131,7 +1137,8 @@ class TopoGPT3Trainer:
         # queda estable y los safetensors guardados se cargan sin mismatch
         # aunque se cambie start_tier entre runs.
         max_seq = max(config.TIER_SEQ_LEN)
-        self.base_cfg = config.build_topogpt2_config(max_seq)
+        max_window = max(config.PROGRESSIVE_WINDOW)
+        self.base_cfg = config.build_topogpt2_config(max_seq, attn_window=max_window)
         self.tokenizer = BPETokenizer()
         self.model = TopoGPT2(self.base_cfg).to(config.DEVICE)
         self.optimizer = torch.optim.AdamW(

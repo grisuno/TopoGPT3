@@ -10,12 +10,14 @@ def main() -> None:
             "TopoGPT3: complex-valued spectral language model\n"
             "\n"
             "Usage:\n"
-            "  python3 -m topogpt3            this help\n"
-            "  python3 -m topogpt3.lens_model  test model loading\n"
-            "  python3 -m topogpt3.jlens       Jacobian lens demo\n"
-            "  python3 -m topogpt3.inference   standard sampling\n"
-            "  python3 -m topogpt3.train       curriculum training\n"
-            "  python3 -m topogpt3.api_server  start api server\n"
+            "  python3 -m topogpt3              this help\n"
+            "  python3 -m topogpt3 infer         standard autoregressive inference\n"
+            "  python3 -m topogpt3 infer-hrm     HRM recursive reasoning inference\n"
+            "  python3 -m topogpt3 train         curriculum training\n"
+            "  python3 -m topogpt3 api           start API server\n"
+            "  python3 -m topogpt3 lens          test model loading\n"
+            "  python3 -m topogpt3 jlens         Jacobian lens demo\n"
+            "  python3 -m topogpt3 check         quick checkpoint validation\n"
         )
         return
     subcommand = sys.argv[1]
@@ -30,6 +32,15 @@ def main() -> None:
     elif subcommand in ("api", "api_server"):
         from .api_server import main as api_main
         api_main()
+    elif subcommand in ("infer", "inference"):
+        from .inference import main as infer_main
+        infer_main()
+    elif subcommand in ("infer-hrm", "inference-hrm"):
+        from .inference_hrm import main as hrm_main
+        hrm_main()
+    elif subcommand == "train":
+        from .train import main as train_main
+        train_main()
     else:
         print(f"Unknown subcommand: {subcommand}")
 

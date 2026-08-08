@@ -167,6 +167,10 @@ class HRMInferenceSettings:
     top_k: int = 50
     repetition_penalty: float = 1.1
     end_of_text_token_id: int = 50256
+    auto_continue: bool = False
+    max_continuations: int = 3
+    continuation_tail_lines: int = 2
+    thinking_mode: bool = False
 
     reasoning: RecursiveReasoningConfig = field(
         default_factory=RecursiveReasoningConfig
@@ -1074,48 +1078,109 @@ class HRMGenerationEngine:
         )
 
         start = time.time()
+
+        if self._settings.thinking_mode and reasoning_cfg.enabled:
+            reasoning_cfg = RecursiveReasoningConfig(
+                enabled=True,
+                max_high_level_iters=max(4, reasoning_cfg.max_high_level_iters),
+                max_low_level_iters=max(8, reasoning_cfg.max_low_level_iters),
+                low_level_window=reasoning_cfg.low_level_window,
+                high_level_window=reasoning_cfg.high_level_window,
+                low_level_step=reasoning_cfg.low_level_step,
+                high_level_step=reasoning_cfg.high_level_step,
+                attractor_low_epsilon=reasoning_cfg.attractor_low_epsilon,
+                attractor_high_epsilon=reasoning_cfg.attractor_high_epsilon,
+                high_level_persist_tokens=reasoning_cfg.high_level_persist_tokens,
+                cache_warm_start_weight=reasoning_cfg.cache_warm_start_weight,
+                max_drift_relative=reasoning_cfg.max_drift_relative,
+                diagnostic_logging=reasoning_cfg.diagnostic_logging,
+            )
+            reasoner = HierarchicalRecursiveReasoner(
+                layers=list(model.layers),
+                final_norm=model.final_norm,
+                reasoning_config=reasoning_cfg,
+                logger=self._logger,
+            )
+
         z_seed, base_kvs, full_history = self._encode_prompt(model, prompt_ids)
-
-        emitted_ids: List[int] = []
-        z_input = z_seed
+        prompt_ids_base = prompt_ids
         active_history = full_history
+        emitted_ids_all: List[int] = []
+        full_text = ""
+        continuation_count = 0
 
-        for new_token_index in range(policy.max_new_tokens):
-            cached_refinement, _hit = h_cache.get_or_init(z_input)
-            z_final, committed_kvs, refinement_next, stats = reasoner.reason(
-                z_initial=z_input,
-                base_kvs=base_kvs,
-                cached_refinement=cached_refinement,
-            )
-            summary.absorb(stats)
-            base_kvs = list(committed_kvs)
-            h_cache.commit(refinement_next)
+        while True:
+            current_prompt = tokenizer.decode(active_history[0].tolist())
+            z_seed, base_kvs, full_history = self._encode_prompt(model, prompt_ids_base)
+            z_input = z_seed
+            emitted_ids: List[int] = []
+            active_history = full_history
 
-            hidden = model.final_norm(z_final)
-            logits = model.lm_head(hidden)[:, -1, :]
-            next_tok = self._sampler.sample(
-                logits=logits,
-                token_history=active_history,
-                temperature=policy.temperature,
-                top_k=policy.top_k,
-                repetition_penalty=policy.repetition_penalty,
-            )
-            next_id = int(next_tok.item())
-            emitted_ids.append(next_id)
-            active_history = torch.cat([active_history, next_tok], dim=1)
+            for new_token_index in range(policy.max_new_tokens):
+                cached_refinement, _hit = h_cache.get_or_init(z_input)
+                z_final, committed_kvs, refinement_next, stats = reasoner.reason(
+                    z_initial=z_input,
+                    base_kvs=base_kvs,
+                    cached_refinement=cached_refinement,
+                )
+                summary.absorb(stats)
+                base_kvs = list(committed_kvs)
+                h_cache.commit(refinement_next)
 
-            if next_id == policy.end_of_text_token_id:
+                hidden = model.final_norm(z_final)
+                logits = model.lm_head(hidden)[:, -1, :]
+                next_tok = self._sampler.sample(
+                    logits=logits,
+                    token_history=active_history,
+                    temperature=policy.temperature,
+                    top_k=policy.top_k,
+                    repetition_penalty=policy.repetition_penalty,
+                )
+                next_id = int(next_tok.item())
+                emitted_ids.append(next_id)
+                active_history = torch.cat([active_history, next_tok], dim=1)
+
+                if next_id == policy.end_of_text_token_id:
+                    break
+
+                z_input = model.token_embed(next_tok)
+
+            emitted_ids_all.extend(emitted_ids)
+            full_text = tokenizer.decode(active_history[0].tolist())
+
+            if not self._settings.auto_continue:
                 break
 
-            z_input = model.token_embed(next_tok)
+            from .continuation import is_response_complete, extract_tail_for_continuation
+
+            prompt_text = tokenizer.decode(torch.tensor([prompt_ids_base],
+                                          dtype=torch.long, device=device)[0].tolist())
+            generated = full_text[len(prompt_text):]
+
+            if is_response_complete(generated):
+                break
+
+            tail = extract_tail_for_continuation(generated, tail_lines=self._settings.continuation_tail_lines)
+            if not tail:
+                break
+
+            continuation_count += 1
+            if continuation_count > self._settings.max_continuations:
+                break
+
+            tail_text = prompt_text + tail
+            prompt_ids_base = tokenizer.encode(tail_text)
+            h_cache = SparseHighLevelStateCache(
+                persist_tokens=reasoning_cfg.high_level_persist_tokens,
+            )
 
         elapsed = time.time() - start
-        full_text = tokenizer.decode(active_history[0].tolist())
+        new_tokens = len(emitted_ids_all)
         return GenerationReport(
             prompt=prompt,
             output=full_text,
             prompt_tokens=len(prompt_ids),
-            new_tokens=len(emitted_ids),
+            new_tokens=new_tokens,
             elapsed_seconds=elapsed,
             reasoning_summary=summary,
         )
@@ -1361,6 +1426,22 @@ class CliArgumentParser:
             "--hrm-diagnostic", action="store_true",
             help="Enable per-token HRM diagnostic logging.",
         )
+        parser.add_argument(
+            "--thinking", action="store_true",
+            default=defaults.thinking_mode,
+            help="Enable thinking mode: HRM runs with higher iteration counts "
+                 "(high=4, low=8) for deeper reasoning per token.",
+        )
+        parser.add_argument(
+            "--auto-continue", "-C", action="store_true",
+            default=defaults.auto_continue,
+            help="Auto-continue truncated responses by feeding tail lines back.",
+        )
+        parser.add_argument(
+            "--max-continuations", type=int,
+            default=defaults.max_continuations,
+            help="Max number of continuation rounds (requires --auto-continue).",
+        )
         return parser
 
     @staticmethod
@@ -1404,6 +1485,9 @@ class CliArgumentParser:
             seed=namespace.seed,
             log_level=namespace.log_level,
             reasoning=reasoning,
+            thinking_mode=namespace.thinking,
+            auto_continue=namespace.auto_continue,
+            max_continuations=namespace.max_continuations,
         )
 
 

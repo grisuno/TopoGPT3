@@ -162,3 +162,7 @@ cython_debug/
 #.idea/
 
 checkpoints_topogpt3/last/model.safetensors
+
+# Pi coding agent (third-party, not our project)
+.pi/
+node_modules/
