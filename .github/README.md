@@ -88,8 +88,20 @@ HRM is intended to study iterative latent transport at inference time. At the cu
 │   ├── model.py               base TopoGPT2 architecture, tokenizer, helpers
 │   ├── train.py               curriculum trainer + Grassmannian diagnostics
 │   ├── inference.py           standard autoregressive sampler
-│   └── inference_hrm.py       hierarchical recursive reasoning sampler
+│   ├── inference_hrm.py       hierarchical recursive reasoning sampler
+│   ├── lens_model.py          Jacobian-lens model adapter (LensModel protocol)
+│   ├── jlens.py               Jacobian lens fitting + application pipeline
+│   └── api_server.py          OpenAI-compatible HTTP API server (hardened)
+├── tests/                     BDD test suite
+│   ├── test_lens_model.py     adapter contract tests
+│   └── test_jlens.py          fitting + application contract tests
+├── eval/                      HumanEval benchmark harness
+│   ├── harness.py             evaluation pipeline
+│   ├── samplers.py            sampler registry (standard / HRM)
+│   ├── sandbox.py             sandboxed test executor
+│   └── analysis.py            pass@k / metrics reporting
 ├── app.py                     example entry point for downstream projects
+├── Makefile                   convenience targets for all common commands
 ├── pyproject.toml             package metadata, dependencies, console scripts
 ├── README.md                  this file
 ├── topogpt3.md                full paper write-up
@@ -112,6 +124,7 @@ HRM is intended to study iterative latent transport at inference time. At the cu
 - `tiktoken` (BPE tokenizer)
 - `numpy`
 - `datasets` and `huggingface-hub` for data preparation (optional extra `[train]`)
+- `fastapi` and `uvicorn` for the agent harness (optional extra `[api]`)
 
 ## Installation
 
@@ -121,10 +134,19 @@ From a checkout of this repository:
 pip install -e .
 ```
 
-For dataset preparation, install the training extra:
+Extra dependencies:
 
 ```
-pip install -e ".[train]"
+pip install -e ".[train]"   # datasets, huggingface-hub
+pip install -e ".[lens]"    # huggingface-hub
+pip install -e ".[api]"     # fastapi, uvicorn (for the agent harness)
+pip install -e ".[dev]"     # pytest, ruff
+```
+
+Or install everything at once:
+
+```
+pip install -e ".[train,lens,api,dev]"
 ```
 
 Once published, the package will be installable directly from PyPI or GitHub:
@@ -134,11 +156,15 @@ pip install topogpt3
 pip install git+https://github.com/grisuno/TopoGPT3
 ```
 
-The install registers three console scripts:
+The install registers these console scripts:
 
-- `topogpt3-train` — full curriculum trainer CLI
-- `topogpt3-infer` — standard autoregressive sampler CLI
-- `topogpt3-infer-hrm` — hierarchical recursive reasoning sampler CLI
+| Command              | Description                                     |
+|----------------------|-------------------------------------------------|
+| `topogpt3-train`     | Full curriculum trainer CLI                      |
+| `topogpt3-infer`     | Standard autoregressive sampler CLI              |
+| `topogpt3-infer-hrm` | Hierarchical recursive reasoning sampler CLI     |
+| `topogpt3-jlens`     | Jacobian lens demo (fit + slice + text table)   |
+| `topogpt3-api`       | OpenAI-compatible API server (agent harness)     |
 
 ## Using the package from your own code
 
@@ -176,6 +202,29 @@ settings = HRMInferenceSettings(
 )
 report = HRMInferencePipeline(settings).execute()
 print(report.output)
+```
+
+### Jacobian Lens
+
+Read out intermediate residual activations in the final-layer basis
+using the average input-output Jacobian:
+
+```python
+from topogpt3.lens_model import TopoGPT3LensModel
+from topogpt3.jlens import fit, JacobianLens
+
+model = TopoGPT3LensModel.from_checkpoint("checkpoints_topogpt3/last")
+
+prompts = [
+    "def fibonacci(n):\n    if n <= 1:\n        return n\n",
+    "def factorial(n):\n    if n <= 1:\n        return 1\n",
+]
+
+lens = fit(model, prompts, source_layers=[0, 1, 2, 3, 4], dim_batch=8, max_seq_len=128)
+
+lens_logits, model_logits, input_ids = lens.apply(
+    model, "def hello(", layers=[0, 2, 4], use_jacobian=True
+)
 ```
 
 `app.py` at the repository root is a complete, runnable example that wires both inference modes plus the trainer behind a tiny `--mode` CLI. It is intended to be copied into downstream projects and adapted.
@@ -227,55 +276,116 @@ The same entry points are reachable as modules (useful before installation):
 python -m topogpt3.train --help
 python -m topogpt3.inference --help
 python -m topogpt3.inference_hrm --help
+python -m topogpt3.jlens --help
+python -m topogpt3 api_server --help
 python app.py --mode infer --prompt "def main(" --max-new 64
 ```
 ## Topo J-Lens
 
-We aren't just building chaotic black boxes and hoping they don't collapse. By leveraging precise geometric constraints and proving stable Jacobian transport, we are showing that mathematical elegance beats brute-force scale every single time.
+The Jacobian lens transports intermediate residual-stream activations into
+the final-layer logit space using the per-layer average input-output
+Jacobian ``J_l``, letting you inspect what the model "thinks" at each
+layer before it reaches the output. Based on the
+[jacobian-lens](https://github.com/anthropics/jacobian-lens) library
+(Anthropic, Apache 2.0). The lens now includes **decoded token strings**
+(actual words, not raw token IDs) for every prediction cell.
 
-```python3
-❯  python3 -m topogpt3.jlens
-Loading model from checkpoints_topogpt3/last (d_model=256, n_layers=6, device=cpu)
-  loaded 24,457,622 parameters in 0.6s
+### Quick demo (CLI)
 
-Fitting Jacobian lens on 2 prompts, 5 source layers...
-  fitted in 27.3s: JacobianLens(d_model=256, n_prompts=2, source_layers=[0..4] (5 layers))
+```
+python -m topogpt3 jlens \
+    --checkpoint checkpoints_topogpt3/last \
+    --prompts 4 \
+    --prompt "def fibonacci(n):\n    "
+```
 
-Jacobian norms (diagonal dominance indicates reliable transport):
-  layer     ||J||     max_diag   min_diag   ||J - I||
-  ------------------------------------------
-       0      22.20     1.0924     0.3867      17.21
-       1      20.38     1.1276     0.5782      13.53
-       2      18.56     1.0943     0.6139      10.14
-       3      17.99     1.1119     0.6583       7.61
-       4      17.00     1.0679     0.9422       4.89
+### Python API
 
-Computing slice for prompt: 'def fibonacci(n):\n    '
- pos input token           L0 top-1                   L2 top-1                   L4 top-1                   L5 top-1                 
--------------------------------------------------------------------------------------------------------------------------------------
-   0 def                   def              3.39%      def              0.09%       find            2.78%       find            7.23%    
-   1  fib                  on               12.40%      on               63.49%      on               92.08%      on               95.33%    
-   2 on                    on               84.84%      acci             21.03%      acci             93.29%      acci             99.62%    
-   3 acci                  acci             35.38%      (                39.68%      (                94.84%      (                88.46%    
-   4 (                     ):               2.45%      n                65.24%      n                82.16%      n                91.28%    
-   5 n                     n                30.93%      umbers           16.97%      ):               97.23%      ):               97.46%    
-   6 ):                    ):               64.79%      ):               78.69%      
-                92.09%      
-                80.98%    
-   7 
-                      super           0.13%                       31.64%                       75.16%                       95.50%    
-   8                                        38.25%                       84.25%                       56.59%                       81.16%    
-   9                                        46.50%                       49.94%                       97.22%                       98.47%    
-  10                                        58.45%       """             49.04%       if              41.36%       if              48.04%    
-  11                                        57.73%                       31.70%                       74.12%                       64.06%    
+```python
+from topogpt3.lens_model import TopoGPT3LensModel
+from topogpt3.jlens import fit, compute_slice, text_slice
 
+model = TopoGPT3LensModel.from_checkpoint("checkpoints_topogpt3/last")
 
-Summary:
-  Fitted on 2 prompts, 5 layers
-  Layer transport: ['L0->L5', 'L1->L5', 'L2->L5', 'L3->L5', 'L4->L5']
-  Prompt: 'def fibonacci(n):\n    ' (12 tokens)
-  To explore interactively: from topogpt3.jlens import compute_slice, text_slice
+lens = fit(model, prompts, source_layers=[0, 1, 2, 3, 4], dim_batch=8)
+slice_data = compute_slice(model, lens, "def hello(", top_n=5)
+print(text_slice(slice_data))
 
+# slice_data.top_token_strs[pos][layer][k] contains decoded words
+print(slice_data.top_token_strs[0][2][0])  # L2 top-1 at position 0
+```
+
+Run the lens test suite:
+
+```bash
+pytest tests/test_lens_model.py tests/test_jlens.py -v --tb=short
+```
+
+## Pi Agent Harness
+
+The TopoGPT3 API server exposes an **OpenAI-compatible HTTP interface**
+so any coding agent that speaks the OpenAI API can drive your local model.
+This includes [Pi](https://github.com/earendil-works/pi),
+[Aider](https://aider.chat), [Continue](https://continue.dev), and the
+Codex CLI.
+
+### Security
+
+The server ships with **hardened authentication, rate limiting, input
+validation, and security headers** designed to survive a red-team
+assessment. See `topogpt3/api_server.py` for the full security model.
+
+### Install and start
+
+```bash
+pip install -e ".[api]"
+
+export TOPOGPT3_API_KEYS="sk-my-secret-key-12345,admin:sk-admin-key-67890"
+python -m topogpt3 api_server \
+    --checkpoint checkpoints_topogpt3/last \
+    --port 8800
+```
+
+### Configure Pi
+
+```bash
+export PI_BASE_URL="http://localhost:8800/v1"
+export PI_API_KEY="sk-my-secret-key-12345"
+```
+
+No other configuration is needed. Pi discovers the model via
+`/v1/models` and uses `/v1/chat/completions` for inference.
+
+### Configure other agents
+
+```bash
+# Aider
+export OPENAI_API_BASE="http://localhost:8800/v1"
+export OPENAI_API_KEY="sk-my-secret-key-12345"
+aider --model openai/topogpt3
+
+# Continue (VS Code) -- set "apiBase" in config.json
+# Codex CLI
+export CODEX_API_BASE="http://localhost:8800/v1"
+export CODEX_API_KEY="sk-my-secret-key-12345"
+```
+
+## Makefile
+
+A `Makefile` at the repo root wraps every common task:
+
+```
+make help           show all targets
+make install        install with all extras
+make test           run full test suite
+make train          full curriculum training
+make infer          standard inference
+make infer-hrm      HRM inference
+make jlens          Jacobian lens demo
+make api            start API server on port 8800
+make api-auth       start API server with authentication
+make eval           HumanEval benchmark
+make clean          remove cache files
 ```
 
 ## Checkpoint compatibility

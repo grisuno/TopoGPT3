@@ -15,20 +15,21 @@ def main() -> None:
             "  python3 -m topogpt3.jlens       Jacobian lens demo\n"
             "  python3 -m topogpt3.inference   standard sampling\n"
             "  python3 -m topogpt3.train       curriculum training\n"
+            "  python3 -m topogpt3.api_server  start api server\n"
         )
         return
     subcommand = sys.argv[1]
     sys.argv = sys.argv[1:]
-    if subcommand == "jlens":
-        from .jlens import _demo_jlens
-        _demo_jlens()
-    elif subcommand == "lens":
+    if subcommand in ("jlens", "lens"):
         from .jlens import _demo_jlens
         _demo_jlens()
     elif subcommand == "check":
         from .lens_model import TopoGPT3LensModel
         m = TopoGPT3LensModel.from_checkpoint("checkpoints_topogpt3/last")
         print(f"OK: n_layers={m.n_layers}, d_model={m.d_model}")
+    elif subcommand in ("api", "api_server"):
+        from .api_server import main as api_main
+        api_main()
     else:
         print(f"Unknown subcommand: {subcommand}")
 

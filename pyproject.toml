@@ -49,6 +49,10 @@ train = [
 lens = [
     "huggingface-hub>=0.20",
 ]
+api = [
+    "fastapi>=0.100",
+    "uvicorn>=0.22",
+]
 dev = [
     "pytest>=7",
     "ruff>=0.4",
@@ -64,6 +68,7 @@ topogpt3-train = "topogpt3.train:main"
 topogpt3-infer = "topogpt3.inference:main"
 topogpt3-infer-hrm = "topogpt3.inference_hrm:main"
 topogpt3-jlens = "topogpt3.jlens:_demo_jlens"
+topogpt3-api = "topogpt3.api_server:main"
 
 [tool.setuptools.packages.find]
 include = ["topogpt3*"]

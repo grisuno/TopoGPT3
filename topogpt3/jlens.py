@@ -675,6 +675,8 @@ class SliceData:
         token_strs: Decoded strings for each token position.
         top_ids: ``[seq_len, n_layers, top_n]`` top token IDs per cell.
         top_probs: ``[seq_len, n_layers, top_n]`` softmax probabilities.
+        top_token_strs: ``[seq_len, n_layers, top_n]`` decoded token strings
+            for each prediction. Empty string if tokenizer was unavailable.
     """
 
     seq_len: int
@@ -684,10 +686,19 @@ class SliceData:
     token_strs: list[str]
     top_ids: torch.Tensor  # [seq_len, n_layers, top_n]
     top_probs: torch.Tensor  # [seq_len, n_layers, top_n]
+    top_token_strs: list[list[list[str]]] = field(default_factory=list)
     top_n: int = field(default=5, init=False)
 
     def __post_init__(self) -> None:
         self.top_n = self.top_ids.shape[-1]
+        if not self.top_token_strs:
+            self.top_token_strs = [
+                [
+                    [f"<{int(tid)}>" for tid in pos_layer]
+                    for pos_layer in pos
+                ]
+                for pos in self.top_ids.tolist()
+            ]
 
 
 @torch.no_grad()
@@ -749,6 +760,20 @@ def compute_slice(
         top_ids[:, col] = top.indices.cpu()
         top_probs[:, col] = top.values.cpu()
 
+    top_token_strs: list[list[list[str]]] = []
+    for pos in range(seq_len):
+        pos_layers: list[list[str]] = []
+        for col in range(len(layers)):
+            layer_preds: list[str] = []
+            for k in range(top_n):
+                tid = int(top_ids[pos, col, k])
+                if tokenizer is not None:
+                    layer_preds.append(tokenizer.decode([tid]))
+                else:
+                    layer_preds.append(f"<{tid}>")
+            pos_layers.append(layer_preds)
+        top_token_strs.append(pos_layers)
+
     return SliceData(
         seq_len=seq_len,
         layers=layers,
@@ -757,25 +782,30 @@ def compute_slice(
         token_strs=token_strs,
         top_ids=top_ids,
         top_probs=top_probs,
+        top_token_strs=top_token_strs,
     )
 
 
 def text_slice(slice_data: SliceData, tokenizer: Any = None, n_cols: int = 3) -> str:
-    """Render a SliceData as a readable text table.
+    """Render a SliceData as a readable text table showing decoded words.
 
     For each token position, shows what each layer predicts as the next token.
     The first column shows the actual input token; subsequent columns show the
-    top-1 prediction at each layer with its softmax probability.
+    top-1 prediction at each layer with its softmax probability. Token strings
+    are read from ``slice_data.top_token_strs`` (always populated by
+    ``compute_slice``).
 
     Args:
         slice_data: The slice to render.
-        tokenizer: Optional tokenizer for decoding predicted token IDs.
+        tokenizer: Legacy parameter, ignored. Top token strings are already
+            stored in ``slice_data.top_token_strs``.
         n_cols: Number of layer columns to show (default 3).
 
     Returns:
         A multi-line string table.
     """
     lines: list[str] = []
+    _ = tokenizer  # unused — token strings live in slice_data.top_token_strs
     n_layers = len(slice_data.layers)
     step = max(1, n_layers // n_cols)
     display_layers = slice_data.layers[::step]
@@ -796,12 +826,8 @@ def text_slice(slice_data: SliceData, tokenizer: Any = None, n_cols: int = 3) ->
         for col_idx, layer in enumerate(display_layers):
             try:
                 col = slice_data.layers.index(layer)
-                tid = int(slice_data.top_ids[pos, col, 0])
                 prob = float(slice_data.top_probs[pos, col, 0])
-                if tokenizer is not None:
-                    pred_str = tokenizer.decode([tid])
-                else:
-                    pred_str = f"<{tid}>"
+                pred_str = slice_data.top_token_strs[pos][col][0]
                 if len(pred_str) > 14:
                     pred_str = pred_str[:11] + "..."
                 row += f"  {pred_str:<16} {prob:.2%}    "
