@@ -1,0 +1,6 @@
+torch>=2.1
+numpy>=1.24
+safetensors>=0.4
+tiktoken>=0.5
+gradio>=3.50
+huggingface-hub>=0.20
