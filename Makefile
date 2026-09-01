@@ -10,7 +10,7 @@ EVAL_OUT        := eval/results.jsonl
 PY              := python
 PI_DIR          := .pi
 
-.PHONY: help install install-min install-all test lint train infer infer-continue infer-hrm infer-think jlens api api-auth eval eval-sample clean pi pi-setup pi-run pi-update
+.PHONY: help install install-min install-all test lint train infer infer-continue infer-hrm infer-think jlens api api-auth eval eval-sample clean pi pi-setup pi-run pi-update c-convert c-build c-run c-run-i c-vocab
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
@@ -152,6 +152,41 @@ eval-sample: ## Run HumanEval on a single problem (set PROBLEM_ID=HumanEval/0)
 		--limit 1 \
 		--temperature 0.0
 
+# ── C Inference Engine (MiniOS / static ELF) ─────────────────────────────────
+
+C_COMPILER    ?= gcc
+C_FLAGS       := -O2 -static -Wall -Wextra
+WEIGHTS_FILE  := topogpt3.weights
+
+c-convert: ## Convert safetensors to binary weights for C engine
+	$(PY) convert_weights.py -i $(CKPT)/model.safetensors -o $(WEIGHTS_FILE)
+
+c-vocab: ## Generate vocab.bin for token decoding in C engine
+	$(PY) -c "import tiktoken,struct;enc=tiktoken.get_encoding('gpt2');f=open('vocab.bin','wb');f.write(b'VOCB');f.write(struct.pack('<I',50257));[f.write(struct.pack('<H',len(s:=enc.decode([i]).encode('utf-8')))+s) for i in range(50257)];f.close();print('vocab.bin: 50257 tokens')"
+
+c-build: ## Build static ELF binary (topogpt3.elf)
+	$(C_COMPILER) $(C_FLAGS) -o topogpt3.elf topogpt3.c -lm
+
+c-run: ## Run C engine in headless mode (PROMPT="def main(")
+	./topogpt3.elf -T tokens.bin -n 256
+
+c-run-i: ## Run C engine in interactive mode
+	./topogpt3.elf -i
+
+c-all: c-convert c-vocab c-build ## Convert weights + build vocab + build binary
+
+c-tokenize: ## Tokenize PROMPT to tokens.bin (requires tiktoken)
+	$(PY) encode_tokens.py "$(PROMPT)" -o tokens.bin
+
+# ── MiniOS cross-compile (requires miniCC + ld in PATH) ──────────────────────
+
+MINIGCC      ?= /home/grisun0/src_note/c/boot/repo/miniGCC/minigcc
+MINIOS_LD    ?= /home/grisun0/src_note/c/boot/repo/ld/ld
+
+c-minios: ## Cross-compile for MiniOS (generates topogpt3.minios.elf)
+	$(MINIGCC) topogpt3.c > topogpt3.s
+	$(MINIOS_LD) -f elf topogpt3.s -o topogpt3.minios.elf
+
 # ── Pi Agent ─────────────────────────────────────────────────────────────────
 
 PI_REPO := https://github.com/earendil-works/pi.git
@@ -205,11 +240,12 @@ pi-run: ## Launch pi pointed at the local TopoGPT3 API server
 			--api-key "$${TOPOGPT3_API_KEY:-sk-local}" \
 			--system-prompt "You are a coding assistant. Write concise, correct code. Reply briefly."
 
-clean: ## Remove bytecode and cache files
+clean: ## Remove bytecode, cache files, and C build artifacts
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name '*.pyc' -delete 2>/dev/null || true
 	find . -type d -name '.pytest_cache' -exec rm -rf {} + 2>/dev/null || true
 	find . -type d -name '.ruff_cache' -exec rm -rf {} + 2>/dev/null || true
+	rm -f topogpt3.elf topogpt3.minios.elf topogpt3.o $(WEIGHTS_FILE) vocab.bin tokens.bin
 
 clean-all: clean ## Also remove build artifacts and checkpoints
 	rm -rf build/ dist/ *.egg-info/
