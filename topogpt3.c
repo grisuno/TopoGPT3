@@ -1420,6 +1420,179 @@ static int load_weights(const char *path) {
 }
 
 /* ======================================================================
+ * SECTION 19b: FLOAT16 WEIGHT LOADING (MiniOS compact format)
+ *
+ * Reads TG16 format: float16 weights that convert to float32 on load.
+ * Saves ~50% disk space (47MB vs 94MB) for MiniFS.
+ * ====================================================================== */
+
+static float fp16_to_fp32(unsigned short h) {
+    unsigned int sign = (h >> 15) & 1;
+    unsigned int exp  = (h >> 10) & 0x1f;
+    unsigned int mant = h & 0x3ff;
+    unsigned int f;
+    if (exp == 0) {
+        if (mant == 0) { f = sign << 31; }
+        else { /* denormalized */
+            exp = 1;
+            while (!(mant & 0x400)) { mant <<= 1; exp--; }
+            mant &= 0x3ff;
+            f = (sign << 31) | ((exp + 127 - 15) << 23) | (mant << 13);
+        }
+    } else if (exp == 31) {
+        f = (sign << 31) | 0x7f800000 | (mant << 13);
+    } else {
+        f = (sign << 31) | ((exp + 127 - 15) << 23) | (mant << 13);
+    }
+    float result;
+    memcpy(&result, &f, 4);
+    return result;
+}
+
+static int load_weights_fp16(const char *path) {
+    FILE *f = fopen(path, "rb");
+    if (!f) return -1;
+
+    char magic[4];
+    if (fread(magic, 1, 4, f) != 4 || magic[0] != 'T' || magic[1] != 'G'
+        || magic[2] != '1' || magic[3] != '6') {
+        fclose(f);
+        return -1;
+    }
+
+    unsigned int version, n_tensors;
+    if (fread(&version, 4, 1, f) != 1) { fclose(f); return -1; }
+    if (fread(&n_tensors, 4, 1, f) != 1) { fclose(f); return -1; }
+
+    printf("Loading %u tensors (fp16 v%u)...\n", n_tensors, version);
+
+    /* Skip tensor: read header + fp16 data and discard */
+    #define SKIP_TENSOR16() do { \
+        unsigned int nl, nd, tot = 1, dd; \
+        if (fread(&nl, 4, 1, f) != 1) { fclose(f); return -1; } \
+        if (fseek(f, nl, SEEK_CUR) != 0) { fclose(f); return -1; } \
+        if (fread(&nd, 4, 1, f) != 1) { fclose(f); return -1; } \
+        for (dd = 0; dd < nd; dd++) { unsigned int d; fread(&d, 4, 1, f); tot *= d; } \
+        if (fseek(f, tot * 2, SEEK_CUR) != 0) { fclose(f); return -1; } \
+    } while(0)
+
+    /* Read fp16 tensor into float32 dest buffer, converting on the fly */
+    #define READ_TENSOR16(dest, count) do { \
+        unsigned int nl, nd, tot = 1, dd; \
+        if (fread(&nl, 4, 1, f) != 1) { fclose(f); return -1; } \
+        if (fseek(f, nl, SEEK_CUR) != 0) { fclose(f); return -1; } \
+        if (fread(&nd, 4, 1, f) != 1) { fclose(f); return -1; } \
+        for (dd = 0; dd < nd; dd++) { unsigned int d; fread(&d, 4, 1, f); tot *= d; } \
+        if (tot != (count)) { \
+            printf("Shape mismatch: expected %u, got %u\n", (unsigned)(count), tot); \
+            fclose(f); return -1; \
+        } \
+        { unsigned int _ii; \
+          unsigned short *_buf = (unsigned short *)malloc(tot * 2); \
+          if (!_buf) { printf("OOM reading tensor\n"); fclose(f); return -1; } \
+          if (fread(_buf, 2, tot, f) != tot) { free(_buf); fclose(f); return -1; } \
+          for (_ii = 0; _ii < tot; _ii++) \
+              ((float *)(dest))[_ii] = fp16_to_fp32(_buf[_ii]); \
+          free(_buf); \
+        } \
+    } while(0)
+
+    int i, j;
+
+    READ_TENSOR16(W.token_embed, VOCAB_SIZE * D_MODEL);
+
+    for (i = 0; i < N_LAYERS; i++) {
+        LayerWeights *lw = &W.layers[i];
+
+        READ_TENSOR16(lw->norm1, D_MODEL);
+        READ_TENSOR16(lw->norm2, D_MODEL);
+        READ_TENSOR16(lw->q_proj, D_MODEL * D_MODEL);
+        READ_TENSOR16(lw->k_proj, N_KV_HEADS * D_HEAD * D_MODEL);
+        READ_TENSOR16(lw->v_proj, N_KV_HEADS * D_HEAD * D_MODEL);
+        READ_TENSOR16(lw->o_proj, D_MODEL * D_MODEL);
+        READ_TENSOR16(lw->temperature, 1);
+
+        READ_TENSOR16(lw->enc_kr, D_MODEL / 2 + 1);
+        READ_TENSOR16(lw->enc_ki, D_MODEL / 2 + 1);
+        READ_TENSOR16(lw->dec_kr, D_MODEL / 2 + 1);
+        READ_TENSOR16(lw->dec_ki, D_MODEL / 2 + 1);
+
+        READ_TENSOR16(lw->ae_ww, D_LAT_Q * D_QUAT);
+        READ_TENSOR16(lw->ae_wx, D_LAT_Q * D_QUAT);
+        READ_TENSOR16(lw->ae_wy, D_LAT_Q * D_QUAT);
+        READ_TENSOR16(lw->ae_wz, D_LAT_Q * D_QUAT);
+        READ_TENSOR16(lw->de_ww, D_QUAT * D_LAT_Q);
+        READ_TENSOR16(lw->de_wx, D_QUAT * D_LAT_Q);
+        READ_TENSOR16(lw->de_wy, D_QUAT * D_LAT_Q);
+        READ_TENSOR16(lw->de_wz, D_QUAT * D_LAT_Q);
+
+        for (j = 0; j < N_SPECTRAL_LAYERS; j++) {
+            int sz = D_QUAT * D_QUAT * TORUS_GRID_H * FREQ_W;
+            READ_TENSOR16(lw->kr_w[j], sz);
+            READ_TENSOR16(lw->ki_w[j], sz);
+            READ_TENSOR16(lw->kr_x[j], sz);
+            READ_TENSOR16(lw->ki_x[j], sz);
+            READ_TENSOR16(lw->kr_y[j], sz);
+            READ_TENSOR16(lw->ki_y[j], sz);
+            READ_TENSOR16(lw->kr_z[j], sz);
+            READ_TENSOR16(lw->ki_z[j], sz);
+        }
+
+        READ_TENSOR16(lw->tp_ww, D_QUAT * D_QUAT);
+        READ_TENSOR16(lw->tp_wx, D_QUAT * D_QUAT);
+        READ_TENSOR16(lw->tp_wy, D_QUAT * D_QUAT);
+        READ_TENSOR16(lw->tp_wz, D_QUAT * D_QUAT);
+        READ_TENSOR16(lw->tp_lin, D_MODEL * 4);
+
+        READ_TENSOR16(lw->node_embed, N_NODES * D_MODEL);
+        READ_TENSOR16(lw->edge_quat, N_EDGE_TYPES * 4);
+
+        READ_TENSOR16(lw->mp_ww, D_QUAT * D_QUAT);
+        READ_TENSOR16(lw->mp_wx, D_QUAT * D_QUAT);
+        READ_TENSOR16(lw->mp_wy, D_QUAT * D_QUAT);
+        READ_TENSOR16(lw->mp_wz, D_QUAT * D_QUAT);
+
+        READ_TENSOR16(lw->ro_w1, READOUT_INNER * D_MODEL);
+        READ_TENSOR16(lw->ro_b1, READOUT_INNER);
+        READ_TENSOR16(lw->ro_w2, D_MODEL * READOUT_INNER);
+        READ_TENSOR16(lw->ro_b2, D_MODEL);
+
+        for (j = 0; j < N_EXPERTS; j++)
+            READ_TENSOR16(lw->gate_proj[j], EXPERT_INNER * D_MODEL);
+        for (j = 0; j < N_EXPERTS; j++)
+            READ_TENSOR16(lw->up_proj[j], EXPERT_INNER * D_MODEL);
+        for (j = 0; j < N_EXPERTS; j++)
+            READ_TENSOR16(lw->down_proj[j], D_MODEL * EXPERT_INNER);
+
+        READ_TENSOR16(lw->router, N_EXPERTS * D_MODEL);
+
+        printf("  Layer %d loaded\n", i);
+    }
+
+    READ_TENSOR16(W.final_norm, D_MODEL);
+
+    #undef SKIP_TENSOR16
+    #undef READ_TENSOR16
+
+    fclose(f);
+    printf("Weights loaded successfully (fp16).\n");
+    return 0;
+}
+
+/* Auto-detect format and load weights */
+static int load_weights_auto(const char *path) {
+    FILE *f = fopen(path, "rb");
+    if (!f) return -1;
+    char magic[4];
+    if (fread(magic, 1, 4, f) != 4) { fclose(f); return -1; }
+    fclose(f);
+
+    if (magic[0] == 'T' && magic[1] == 'G' && magic[2] == '1' && magic[3] == '6')
+        return load_weights_fp16(path);
+    return load_weights(path);
+}
+
+/* ======================================================================
  * SECTION 20: TIMING
  * ====================================================================== */
 
@@ -1702,7 +1875,7 @@ static void print_help(void) {
         "  /newtokens N  Set max new tokens\n"
         "\n"
         "Examples:\n"
-        "  topogpt3 -p \"def fibonacci(n)\" -n 100 -t 0.2\n"
+        "  topogpt3 -p \"def fibonacci(n)\" -n 100 -t 0.2 -w topogpt3.fp16 -v vocab.bin\n"
         "  topogpt3 -i\n"
         "  topogpt3 -f prompt.txt -n 512\n"
         "  topogpt3 -T tokens.bin -n 100\n"
@@ -1713,6 +1886,7 @@ int main(int argc, char **argv) {
     int mode = 0; /* 0=help, 1=headless, 2=interactive, 3=file, 4=tokens */
     const char *prompt = 0;
     const char *weight_file = "topogpt3.weights";
+    const char *vocab_file = "vocab.bin";
     const char *input_file = 0;
     const char *token_file = 0;
     int max_new_tokens = 256;
@@ -1738,6 +1912,8 @@ int main(int argc, char **argv) {
             token_file = argv[++i];
         } else if (strcmp(argv[i], "-w") == 0 && i + 1 < argc) {
             weight_file = argv[++i];
+        } else if (strcmp(argv[i], "-v") == 0 && i + 1 < argc) {
+            vocab_file = argv[++i];
         } else if (strcmp(argv[i], "-n") == 0 && i + 1 < argc) {
             max_new_tokens = 0;
             const char *p = argv[++i];
@@ -1780,11 +1956,11 @@ int main(int argc, char **argv) {
 
     build_torus_graph();
     precompute_rope();
-    load_vocab("vocab.bin");
+    load_vocab(vocab_file);
 
-    if (load_weights(weight_file) != 0) {
+    if (load_weights_auto(weight_file) != 0) {
         printf("Error: failed to load weights from %s\n", weight_file);
-        printf("Run convert_weights.py first to create the weight file.\n");
+        printf("Run convert_weights.py or convert_weights_minios.py first.\n");
         return 1;
     }
 

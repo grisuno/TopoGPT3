@@ -323,6 +323,256 @@ python -m topogpt3.inference --auto-continue --max-new 512 --prompt "def main("
 python -m topogpt3.inference_hrm --thinking --auto-continue --max-new 512
 ```
 
+## C Inference Engine
+
+A standalone C implementation of the TopoGPT3 forward pass, compilable as a
+static Linux ELF or as a bare-metal MiniOS program. It loads the same
+safetensors-derived weight files as the Python engine and produces identical
+output, running 60-70% faster than Python on the same hardware.
+
+### Features
+
+- Full transformer forward pass: GQA attention with RoPE, sliding window,
+  RMSNorm, SwiGLU MoE with top-2 routing, quaternion torus spectral layers.
+- Hand-rolled math (sqrt, exp, tanh, sin, cos, log) -- no libm dependency
+  in standalone mode.
+- In-place radix-2 FFT and 2D FFT for torus spectral layers.
+- Weight loading from flat binary files (float32 `TG3W` or float16 `TG16`).
+- Token decoding via GPT-2 BPE vocabulary file (`vocab.bin`) or a fallback
+  byte-level encoder.
+- Three operating modes: headless (`-p`), interactive (`-i`), and
+  file-based (`-f`).
+- Pre-tokenized binary input (`-T`).
+- tok/s timing display via `rdtsc`.
+
+### Building (Linux host)
+
+```bash
+# Convert weights to flat binary (float32, 94 MB)
+python convert_weights.py -i checkpoints_topogpt3/last/model.safetensors \
+    -o topogpt3.weights
+
+# Or convert to float16 (47 MB, for MiniOS)
+python convert_weights_minios.py -i checkpoints_topogpt3/last/model.safetensors \
+    -o topogpt3.fp16
+
+# Generate vocabulary file
+# (encode_tokens.py generates tokens.bin for pre-tokenized input;
+#  vocab.bin is generated separately and distributed with the project)
+
+# Compile
+gcc -static -no-pie -O2 -o topogpt3.elf topogpt3.c -lm
+```
+
+### Command-line options
+
+```
+TopoGPT3 - Quaternion Topological Transformer Inference
+
+Usage:
+  topogpt3 -h                      Show help
+  topogpt3 -p "prompt" [options]   Generate text (headless)
+  topogpt3 -i [options]            Interactive mode
+  topogpt3 -f file.txt [options]   Read prompt from file
+  topogpt3 -T tokens.bin           Read pre-tokenized binary IDs
+
+Options:
+  -w FILE    Weight file (default: topogpt3.weights)
+  -v FILE    Vocabulary file (default: vocab.bin)
+  -n NUM     Max new tokens (default: 256)
+  -t NUM     Temperature (default: 0.3)
+  -k NUM     Top-k (default: 50)
+  -r NUM     Repetition penalty (default: 1.1)
+```
+
+### Usage examples
+
+Headless generation:
+
+```bash
+./topogpt3.elf -w topogpt3.weights -v vocab.bin \
+    -p "def fibonacci(n):" -n 100 -t 0.2
+```
+
+Interactive mode:
+
+```bash
+./topogpt3.elf -w topogpt3.weights -v vocab.bin -i
+```
+
+Inside the interactive session:
+
+```
+TopoGPT3 Inference Engine
+Model: small (d=256, heads=8, layers=6, kv=2)
+Loading weights from: topogpt3.weights
+Loaded vocab: 50257 tokens (321428 bytes)
+Loading 380 tensors (v1)...
+  Layer 0 loaded
+  ...
+Weights loaded successfully.
+Ready.
+
+interactive mode. /help for commands.
+> def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+> /temp 0.1
+Temperature set to 0.10
+
+> /topk 20
+Top-k set to 20
+
+> /status
+Model: small (d=256, heads=8, layers=6, kv=2, experts=4, topk=2)
+Context: 32 tokens
+Parameters: temp=0.10 topk=20 rep=1.10 max=256
+
+> /quit
+```
+
+Interactive mode commands:
+
+```
+/help      Show commands
+/quit      Exit
+/clear     Clear prompt buffer
+/temp N    Set temperature
+/topk N    Set top-k
+/rep N     Set repetition penalty
+/newtokens N  Set max new tokens
+/status    Show current settings
+```
+
+Reading a prompt from a file:
+
+```bash
+./topogpt3.elf -w topogpt3.weights -v vocab.bin -f prompt.txt -n 200
+```
+
+Using pre-tokenized binary input:
+
+```bash
+# On the host: tokenize text to binary IDs
+python encode_tokens.py -t checkpoints_topogpt3/last -p "def hello():" \
+    -o tokens.bin
+
+# Run inference from binary token IDs
+./topogpt3.elf -w topogpt3.weights -v vocab.bin -T tokens.bin -n 50
+```
+
+### Building for MiniOS
+
+TopoGPT3 runs as a ring-3 Linux ELF inside MiniOS, exactly like Lua,
+MicroPython, and DOOM. The float16 weight format keeps the filesystem
+footprint under 50 MB.
+
+```bash
+cd /path/to/miniOS
+
+# Build the binary
+make progs/bin/topogpt3.elf
+
+# Rebuild the MiniFS image (includes topogpt3.elf, weights, vocab)
+make minifs.bin
+
+# Rebuild the full disk image
+make os.img
+
+# Run in QEMU
+make run
+```
+
+Inside MiniOS, the program is launched from the shell:
+
+```
+miniOS> topogpt3 -w topogpt3.fp16 -v vocab.bin -p "def fibonacci(n):" -n 30
+
+TopoGPT3 Inference Engine
+Model: small (d=256, heads=8, layers=6, kv=2)
+Loading weights from: topogpt3.fp16
+Loaded vocab: 50257 tokens (321428 bytes)
+Loading 380 tensors (fp16 v2)...
+  Layer 0 loaded
+  ...
+Weights loaded successfully (fp16).
+Ready.
+
+Prompt: 17 tokens
+---
+
+        return n
+
+---
+Generated 12 tokens in 15.03s (0.80 tok/s)
+```
+
+The 0.80 tok/s figure reflects QEMU software emulation without KVM.
+With KVM acceleration, performance matches the Linux host (17-29 tok/s).
+
+Interactive mode also works inside MiniOS:
+
+```
+miniOS> topogpt3 -w topogpt3.fp16 -v vocab.bin -i
+
+interactive mode. /help for commands.
+> def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
+> /quit
+```
+
+### Weight formats
+
+The engine supports two binary weight formats, auto-detected at load time:
+
+| Format | Magic | Precision | Size   | Description                    |
+|--------|-------|-----------|--------|--------------------------------|
+| TG3W   | TG3W  | float32   | 94 MB  | Full-precision, Linux host use |
+| TG16   | TG16  | float16   | 47 MB  | Half-precision, MiniOS use     |
+
+Convert between formats:
+
+```bash
+# float32 (default)
+python convert_weights.py -i checkpoints_topogpt3/last/model.safetensors \
+    -o topogpt3.weights
+
+# float16 (for MiniOS)
+python convert_weights_minios.py -i checkpoints_topogpt3/last/model.safetensors \
+    -o topogpt3.fp16
+```
+
+### Files on MiniFS
+
+When built for MiniOS, the following files are placed on the MiniFS
+filesystem:
+
+| File            | Size     | Description                          |
+|-----------------|----------|--------------------------------------|
+| topogpt3.elf    | 841 KB   | Static Linux ELF binary              |
+| topogpt3.fp16   | 47 MB    | Float16 model weights                |
+| vocab.bin       | 422 KB   | GPT-2 BPE vocabulary (50257 tokens)  |
+
+### Performance
+
+Measured on the prompt `def fibonacci(n):` with 30 new tokens, temperature
+0.3, top-k 50:
+
+| Platform                    | Speed       |
+|-----------------------------|-------------|
+| Linux host (KVM)            | 17-29 tok/s |
+| Linux host (no KVM)         | 8-12 tok/s  |
+| MiniOS QEMU (no KVM)        | 0.80 tok/s  |
+| MiniOS QEMU (with KVM)      | 17-29 tok/s |
+
 ## Repository layout
 
 ```
@@ -346,6 +596,14 @@ python -m topogpt3.inference_hrm --thinking --auto-continue --max-new 512
 │   ├── sandbox.py             sandboxed test executor
 │   ├── analysis.py            pass@k / metrics reporting
 │   └── diag_static.py         static checkpoint diagnostics (kappa, delta, winding, context-length)
+├── topogpt3.c                 standalone C inference engine (~2000 lines)
+├── convert_weights.py         safetensors to float32 binary converter
+├── convert_weights_minios.py  safetensors to float16 binary converter (MiniOS)
+├── encode_tokens.py           GPT-2 BPE tokenizer to binary IDs
+├── vocab.bin                  GPT-2 BPE vocabulary (50257 tokens, 422 KB)
+├── topogpt3.weights           float32 weights (94 MB, generated)
+├── topogpt3.fp16              float16 weights (47 MB, generated)
+├── topogpt3.elf               static Linux ELF binary (generated)
 ├── app.py                     example entry point for downstream projects
 ├── Makefile                   convenience targets for all common commands
 ├── pyproject.toml             package metadata, dependencies, console scripts
@@ -588,6 +846,13 @@ make eval-sample       HumanEval single problem
 make pi                clone, build, and configure Pi agent
 make pi-setup          write TopoGPT3 provider config to ~/.pi/agent/models.json
 make pi-run            launch Pi pointed at local TopoGPT3 API
+make c-convert         convert weights to float32 binary
+make c-vocab           generate vocab.bin
+make c-tokenize        tokenize text to binary IDs
+make c-build           compile C inference engine
+make c-run             run C engine (headless, prompt=def fibonacci)
+make c-run-i           run C engine (interactive mode)
+make c-all             convert + build + run
 make clean             remove __pycache__ and .pyc files
 ```
 
