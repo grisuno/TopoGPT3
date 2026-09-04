@@ -888,3 +888,11 @@ Code Models", May 2026.
 ## License
 
 AGPL v3.
+
+
+---
+### Topo Journey
+If you are interested in this project, explore the architecture evolution:
+- [TopoBrain](https://github.com/grisuno/TopoBrain): Topo applied to neural networks.
+- [ReadMenator](https://github.com/grisuno/ReadMenator): Knowledge graph generator without LLMs.
+- [TopoGPT2](https://github.com/grisuno/TopoGPT2): Previous evolution of the model.
