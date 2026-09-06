@@ -1,0 +1,40 @@
+# Index
+
+| File | Purpose | Subsystem | Symbols |
+|------|---------|-----------|---------|
+| `app.py` | - | root | 5 |
+| `convert_weights.py` | - | root | 2 |
+| `convert_weights_minios.py` | - | root | 1 |
+| `encode_tokens.py` | - | root | 1 |
+| `eval/analyze.py` | - | eval | 5 |
+| `eval/analyze_results.py` | - | eval | 4 |
+| `eval/diag_static.py` | - | eval | 5 |
+| `eval/governor.py` | - | eval | 20 |
+| `eval/governor_smoke.py` | - | eval | 7 |
+| `eval/harness.py` | - | eval | 12 |
+| `eval/integration_smoke.py` | - | eval | 1 |
+| `eval/noise_analysis.py` | - | eval | 3 |
+| `eval/noise_sweep.py` | - | eval | 4 |
+| `eval/repair.py` | - | eval | 6 |
+| `eval/report.py` | - | eval | 6 |
+| `eval/samplers.py` | - | eval | 7 |
+| `eval/sandbox.py` | - | eval | 9 |
+| `eval/sandbox_smoke.py` | - | eval | 1 |
+| `eval/smoke.py` | - | eval | 2 |
+| `eval/temp_sweep.py` | - | eval | 5 |
+| `gradio_app.py` | - | root | 4 |
+| `install.sh` | - | root | 0 |
+| `synthetic_dataset.py` | - | root | 35 |
+| `tests/test_jlens.py` | - | tests | 51 |
+| `tests/test_lens_model.py` | - | tests | 34 |
+| `topogpt3.c` | - | root | 99 |
+| `topogpt3/__init__.py` | - | topogpt3 | 0 |
+| `topogpt3/__main__.py` | - | topogpt3 | 1 |
+| `topogpt3/api_server.py` | - | topogpt3 | 46 |
+| `topogpt3/continuation.py` | - | topogpt3 | 5 |
+| `topogpt3/inference.py` | - | topogpt3 | 54 |
+| `topogpt3/inference_hrm.py` | - | topogpt3 | 76 |
+| `topogpt3/jlens.py` | - | topogpt3 | 29 |
+| `topogpt3/lens_model.py` | - | topogpt3 | 29 |
+| `topogpt3/model.py` | - | topogpt3 | 187 |
+| `topogpt3/train.py` | - | topogpt3 | 62 |

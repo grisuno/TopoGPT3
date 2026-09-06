@@ -1,0 +1,98 @@
+# Subsystem: tests
+
+## tests/test_jlens.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `TestValidPositionMask` (class, line 17) `class TestValidPositionMask`
+  - `TestJacobianForPrompt` (class, line 52) `class TestJacobianForPrompt`
+  - `TestFit` (class, line 172) `class TestFit`
+  - `TestJacobianLens` (class, line 210) `class TestJacobianLens`
+  - `TestFitCheckpoint` (class, line 367) `class TestFitCheckpoint`
+  - `TestConfig` (class, line 473) `class TestConfig`
+  - `TestTopoGPT3JLensAppConfig` (class, line 494) `class TestTopoGPT3JLensAppConfig`
+  - `test_basic_mask` (method, line 20) `def test_basic_mask(self)`
+  - `test_too_short_raises` (method, line 29) `def test_too_short_raises(self)`
+  - `test_negative_skip_raises` (method, line 34) `def test_negative_skip_raises(self)`
+  - `test_all_positions_valid` (method, line 39) `def test_all_positions_valid(self)`
+  - `test_exact_minimum_length` (method, line 45) `def test_exact_minimum_length(self)`
+  - `model` (method, line 56) `def model(self)`
+  - `test_returns_jacobians_for_source_layers` (method, line 63) `def test_returns_jacobians_for_source_layers(self, model)`
+  - `test_late_layer_jacobian_close_to_identity` (method, line 76) `def test_late_layer_jacobian_close_to_identity(self, model)`
+  - `test_earlier_layers_further_from_identity` (method, line 85) `def test_earlier_layers_further_from_identity(self, model)`
+  - `test_exact_jacobian_for_last_block` (method, line 95) `def test_exact_jacobian_for_last_block(self, model)`
+  - `test_negative_layer_indices` (method, line 110) `def test_negative_layer_indices(self, model)`
+  - `test_out_of_range_layers_rejected` (method, line 133) `def test_out_of_range_layers_rejected(self, model)`
+  - `test_source_below_target_enforced` (method, line 145) `def test_source_below_target_enforced(self, model)`
+  - `test_target_out_of_range_raises` (method, line 158) `def test_target_out_of_range_raises(self, model)`
+  - `model` (method, line 176) `def model(self)`
+  - `test_fit_returns_lens_with_correct_attributes` (method, line 183) `def test_fit_returns_lens_with_correct_attributes(self, model)`
+  - `test_fit_empty_prompts_raises` (method, line 191) `def test_fit_empty_prompts_raises(self, model)`
+  - `test_fit_skips_short_prompts` (method, line 196) `def test_fit_skips_short_prompts(self, model)`
+  - `test_fit_with_default_source_layers` (method, line 202) `def test_fit_with_default_source_layers(self, model)`
+  - `model` (method, line 214) `def model(self)`
+  - `fitted_lens` (method, line 222) `def fitted_lens(self, model)`
+  - `test_save_and_load_round_trip` (method, line 226) `def test_save_and_load_round_trip(self, fitted_lens, tmp_path)`
+  - `test_apply_returns_correct_shapes` (method, line 242) `def test_apply_returns_correct_shapes(self, fitted_lens, model)`
+  - `test_fitted_late_layer_matches_model` (method, line 254) `def test_fitted_late_layer_matches_model(self, fitted_lens, model)`
+  - `test_apply_with_explicit_positions` (method, line 263) `def test_apply_with_explicit_positions(self, fitted_lens, model)`
+  - `test_logit_lens_baseline` (method, line 274) `def test_logit_lens_baseline(self, fitted_lens, model)`
+  - `test_unfitted_layer_rejected` (method, line 281) `def test_unfitted_layer_rejected(self, fitted_lens, model)`
+  - `test_out_of_range_layer_rejected` (method, line 286) `def test_out_of_range_layer_rejected(self, fitted_lens, model)`
+  - `test_merge_weighted_mean` (method, line 291) `def test_merge_weighted_mean(self)`
+  - `test_merge_mismatch_raises` (method, line 319) `def test_merge_mismatch_raises(self)`
+  - `test_merge_empty_raises` (method, line 326) `def test_merge_empty_raises(self)`
+  - `test_transport_produces_correct_shape` (method, line 331) `def test_transport_produces_correct_shape(self, fitted_lens)`
+  - `test_load_invalid_file_raises` (method, line 337) `def test_load_invalid_file_raises(self, tmp_path)`
+  - `test_from_pretrained_local_file` (method, line 344) `def test_from_pretrained_local_file(self, fitted_lens, tmp_path)`
+  - `test_from_pretrained_local_directory` (method, line 351) `def test_from_pretrained_local_directory(self, fitted_lens, tmp_path)`
+  - `test_repr` (method, line 359) `def test_repr(self, fitted_lens)`
+  - `model` (method, line 371) `def model(self)`
+  - `test_checkpoint_resume_produces_same_result` (method, line 378) `def test_checkpoint_resume_produces_same_result(self, model, tmp_path)`
+  - `test_resume_after_skip_no_double_count` (method, line 408) `def test_resume_after_skip_no_double_count(self, model, tmp_path)`
+  - `test_checkpoint_mismatch_raises` (method, line 450) `def test_checkpoint_mismatch_raises(self, model, tmp_path)`
+  - `test_fit_config_defaults` (method, line 476) `def test_fit_config_defaults(self)`
+  - `test_app_config_defaults` (method, line 485) `def test_app_config_defaults(self)`
+  - `test_default_config` (method, line 497) `def test_default_config(self)`
+  - `test_custom_config` (method, line 505) `def test_custom_config(self)`
+- Depends on: `topogpt3/jlens.py`, `topogpt3/lens_model.py`
+
+## tests/test_lens_model.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `TestTopoGPT3LensConfig` (class, line 13) `class TestTopoGPT3LensConfig`
+  - `TestTinyDecoder` (class, line 41) `class TestTinyDecoder`
+  - `TestTopoGPT3LensModel` (class, line 65) `class TestTopoGPT3LensModel`
+  - `TestTopoGPT3LensModelWithRecording` (class, line 214) `class TestTopoGPT3LensModelWithRecording`
+  - `TestTopoGPT3LensModelEdgeCases` (class, line 278) `class TestTopoGPT3LensModelEdgeCases`
+  - `test_default_config` (method, line 16) `def test_default_config(self)`
+  - `test_from_topogpt2_config` (method, line 25) `def test_from_topogpt2_config(self)`
+  - `test_probe_checkpoint_missing_raises` (method, line 35) `def test_probe_checkpoint_missing_raises(self, tmp_path)`
+  - `test_default_parameters` (method, line 44) `def test_default_parameters(self)`
+  - `test_forward_output_shape` (method, line 51) `def test_forward_output_shape(self)`
+  - `test_weight_tied` (method, line 59) `def test_weight_tied(self)`
+  - `raw_model` (method, line 69) `def raw_model(self)`
+  - `lens_model` (method, line 77) `def lens_model(self, raw_model)`
+  - `test_exposes_protocol_attributes` (method, line 80) `def test_exposes_protocol_attributes(self, lens_model, raw_model)`
+  - `test_encode_text_to_token_ids` (method, line 87) `def test_encode_text_to_token_ids(self, lens_model)`
+  - `test_encode_with_tokenizer` (method, line 95) `def test_encode_with_tokenizer(self)`
+  - `test_encode_respects_max_length` (method, line 107) `def test_encode_respects_max_length(self, lens_model)`
+  - `test_forward_returns_residual_only` (method, line 113) `def test_forward_returns_residual_only(self)`
+  - `test_forward_differs_from_full_model` (method, line 128) `def test_forward_differs_from_full_model(self)`
+  - `test_unembed_produces_logits` (method, line 141) `def test_unembed_produces_logits(self, lens_model)`
+  - `test_forward_plus_unembed_matches_model_logits` (method, line 150) `def test_forward_plus_unembed_matches_model_logits(self, lens_model, raw_model)`
+  - `test_autograd_graph_tracks_through_layers` (method, line 163) `def test_autograd_graph_tracks_through_layers(self)`
+  - `test_input_device_property` (method, line 180) `def test_input_device_property(self, lens_model)`
+  - `test_input_device_setter` (method, line 185) `def test_input_device_setter(self, lens_model)`
+  - `test_tokenizer_setter` (method, line 191) `def test_tokenizer_setter(self, lens_model)`
+  - `test_from_checkpoint_missing_raises` (method, line 198) `def test_from_checkpoint_missing_raises(self)`
+  - `test_grad_enabled_deterministic` (method, line 205) `def test_grad_enabled_deterministic(self, lens_model)`
+  - `lens_model` (method, line 218) `def lens_model(self)`
+  - `test_recorder_captures_layer_outputs` (method, line 225) `def test_recorder_captures_layer_outputs(self, lens_model)`
+  - `test_recorder_with_start_graph_at` (method, line 238) `def test_recorder_with_start_graph_at(self, lens_model)`
+  - `test_recorder_cleanup_on_exception` (method, line 252) `def test_recorder_cleanup_on_exception(self, lens_model)`
+  - `test_recorder_detach_after_forward` (method, line 264) `def test_recorder_detach_after_forward(self, lens_model)`
+  - `test_empty_sequence` (method, line 281) `def test_empty_sequence(self)`
+  - `test_single_token` (method, line 291) `def test_single_token(self)`
+- Depends on: `topogpt3/jlens.py`, `topogpt3/lens_model.py`, `topogpt3/model.py`
