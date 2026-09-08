@@ -18,6 +18,14 @@ def main() -> None:
             "  python3 -m topogpt3 lens          test model loading\n"
             "  python3 -m topogpt3 jlens         Jacobian lens demo\n"
             "  python3 -m topogpt3 check         quick checkpoint validation\n"
+            "  python3 -m topogpt3 train-lora      SFT with native LoRA adapters\n"
+            "  python3 -m topogpt3 train-dpo       preference alignment (DPO)\n"
+            "  python3 -m topogpt3 train-grpo      RLAIF (GRPO/CISPO, no critic)\n"
+            "  python3 -m topogpt3 train-ppo       RLAIF (PPO + value head)\n"
+            "  python3 -m topogpt3 train-distill   white-box distillation\n"
+            "  python3 -m topogpt3 train-agent     agentic RL (multi-turn tools)\n"
+            "  python3 -m topogpt3 convert         merge LoRA / export stubs\n"
+            "  python3 -m topogpt3 export-chat     curriculum HF -> chat JSONL\n"
         )
         return
     subcommand = sys.argv[1]
@@ -41,6 +49,30 @@ def main() -> None:
     elif subcommand == "train":
         from .train import main as train_main
         train_main()
+    elif subcommand == "train-lora":
+        from .train_lora import main as m
+        m()
+    elif subcommand == "train-dpo":
+        from .train_dpo import main as m
+        m()
+    elif subcommand == "train-grpo":
+        from .train_grpo import main as m
+        m()
+    elif subcommand == "train-ppo":
+        from .train_ppo import main as m
+        m()
+    elif subcommand == "train-distill":
+        from .train_distill import main as m
+        m()
+    elif subcommand == "train-agent":
+        from .train_agent import main as m
+        m()
+    elif subcommand == "convert":
+        from .convert import main as m
+        m()
+    elif subcommand == "export-chat":
+        from .export_chat import main as m
+        m()
     else:
         print(f"Unknown subcommand: {subcommand}")
 

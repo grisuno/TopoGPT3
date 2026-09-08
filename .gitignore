@@ -25,7 +25,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-
+data/
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
@@ -166,3 +166,8 @@ checkpoints_topogpt3/last/model.safetensors
 # Pi coding agent (third-party, not our project)
 .pi/
 node_modules/
+# Ignorar datos y modelos pesados
+data/
+out/
+*.pt
+*.fp16

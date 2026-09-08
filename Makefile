@@ -10,7 +10,7 @@ EVAL_OUT        := eval/results.jsonl
 PY              := python
 PI_DIR          := .pi
 
-.PHONY: help install install-min install-all test lint train infer infer-continue infer-hrm infer-think jlens api api-auth eval eval-sample clean pi pi-setup pi-run pi-update c-convert c-build c-run c-run-i c-vocab
+.PHONY: help install install-min install-all test lint train infer infer-continue infer-hrm infer-think jlens api api-auth eval eval-sample clean pi pi-setup pi-run pi-update c-convert c-build c-run c-run-i c-vocab export-chat train-lora train-dpo train-grpo train-ppo train-distill train-agent convert-merge eval-tools
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
@@ -53,6 +53,48 @@ train-tier2: ## Start training from tier 2
 
 eval-holdout: ## Evaluate on combined holdout
 	$(PY) -m topogpt3 train --eval-holdout
+
+# ── Advanced training (LoRA / RL / distill / agent) ──────────────────────────
+
+CHAT_DIR      := data/chat
+DATA          ?= data/sft_toolcall.jsonl
+DPO_DATA      ?= data/dpo.jsonl
+RL_DATA       ?= data/rlaif.jsonl
+AGENT_DATA    ?= data/agent_rl.jsonl
+LORA_OUT      ?= out/topo_lora.pt
+LORA_RANK     ?= 16
+MAXP          ?= 20000
+OUT           ?= out/topo_out.pt
+OUTDIR        ?= out/topo_merged
+LOSS          ?= cispo
+TEACHER       ?=
+
+export-chat: ## Export real curriculum HF -> chat JSONL (MAXP=20000 per tier)
+	$(PY) -m topogpt3 export-chat --out-dir $(CHAT_DIR) --max-per-tier $(MAXP)
+
+train-lora: ## SFT with native LoRA (DATA=... LORA_OUT=... LORA_RANK=...)
+	$(PY) -m topogpt3 train-lora --data $(DATA) --checkpoint $(CKPT) --out $(LORA_OUT) --rank $(LORA_RANK)
+
+train-dpo: ## Preference alignment DPO (DPO_DATA=... OUT=...)
+	$(PY) -m topogpt3 train-dpo --data $(DPO_DATA) --checkpoint $(CKPT) --out $(OUT)
+
+train-grpo: ## RLAIF GRPO/CISPO (RL_DATA=... OUT=... LOSS=grpo|cispo)
+	$(PY) -m topogpt3 train-grpo --data $(RL_DATA) --loss-type $(LOSS) --checkpoint $(CKPT) --out $(OUT)
+
+train-ppo: ## RLAIF PPO + critic (RL_DATA=... OUT=...)
+	$(PY) -m topogpt3 train-ppo --data $(RL_DATA) --checkpoint $(CKPT) --out $(OUT)
+
+train-distill: ## White-box distillation (DATA=... OUT=... TEACHER=hf-id)
+	$(PY) -m topogpt3 train-distill --data $(DATA) --teacher "$(TEACHER)" --checkpoint $(CKPT) --out $(OUT)
+
+train-agent: ## Agentic RL multi-turn tools (AGENT_DATA=... OUT=...)
+	$(PY) -m topogpt3 train-agent --data $(AGENT_DATA) --checkpoint $(CKPT) --out $(OUT)
+
+convert-merge: ## Merge LoRA into base (LORA_OUT=... OUTDIR=...)
+	$(PY) -m topogpt3 convert --base $(CKPT) --lora $(LORA_OUT) --out $(OUTDIR) --hf-stub
+
+eval-tools: ## Tool-call accuracy eval
+	$(PY) -c "from topogpt3.eval_toolcall import evaluate; print(evaluate(lambda p: '<tool_call>{\"name\": \"calculate_math\", \"arguments\": {\"expression\": \"1+1\"}}</tool_call>')['accuracy'])"
 
 # ── Inference ────────────────────────────────────────────────────────────────
 

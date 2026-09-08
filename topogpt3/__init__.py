@@ -84,6 +84,51 @@ from .jlens import (
     jacobian_for_prompt,
     valid_position_mask,
 )
+# advanced training (identity preserved: additive
+# adapters + external loss/reward wrappers, never architecture rewrites)
+from .yarn import YaRNConfig, apply_yarn_to_rope, yarn_scale_inv_freq
+from .chat import (
+    apply_chat_template,
+    parse_thinking,
+    parse_tool_calls,
+    split_reasoning_content,
+)
+from .lora import (
+    LoRA,
+    apply_lora,
+    freeze_non_lora,
+    load_lora,
+    lora_parameters,
+    merge_lora,
+    save_lora,
+)
+from .rewards import (
+    base_rewards,
+    distillation_loss,
+    dpo_loss_fn,
+    grpo_advantages,
+    grpo_loss,
+    k3_kl,
+    logits_to_log_probs,
+    rep_penalty,
+    spectral_bonus,
+)
+from .rollout import (
+    RolloutResult,
+    TorchRolloutEngine,
+    compute_per_token_logps,
+    create_rollout_engine,
+)
+from .trainer_utils_topo import (
+    SkipBatchSampler,
+    get_lr,
+    init_distributed_mode,
+    is_main_process,
+    setup_seed,
+    topo_checkpoint,
+)
+from .tools_agent import TOOLS, execute_tool, rollout_multiturn
+from .eval_toolcall import evaluate as evaluate_toolcall
 
 __all__ = [
     "__version__",
@@ -120,4 +165,41 @@ __all__ = [
     "TopoGPT3Trainer",
     "apply_gauss_patch",
     "valid_position_mask",
+    "YaRNConfig",
+    "apply_yarn_to_rope",
+    "yarn_scale_inv_freq",
+    "apply_chat_template",
+    "parse_thinking",
+    "parse_tool_calls",
+    "split_reasoning_content",
+    "LoRA",
+    "apply_lora",
+    "freeze_non_lora",
+    "load_lora",
+    "lora_parameters",
+    "merge_lora",
+    "save_lora",
+    "base_rewards",
+    "distillation_loss",
+    "dpo_loss_fn",
+    "grpo_advantages",
+    "grpo_loss",
+    "k3_kl",
+    "logits_to_log_probs",
+    "rep_penalty",
+    "spectral_bonus",
+    "RolloutResult",
+    "TorchRolloutEngine",
+    "compute_per_token_logps",
+    "create_rollout_engine",
+    "SkipBatchSampler",
+    "get_lr",
+    "init_distributed_mode",
+    "is_main_process",
+    "setup_seed",
+    "topo_checkpoint",
+    "TOOLS",
+    "execute_tool",
+    "rollout_multiturn",
+    "evaluate_toolcall",
 ]

@@ -694,11 +694,32 @@ class RotaryEmbedding(nn.Module):
     errores de shape al cargar checkpoints previos.
     """
 
-    def __init__(self, d_head: int, max_seq_len: int = 2048, base: int = 10000):
+    def __init__(self, d_head: int, max_seq_len: int = 2048, base: int = 10000,
+                 yarn_factor: float = 1.0, yarn_orig_max: int = 2048):
         super().__init__()
         inv_freq = 1.0 / (base ** (torch.arange(0, d_head, 2).float() / d_head))
+        if yarn_factor > 1.0:
+            # YaRN NTK-by-parts ramp (identity-safe:
+            # only rescales rotary frequencies, never spectral/quaternion layers)
+            import math as _math
+            dim = torch.arange(0, d_head, 2).float()
+            lo = d_head * _math.log(yarn_orig_max / 1.0) / _math.log(float(base))
+            hi = d_head * _math.log(yarn_orig_max / 32.0) / _math.log(float(base))
+            lo, hi = min(lo, hi), max(lo, hi)
+            ramp = ((dim - lo) / max(hi - lo, 1e-6)).clamp(0.0, 1.0)
+            inv_freq = inv_freq * (1.0 - ramp + ramp / yarn_factor)
         self.register_buffer('inv_freq', inv_freq)
+        self.yarn_factor = yarn_factor
+        self.yarn_orig_max = yarn_orig_max
         self._build_cache(max_seq_len)
+
+    def enable_yarn(self, factor: float = 16.0, orig_max: int = 2048) -> None:
+        """Enable YaRN extrapolation post-hoc (rebuilds cache in place)."""
+        from .yarn import YaRNConfig, apply_yarn_to_rope
+        apply_yarn_to_rope(self, YaRNConfig(factor=factor, orig_max=orig_max,
+                                           enabled=True))
+        self.yarn_factor = factor
+        self.yarn_orig_max = orig_max
 
     def _build_cache(self, seq_len: int):
         device = self.inv_freq.device

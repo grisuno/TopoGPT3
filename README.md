@@ -573,6 +573,123 @@ Measured on the prompt `def fibonacci(n):` with 30 new tokens, temperature
 | MiniOS QEMU (no KVM)        | 0.80 tok/s  |
 | MiniOS QEMU (with KVM)      | 17-29 tok/s |
 
+<<<<<<< HEAD
+=======
+## Advanced training (beyond the curriculum)
+
+Everything below extends the base curriculum trainer while keeping the
+quaternionic / spectral / topological identity intact: adapters are additive,
+losses wrap the existing `TopoGPT2.forward`, and no architecture is rewritten. Details per
+feature with a runnable example. Short form via Makefile (`make help` lists
+all targets); long form is `python -m topogpt3 <subcommand>` — the `topogpt3-*`
+console scripts from `pip install -e .` also work (e.g. `topogpt3-train-lora`).
+Bare `train-lora` does **not** exist as a shell command; use `make train-lora`
+or `python -m topogpt3 train-lora`.
+
+**0. Export the real curriculum to chat JSONL** (`topogpt3/export_chat.py` —
+same HF datasets + fallbacks as `train.py`, tiers 0–2 as conversations):
+```
+python -m topogpt3 export-chat --out-dir data/chat --max-per-tier 20000
+# -> data/chat/{sft_all,rlaif_all,dpo_all}.jsonl + pretrain_tier3.jsonl
+```
+
+**1. YaRN long-context RoPE** (`topogpt3/yarn.py` — only rescales rotary
+frequencies, never the spectral layers):
+```python
+from topogpt3.model import TopoGPT2, TopoGPT2Config
+m = TopoGPT2(TopoGPT2Config(SCALE="small"))
+m.layers[0].attn.rope.enable_yarn(factor=16.0, orig_max=2048)
+```
+
+**2. Chat template + tool/thinking tokens** (`topogpt3/chat.py` — string
+level, no BPE retraining; `<tool_call>`, `<think>`, `<|bufferN|>`):
+```python
+from topogpt3.chat import apply_chat_template, split_reasoning_content
+p = apply_chat_template([{"role": "user", "content": "Compute 12*34"}],
+                        tools=[{"type": "function", "function": {"name": "calculate_math"}}],
+                        add_generation_prompt=True, open_thinking=True)
+split_reasoning_content("<think>plan</think> 408")  # -> reasoning_content/content/tool_calls
+```
+
+**3. Native LoRA SFT** (`topogpt3/lora.py` + `train_lora.py` — patches
+Q/K/V/O plus quaternion sub-linears `Ww/Wx/Wy/Wz`, zero-init, base frozen):
+```
+python -m topogpt3 train-lora --data data/chat/sft_all.jsonl \
+    --checkpoint checkpoints_topogpt3/last --out out/topo_lora.pt --rank 16
+```
+
+**4. DPO preference alignment** (`topogpt3/train_dpo.py` — policy + frozen
+ref, `beta=0.15`, MoE aux preserved):
+```
+python -m topogpt3 train-dpo --data data/chat/dpo_all.jsonl \
+    --checkpoint checkpoints_topogpt3/last --out out/topo_dpo.pt
+```
+
+**5. GRPO / CISPO RLAIF** (`topogpt3/train_grpo.py` — group advantages, k3
+KL to ref, no Critic, ideal for complex weights):
+```
+python -m topogpt3 train-grpo --data data/chat/rlaif_all.jsonl --loss-type cispo \
+    --num-generations 4 --checkpoint checkpoints_topogpt3/last --out out/topo_grpo.pt
+```
+
+**6. PPO + value head** (`topogpt3/train_ppo.py` — critic reuses the frozen
+trunk + fresh `Linear` head):
+```
+python -m topogpt3 train-ppo --data data/chat/rlaif_all.jsonl \
+    --checkpoint checkpoints_topogpt3/last --out out/topo_ppo.pt
+```
+
+**7. White-box distillation** (`topogpt3/train_distill.py` — `CE + T²·KL`
+on response tokens, teacher HF or self-copy):
+```
+python -m topogpt3 train-distill --data data/chat/sft_all.jsonl \
+    --teacher Qwen/Qwen2.5-Coder-0.5B --checkpoint checkpoints_topogpt3/last \
+    --out out/topo_distill.pt
+```
+
+**8. Agentic RL with tools** (`topogpt3/train_agent.py` + `tools_agent.py` —
+multi-turn `<tool_call>` → sandboxed `run_python` → `<tool_response>`):
+```
+python -m topogpt3 train-agent --data data/agent_rl.jsonl --max-turns 3 \
+    --checkpoint checkpoints_topogpt3/last --out out/topo_agent.pt
+```
+
+**9. Merge LoRA / export** (`topogpt3/convert.py` — weights preserved verbatim):
+```
+python -m topogpt3 convert --base checkpoints_topogpt3/last \
+    --lora out/topo_lora.pt --out out/topo_merged --hf-stub
+```
+
+**10. API with reasoning + tools** (`api_server.py` — splits `<think>` /
+`<tool_call>` into `reasoning_content` / `tool_calls`, accepts
+`tools` + `open_thinking`):
+```bash
+curl -s http://localhost:8800/v1/chat/completions \
+  -H "Authorization: Bearer $TOPOGPT3_API_KEYS" -H "Content-Type: application/json" \
+  -d '{"messages": [{"role": "user", "content": "Compute 12*34"}],
+       "tools": [{"type": "function", "function": {"name": "calculate_math"}}],
+       "open_thinking": true}'
+```
+
+**11. Tool-call eval** (`topogpt3/eval_toolcall.py`):
+```python
+from topogpt3.eval_toolcall import evaluate
+evaluate(lambda prompt: '<tool_call>{"name": "calculate_math", '
+                        '"arguments": {"expression": "1+1"}}</tool_call>')
+```
+
+**12. DDP + resume** (`topogpt3/trainer_utils_topo.py` — cosine LR,
+`SkipBatchSampler`, atomic double-save with cross-GPU step rescale):
+```bash
+torchrun --nproc_per_node 2 -m topogpt3 train-lora --data data/chat/sft_all.jsonl
+```
+
+Shared math lives in `topogpt3/rewards.py` (`grpo_loss`, `dpo_loss_fn`,
+`distillation_loss`, `spectral_bonus`) and rollouts in
+`topogpt3/rollout.py` (`TorchRolloutEngine` over the model's own
+`generate()`). Heritage tests: `pytest tests/test_heritage.py`.
+
+>>>>>>> 75d7832 (Agrega código de LoRA e ignora datasets/modelos pesados)
 ## Repository layout
 
 ```
@@ -587,6 +704,23 @@ Measured on the prompt `def fibonacci(n):` with 30 new tokens, temperature
 │   ├── lens_model.py          Jacobian-lens model adapter (LensModel protocol)
 │   ├── jlens.py               Jacobian lens fitting + application pipeline
 │   └── api_server.py          OpenAI-compatible HTTP API server (hardened)
+│   ├── yarn.py                YaRN RoPE extrapolation for long context
+│   ├── chat.py                chat template + <tool_call>/<think>/<|buffer|> tokens
+│   ├── datasets_chat.py       SFT/DPO/RLAIF/Agent JSONL datasets
+│   ├── lora.py                native quaternion-safe LoRA (apply/save/merge)
+│   ├── rewards.py             GRPO/DPO/distillation losses + spectral bonus
+│   ├── rollout.py             TorchRolloutEngine over TopoGPT2.generate
+│   ├── trainer_utils_topo.py  cosine LR, DDP, SkipBatchSampler, atomic checkpoints
+│   ├── train_lora.py          SFT with LoRA adapters
+│   ├── train_dpo.py           preference alignment (DPO + frozen ref)
+│   ├── train_grpo.py          RLAIF (GRPO/CISPO, no critic)
+│   ├── train_ppo.py           RLAIF (PPO + trunk-reusing critic)
+│   ├── train_distill.py       white-box distillation (CE + T²·KL)
+│   ├── train_agent.py         agentic RL (multi-turn tool use)
+│   ├── tools_agent.py         run_python sandbox + mock tools + rollout helper
+│   ├── convert.py             merge LoRA / HF stub export
+│   ├── export_chat.py         curriculum HF -> chat JSONL exporter
+│   └── eval_toolcall.py       tool-call accuracy evaluator
 ├── tests/                     BDD test suite
 │   ├── test_lens_model.py     adapter contract tests
 │   └── test_jlens.py          fitting + application contract tests
@@ -822,6 +956,14 @@ python -m topogpt3 infer --auto-continue --max-new 512
 python -m topogpt3 infer-hrm --thinking --auto-continue
 python -m topogpt3 train
 python -m topogpt3 api
+python -m topogpt3 export-chat --out-dir data/chat --max-per-tier 20000
+python -m topogpt3 train-lora --data data/chat/sft_all.jsonl
+python -m topogpt3 train-dpo --data data/chat/dpo_all.jsonl
+python -m topogpt3 train-grpo --data data/chat/rlaif_all.jsonl --loss-type cispo
+python -m topogpt3 train-ppo --data data/chat/rlaif_all.jsonl
+python -m topogpt3 train-distill --data data/chat/sft_all.jsonl
+python -m topogpt3 train-agent --data data/agent_rl.jsonl
+python -m topogpt3 convert --base checkpoints_topogpt3/last --lora out/topo_lora.pt --out out/topo_merged
 ```
 
 ### Makefile

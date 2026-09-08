@@ -325,6 +325,9 @@ class ChatCompletionRequest(BaseModel):
     stream: bool = False
     auto_continue: bool = False
     max_continuations: int = Field(default=3, ge=0, le=10)
+    # tool definitions + adaptive thinking switch
+    tools: Any = None
+    open_thinking: bool = False
 
     @field_validator("stop", mode="before")
     @classmethod
@@ -771,6 +774,22 @@ async def chat_completions(req: ChatCompletionRequest, request: Request):
         max_continuations=req.max_continuations,
     )
     response_text = text[len(prompt):]
+    # split <think>/<tool_call> into OpenAI-style fields
+    try:
+        from .chat import split_reasoning_content as _split_rc
+        _parts = _split_rc(response_text)
+        _msg: dict = {"role": "assistant", "content": _parts["content"]}
+        if _parts["reasoning_content"]:
+            _msg["reasoning_content"] = _parts["reasoning_content"]
+        if _parts["tool_calls"]:
+            _msg["tool_calls"] = [
+                {"id": f"call_{i:04d}", "type": "function",
+                 "function": {"name": c.get("name", ""),
+                              "arguments": json.dumps(c.get("arguments", {}))}}
+                for i, c in enumerate(_parts["tool_calls"])
+            ]
+    except Exception:
+        _msg = {"role": "assistant", "content": response_text}
     return {
         "id": f"chatcmpl-{_short_id()}",
         "object": "chat.completion",
@@ -779,7 +798,7 @@ async def chat_completions(req: ChatCompletionRequest, request: Request):
         "choices": [
             {
                 "index": 0,
-                "message": {"role": "assistant", "content": response_text},
+                "message": _msg,
                 "finish_reason": "stop",
             }
         ],
@@ -806,6 +825,18 @@ def _short_id() -> str:
 
 
 def _build_chat_prompt(messages: list[Message]) -> str:
+    # if any message carries tools/reasoning content,
+    # render via the shared chat template; else legacy last-user fallback.
+    try:
+        from .chat import apply_chat_template as _tpl
+        dicts = [m.model_dump() for m in messages]
+        if any(isinstance(d.get("content"), list) or d.get("tools")
+               for d in dicts):
+            norm = [{"role": d.get("role", "user"),
+                     "content": _extract_text(d.get("content", ""))} for d in dicts]
+            return _tpl(norm)
+    except Exception:
+        pass
     for msg in reversed(messages):
         if msg.role == "user":
             return _extract_text(msg.content)

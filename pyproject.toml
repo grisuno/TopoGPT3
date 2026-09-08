@@ -45,6 +45,7 @@ dependencies = [
 train = [
     "datasets>=2.14",
     "huggingface-hub>=0.20",
+    "transformers>=4.40",
 ]
 lens = [
     "huggingface-hub>=0.20",
@@ -69,6 +70,13 @@ topogpt3-infer = "topogpt3.inference:main"
 topogpt3-infer-hrm = "topogpt3.inference_hrm:main"
 topogpt3-jlens = "topogpt3.jlens:_demo_jlens"
 topogpt3-api = "topogpt3.api_server:main"
+topogpt3-train-lora = "topogpt3.train_lora:main"
+topogpt3-train-dpo = "topogpt3.train_dpo:main"
+topogpt3-train-grpo = "topogpt3.train_grpo:main"
+topogpt3-train-ppo = "topogpt3.train_ppo:main"
+topogpt3-train-distill = "topogpt3.train_distill:main"
+topogpt3-train-agent = "topogpt3.train_agent:main"
+topogpt3-convert = "topogpt3.convert:main"
 
 [tool.setuptools.packages.find]
 include = ["topogpt3*"]
