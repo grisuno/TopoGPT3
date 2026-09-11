@@ -1,0 +1,25 @@
+{
+  "tool": "readmenator",
+  "generated_at": "2026-09-11T05:56:51Z",
+  "project_root": "/tmp/push_TopoGPT3_20260911_012907",
+  "files": 53,
+  "symbols": 937,
+  "imports": 6480,
+  "resolved_imports": 112,
+  "security_findings": 0,
+  "languages": {
+    "py": 51,
+    "sh": 1,
+    "c": 1
+  },
+  "entrypoints": [
+    "topogpt3/__main__.py"
+  ],
+  "start_here": "INDEX.md",
+  "workflow": [
+    "grep -n '<keyword>' INDEX.md",
+    "cat KB_<subsystem>.md",
+    "grep -n '<file>' ARCHITECTURE.md SYMBOLS.md"
+  ],
+  "regenerate": "readmenator . --rebuild"
+}
