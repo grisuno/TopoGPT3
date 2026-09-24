@@ -404,6 +404,7 @@ Early generations show syntactic continuity and local semantic consistency. Algo
 A 25M-parameter Transformer implementation designed to study language acquisition as a condensed matter phenomenon. Unlike traditional LLMs, TopoGPT-2 is engineered to reach a Topological Insulator state a phase where grammatical and logical invariants are protected by a spectral gap. Using the Tiny Stories corpus
 
 - [https://github.com/grisuno/TopoGPT2](https://github.com/grisuno/TopoGPT2)
+- [https://github.com/grisuno/TopoExploit](https://github.com/grisuno/TopoExploit)
 
 ## Citation
 
