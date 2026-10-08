@@ -276,42 +276,42 @@ Taint analysis traces how dangerous imports propagate through the codebase via t
 
 - `governor_smoke.py` imports `eval` (0 hop to `governor_smoke.py`) [critical]
   Path: governor_smoke.py
-- `governor_smoke.py` imports `eval` (1 hop to `governor.py`) [critical]
-  Path: governor_smoke.py -> governor.py
 - `governor_smoke.py` imports `eval` (1 hop to `__init__.py`) [critical]
   Path: governor_smoke.py -> __init__.py
-- `governor_smoke.py` imports `eval` (2 hops to `rewards.py`) [critical]
-  Path: governor_smoke.py -> __init__.py -> rewards.py
-- `governor_smoke.py` imports `eval` (2 hops to `trainer_utils_topo.py`) [critical]
-  Path: governor_smoke.py -> __init__.py -> trainer_utils_topo.py
+- `governor_smoke.py` imports `eval` (1 hop to `governor.py`) [critical]
+  Path: governor_smoke.py -> governor.py
 - `governor_smoke.py` imports `eval` (2 hops to `lora.py`) [critical]
   Path: governor_smoke.py -> __init__.py -> lora.py
 - `governor_smoke.py` imports `eval` (2 hops to `model.py`) [critical]
   Path: governor_smoke.py -> __init__.py -> model.py
+- `governor_smoke.py` imports `eval` (2 hops to `rollout.py`) [critical]
+  Path: governor_smoke.py -> __init__.py -> rollout.py
+- `governor_smoke.py` imports `eval` (2 hops to `eval_toolcall.py`) [critical]
+  Path: governor_smoke.py -> __init__.py -> eval_toolcall.py
+- `governor_smoke.py` imports `eval` (2 hops to `inference.py`) [critical]
+  Path: governor_smoke.py -> __init__.py -> inference.py
 - `governor_smoke.py` imports `eval` (2 hops to `inference_hrm.py`) [critical]
   Path: governor_smoke.py -> __init__.py -> inference_hrm.py
-- `governor_smoke.py` imports `eval` (2 hops to `train.py`) [critical]
-  Path: governor_smoke.py -> __init__.py -> train.py
 - `governor_smoke.py` imports `eval` (2 hops to `jlens.py`) [critical]
   Path: governor_smoke.py -> __init__.py -> jlens.py
 - `governor_smoke.py` imports `eval` (2 hops to `tools_agent.py`) [critical]
   Path: governor_smoke.py -> __init__.py -> tools_agent.py
-- `governor_smoke.py` imports `eval` (2 hops to `eval_toolcall.py`) [critical]
-  Path: governor_smoke.py -> __init__.py -> eval_toolcall.py
+- `governor_smoke.py` imports `eval` (2 hops to `train.py`) [critical]
+  Path: governor_smoke.py -> __init__.py -> train.py
+- `governor_smoke.py` imports `eval` (2 hops to `rewards.py`) [critical]
+  Path: governor_smoke.py -> __init__.py -> rewards.py
 - `governor_smoke.py` imports `eval` (2 hops to `lens_model.py`) [critical]
   Path: governor_smoke.py -> __init__.py -> lens_model.py
 - `governor_smoke.py` imports `eval` (2 hops to `chat.py`) [critical]
   Path: governor_smoke.py -> __init__.py -> chat.py
+- `governor_smoke.py` imports `eval` (2 hops to `trainer_utils_topo.py`) [critical]
+  Path: governor_smoke.py -> __init__.py -> trainer_utils_topo.py
 - `governor_smoke.py` imports `eval` (2 hops to `yarn.py`) [critical]
   Path: governor_smoke.py -> __init__.py -> yarn.py
-- `governor_smoke.py` imports `eval` (2 hops to `rollout.py`) [critical]
-  Path: governor_smoke.py -> __init__.py -> rollout.py
-- `governor_smoke.py` imports `eval` (2 hops to `inference.py`) [critical]
-  Path: governor_smoke.py -> __init__.py -> inference.py
-- `governor_smoke.py` imports `eval` (3 hops to `continuation.py`) [critical]
-  Path: governor_smoke.py -> __init__.py -> model.py -> continuation.py
 - `governor_smoke.py` imports `eval` (3 hops to `synthetic_dataset.py`) [critical]
   Path: governor_smoke.py -> __init__.py -> model.py -> synthetic_dataset.py
+- `governor_smoke.py` imports `eval` (3 hops to `continuation.py`) [critical]
+  Path: governor_smoke.py -> __init__.py -> model.py -> continuation.py
 - `governor_smoke.py` imports `eval` (3 hops to `sandbox.py`) [critical]
   Path: governor_smoke.py -> __init__.py -> tools_agent.py -> sandbox.py
 
