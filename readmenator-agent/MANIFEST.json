@@ -1,0 +1,144 @@
+{
+  "tool": "readmenator",
+  "schema_version": 2,
+  "generated_at": "2026-10-08T00:42:34Z",
+  "project_root": ".",
+  "project_name": "push_TopoGPT3_20261007_212737",
+  "git_commit": "16bab41bd04d3941d78a75dd6bde07b3f6db21d1",
+  "git_branch": "security-export",
+  "source_fingerprint": "f6cec47091354aaf628047b4981e20b1aa398dc553f71d362820b100e8ed469b",
+  "freshness_check": "readmenator . fresh  # exit 0 = docs match sources, exit 1 = run: readmenator . --rebuild",
+  "files": 53,
+  "symbols": 933,
+  "imports": 552,
+  "calls": 5895,
+  "inherits": 33,
+  "resolved_imports": 112,
+  "security_findings": 0,
+  "languages": {
+    "c": 1,
+    "py": 51,
+    "sh": 1
+  },
+  "subsystems": {
+    "eval": 16,
+    "root": 8,
+    "tests": 3,
+    "topogpt3": 26
+  },
+  "entrypoints": [
+    "app.py",
+    "topogpt3/__main__.py"
+  ],
+  "start_here": "INDEX.md",
+  "read_order": [
+    "readmenator-wiki/index.md  # big picture, communities, god nodes",
+    "readmenator-agent/INDEX.md  # file -> purpose -> used-by count",
+    "readmenator-agent/GOTCHAS.md  # blast radius before editing",
+    "readmenator-agent/KB_<subsystem>.md  # only the subsystem you touch"
+  ],
+  "workflow": [
+    "ls *.md readmenator-*/  # orient: docs first, ignore build noise",
+    "grep -n '<keyword>' INDEX*.md SYMBOLS*.md",
+    "cat KB_<subsystem>.md",
+    "grep -n '<file>' ARCHITECTURE*.md API*.md"
+  ],
+  "documents": [
+    {
+      "path": "API.md",
+      "lines": 486,
+      "approx_tokens": 11900
+    },
+    {
+      "path": "API_p2.md",
+      "lines": 231,
+      "approx_tokens": 6364
+    },
+    {
+      "path": "ARCHITECTURE.md",
+      "lines": 160,
+      "approx_tokens": 2679
+    },
+    {
+      "path": "CONCEPTS.md",
+      "lines": 120,
+      "approx_tokens": 4386
+    },
+    {
+      "path": "GOTCHAS.md",
+      "lines": 51,
+      "approx_tokens": 710
+    },
+    {
+      "path": "INDEX.md",
+      "lines": 57,
+      "approx_tokens": 1370
+    },
+    {
+      "path": "KB_eval.md",
+      "lines": 209,
+      "approx_tokens": 2456
+    },
+    {
+      "path": "KB_root.md",
+      "lines": 242,
+      "approx_tokens": 3774
+    },
+    {
+      "path": "KB_tests.md",
+      "lines": 116,
+      "approx_tokens": 2463
+    },
+    {
+      "path": "KB_topogpt3.md",
+      "lines": 372,
+      "approx_tokens": 5719
+    },
+    {
+      "path": "KB_topogpt3_p2.md",
+      "lines": 400,
+      "approx_tokens": 6634
+    },
+    {
+      "path": "SECURITY.md",
+      "lines": 3,
+      "approx_tokens": 10
+    },
+    {
+      "path": "SYMBOLS.md",
+      "lines": 500,
+      "approx_tokens": 11991
+    },
+    {
+      "path": "SYMBOLS_p2.md",
+      "lines": 446,
+      "approx_tokens": 10379
+    },
+    {
+      "path": "recipes/add-function.md",
+      "lines": 9,
+      "approx_tokens": 99
+    },
+    {
+      "path": "recipes/change-impact.md",
+      "lines": 9,
+      "approx_tokens": 109
+    },
+    {
+      "path": "recipes/fix-cycle.md",
+      "lines": 6,
+      "approx_tokens": 65
+    },
+    {
+      "path": "recipes/fix-security.md",
+      "lines": 6,
+      "approx_tokens": 69
+    },
+    {
+      "path": "recipes/reduce-complexity.md",
+      "lines": 9,
+      "approx_tokens": 76
+    }
+  ],
+  "regenerate": "readmenator . --rebuild"
+}

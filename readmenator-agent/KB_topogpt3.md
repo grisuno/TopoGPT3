@@ -1,0 +1,372 @@
+# Subsystem: topogpt3 (page 1 of 2)
+Pages: [KB_topogpt3.md](KB_topogpt3.md), [KB_topogpt3_p2.md](KB_topogpt3_p2.md)
+
+## topogpt3/__init__.py
+- Doc: TopoGPT3: complex-valued spectral language model for code.
+- Layer: utility
+- Language: py
+- Depends on: `topogpt3/chat.py`, `topogpt3/eval_toolcall.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`, `topogpt3/lens_model.py`, `topogpt3/lora.py`, `topogpt3/model.py`, `topogpt3/rewards.py`, `topogpt3/rollout.py`, `topogpt3/tools_agent.py`, `topogpt3/train.py`, `topogpt3/trainer_utils_topo.py`, `topogpt3/yarn.py`
+- Imported by: `eval/diag_static.py`, `eval/governor_smoke.py`, `eval/harness.py`, `eval/noise_sweep.py`, `eval/repair.py`, `eval/samplers.py`, `eval/smoke.py`
+
+## topogpt3/__main__.py
+- Doc: main: TopoGPT3 entry point.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `main` (function, line 6) `def main()`
+- Depends on: `topogpt3/api_server.py`, `topogpt3/convert.py`, `topogpt3/export_chat.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`, `topogpt3/lens_model.py`, `topogpt3/train.py`, `topogpt3/train_agent.py`, `topogpt3/train_distill.py`, `topogpt3/train_dpo.py`, `topogpt3/train_grpo.py`, `topogpt3/train_lora.py`, `topogpt3/train_ppo.py`
+
+## topogpt3/api_server.py
+- Doc: OpenAI-compatible HTTP API server so TopoGPT3 can be used as a backend for coding agents (e.g.
+- Layer: presentation
+- Language: py
+- Symbols:
+  - `_setup_logging` (function, line 116) `def _setup_logging(verbose)`
+  - `ApiKey` (class, line 137) `class ApiKey`
+  - `AuthState` (class, line 143) `class AuthState`
+  - `_parse_keys` (method, line 164) `def _parse_keys(raw)`
+  - `_sha256` (method, line 192) `def _sha256(raw)`
+  - `TokenBucket` (class, line 202) `class TokenBucket`
+  - `RateLimiter` (class, line 219) `class RateLimiter`
+  - `IpBanner` (class, line 250) `class IpBanner`
+  - `_sanitize_stop` (method, line 281) `def _sanitize_stop(stop)`
+  - `CompletionRequest` (class, line 291) `class CompletionRequest(BaseModel)`
+  - `Message` (class, line 310) `class Message(BaseModel)`
+  - `ChatCompletionRequest` (class, line 316) `class ChatCompletionRequest(BaseModel)`
+  - `ServerModel` (class, line 344) `class ServerModel`
+  - `_resolve_device` (method, line 502) `def _resolve_device(device)`
+  - `_probe_n_kv` (method, line 508) `def _probe_n_kv(checkpoint_dir)`
+  - `load_model` (method, line 516) `def load_model(checkpoint, device)`
+  - `lifespan` (method, line 537) `def lifespan(app)`
+  - `_security_middleware` (method, line 577) `def _security_middleware(request, call_next)`
+  - `_real_ip` (method, line 605) `def _real_ip(request)`
+  - `_json_error` (method, line 616) `def _json_error(status, detail)`
+  - `_authenticate` (method, line 628) `def _authenticate(request)`
+  - `_check_rate_limit` (method, line 646) `def _check_rate_limit(api_key, request)`
+  - `health` (method, line 664) `def health(request)`
+  - `list_models` (method, line 671) `def list_models(request)`
+  - `completions` (method, line 688) `def completions(req, request)`
+  - `chat_completions` (method, line 744) `def chat_completions(req, request)`
+  - `_check_model` (method, line 818) `def _check_model()`
+  - `_short_id` (method, line 823) `def _short_id()`
+  - `_build_chat_prompt` (method, line 827) `def _build_chat_prompt(messages)`
+  - `_extract_text` (method, line 846) `def _extract_text(content)`
+  - `_stream_completion` (method, line 860) `def _stream_completion(prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...`
+  - `_stream_chat` (method, line 895) `def _stream_chat(t0_ms, prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...`
+  - `main` (method, line 933) `def main()`
+  - `validate` (method, line 148) `def validate(self, raw)`
+  - `consume` (method, line 208) `def consume(self, n)`
+  - `__init__` (method, line 220) `def __init__(self, user_rps, admin_rps, capacity)`
+  - `_cleanup` (method, line 227) `def _cleanup(self)`
+  - `allow` (method, line 233) `def allow(self, key, role)`
+  - `__init__` (method, line 251) `def __init__(self, max_failures, window)`
+  - `record_failure` (method, line 257) `def record_failure(self, ip)`
+  - `is_banned` (method, line 265) `def is_banned(self, ip)`
+  - `_normalize_stop` (method, line 306) `def _normalize_stop(cls, v)`
+  - `_normalize_stop` (method, line 334) `def _normalize_stop(cls, v)`
+  - `complete` (method, line 351) `def complete(self, prompt)`
+  - `stream_complete` (method, line 396) `def stream_complete(self, prompt)`
+  - `_is_eos` (method, line 485) `def _is_eos(self, token_id)`
+- Depends on: `topogpt3/chat.py`, `topogpt3/continuation.py`, `topogpt3/model.py`
+- Imported by: `topogpt3/__main__.py`
+
+## topogpt3/chat.py
+- Doc: Chat template + special tokens for TopoGPT3.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `pre_processing_chat` (function, line 43) `def pre_processing_chat(conversations, add_system_ratio)`
+  - `post_processing_chat` (function, line 54) `def post_processing_chat(prompt, empty_think_ratio)`
+  - `_fmt_tool_defs` (function, line 60) `def _fmt_tool_defs(tools)`
+  - `apply_chat_template` (function, line 71) `def apply_chat_template(messages, tools, add_generation_prompt, open_thinking)`
+  - `parse_tool_calls` (function, line 116) `def parse_tool_calls(text)`
+  - `parse_thinking` (function, line 126) `def parse_thinking(text)`
+  - `split_reasoning_content` (function, line 134) `def split_reasoning_content(text)`
+- Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/api_server.py`, `topogpt3/eval_toolcall.py`, `topogpt3/tools_agent.py`, `topogpt3/train_agent.py`
+
+## topogpt3/continuation.py
+- Doc: Auto-continuation engine: detects truncated responses and feeds the last incomplete lines back...
+- Layer: utility
+- Language: py
+- Symbols:
+  - `_count_unclosed_brackets` (function, line 25) `def _count_unclosed_brackets(text)`
+  - `_count_unclosed_fences` (function, line 36) `def _count_unclosed_fences(text)`
+  - `is_response_complete` (function, line 45) `def is_response_complete(text, min_chars)`
+  - `extract_tail_for_continuation` (function, line 75) `def extract_tail_for_continuation(text, tail_lines, tail_chars)`
+  - `split_at_last_newline` (function, line 105) `def split_at_last_newline(text)`
+- Imported by: `topogpt3/api_server.py`, `topogpt3/inference_hrm.py`, `topogpt3/model.py`
+
+## topogpt3/convert.py
+- Doc: Export / convert utilities for TopoGPT3 checkpoints.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `merge_base_lora` (function, line 19) `def merge_base_lora(base_dir, lora_path, out_dir)`
+  - `export_hf_stub` (function, line 38) `def export_hf_stub(ckpt_dir, out_dir)`
+  - `main` (function, line 49) `def main()`
+- Depends on: `topogpt3/lora.py`, `topogpt3/model.py`
+- Imported by: `topogpt3/__main__.py`
+
+## topogpt3/eval_toolcall.py
+- Doc: Tool-call evaluation for TopoGPT3 agents.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `run_case` (function, line 19) `def run_case(generate_fn, prompt, expect_tool)`
+  - `evaluate` (function, line 35) `def evaluate(generate_fn)`
+- Depends on: `topogpt3/chat.py`, `topogpt3/tools_agent.py`
+- Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`
+
+## topogpt3/export_chat.py
+- Doc: Export the real 4-tier curriculum (HF) to chat JSONL for the heritage trainers.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `_pairs_codealpaca` (function, line 28) `def _pairs_codealpaca(ex)`
+  - `_pairs_code_feedback` (function, line 38) `def _pairs_code_feedback(ex)`
+  - `_pairs_magicoder` (function, line 55) `def _pairs_magicoder(ex)`
+  - `_iter_pairs` (function, line 65) `def _iter_pairs(loader, tier, cap)`
+  - `main` (function, line 81) `def main()`
+- Depends on: `topogpt3/model.py`, `topogpt3/train.py`
+- Imported by: `topogpt3/__main__.py`
+
+## topogpt3/inference.py
+- Doc: TopoGPT3 inference engine.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `ScalePreset` (class, line 32) `class ScalePreset`
+  - `InferenceSettings` (class, line 42) `class InferenceSettings`
+  - `InferenceLoggerFactory` (class, line 158) `class InferenceLoggerFactory`
+  - `SecurePathResolver` (class, line 178) `class SecurePathResolver`
+  - `SourceModuleLoader` (class, line 212) `class SourceModuleLoader`
+  - `CheckpointPaths` (class, line 228) `class CheckpointPaths`
+  - `WeightShapeProbe` (class, line 274) `class WeightShapeProbe`
+  - `TopoGPT2ConfigAligner` (class, line 318) `class TopoGPT2ConfigAligner`
+  - `TokenizerFactory` (class, line 349) `class TokenizerFactory`
+  - `GaussPatchApplier` (class, line 362) `class GaussPatchApplier`
+  - `ModelAssembler` (class, line 380) `class ModelAssembler`
+  - `SeedSynchronizer` (class, line 417) `class SeedSynchronizer`
+  - `SamplingPolicy` (class, line 441) `class SamplingPolicy`
+  - `GenerationReport` (class, line 461) `class GenerationReport`
+  - `GenerationEngine` (class, line 475) `class GenerationEngine`
+  - `ResultRenderer` (class, line 533) `class ResultRenderer`
+  - `InferencePipeline` (class, line 562) `class InferencePipeline`
+  - `CliArgumentParser` (class, line 615) `class CliArgumentParser`
+  - `main` (method, line 721) `def main(argv)`
+  - `scale_presets` (method, line 103) `def scale_presets()`
+  - `preset` (method, line 116) `def preset(self)`
+  - `validate` (method, line 126) `def validate(self)`
+  - `build` (method, line 162) `def build(settings)`
+  - `resolve_under` (method, line 182) `def resolve_under(root)`
+  - `require_existing_file` (method, line 198) `def require_existing_file(path, expected_suffix)`
+  - `__init__` (method, line 215) `def __init__(self, settings, logger)`
+  - `load` (method, line 219) `def load(self)`
+  - `__init__` (method, line 231) `def __init__(self, settings)`
+  - `slot_dir` (method, line 239) `def slot_dir(self)`
+  - `model_file` (method, line 243) `def model_file(self)`
+  - `state_file` (method, line 249) `def state_file(self)`
+  - `assert_ready` (method, line 255) `def assert_ready(self)`
+  - `__init__` (method, line 277) `def __init__(self, settings, logger)`
+  - `detect_n_kv_heads` (method, line 281) `def detect_n_kv_heads(self, weights_path, d_model, n_heads)`
+  - `__init__` (method, line 321) `def __init__(self, settings, source_module, logger)`
+  - `build` (method, line 327) `def build(self, n_kv_heads, vocab_size)`
+  - `__init__` (method, line 352) `def __init__(self, settings, source_module)`
+  - `build` (method, line 356) `def build(self)`
+  - `__init__` (method, line 365) `def __init__(self, settings, source_module, logger)`
+  - `apply_if_enabled` (method, line 371) `def apply_if_enabled(self)`
+  - `__init__` (method, line 383) `def __init__(self, settings, source_module, logger)`
+  - `assemble` (method, line 389) `def assemble(self, aligned_cfg, paths)`
+  - `__init__` (method, line 420) `def __init__(self, settings, source_module, logger)`
+  - `apply` (method, line 426) `def apply(self)`
+  - `from_settings` (method, line 450) `def from_settings(cls, settings)`
+  - `tokens_per_second` (method, line 470) `def tokens_per_second(self, elapsed_floor)`
+  - `__init__` (method, line 478) `def __init__(self, settings, logger)`
+  - `run` (method, line 483) `def run(self, model, tokenizer, prompt, policy)`
+  - `__init__` (method, line 536) `def __init__(self, settings, logger)`
+  - `render` (method, line 540) `def render(self, report)`
+  - `__init__` (method, line 565) `def __init__(self, settings, logger)`
+  - `execute` (method, line 571) `def execute(self)`
+  - `build_parser` (method, line 619) `def build_parser()`
+  - `parse` (method, line 698) `def parse(argv)`
+- Imported by: `topogpt3/__init__.py`, `topogpt3/__main__.py`
+
+## topogpt3/inference_hrm.py
+- Doc: TopoGPT3.1: Hierarchical Recursive Reasoning Inference Engine.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `ScalePreset` (class, line 54) `class ScalePreset`
+  - `RecursiveReasoningConfig` (class, line 64) `class RecursiveReasoningConfig`
+  - `HRMInferenceSettings` (class, line 134) `class HRMInferenceSettings`
+  - `HRMLoggerFactory` (class, line 343) `class HRMLoggerFactory`
+  - `SecurePathResolver` (class, line 363) `class SecurePathResolver`
+  - `SourceModuleLoader` (class, line 397) `class SourceModuleLoader`
+  - `CheckpointPaths` (class, line 413) `class CheckpointPaths`
+  - `WeightShapeProbe` (class, line 459) `class WeightShapeProbe`
+  - `TopoGPT2ConfigAligner` (class, line 502) `class TopoGPT2ConfigAligner`
+  - `TokenizerFactory` (class, line 533) `class TokenizerFactory`
+  - `GaussPatchApplier` (class, line 546) `class GaussPatchApplier`
+  - `ModelAssembler` (class, line 564) `class ModelAssembler`
+  - `SeedSynchronizer` (class, line 601) `class SeedSynchronizer`
+  - `LatentChangeMetric` (class, line 624) `class LatentChangeMetric`
+  - `ReasoningIterationStats` (class, line 648) `class ReasoningIterationStats`
+  - `GenerationReasoningSummary` (class, line 661) `class GenerationReasoningSummary`
+  - `SparseHighLevelStateCache` (class, line 684) `class SparseHighLevelStateCache`
+  - `HierarchicalRecursiveReasoner` (class, line 727) `class HierarchicalRecursiveReasoner`
+  - `LogitsSampler` (class, line 935) `class LogitsSampler`
+  - `SamplingPolicy` (class, line 963) `class SamplingPolicy`
+  - `GenerationReport` (class, line 985) `class GenerationReport`
+  - `HRMGenerationEngine` (class, line 1000) `class HRMGenerationEngine`
+  - `ResultRenderer` (class, line 1189) `class ResultRenderer`
+  - `HRMInferencePipeline` (class, line 1230) `class HRMInferencePipeline`
+  - `CliArgumentParser` (class, line 1283) `class CliArgumentParser`
+  - `main` (method, line 1494) `def main(argv)`
+  - `scale_presets` (method, line 221) `def scale_presets()`
+  - `preset` (method, line 234) `def preset(self)`
+  - `validate` (method, line 244) `def validate(self)`
+  - `build` (method, line 347) `def build(settings)`
+  - `resolve_under` (method, line 367) `def resolve_under(root)`
+  - `require_existing_file` (method, line 383) `def require_existing_file(path, expected_suffix)`
+  - `__init__` (method, line 400) `def __init__(self, settings, logger)`
+  - `load` (method, line 404) `def load(self)`
+  - `__init__` (method, line 416) `def __init__(self, settings)`
+  - `slot_dir` (method, line 424) `def slot_dir(self)`
+  - `model_file` (method, line 428) `def model_file(self)`
+  - `state_file` (method, line 434) `def state_file(self)`
+  - `assert_ready` (method, line 440) `def assert_ready(self)`
+  - `__init__` (method, line 462) `def __init__(self, settings, logger)`
+  - `detect_n_kv_heads` (method, line 466) `def detect_n_kv_heads(self, weights_path, d_model, n_heads)`
+  - `__init__` (method, line 505) `def __init__(self, settings, source_module, logger)`
+  - `build` (method, line 511) `def build(self, n_kv_heads, vocab_size)`
+  - `__init__` (method, line 536) `def __init__(self, settings, source_module)`
+  - `build` (method, line 540) `def build(self)`
+  - `__init__` (method, line 549) `def __init__(self, settings, source_module, logger)`
+  - `apply_if_enabled` (method, line 555) `def apply_if_enabled(self)`
+  - `__init__` (method, line 567) `def __init__(self, settings, source_module, logger)`
+  - `assemble` (method, line 573) `def assemble(self, aligned_cfg, paths)`
+  - `__init__` (method, line 604) `def __init__(self, settings, source_module, logger)`
+  - `apply` (method, line 610) `def apply(self)`
+  - `__init__` (method, line 627) `def __init__(self, epsilon_floor)`
+  - `relative_change` (method, line 632) `def relative_change(self, current, previous)`
+  - `absorb` (method, line 671) `def absorb(self, sample)`
+  - `__init__` (method, line 693) `def __init__(self, persist_tokens)`
+  - `get_or_init` (method, line 700) `def get_or_init(self, reference)`
+  - `commit` (method, line 716) `def commit(self, new_state)`
+  - `invalidate` (method, line 721) `def invalidate(self)`
+  - `__init__` (method, line 768) `def __init__(self, layers, final_norm, reasoning_config, logger)`
+  - `num_layers` (method, line 789) `def num_layers(self)`
+  - `_full_pass` (method, line 793) `def _full_pass(self, z_in, base_kvs)`
+  - `_window_pass` (method, line 808) `def _window_pass(self, z_in, base_kvs, window)`
+  - `reason` (method, line 827) `def reason(self, z_initial, base_kvs, cached_refinement)`
+  - `__init__` (method, line 938) `def __init__(self, logger)`
+  - `sample` (method, line 941) `def sample(self, logits, token_history, temperature, top_k, repetition_penalty)`
+  - `from_settings` (method, line 973) `def from_settings(cls, settings)`
+  - `tokens_per_second` (method, line 995) `def tokens_per_second(self, elapsed_floor)`
+  - `__init__` (method, line 1011) `def __init__(self, settings, logger)`
+  - `_encode_prompt` (method, line 1016) `def _encode_prompt(self, model, prompt_ids)`
+  - `run` (method, line 1048) `def run(self, model, tokenizer, prompt, policy)`
+  - `__init__` (method, line 1192) `def __init__(self, settings, logger)`
+  - `render` (method, line 1196) `def render(self, report)`
+  - `__init__` (method, line 1233) `def __init__(self, settings, logger)`
+  - `execute` (method, line 1239) `def execute(self)`
+  - `build_parser` (method, line 1287) `def build_parser()`
+  - `parse` (method, line 1448) `def parse(argv)`
+- Depends on: `topogpt3/continuation.py`
+- Imported by: `topogpt3/__init__.py`, `topogpt3/__main__.py`
+
+## topogpt3/jlens.py
+- Doc: TopoGPT3JLensFitConfig: Centralized configuration for Jacobian lens fitting.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `TopoGPT3JLensFitConfig` (class, line 37) `class TopoGPT3JLensFitConfig`
+  - `TopoGPT3JLensAppConfig` (class, line 56) `class TopoGPT3JLensAppConfig`
+  - `ActivationRecorder` (class, line 69) `class ActivationRecorder`
+  - `valid_position_mask` (method, line 132) `def valid_position_mask(seq_len)`
+  - `_check_layer_indices` (method, line 162) `def _check_layer_indices(source_layers, target_layer, n_layers)`
+  - `jacobian_for_prompt` (method, line 187) `def jacobian_for_prompt(model, prompt, source_layers)`
+  - `_atomic_save` (method, line 283) `def _atomic_save(obj, path)`
+  - `fit` (method, line 291) `def fit(model, prompts)`
+  - `JacobianLens` (class, line 459) `class JacobianLens`
+  - `SliceData` (class, line 664) `class SliceData`
+  - `compute_slice` (method, line 705) `def compute_slice(model, lens, prompt)`
+  - `text_slice` (method, line 789) `def text_slice(slice_data, tokenizer, n_cols)`
+  - `_demo_jlens` (method, line 842) `def _demo_jlens()`
+  - `__init__` (method, line 87) `def __init__(self, blocks, at)`
+  - `_make_hook` (method, line 102) `def _make_hook(self, index)`
+  - `__enter__` (method, line 113) `def __enter__(self)`
+  - `__exit__` (method, line 126) `def __exit__(self)`
+  - `write_checkpoint` (method, line 378) `def write_checkpoint()`
+  - `__init__` (method, line 470) `def __init__(self, jacobians)`
+  - `__repr__` (method, line 482) `def __repr__(self)`
+  - `save` (method, line 489) `def save(self, path)`
+  - `load` (method, line 504) `def load(cls, path)`
+  - `from_pretrained` (method, line 519) `def from_pretrained(cls, name_or_path)`
+  - `merge` (method, line 543) `def merge(cls, lenses)`
+  - `transport` (method, line 574) `def transport(self, residual, layer)`
+  - `apply` (method, line 585) `def apply(self, model, prompt)`
+  - `__post_init__` (method, line 692) `def __post_init__(self)`
+  - `hook` (method, line 105) `def hook(module, inputs, output)`
+  - `select` (method, line 646) `def select(layer)`
+- Depends on: `topogpt3/lens_model.py`
+- Imported by: `tests/test_jlens.py`, `tests/test_lens_model.py`, `topogpt3/__init__.py`, `topogpt3/__main__.py`
+
+## topogpt3/lens_model.py
+- Doc: LensModel: What the lens needs from a model.
+- Layer: business_logic
+- Language: py
+- Symbols:
+  - `LensModel` (class, line 23) `class LensModel(Protocol)`
+  - `TopoGPT3LensConfig` (class, line 59) `class TopoGPT3LensConfig`
+  - `_TopoGPT3ResidualForward` (class, line 142) `class _TopoGPT3ResidualForward(Module)`
+  - `TopoGPT3LensModel` (class, line 161) `class TopoGPT3LensModel(Module)`
+  - `TinyDecoder` (class, line 306) `class TinyDecoder(Module)`
+  - `_ResidualBlock` (class, line 359) `class _ResidualBlock(Module)`
+  - `encode` (method, line 40) `def encode(self, text)`
+  - `forward` (method, line 45) `def forward(self, input_ids)`
+  - `unembed` (method, line 52) `def unembed(self, residual)`
+  - `from_topogpt2_config` (method, line 84) `def from_topogpt2_config(cls, cfg)`
+  - `probe_checkpoint` (method, line 104) `def probe_checkpoint(cls, checkpoint_dir)`
+  - `__init__` (method, line 150) `def __init__(self, model)`
+  - `forward` (method, line 154) `def forward(self, input_ids)`
+  - `__init__` (method, line 172) `def __init__(self, model, tokenizer)`
+  - `n_layers` (method, line 184) `def n_layers(self)`
+  - `d_model` (method, line 188) `def d_model(self)`
+  - `layers` (method, line 192) `def layers(self)`
+  - `tokenizer` (method, line 196) `def tokenizer(self)`
+  - `tokenizer` (method, line 200) `def tokenizer(self, tok)`
+  - `input_device` (method, line 204) `def input_device(self)`
+  - `input_device` (method, line 210) `def input_device(self, device)`
+  - `encode` (method, line 213) `def encode(self, text)`
+  - `forward` (method, line 228) `def forward(self, input_ids)`
+  - `unembed` (method, line 237) `def unembed(self, residual)`
+  - `from_checkpoint` (method, line 246) `def from_checkpoint(cls, checkpoint_dir)`
+  - `__init__` (method, line 315) `def __init__(self, n_layers, d_model, vocab_size, seed)`
+  - `forward` (method, line 344) `def forward(self, token_ids, past_kvs)`
+  - `__init__` (method, line 360) `def __init__(self, d_model)`
+  - `forward` (method, line 366) `def forward(self, x, past_kv)`
+- Depends on: `topogpt3/model.py`
+- Imported by: `tests/test_jlens.py`, `tests/test_lens_model.py`, `topogpt3/__init__.py`, `topogpt3/__main__.py`, `topogpt3/jlens.py`
+
+## topogpt3/lora.py
+- Doc: Native LoRA for TopoGPT3.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `LoRA` (class, line 16) `class LoRA(Module)`
+  - `_is_quaternion_sublayer` (method, line 29) `def _is_quaternion_sublayer(name)`
+  - `lora_targets` (method, line 34) `def lora_targets(model, include_mlp)`
+  - `apply_lora` (method, line 54) `def apply_lora(model, rank, include_mlp)`
+  - `lora_parameters` (method, line 73) `def lora_parameters(model)`
+  - `freeze_non_lora` (method, line 80) `def freeze_non_lora(model)`
+  - `save_lora` (method, line 88) `def save_lora(model, path)`
+  - `load_lora` (method, line 99) `def load_lora(model, path, device)`
+  - `merge_lora` (method, line 110) `def merge_lora(model, lora_path, save_path)`
+  - `__init__` (method, line 17) `def __init__(self, in_features, out_features, rank)`
+  - `forward` (method, line 25) `def forward(self, x)`
+  - `_fwd` (method, line 66) `def _fwd(x, _o, _l)`
+- Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/convert.py`, `topogpt3/train_lora.py`
+
+
+Next: [KB_topogpt3_p2.md](KB_topogpt3_p2.md)
