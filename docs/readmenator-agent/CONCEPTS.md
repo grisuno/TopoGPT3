@@ -1,0 +1,120 @@
+# Concepts
+
+Nouns map atomically to file sets (EXTRACTED); verbs aggregate structural edges (INFERRED).
+
+- `topo` | files=35 | mentions=109 | `app.py`, `convert_weights.py`, `convert_weights_minios.py`, `eval/diag_static.py`, `eval/harness.py`, `eval/noise_sweep.py`, `eval/smoke.py`, `gradio_app.py`, `synthetic_dataset.py`, `tests/test_jlens.py`
+- `gpt3` | files=33 | mentions=63 | `app.py`, `convert_weights.py`, `convert_weights_minios.py`, `eval/diag_static.py`, `eval/harness.py`, `eval/noise_sweep.py`, `eval/smoke.py`, `gradio_app.py`, `tests/test_jlens.py`, `tests/test_lens_model.py`
+- `topogpt3` | files=32 | mentions=55 | `app.py`, `convert_weights.py`, `convert_weights_minios.py`, `eval/governor.py`, `eval/harness.py`, `topogpt3.c`, `topogpt3/__init__.py`, `topogpt3/__main__.py`, `topogpt3/api_server.py`, `topogpt3/chat.py`
+- `model` | files=24 | mentions=173 | `convert_weights.py`, `eval/analyze_results.py`, `eval/governor.py`, `eval/governor_smoke.py`, `eval/harness.py`, `eval/noise_sweep.py`, `eval/repair.py`, `eval/sandbox.py`, `synthetic_dataset.py`, `tests/test_jlens.py`
+- `eval` | files=23 | mentions=73 | `eval/analyze.py`, `eval/analyze_results.py`, `eval/diag_static.py`, `eval/governor.py`, `eval/governor_smoke.py`, `eval/harness.py`, `eval/integration_smoke.py`, `eval/noise_analysis.py`, `eval/noise_sweep.py`, `eval/repair.py`
+- `load` | files=22 | mentions=43 | `eval/analyze.py`, `eval/analyze_results.py`, `eval/governor_smoke.py`, `eval/harness.py`, `eval/noise_analysis.py`, `eval/noise_sweep.py`, `eval/report.py`, `eval/smoke.py`, `synthetic_dataset.py`, `tests/test_heritage.py`
+- `run` | files=20 | mentions=58 | `app.py`, `eval/analyze_results.py`, `eval/governor.py`, `eval/harness.py`, `eval/integration_smoke.py`, `eval/repair.py`, `eval/report.py`, `eval/samplers.py`, `eval/sandbox.py`, `eval/smoke.py`
+- `prompt` | files=19 | mentions=65 | `eval/analyze_results.py`, `eval/governor.py`, `eval/harness.py`, `eval/integration_smoke.py`, `eval/noise_analysis.py`, `eval/repair.py`, `synthetic_dataset.py`, `tests/test_jlens.py`, `topogpt3.c`, `topogpt3/__init__.py`
+- `checkpoint` | files=17 | mentions=70 | `app.py`, `convert_weights_minios.py`, `eval/diag_static.py`, `eval/noise_sweep.py`, `eval/smoke.py`, `gradio_app.py`, `tests/test_jlens.py`, `tests/test_lens_model.py`, `topogpt3/__init__.py`, `topogpt3/api_server.py`
+- `quaternion` | files=16 | mentions=37 | `tests/test_heritage.py`, `topogpt3.c`, `topogpt3/__init__.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/lora.py`, `topogpt3/model.py`, `topogpt3/train.py`, `topogpt3/train_agent.py`, `topogpt3/train_distill.py`
+- `when` | files=16 | mentions=30 | `app.py`, `eval/analyze.py`, `eval/governor.py`, `eval/samplers.py`, `eval/sandbox.py`, `tests/test_lens_model.py`, `topogpt3/chat.py`, `topogpt3/continuation.py`, `topogpt3/export_chat.py`, `topogpt3/inference.py`
+- `python` | files=16 | mentions=21 | `convert_weights.py`, `convert_weights_minios.py`, `encode_tokens.py`, `eval/analyze_results.py`, `eval/governor.py`, `eval/harness.py`, `eval/noise_analysis.py`, `eval/sandbox.py`, `gradio_app.py`, `synthetic_dataset.py`
+- `token` | files=15 | mentions=96 | `encode_tokens.py`, `eval/governor.py`, `eval/governor_smoke.py`, `eval/harness.py`, `eval/noise_analysis.py`, `tests/test_lens_model.py`, `topogpt3.c`, `topogpt3/api_server.py`, `topogpt3/export_chat.py`, `topogpt3/inference_hrm.py`
+- `returns` | files=15 | mentions=49 | `eval/governor.py`, `eval/harness.py`, `eval/samplers.py`, `eval/sandbox.py`, `synthetic_dataset.py`, `tests/test_jlens.py`, `tests/test_lens_model.py`, `topogpt3/continuation.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`
+- `build` | files=15 | mentions=37 | `app.py`, `eval/harness.py`, `eval/repair.py`, `eval/samplers.py`, `eval/sandbox.py`, `gradio_app.py`, `synthetic_dataset.py`, `tests/test_lens_model.py`, `topogpt3.c`, `topogpt3/api_server.py`
+- `per` | files=14 | mentions=53 | `eval/analyze.py`, `eval/governor.py`, `eval/governor_smoke.py`, `eval/noise_analysis.py`, `eval/sandbox.py`, `synthetic_dataset.py`, `topogpt3/api_server.py`, `topogpt3/export_chat.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`
+- `max` | files=14 | mentions=41 | `eval/diag_static.py`, `eval/governor.py`, `eval/sandbox.py`, `tests/test_lens_model.py`, `topogpt3.c`, `topogpt3/__init__.py`, `topogpt3/api_server.py`, `topogpt3/export_chat.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`
+- `weights` | files=14 | mentions=37 | `convert_weights.py`, `convert_weights_minios.py`, `tests/test_lens_model.py`, `topogpt3.c`, `topogpt3/convert.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`, `topogpt3/lens_model.py`, `topogpt3/lora.py`
+- `spectral` | files=14 | mentions=35 | `topogpt3.c`, `topogpt3/__init__.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/lora.py`, `topogpt3/model.py`, `topogpt3/rewards.py`, `topogpt3/train.py`, `topogpt3/train_distill.py`, `topogpt3/train_dpo.py`
+- `one` | files=14 | mentions=26 | `eval/analyze.py`, `eval/governor_smoke.py`, `eval/harness.py`, `eval/integration_smoke.py`, `eval/noise_sweep.py`, `eval/samplers.py`, `eval/sandbox.py`, `eval/temp_sweep.py`, `synthetic_dataset.py`, `tests/test_jlens.py`
+- `runs` | files=14 | mentions=23 | `eval/analyze_results.py`, `eval/diag_static.py`, `eval/harness.py`, `eval/noise_analysis.py`, `eval/noise_sweep.py`, `eval/repair.py`, `eval/report.py`, `eval/sandbox.py`, `eval/temp_sweep.py`, `topogpt3/eval_toolcall.py`
+- `file` | files=13 | mentions=60 | `app.py`, `convert_weights.py`, `convert_weights_minios.py`, `synthetic_dataset.py`, `tests/test_jlens.py`, `tests/test_lens_model.py`, `topogpt3.c`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`
+- `gpt2` | files=13 | mentions=35 | `eval/noise_sweep.py`, `synthetic_dataset.py`, `tests/test_lens_model.py`, `topogpt3/__init__.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/lens_model.py`, `topogpt3/model.py`, `topogpt3/rollout.py`, `topogpt3/train.py`
+- `generate` | files=13 | mentions=25 | `eval/governor.py`, `eval/harness.py`, `eval/noise_sweep.py`, `eval/temp_sweep.py`, `synthetic_dataset.py`, `topogpt3.c`, `topogpt3/eval_toolcall.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/model.py`
+- `tokens` | files=12 | mentions=72 | `encode_tokens.py`, `eval/governor.py`, `eval/noise_analysis.py`, `topogpt3.c`, `topogpt3/__init__.py`, `topogpt3/chat.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`, `topogpt3/model.py`
+- `return` | files=12 | mentions=51 | `app.py`, `eval/governor.py`, `eval/harness.py`, `eval/sandbox.py`, `gradio_app.py`, `tests/test_jlens.py`, `topogpt3.c`, `topogpt3/continuation.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`
+- `config` | files=12 | mentions=47 | `eval/sandbox.py`, `eval/temp_sweep.py`, `tests/test_jlens.py`, `tests/test_lens_model.py`, `topogpt3/api_server.py`, `topogpt3/convert.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`, `topogpt3/lens_model.py`
+- `text` | files=12 | mentions=37 | `app.py`, `encode_tokens.py`, `eval/governor.py`, `eval/harness.py`, `tests/test_lens_model.py`, `topogpt3/api_server.py`, `topogpt3/chat.py`, `topogpt3/continuation.py`, `topogpt3/jlens.py`, `topogpt3/lens_model.py`
+- `all` | files=12 | mentions=34 | `eval/governor.py`, `eval/integration_smoke.py`, `eval/sandbox_smoke.py`, `tests/test_jlens.py`, `tests/test_lens_model.py`, `topogpt3/export_chat.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`, `topogpt3/lens_model.py`
+- `train` | files=12 | mentions=28 | `topogpt3/__init__.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/model.py`, `topogpt3/train.py`, `topogpt3/train_agent.py`, `topogpt3/train_distill.py`, `topogpt3/train_dpo.py`, `topogpt3/train_grpo.py`, `topogpt3/train_lora.py`
+- `new` | files=12 | mentions=25 | `eval/governor.py`, `eval/harness.py`, `eval/integration_smoke.py`, `eval/repair.py`, `eval/samplers.py`, `topogpt3/__init__.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`, `topogpt3/lens_model.py`
+- `output` | files=12 | mentions=21 | `convert_weights.py`, `encode_tokens.py`, `eval/harness.py`, `eval/repair.py`, `eval/samplers.py`, `eval/sandbox.py`, `eval/sandbox_smoke.py`, `tests/test_lens_model.py`, `topogpt3.c`, `topogpt3/inference_hrm.py`
+- `usage` | files=12 | mentions=13 | `app.py`, `convert_weights.py`, `convert_weights_minios.py`, `encode_tokens.py`, `eval/analyze_results.py`, `eval/governor.py`, `eval/sandbox.py`, `gradio_app.py`, `topogpt3/__init__.py`, `topogpt3/api_server.py`
+- `layers` | files=11 | mentions=62 | `eval/sandbox_smoke.py`, `tests/test_jlens.py`, `tests/test_lens_model.py`, `topogpt3.c`, `topogpt3/__init__.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`, `topogpt3/lens_model.py`, `topogpt3/model.py`, `topogpt3/trainer_utils_topo.py`
+- `top` | files=11 | mentions=37 | `app.py`, `eval/governor.py`, `eval/harness.py`, `eval/repair.py`, `eval/sandbox.py`, `eval/temp_sweep.py`, `topogpt3.c`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`
+- `pass` | files=11 | mentions=35 | `eval/analyze.py`, `eval/harness.py`, `eval/integration_smoke.py`, `eval/noise_analysis.py`, `eval/noise_sweep.py`, `eval/report.py`, `eval/temp_sweep.py`, `tests/test_lens_model.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`
+- `error` | files=11 | mentions=33 | `eval/analyze.py`, `eval/harness.py`, `eval/report.py`, `eval/sandbox_smoke.py`, `tests/test_jlens.py`, `tests/test_lens_model.py`, `topogpt3/api_server.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`
+- `each` | files=11 | mentions=29 | `convert_weights.py`, `convert_weights_minios.py`, `eval/analyze_results.py`, `eval/governor.py`, `eval/harness.py`, `eval/repair.py`, `eval/sandbox.py`, `synthetic_dataset.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`
+- `code` | files=11 | mentions=25 | `eval/governor.py`, `eval/harness.py`, `eval/samplers.py`, `eval/sandbox.py`, `synthetic_dataset.py`, `topogpt3/__init__.py`, `topogpt3/export_chat.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/tools_agent.py`
+- `human` | files=11 | mentions=21 | `eval/analyze.py`, `eval/analyze_results.py`, `eval/harness.py`, `eval/integration_smoke.py`, `eval/noise_sweep.py`, `eval/repair.py`, `eval/samplers.py`, `eval/sandbox.py`, `eval/smoke.py`, `eval/temp_sweep.py`
+- `tensor` | files=11 | mentions=20 | `convert_weights.py`, `convert_weights_minios.py`, `eval/governor.py`, `tests/test_lens_model.py`, `topogpt3.c`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`, `topogpt3/lens_model.py`, `topogpt3/model.py`
+- `apply` | files=11 | mentions=19 | `tests/test_jlens.py`, `topogpt3.c`, `topogpt3/chat.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`, `topogpt3/lens_model.py`, `topogpt3/lora.py`, `topogpt3/model.py`, `topogpt3/train.py`
+- `name` | files=11 | mentions=18 | `convert_weights.py`, `convert_weights_minios.py`, `eval/samplers.py`, `eval/sandbox_smoke.py`, `synthetic_dataset.py`, `topogpt3/eval_toolcall.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`, `topogpt3/lens_model.py`
+- `only` | files=11 | mentions=18 | `eval/governor.py`, `eval/samplers.py`, `tests/test_heritage.py`, `tests/test_lens_model.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`, `topogpt3/lens_model.py`, `topogpt3/model.py`, `topogpt3/train_dpo.py`, `topogpt3/train_lora.py`
+- `standard` | files=11 | mentions=17 | `app.py`, `eval/harness.py`, `eval/report.py`, `eval/samplers.py`, `eval/sandbox.py`, `eval/smoke.py`, `gradio_app.py`, `tests/test_jlens.py`, `topogpt3/__init__.py`, `topogpt3/continuation.py`
+- `call` | files=11 | mentions=15 | `eval/governor.py`, `eval/governor_smoke.py`, `eval/sandbox.py`, `synthetic_dataset.py`, `topogpt3/chat.py`, `topogpt3/continuation.py`, `topogpt3/eval_toolcall.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/lens_model.py`
+- `layer` | files=10 | mentions=84 | `eval/sandbox.py`, `tests/test_jlens.py`, `tests/test_lens_model.py`, `topogpt3.c`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/jlens.py`, `topogpt3/lens_model.py`, `topogpt3/model.py`, `topogpt3/train.py`
+- `level` | files=10 | mentions=45 | `app.py`, `eval/harness.py`, `eval/sandbox.py`, `eval/sandbox_smoke.py`, `topogpt3.c`, `topogpt3/api_server.py`, `topogpt3/chat.py`, `topogpt3/inference_hrm.py`, `topogpt3/lens_model.py`, `topogpt3/model.py`
+- `inference` | files=10 | mentions=40 | `app.py`, `convert_weights.py`, `eval/governor.py`, `eval/harness.py`, `gradio_app.py`, `synthetic_dataset.py`, `topogpt3/__init__.py`, `topogpt3/continuation.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`
+- `generation` | files=10 | mentions=35 | `eval/analyze.py`, `eval/governor.py`, `eval/governor_smoke.py`, `eval/harness.py`, `eval/noise_analysis.py`, `topogpt3/continuation.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/model.py`, `topogpt3/rewards.py`
+
+## Verb Edges
+
+- `topo` --depends_on--> `topogpt3` (strength 1.00)
+- `gpt3` --depends_on--> `topogpt3` (strength 0.97)
+- `gpt3` --depends_on--> `topo` (strength 0.91)
+- `topogpt3` --depends_on--> `topo` (strength 0.81)
+- `topo` --depends_on--> `gpt3` (strength 0.75)
+- `topo` --depends_on--> `when` (strength 0.66)
+- `gpt3` --depends_on--> `when` (strength 0.65)
+- `topogpt3` --depends_on--> `gpt3` (strength 0.65)
+- `topo` --depends_on--> `model` (strength 0.63)
+- `topo` --depends_on--> `spectral` (strength 0.62)
+- `gpt3` --depends_on--> `spectral` (strength 0.61)
+- `quaternion` --depends_on--> `topogpt3` (strength 0.61)
+- `gpt3` --depends_on--> `model` (strength 0.59)
+- `quaternion` --depends_on--> `topo` (strength 0.59)
+- `topogpt3` --depends_on--> `when` (strength 0.58)
+- `topo` --depends_on--> `prompt` (strength 0.57)
+- `topo` --depends_on--> `quaternion` (strength 0.57)
+- `gpt3` --depends_on--> `prompt` (strength 0.56)
+- `gpt3` --depends_on--> `quaternion` (strength 0.56)
+- `topogpt3` --depends_on--> `spectral` (strength 0.54)
+- `gpt3` --depends_on--> `checkpoint` (strength 0.53)
+- `gpt3` --depends_on--> `tokens` (strength 0.53)
+- `gpt3` --depends_on--> `weights` (strength 0.53)
+- `topo` --depends_on--> `apply` (strength 0.53)
+- `topo` --depends_on--> `checkpoint` (strength 0.53)
+- `topo` --depends_on--> `load` (strength 0.53)
+- `topo` --depends_on--> `tokens` (strength 0.53)
+- `topo` --depends_on--> `weights` (strength 0.53)
+- `gpt3` --depends_on--> `apply` (strength 0.52)
+- `gpt3` --depends_on--> `load` (strength 0.52)
+- `topo` --depends_on--> `returns` (strength 0.52)
+- `topo` --depends_on--> `layers` (strength 0.51)
+- `train` --depends_on--> `topogpt3` (strength 0.51)
+- `gpt3` --depends_on--> `layers` (strength 0.49)
+- `gpt3` --depends_on--> `returns` (strength 0.49)
+- `topogpt3` --depends_on--> `model` (strength 0.49)
+- `topogpt3` --depends_on--> `quaternion` (strength 0.49)
+- `train` --depends_on--> `topo` (strength 0.49)
+- `gpt3` --depends_on--> `train` (strength 0.48)
+- `model` --depends_on--> `topogpt3` (strength 0.48)
+- `topo` --depends_on--> `train` (strength 0.48)
+- `checkpoint` --depends_on--> `topogpt3` (strength 0.47)
+- `quaternion` --depends_on--> `gpt3` (strength 0.47)
+- `topo` --depends_on--> `gpt2` (strength 0.47)
+- `topo` --depends_on--> `run` (strength 0.47)
+- `gpt3` --depends_on--> `gpt2` (strength 0.46)
+- `gpt3` --depends_on--> `new` (strength 0.46)
+- `gpt3` --depends_on--> `run` (strength 0.46)
+- `gpt3` --depends_on--> `token` (strength 0.46)
+- `topo` --depends_on--> `max` (strength 0.46)
+
+## Dialectic
+
+- Thesis: `all` centralizes 12 files; Antithesis: `apply` pulls 11 files with 7 shared (Jaccard 0.44); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `all` centralizes 12 files; Antithesis: `checkpoint` pulls 17 files with 8 shared (Jaccard 0.38); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `all` centralizes 12 files; Antithesis: `config` pulls 12 files with 8 shared (Jaccard 0.50); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `all` centralizes 12 files; Antithesis: `error` pulls 11 files with 7 shared (Jaccard 0.44); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `all` centralizes 12 files; Antithesis: `file` pulls 13 files with 8 shared (Jaccard 0.47); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `all` centralizes 12 files; Antithesis: `gpt2` pulls 13 files with 6 shared (Jaccard 0.32); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `all` centralizes 12 files; Antithesis: `layer` pulls 10 files with 8 shared (Jaccard 0.57); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `all` centralizes 12 files; Antithesis: `layers` pulls 11 files with 7 shared (Jaccard 0.44); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `all` centralizes 12 files; Antithesis: `max` pulls 14 files with 7 shared (Jaccard 0.37); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `all` centralizes 12 files; Antithesis: `model` pulls 24 files with 9 shared (Jaccard 0.33); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
