@@ -1,30 +1,30 @@
 {
   "tool": "readmenator",
   "schema_version": 2,
-  "generated_at": "2026-10-25T02:15:37Z",
+  "generated_at": "2026-10-25T02:39:01Z",
   "project_root": ".",
   "project_name": "TopoGPT3",
-  "git_commit": "a04629eb5ad36dca37f4cd79261dd393f5e3ec3a",
+  "git_commit": "c3de8abbea66132dc9bbed54e8c52cb07180de32",
   "git_branch": "main",
-  "source_fingerprint": "f6cec47091354aaf628047b4981e20b1aa398dc553f71d362820b100e8ed469b",
+  "source_fingerprint": "bedeaf9c8fa9e2f45f504dc7222e993d01665e55377297011a6d5a62f022d5ce",
   "freshness_check": "readmenator . fresh  # exit 0 = docs match sources, exit 1 = run: readmenator . --rebuild",
-  "files": 53,
-  "symbols": 933,
-  "imports": 552,
-  "calls": 5895,
-  "inherits": 33,
-  "resolved_imports": 112,
+  "files": 55,
+  "symbols": 981,
+  "imports": 571,
+  "calls": 6121,
+  "inherits": 34,
+  "resolved_imports": 120,
   "security_findings": 0,
   "languages": {
     "c": 1,
-    "py": 51,
+    "py": 53,
     "sh": 1
   },
   "subsystems": {
     "eval": 16,
     "root": 8,
-    "tests": 3,
-    "topogpt3": 26
+    "tests": 4,
+    "topogpt3": 27
   },
   "entrypoints": [
     "app.py",
@@ -49,32 +49,32 @@
     {
       "path": "API.md",
       "lines": 486,
-      "approx_tokens": 11777
+      "approx_tokens": 11794
     },
     {
       "path": "API_p2.md",
-      "lines": 231,
-      "approx_tokens": 6308
+      "lines": 244,
+      "approx_tokens": 6709
     },
     {
       "path": "ARCHITECTURE.md",
-      "lines": 160,
-      "approx_tokens": 2679
+      "lines": 166,
+      "approx_tokens": 2787
     },
     {
       "path": "CONCEPTS.md",
       "lines": 120,
-      "approx_tokens": 4386
+      "approx_tokens": 4420
     },
     {
       "path": "GOTCHAS.md",
-      "lines": 51,
-      "approx_tokens": 710
+      "lines": 59,
+      "approx_tokens": 873
     },
     {
       "path": "INDEX.md",
-      "lines": 57,
-      "approx_tokens": 1370
+      "lines": 59,
+      "approx_tokens": 1433
     },
     {
       "path": "KB_eval.md",
@@ -88,18 +88,23 @@
     },
     {
       "path": "KB_tests.md",
-      "lines": 116,
-      "approx_tokens": 2463
+      "lines": 149,
+      "approx_tokens": 3094
     },
     {
       "path": "KB_topogpt3.md",
-      "lines": 372,
-      "approx_tokens": 5742
+      "lines": 376,
+      "approx_tokens": 5831
     },
     {
       "path": "KB_topogpt3_p2.md",
-      "lines": 400,
-      "approx_tokens": 6643
+      "lines": 425,
+      "approx_tokens": 7029
+    },
+    {
+      "path": "MEMORY.md",
+      "lines": 86,
+      "approx_tokens": 1336
     },
     {
       "path": "SECURITY.md",
@@ -109,12 +114,12 @@
     {
       "path": "SYMBOLS.md",
       "lines": 500,
-      "approx_tokens": 12013
+      "approx_tokens": 12231
     },
     {
       "path": "SYMBOLS_p2.md",
-      "lines": 446,
-      "approx_tokens": 10399
+      "lines": 494,
+      "approx_tokens": 11510
     },
     {
       "path": "recipes/add-function.md",

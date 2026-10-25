@@ -1,10 +1,10 @@
 # TopoGPT3 API Reference
 
-> Generated offline by readmenator: 50 modules, 1116 documented entities, documentation coverage 50.2% (339/675 public items). Deterministic, zero tokens: signatures from source, docs parsed from Google, NumPy, reST, Javadoc/JSDoc/Doxygen, C# XML, and Rustdoc comments.
+> Generated offline by readmenator: 51 modules, 1139 documented entities, documentation coverage 50.5% (348/689 public items). Deterministic, zero tokens: signatures from source, docs parsed from Google, NumPy, reST, Javadoc/JSDoc/Doxygen, C# XML, and Rustdoc comments.
 
 Navigate: [Interactive architecture and flows](flows.html) | [Architecture and flows (Mermaid)](architecture.md) | [Class hierarchy](classes.md) | [General index](genindex.md) | [Coverage and warnings](COVERAGE.md) | [`api/index.json`](api/index.json) | [HTML browser](index.html)
 
-Languages: c (1), py (48), sh (1)
+Languages: c (1), py (49), sh (1)
 
 ## Modules
 
@@ -62,6 +62,7 @@ Languages: c (1), py (48), sh (1)
 | [`topogpt3.model`](modules/topogpt3.model.py.md) | TopoGPT2: Quaternion-Enhanced Topological Transformer Language Model | 32 | 112 | 54.2% |
 | [`topogpt3.rewards`](modules/topogpt3.rewards.py.md) | Reward + advantage + loss helpers for TopoGPT3 group-RL. | 0 | 9 | 40.0% |
 | [`topogpt3.rollout`](modules/topogpt3.rollout.py.md) | Rollout engine for TopoGPT3 RL self-sampling. | 3 | 7 | 9.1% |
+| [`topogpt3.structured_output`](modules/topogpt3.structured_output.py.md) | Constrained decoding for the TopoGPT3 OpenAI-compatible server. | 3 | 10 | 64.3% |
 | [`topogpt3.tools_agent`](modules/topogpt3.tools_agent.py.md) | Code-first tool definitions for TopoGPT3 Agent-RL. | 0 | 2 | 66.7% |
 | [`topogpt3.train`](modules/topogpt3.train.py.md) | TopoGPT3: Grassmannian / Berry-Holonomy extension of TopoGPT2 | 7 | 28 | 47.2% |
 | [`topogpt3.train_agent`](modules/topogpt3.train_agent.py.md) | Agentic RL for TopoGPT3 (multi-turn Tool-Use). | 0 | 2 | 33.3% |

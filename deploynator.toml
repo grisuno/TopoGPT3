@@ -1,0 +1,3 @@
+[project]
+name = "topogpt3"
+version_file = "pyproject.toml"

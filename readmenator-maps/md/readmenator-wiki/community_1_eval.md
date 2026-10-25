@@ -67,6 +67,8 @@ This community groups 11 file(s) rooted at `eval` with dominant language py (coh
 - [EXTRACTED] depends_on community 1 <-> 4 (strength 0.9): Extracted import edge crosses communities: topogpt3/__init__.py imports topogpt3/lens_model.py.
 - [EXTRACTED] depends_on community 1 <-> 0 (strength 0.9): Extracted import edge crosses communities: topogpt3/__init__.py imports topogpt3/lora.py.
 - [INFERRED] bridges community 1 <-> 3 (strength 0.5): Inferred cross-community bridge: eval/governor.py reaches eval/sandbox_smoke.py in 5 hops.
+- [INFERRED] bridges community 1 <-> 2 (strength 0.5): Inferred cross-community bridge: eval/governor.py reaches topogpt3/structured_output.py in 5 hops.
+- [INFERRED] bridges community 1 <-> 2 (strength 0.5): Inferred cross-community bridge: eval/integration_smoke.py reaches topogpt3/structured_output.py in 5 hops.
 - [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 1 (eval) and community 5 (root).
 - [INFERRED] shares_context community 1 <-> 6 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 1 (eval) and community 6 (orphans).
 
@@ -75,18 +77,18 @@ This community groups 11 file(s) rooted at `eval` with dominant language py (coh
 - [taint critical] `eval/governor_smoke.py` -> `eval/governor_smoke.py` via `eval` (0 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/__init__.py` via `eval` (1 hops)
 - [taint critical] `eval/governor_smoke.py` -> `eval/governor.py` via `eval` (1 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/train.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/chat.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/rollout.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/inference.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/tools_agent.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/model.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/trainer_utils_topo.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/lora.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/yarn.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/jlens.py` via `eval` (2 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/eval_toolcall.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/model.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/jlens.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/lens_model.py` via `eval` (2 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/rewards.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/inference.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/chat.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/train.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/yarn.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/inference_hrm.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/rollout.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/lora.py` via `eval` (2 hops)
 
 ## Open Questions
 

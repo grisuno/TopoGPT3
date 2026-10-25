@@ -28,6 +28,7 @@
         "topogpt3/model.py",
         "topogpt3/rewards.py",
         "topogpt3/rollout.py",
+        "topogpt3/structured_output.py",
         "topogpt3/tools_agent.py",
         "topogpt3/train.py",
         "topogpt3/train_agent.py",
@@ -39,7 +40,7 @@
         "topogpt3/trainer_utils_topo.py",
         "topogpt3/yarn.py"
       ],
-      "mentions": 109,
+      "mentions": 110,
       "confidence": "EXTRACTED"
     },
     {
@@ -68,6 +69,7 @@
         "topogpt3/lora.py",
         "topogpt3/rewards.py",
         "topogpt3/rollout.py",
+        "topogpt3/structured_output.py",
         "topogpt3/tools_agent.py",
         "topogpt3/train.py",
         "topogpt3/train_agent.py",
@@ -79,7 +81,7 @@
         "topogpt3/trainer_utils_topo.py",
         "topogpt3/yarn.py"
       ],
-      "mentions": 63,
+      "mentions": 64,
       "confidence": "EXTRACTED"
     },
     {
@@ -107,6 +109,7 @@
         "topogpt3/model.py",
         "topogpt3/rewards.py",
         "topogpt3/rollout.py",
+        "topogpt3/structured_output.py",
         "topogpt3/tools_agent.py",
         "topogpt3/train.py",
         "topogpt3/train_agent.py",
@@ -118,7 +121,7 @@
         "topogpt3/trainer_utils_topo.py",
         "topogpt3/yarn.py"
       ],
-      "mentions": 55,
+      "mentions": 56,
       "confidence": "EXTRACTED"
     },
     {
@@ -265,6 +268,30 @@
       "confidence": "EXTRACTED"
     },
     {
+      "name": "token",
+      "files": [
+        "encode_tokens.py",
+        "eval/governor.py",
+        "eval/governor_smoke.py",
+        "eval/harness.py",
+        "eval/noise_analysis.py",
+        "tests/test_lens_model.py",
+        "tests/test_structured_output.py",
+        "topogpt3.c",
+        "topogpt3/api_server.py",
+        "topogpt3/export_chat.py",
+        "topogpt3/inference_hrm.py",
+        "topogpt3/jlens.py",
+        "topogpt3/lens_model.py",
+        "topogpt3/model.py",
+        "topogpt3/rollout.py",
+        "topogpt3/structured_output.py",
+        "topogpt3/train.py"
+      ],
+      "mentions": 98,
+      "confidence": "EXTRACTED"
+    },
+    {
       "name": "checkpoint",
       "files": [
         "app.py",
@@ -286,6 +313,52 @@
         "topogpt3/trainer_utils_topo.py"
       ],
       "mentions": 70,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "returns",
+      "files": [
+        "eval/governor.py",
+        "eval/harness.py",
+        "eval/samplers.py",
+        "eval/sandbox.py",
+        "synthetic_dataset.py",
+        "tests/test_jlens.py",
+        "tests/test_lens_model.py",
+        "topogpt3/continuation.py",
+        "topogpt3/inference.py",
+        "topogpt3/inference_hrm.py",
+        "topogpt3/jlens.py",
+        "topogpt3/lens_model.py",
+        "topogpt3/lora.py",
+        "topogpt3/model.py",
+        "topogpt3/structured_output.py",
+        "topogpt3/tools_agent.py"
+      ],
+      "mentions": 50,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "build",
+      "files": [
+        "app.py",
+        "eval/harness.py",
+        "eval/repair.py",
+        "eval/samplers.py",
+        "eval/sandbox.py",
+        "gradio_app.py",
+        "synthetic_dataset.py",
+        "tests/test_lens_model.py",
+        "topogpt3.c",
+        "topogpt3/api_server.py",
+        "topogpt3/inference.py",
+        "topogpt3/inference_hrm.py",
+        "topogpt3/lens_model.py",
+        "topogpt3/model.py",
+        "topogpt3/structured_output.py",
+        "topogpt3/train.py"
+      ],
+      "mentions": 38,
       "confidence": "EXTRACTED"
     },
     {
@@ -358,72 +431,6 @@
       "confidence": "EXTRACTED"
     },
     {
-      "name": "token",
-      "files": [
-        "encode_tokens.py",
-        "eval/governor.py",
-        "eval/governor_smoke.py",
-        "eval/harness.py",
-        "eval/noise_analysis.py",
-        "tests/test_lens_model.py",
-        "topogpt3.c",
-        "topogpt3/api_server.py",
-        "topogpt3/export_chat.py",
-        "topogpt3/inference_hrm.py",
-        "topogpt3/jlens.py",
-        "topogpt3/lens_model.py",
-        "topogpt3/model.py",
-        "topogpt3/rollout.py",
-        "topogpt3/train.py"
-      ],
-      "mentions": 96,
-      "confidence": "EXTRACTED"
-    },
-    {
-      "name": "returns",
-      "files": [
-        "eval/governor.py",
-        "eval/harness.py",
-        "eval/samplers.py",
-        "eval/sandbox.py",
-        "synthetic_dataset.py",
-        "tests/test_jlens.py",
-        "tests/test_lens_model.py",
-        "topogpt3/continuation.py",
-        "topogpt3/inference.py",
-        "topogpt3/inference_hrm.py",
-        "topogpt3/jlens.py",
-        "topogpt3/lens_model.py",
-        "topogpt3/lora.py",
-        "topogpt3/model.py",
-        "topogpt3/tools_agent.py"
-      ],
-      "mentions": 49,
-      "confidence": "EXTRACTED"
-    },
-    {
-      "name": "build",
-      "files": [
-        "app.py",
-        "eval/harness.py",
-        "eval/repair.py",
-        "eval/samplers.py",
-        "eval/sandbox.py",
-        "gradio_app.py",
-        "synthetic_dataset.py",
-        "tests/test_lens_model.py",
-        "topogpt3.c",
-        "topogpt3/api_server.py",
-        "topogpt3/inference.py",
-        "topogpt3/inference_hrm.py",
-        "topogpt3/lens_model.py",
-        "topogpt3/model.py",
-        "topogpt3/train.py"
-      ],
-      "mentions": 37,
-      "confidence": "EXTRACTED"
-    },
-    {
       "name": "per",
       "files": [
         "eval/analyze.py",
@@ -439,9 +446,32 @@
         "topogpt3/jlens.py",
         "topogpt3/model.py",
         "topogpt3/rollout.py",
+        "topogpt3/structured_output.py",
         "topogpt3/train.py"
       ],
-      "mentions": 53,
+      "mentions": 55,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "one",
+      "files": [
+        "eval/analyze.py",
+        "eval/governor_smoke.py",
+        "eval/harness.py",
+        "eval/integration_smoke.py",
+        "eval/noise_sweep.py",
+        "eval/samplers.py",
+        "eval/sandbox.py",
+        "eval/temp_sweep.py",
+        "synthetic_dataset.py",
+        "tests/test_jlens.py",
+        "topogpt3/inference_hrm.py",
+        "topogpt3/jlens.py",
+        "topogpt3/model.py",
+        "topogpt3/structured_output.py",
+        "topogpt3/train.py"
+      ],
+      "mentions": 27,
       "confidence": "EXTRACTED"
     },
     {
@@ -463,6 +493,27 @@
         "topogpt3/yarn.py"
       ],
       "mentions": 41,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "text",
+      "files": [
+        "app.py",
+        "encode_tokens.py",
+        "eval/governor.py",
+        "eval/harness.py",
+        "tests/test_lens_model.py",
+        "tests/test_structured_output.py",
+        "topogpt3/api_server.py",
+        "topogpt3/chat.py",
+        "topogpt3/continuation.py",
+        "topogpt3/jlens.py",
+        "topogpt3/lens_model.py",
+        "topogpt3/model.py",
+        "topogpt3/structured_output.py",
+        "topogpt3/tools_agent.py"
+      ],
+      "mentions": 39,
       "confidence": "EXTRACTED"
     },
     {
@@ -508,22 +559,43 @@
       "confidence": "EXTRACTED"
     },
     {
-      "name": "one",
+      "name": "output",
       "files": [
-        "eval/analyze.py",
-        "eval/governor_smoke.py",
+        "convert_weights.py",
+        "encode_tokens.py",
         "eval/harness.py",
-        "eval/integration_smoke.py",
-        "eval/noise_sweep.py",
+        "eval/repair.py",
         "eval/samplers.py",
         "eval/sandbox.py",
-        "eval/temp_sweep.py",
-        "synthetic_dataset.py",
-        "tests/test_jlens.py",
+        "eval/sandbox_smoke.py",
+        "tests/test_lens_model.py",
+        "tests/test_structured_output.py",
+        "topogpt3.c",
         "topogpt3/inference_hrm.py",
         "topogpt3/jlens.py",
         "topogpt3/model.py",
-        "topogpt3/train.py"
+        "topogpt3/structured_output.py"
+      ],
+      "mentions": 28,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "generate",
+      "files": [
+        "eval/governor.py",
+        "eval/harness.py",
+        "eval/noise_sweep.py",
+        "eval/temp_sweep.py",
+        "synthetic_dataset.py",
+        "topogpt3.c",
+        "topogpt3/api_server.py",
+        "topogpt3/eval_toolcall.py",
+        "topogpt3/inference.py",
+        "topogpt3/inference_hrm.py",
+        "topogpt3/model.py",
+        "topogpt3/rollout.py",
+        "topogpt3/tools_agent.py",
+        "topogpt3/train_agent.py"
       ],
       "mentions": 26,
       "confidence": "EXTRACTED"
@@ -550,6 +622,26 @@
       "confidence": "EXTRACTED"
     },
     {
+      "name": "tokens",
+      "files": [
+        "encode_tokens.py",
+        "eval/governor.py",
+        "eval/noise_analysis.py",
+        "topogpt3.c",
+        "topogpt3/__init__.py",
+        "topogpt3/chat.py",
+        "topogpt3/inference.py",
+        "topogpt3/inference_hrm.py",
+        "topogpt3/jlens.py",
+        "topogpt3/model.py",
+        "topogpt3/rewards.py",
+        "topogpt3/structured_output.py",
+        "topogpt3/train.py"
+      ],
+      "mentions": 73,
+      "confidence": "EXTRACTED"
+    },
+    {
       "name": "file",
       "files": [
         "app.py",
@@ -567,6 +659,26 @@
         "topogpt3/train.py"
       ],
       "mentions": 60,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "return",
+      "files": [
+        "app.py",
+        "eval/governor.py",
+        "eval/harness.py",
+        "eval/sandbox.py",
+        "gradio_app.py",
+        "tests/test_jlens.py",
+        "topogpt3.c",
+        "topogpt3/continuation.py",
+        "topogpt3/inference.py",
+        "topogpt3/inference_hrm.py",
+        "topogpt3/jlens.py",
+        "topogpt3/model.py",
+        "topogpt3/structured_output.py"
+      ],
+      "mentions": 52,
       "confidence": "EXTRACTED"
     },
     {
@@ -590,61 +702,23 @@
       "confidence": "EXTRACTED"
     },
     {
-      "name": "generate",
+      "name": "new",
       "files": [
         "eval/governor.py",
         "eval/harness.py",
-        "eval/noise_sweep.py",
-        "eval/temp_sweep.py",
-        "synthetic_dataset.py",
-        "topogpt3.c",
-        "topogpt3/eval_toolcall.py",
-        "topogpt3/inference.py",
-        "topogpt3/inference_hrm.py",
-        "topogpt3/model.py",
-        "topogpt3/rollout.py",
-        "topogpt3/tools_agent.py",
-        "topogpt3/train_agent.py"
-      ],
-      "mentions": 25,
-      "confidence": "EXTRACTED"
-    },
-    {
-      "name": "tokens",
-      "files": [
-        "encode_tokens.py",
-        "eval/governor.py",
-        "eval/noise_analysis.py",
-        "topogpt3.c",
+        "eval/integration_smoke.py",
+        "eval/repair.py",
+        "eval/samplers.py",
         "topogpt3/__init__.py",
-        "topogpt3/chat.py",
         "topogpt3/inference.py",
         "topogpt3/inference_hrm.py",
         "topogpt3/jlens.py",
+        "topogpt3/lens_model.py",
         "topogpt3/model.py",
-        "topogpt3/rewards.py",
+        "topogpt3/structured_output.py",
         "topogpt3/train.py"
       ],
-      "mentions": 72,
-      "confidence": "EXTRACTED"
-    },
-    {
-      "name": "return",
-      "files": [
-        "app.py",
-        "eval/governor.py",
-        "eval/harness.py",
-        "eval/sandbox.py",
-        "gradio_app.py",
-        "tests/test_jlens.py",
-        "topogpt3.c",
-        "topogpt3/continuation.py",
-        "topogpt3/inference.py",
-        "topogpt3/inference_hrm.py",
-        "topogpt3/jlens.py",
-        "topogpt3/model.py"
-      ],
-      "mentions": 51,
+      "mentions": 26,
       "confidence": "EXTRACTED"
     },
     {
@@ -667,22 +741,22 @@
       "confidence": "EXTRACTED"
     },
     {
-      "name": "text",
+      "name": "error",
       "files": [
-        "app.py",
-        "encode_tokens.py",
-        "eval/governor.py",
+        "eval/analyze.py",
         "eval/harness.py",
+        "eval/report.py",
+        "eval/sandbox_smoke.py",
+        "tests/test_jlens.py",
         "tests/test_lens_model.py",
         "topogpt3/api_server.py",
-        "topogpt3/chat.py",
-        "topogpt3/continuation.py",
+        "topogpt3/inference.py",
+        "topogpt3/inference_hrm.py",
         "topogpt3/jlens.py",
         "topogpt3/lens_model.py",
-        "topogpt3/model.py",
-        "topogpt3/tools_agent.py"
+        "topogpt3/structured_output.py"
       ],
-      "mentions": 37,
+      "mentions": 35,
       "confidence": "EXTRACTED"
     },
     {
@@ -724,41 +798,98 @@
       "confidence": "EXTRACTED"
     },
     {
-      "name": "new",
+      "name": "json",
       "files": [
-        "eval/governor.py",
+        "eval/noise_analysis.py",
+        "tests/test_lens_model.py",
+        "tests/test_structured_output.py",
+        "topogpt3/api_server.py",
+        "topogpt3/chat.py",
+        "topogpt3/convert.py",
+        "topogpt3/inference.py",
+        "topogpt3/inference_hrm.py",
+        "topogpt3/lens_model.py",
+        "topogpt3/model.py",
+        "topogpt3/structured_output.py",
+        "topogpt3/train.py"
+      ],
+      "mentions": 26,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "tokenizer",
+      "files": [
         "eval/harness.py",
-        "eval/integration_smoke.py",
-        "eval/repair.py",
-        "eval/samplers.py",
+        "tests/test_lens_model.py",
+        "tests/test_structured_output.py",
         "topogpt3/__init__.py",
+        "topogpt3/chat.py",
+        "topogpt3/convert.py",
         "topogpt3/inference.py",
         "topogpt3/inference_hrm.py",
         "topogpt3/jlens.py",
         "topogpt3/lens_model.py",
         "topogpt3/model.py",
-        "topogpt3/train.py"
+        "topogpt3/structured_output.py"
       ],
-      "mentions": 25,
+      "mentions": 24,
       "confidence": "EXTRACTED"
     },
     {
-      "name": "output",
+      "name": "apply",
       "files": [
-        "convert_weights.py",
-        "encode_tokens.py",
-        "eval/harness.py",
-        "eval/repair.py",
-        "eval/samplers.py",
-        "eval/sandbox.py",
-        "eval/sandbox_smoke.py",
-        "tests/test_lens_model.py",
+        "tests/test_jlens.py",
         "topogpt3.c",
+        "topogpt3/chat.py",
+        "topogpt3/inference.py",
         "topogpt3/inference_hrm.py",
         "topogpt3/jlens.py",
-        "topogpt3/model.py"
+        "topogpt3/lens_model.py",
+        "topogpt3/lora.py",
+        "topogpt3/model.py",
+        "topogpt3/structured_output.py",
+        "topogpt3/train.py",
+        "topogpt3/yarn.py"
       ],
-      "mentions": 21,
+      "mentions": 20,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "name",
+      "files": [
+        "convert_weights.py",
+        "convert_weights_minios.py",
+        "eval/samplers.py",
+        "eval/sandbox_smoke.py",
+        "synthetic_dataset.py",
+        "topogpt3/eval_toolcall.py",
+        "topogpt3/inference.py",
+        "topogpt3/inference_hrm.py",
+        "topogpt3/jlens.py",
+        "topogpt3/lens_model.py",
+        "topogpt3/lora.py",
+        "topogpt3/structured_output.py"
+      ],
+      "mentions": 19,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "only",
+      "files": [
+        "eval/governor.py",
+        "eval/samplers.py",
+        "tests/test_heritage.py",
+        "tests/test_lens_model.py",
+        "topogpt3/inference_hrm.py",
+        "topogpt3/jlens.py",
+        "topogpt3/lens_model.py",
+        "topogpt3/model.py",
+        "topogpt3/structured_output.py",
+        "topogpt3/train_dpo.py",
+        "topogpt3/train_lora.py",
+        "topogpt3/yarn.py"
+      ],
+      "mentions": 19,
       "confidence": "EXTRACTED"
     },
     {
@@ -835,24 +966,6 @@
       "confidence": "EXTRACTED"
     },
     {
-      "name": "error",
-      "files": [
-        "eval/analyze.py",
-        "eval/harness.py",
-        "eval/report.py",
-        "eval/sandbox_smoke.py",
-        "tests/test_jlens.py",
-        "tests/test_lens_model.py",
-        "topogpt3/api_server.py",
-        "topogpt3/inference.py",
-        "topogpt3/inference_hrm.py",
-        "topogpt3/jlens.py",
-        "topogpt3/lens_model.py"
-      ],
-      "mentions": 33,
-      "confidence": "EXTRACTED"
-    },
-    {
       "name": "each",
       "files": [
         "convert_weights.py",
@@ -925,60 +1038,6 @@
       "confidence": "EXTRACTED"
     },
     {
-      "name": "apply",
-      "files": [
-        "tests/test_jlens.py",
-        "topogpt3.c",
-        "topogpt3/chat.py",
-        "topogpt3/inference.py",
-        "topogpt3/inference_hrm.py",
-        "topogpt3/jlens.py",
-        "topogpt3/lens_model.py",
-        "topogpt3/lora.py",
-        "topogpt3/model.py",
-        "topogpt3/train.py",
-        "topogpt3/yarn.py"
-      ],
-      "mentions": 19,
-      "confidence": "EXTRACTED"
-    },
-    {
-      "name": "name",
-      "files": [
-        "convert_weights.py",
-        "convert_weights_minios.py",
-        "eval/samplers.py",
-        "eval/sandbox_smoke.py",
-        "synthetic_dataset.py",
-        "topogpt3/eval_toolcall.py",
-        "topogpt3/inference.py",
-        "topogpt3/inference_hrm.py",
-        "topogpt3/jlens.py",
-        "topogpt3/lens_model.py",
-        "topogpt3/lora.py"
-      ],
-      "mentions": 18,
-      "confidence": "EXTRACTED"
-    },
-    {
-      "name": "only",
-      "files": [
-        "eval/governor.py",
-        "eval/samplers.py",
-        "tests/test_heritage.py",
-        "tests/test_lens_model.py",
-        "topogpt3/inference_hrm.py",
-        "topogpt3/jlens.py",
-        "topogpt3/lens_model.py",
-        "topogpt3/model.py",
-        "topogpt3/train_dpo.py",
-        "topogpt3/train_lora.py",
-        "topogpt3/yarn.py"
-      ],
-      "mentions": 18,
-      "confidence": "EXTRACTED"
-    },
-    {
       "name": "standard",
       "files": [
         "app.py",
@@ -994,6 +1053,24 @@
         "topogpt3/inference_hrm.py"
       ],
       "mentions": 17,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "parse",
+      "files": [
+        "eval/noise_analysis.py",
+        "eval/sandbox.py",
+        "synthetic_dataset.py",
+        "tests/test_structured_output.py",
+        "topogpt3/api_server.py",
+        "topogpt3/chat.py",
+        "topogpt3/inference.py",
+        "topogpt3/inference_hrm.py",
+        "topogpt3/structured_output.py",
+        "topogpt3/train.py",
+        "topogpt3/train_agent.py"
+      ],
+      "mentions": 16,
       "confidence": "EXTRACTED"
     },
     {
@@ -1015,71 +1092,21 @@
       "confidence": "EXTRACTED"
     },
     {
-      "name": "layer",
+      "name": "same",
       "files": [
+        "app.py",
+        "eval/governor.py",
+        "eval/harness.py",
+        "eval/repair.py",
         "eval/sandbox.py",
         "tests/test_jlens.py",
         "tests/test_lens_model.py",
-        "topogpt3.c",
-        "topogpt3/inference.py",
-        "topogpt3/inference_hrm.py",
-        "topogpt3/jlens.py",
-        "topogpt3/lens_model.py",
-        "topogpt3/model.py",
-        "topogpt3/train.py"
-      ],
-      "mentions": 84,
-      "confidence": "EXTRACTED"
-    },
-    {
-      "name": "level",
-      "files": [
-        "app.py",
-        "eval/harness.py",
-        "eval/sandbox.py",
-        "eval/sandbox_smoke.py",
-        "topogpt3.c",
-        "topogpt3/api_server.py",
-        "topogpt3/chat.py",
-        "topogpt3/inference_hrm.py",
-        "topogpt3/lens_model.py",
-        "topogpt3/model.py"
-      ],
-      "mentions": 45,
-      "confidence": "EXTRACTED"
-    },
-    {
-      "name": "inference",
-      "files": [
-        "app.py",
-        "convert_weights.py",
-        "eval/governor.py",
-        "eval/harness.py",
-        "gradio_app.py",
-        "synthetic_dataset.py",
         "topogpt3/__init__.py",
-        "topogpt3/continuation.py",
-        "topogpt3/inference.py",
-        "topogpt3/inference_hrm.py"
+        "topogpt3/api_server.py",
+        "topogpt3/jlens.py",
+        "topogpt3/train_agent.py"
       ],
-      "mentions": 40,
-      "confidence": "EXTRACTED"
-    },
-    {
-      "name": "generation",
-      "files": [
-        "eval/analyze.py",
-        "eval/governor.py",
-        "eval/governor_smoke.py",
-        "eval/harness.py",
-        "eval/noise_analysis.py",
-        "topogpt3/continuation.py",
-        "topogpt3/inference.py",
-        "topogpt3/inference_hrm.py",
-        "topogpt3/model.py",
-        "topogpt3/rewards.py"
-      ],
-      "mentions": 35,
+      "mentions": 12,
       "confidence": "EXTRACTED"
     }
   ],
@@ -1183,25 +1210,6 @@
       "source": "topo",
       "target": "when",
       "verb": "depends_on",
-      "strength": 0.66,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/harness.py->eval/samplers.py",
-        "eval/harness.py->eval/sandbox.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "tests/test_jlens.py->topogpt3/jlens.py",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/chat.py"
-      ]
-    },
-    {
-      "source": "gpt3",
-      "target": "when",
-      "verb": "depends_on",
       "strength": 0.65,
       "confidence": "INFERRED",
       "evidence": [
@@ -1237,10 +1245,29 @@
       ]
     },
     {
+      "source": "gpt3",
+      "target": "when",
+      "verb": "depends_on",
+      "strength": 0.64,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/harness.py->eval/samplers.py",
+        "eval/harness.py->eval/sandbox.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/chat.py"
+      ]
+    },
+    {
       "source": "topo",
       "target": "model",
       "verb": "depends_on",
-      "strength": 0.63,
+      "strength": 0.62,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
@@ -1259,7 +1286,7 @@
       "source": "topo",
       "target": "spectral",
       "verb": "depends_on",
-      "strength": 0.62,
+      "strength": 0.61,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
@@ -1278,7 +1305,7 @@
       "source": "gpt3",
       "target": "spectral",
       "verb": "depends_on",
-      "strength": 0.61,
+      "strength": 0.6,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
@@ -1297,7 +1324,7 @@
       "source": "quaternion",
       "target": "topogpt3",
       "verb": "depends_on",
-      "strength": 0.61,
+      "strength": 0.6,
       "confidence": "INFERRED",
       "evidence": [
         "tests/test_heritage.py->topogpt3/chat.py",
@@ -1354,7 +1381,7 @@
       "source": "topogpt3",
       "target": "when",
       "verb": "depends_on",
-      "strength": 0.58,
+      "strength": 0.57,
       "confidence": "INFERRED",
       "evidence": [
         "eval/harness.py->eval/samplers.py",
@@ -1373,7 +1400,7 @@
       "source": "topo",
       "target": "prompt",
       "verb": "depends_on",
-      "strength": 0.57,
+      "strength": 0.56,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
@@ -1392,7 +1419,7 @@
       "source": "topo",
       "target": "quaternion",
       "verb": "depends_on",
-      "strength": 0.57,
+      "strength": 0.56,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
@@ -1411,7 +1438,7 @@
       "source": "gpt3",
       "target": "prompt",
       "verb": "depends_on",
-      "strength": 0.56,
+      "strength": 0.55,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
@@ -1430,7 +1457,7 @@
       "source": "gpt3",
       "target": "quaternion",
       "verb": "depends_on",
-      "strength": 0.56,
+      "strength": 0.55,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
@@ -1443,6 +1470,63 @@
         "eval/smoke.py->topogpt3/__init__.py",
         "gradio_app.py->topogpt3.c",
         "tests/test_lens_model.py->topogpt3/model.py"
+      ]
+    },
+    {
+      "source": "gpt3",
+      "target": "tokens",
+      "verb": "depends_on",
+      "strength": 0.54,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->topogpt3.c",
+        "eval/diag_static.py->topogpt3/__init__.py",
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/diag_static.py->topogpt3/train.py",
+        "eval/harness.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "eval/smoke.py->topogpt3/__init__.py",
+        "gradio_app.py->topogpt3.c",
+        "tests/test_jlens.py->topogpt3/jlens.py"
+      ]
+    },
+    {
+      "source": "topo",
+      "target": "apply",
+      "verb": "depends_on",
+      "strength": 0.54,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->topogpt3.c",
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/diag_static.py->topogpt3/train.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "gradio_app.py->topogpt3.c",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/model.py"
+      ]
+    },
+    {
+      "source": "topo",
+      "target": "tokens",
+      "verb": "depends_on",
+      "strength": 0.54,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->topogpt3.c",
+        "eval/diag_static.py->topogpt3/__init__.py",
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/diag_static.py->topogpt3/train.py",
+        "eval/harness.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "eval/smoke.py->topogpt3/__init__.py",
+        "gradio_app.py->topogpt3.c",
+        "tests/test_jlens.py->topogpt3/jlens.py"
       ]
     },
     {
@@ -1466,6 +1550,25 @@
     },
     {
       "source": "gpt3",
+      "target": "apply",
+      "verb": "depends_on",
+      "strength": 0.53,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->topogpt3.c",
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/diag_static.py->topogpt3/train.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "gradio_app.py->topogpt3.c",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/model.py"
+      ]
+    },
+    {
+      "source": "gpt3",
       "target": "checkpoint",
       "verb": "depends_on",
       "strength": 0.53,
@@ -1485,25 +1588,6 @@
     },
     {
       "source": "gpt3",
-      "target": "tokens",
-      "verb": "depends_on",
-      "strength": 0.53,
-      "confidence": "INFERRED",
-      "evidence": [
-        "app.py->topogpt3.c",
-        "eval/diag_static.py->topogpt3/__init__.py",
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/diag_static.py->topogpt3/train.py",
-        "eval/harness.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "eval/smoke.py->topogpt3/__init__.py",
-        "gradio_app.py->topogpt3.c",
-        "tests/test_jlens.py->topogpt3/jlens.py"
-      ]
-    },
-    {
-      "source": "gpt3",
       "target": "weights",
       "verb": "depends_on",
       "strength": 0.53,
@@ -1519,25 +1603,6 @@
         "tests/test_lens_model.py->topogpt3/lens_model.py",
         "tests/test_lens_model.py->topogpt3/model.py",
         "topogpt3/__init__.py->topogpt3/inference.py"
-      ]
-    },
-    {
-      "source": "topo",
-      "target": "apply",
-      "verb": "depends_on",
-      "strength": 0.53,
-      "confidence": "INFERRED",
-      "evidence": [
-        "app.py->topogpt3.c",
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/diag_static.py->topogpt3/train.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "gradio_app.py->topogpt3.c",
-        "tests/test_jlens.py->topogpt3/jlens.py",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/model.py"
       ]
     },
     {
@@ -1564,82 +1629,6 @@
       "target": "load",
       "verb": "depends_on",
       "strength": 0.53,
-      "confidence": "INFERRED",
-      "evidence": [
-        "app.py->topogpt3.c",
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/diag_static.py->topogpt3/train.py",
-        "eval/noise_sweep.py->eval/harness.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "gradio_app.py->topogpt3.c",
-        "tests/test_jlens.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/inference.py"
-      ]
-    },
-    {
-      "source": "topo",
-      "target": "tokens",
-      "verb": "depends_on",
-      "strength": 0.53,
-      "confidence": "INFERRED",
-      "evidence": [
-        "app.py->topogpt3.c",
-        "eval/diag_static.py->topogpt3/__init__.py",
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/diag_static.py->topogpt3/train.py",
-        "eval/harness.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "eval/smoke.py->topogpt3/__init__.py",
-        "gradio_app.py->topogpt3.c",
-        "tests/test_jlens.py->topogpt3/jlens.py"
-      ]
-    },
-    {
-      "source": "topo",
-      "target": "weights",
-      "verb": "depends_on",
-      "strength": 0.53,
-      "confidence": "INFERRED",
-      "evidence": [
-        "app.py->topogpt3.c",
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "gradio_app.py->topogpt3.c",
-        "tests/test_jlens.py->topogpt3/jlens.py",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/inference.py"
-      ]
-    },
-    {
-      "source": "gpt3",
-      "target": "apply",
-      "verb": "depends_on",
-      "strength": 0.52,
-      "confidence": "INFERRED",
-      "evidence": [
-        "app.py->topogpt3.c",
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/diag_static.py->topogpt3/train.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "gradio_app.py->topogpt3.c",
-        "tests/test_jlens.py->topogpt3/jlens.py",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/model.py"
-      ]
-    },
-    {
-      "source": "gpt3",
-      "target": "load",
-      "verb": "depends_on",
-      "strength": 0.52,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
@@ -1658,7 +1647,64 @@
       "source": "topo",
       "target": "returns",
       "verb": "depends_on",
-      "strength": 0.52,
+      "strength": 0.53,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/harness.py->eval/samplers.py",
+        "eval/harness.py->eval/sandbox.py",
+        "eval/noise_sweep.py->eval/harness.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/model.py"
+      ]
+    },
+    {
+      "source": "topo",
+      "target": "weights",
+      "verb": "depends_on",
+      "strength": 0.53,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->topogpt3.c",
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "gradio_app.py->topogpt3.c",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/inference.py"
+      ]
+    },
+    {
+      "source": "gpt3",
+      "target": "load",
+      "verb": "depends_on",
+      "strength": 0.51,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->topogpt3.c",
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/diag_static.py->topogpt3/train.py",
+        "eval/noise_sweep.py->eval/harness.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "gradio_app.py->topogpt3.c",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/inference.py"
+      ]
+    },
+    {
+      "source": "gpt3",
+      "target": "returns",
+      "verb": "depends_on",
+      "strength": 0.5,
       "confidence": "INFERRED",
       "evidence": [
         "eval/diag_static.py->topogpt3/model.py",
@@ -1677,7 +1723,7 @@
       "source": "topo",
       "target": "layers",
       "verb": "depends_on",
-      "strength": 0.51,
+      "strength": 0.5,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
@@ -1696,7 +1742,7 @@
       "source": "train",
       "target": "topogpt3",
       "verb": "depends_on",
-      "strength": 0.51,
+      "strength": 0.5,
       "confidence": "INFERRED",
       "evidence": [
         "topogpt3/__init__.py->topogpt3/chat.py",
@@ -1732,21 +1778,59 @@
     },
     {
       "source": "gpt3",
-      "target": "returns",
+      "target": "tokenizer",
       "verb": "depends_on",
       "strength": 0.49,
       "confidence": "INFERRED",
       "evidence": [
+        "eval/diag_static.py->topogpt3/__init__.py",
         "eval/diag_static.py->topogpt3/model.py",
-        "eval/harness.py->eval/samplers.py",
-        "eval/harness.py->eval/sandbox.py",
+        "eval/harness.py->topogpt3/__init__.py",
         "eval/noise_sweep.py->eval/harness.py",
+        "eval/noise_sweep.py->topogpt3/__init__.py",
         "eval/noise_sweep.py->topogpt3/model.py",
+        "eval/smoke.py->topogpt3/__init__.py",
         "tests/test_jlens.py->topogpt3/jlens.py",
         "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/model.py"
+        "tests/test_lens_model.py->topogpt3/jlens.py"
+      ]
+    },
+    {
+      "source": "model",
+      "target": "topogpt3",
+      "verb": "depends_on",
+      "strength": 0.49,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/governor_smoke.py->eval/governor.py",
+        "eval/governor_smoke.py->topogpt3/__init__.py",
+        "eval/harness.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->eval/harness.py",
+        "eval/noise_sweep.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "eval/repair.py->topogpt3/__init__.py",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py"
+      ]
+    },
+    {
+      "source": "topo",
+      "target": "tokenizer",
+      "verb": "depends_on",
+      "strength": 0.49,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/diag_static.py->topogpt3/__init__.py",
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/harness.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->eval/harness.py",
+        "eval/noise_sweep.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "eval/smoke.py->topogpt3/__init__.py",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py"
       ]
     },
     {
@@ -1807,63 +1891,6 @@
       ]
     },
     {
-      "source": "gpt3",
-      "target": "train",
-      "verb": "depends_on",
-      "strength": 0.48,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/diag_static.py->topogpt3/__init__.py",
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/diag_static.py->topogpt3/train.py",
-        "eval/harness.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "eval/smoke.py->topogpt3/__init__.py",
-        "tests/test_lens_model.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/inference.py",
-        "topogpt3/__init__.py->topogpt3/inference_hrm.py"
-      ]
-    },
-    {
-      "source": "model",
-      "target": "topogpt3",
-      "verb": "depends_on",
-      "strength": 0.48,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/governor_smoke.py->eval/governor.py",
-        "eval/governor_smoke.py->topogpt3/__init__.py",
-        "eval/harness.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->eval/harness.py",
-        "eval/noise_sweep.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "eval/repair.py->topogpt3/__init__.py",
-        "tests/test_jlens.py->topogpt3/jlens.py",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py"
-      ]
-    },
-    {
-      "source": "topo",
-      "target": "train",
-      "verb": "depends_on",
-      "strength": 0.48,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/diag_static.py->topogpt3/__init__.py",
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/diag_static.py->topogpt3/train.py",
-        "eval/harness.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "eval/smoke.py->topogpt3/__init__.py",
-        "tests/test_lens_model.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/inference.py",
-        "topogpt3/__init__.py->topogpt3/inference_hrm.py"
-      ]
-    },
-    {
       "source": "checkpoint",
       "target": "topogpt3",
       "verb": "depends_on",
@@ -1883,67 +1910,10 @@
       ]
     },
     {
-      "source": "quaternion",
-      "target": "gpt3",
-      "verb": "depends_on",
-      "strength": 0.47,
-      "confidence": "INFERRED",
-      "evidence": [
-        "tests/test_heritage.py->topogpt3/chat.py",
-        "tests/test_heritage.py->topogpt3/eval_toolcall.py",
-        "tests/test_heritage.py->topogpt3/lora.py",
-        "tests/test_heritage.py->topogpt3/rewards.py",
-        "tests/test_heritage.py->topogpt3/rollout.py",
-        "tests/test_heritage.py->topogpt3/tools_agent.py",
-        "tests/test_heritage.py->topogpt3/yarn.py",
-        "topogpt3/__init__.py->topogpt3/chat.py",
-        "topogpt3/__init__.py->topogpt3/eval_toolcall.py",
-        "topogpt3/__init__.py->topogpt3/inference.py"
-      ]
-    },
-    {
-      "source": "topo",
-      "target": "gpt2",
-      "verb": "depends_on",
-      "strength": 0.47,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/diag_static.py->topogpt3/__init__.py",
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/diag_static.py->topogpt3/train.py",
-        "eval/harness.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "eval/smoke.py->topogpt3/__init__.py",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/model.py"
-      ]
-    },
-    {
-      "source": "topo",
-      "target": "run",
-      "verb": "depends_on",
-      "strength": 0.47,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/diag_static.py->topogpt3/train.py",
-        "eval/harness.py->eval/samplers.py",
-        "eval/harness.py->eval/sandbox.py",
-        "eval/noise_sweep.py->eval/harness.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "tests/test_jlens.py->topogpt3/jlens.py",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py"
-      ]
-    },
-    {
       "source": "gpt3",
-      "target": "gpt2",
+      "target": "train",
       "verb": "depends_on",
-      "strength": 0.46,
+      "strength": 0.47,
       "confidence": "INFERRED",
       "evidence": [
         "eval/diag_static.py->topogpt3/__init__.py",
@@ -1953,9 +1923,28 @@
         "eval/noise_sweep.py->topogpt3/__init__.py",
         "eval/noise_sweep.py->topogpt3/model.py",
         "eval/smoke.py->topogpt3/__init__.py",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/model.py"
+        "tests/test_lens_model.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/inference.py",
+        "topogpt3/__init__.py->topogpt3/inference_hrm.py"
+      ]
+    },
+    {
+      "source": "topo",
+      "target": "train",
+      "verb": "depends_on",
+      "strength": 0.47,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/diag_static.py->topogpt3/__init__.py",
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/diag_static.py->topogpt3/train.py",
+        "eval/harness.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "eval/smoke.py->topogpt3/__init__.py",
+        "tests/test_lens_model.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/inference.py",
+        "topogpt3/__init__.py->topogpt3/inference_hrm.py"
       ]
     },
     {
@@ -1975,25 +1964,6 @@
         "eval/noise_sweep.py->topogpt3/model.py",
         "eval/smoke.py->topogpt3/__init__.py",
         "tests/test_jlens.py->topogpt3/jlens.py"
-      ]
-    },
-    {
-      "source": "gpt3",
-      "target": "run",
-      "verb": "depends_on",
-      "strength": 0.46,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/diag_static.py->topogpt3/train.py",
-        "eval/harness.py->eval/samplers.py",
-        "eval/harness.py->eval/sandbox.py",
-        "eval/noise_sweep.py->eval/harness.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "tests/test_jlens.py->topogpt3/jlens.py",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py"
       ]
     },
     {
@@ -2016,22 +1986,41 @@
       ]
     },
     {
-      "source": "topo",
-      "target": "max",
+      "source": "quaternion",
+      "target": "gpt3",
       "verb": "depends_on",
       "strength": 0.46,
       "confidence": "INFERRED",
       "evidence": [
-        "app.py->topogpt3.c",
+        "tests/test_heritage.py->topogpt3/chat.py",
+        "tests/test_heritage.py->topogpt3/eval_toolcall.py",
+        "tests/test_heritage.py->topogpt3/lora.py",
+        "tests/test_heritage.py->topogpt3/rewards.py",
+        "tests/test_heritage.py->topogpt3/rollout.py",
+        "tests/test_heritage.py->topogpt3/tools_agent.py",
+        "tests/test_heritage.py->topogpt3/yarn.py",
+        "topogpt3/__init__.py->topogpt3/chat.py",
+        "topogpt3/__init__.py->topogpt3/eval_toolcall.py",
+        "topogpt3/__init__.py->topogpt3/inference.py"
+      ]
+    },
+    {
+      "source": "topo",
+      "target": "gpt2",
+      "verb": "depends_on",
+      "strength": 0.46,
+      "confidence": "INFERRED",
+      "evidence": [
         "eval/diag_static.py->topogpt3/__init__.py",
         "eval/diag_static.py->topogpt3/model.py",
         "eval/diag_static.py->topogpt3/train.py",
-        "eval/harness.py->eval/sandbox.py",
         "eval/harness.py->topogpt3/__init__.py",
         "eval/noise_sweep.py->topogpt3/__init__.py",
         "eval/noise_sweep.py->topogpt3/model.py",
         "eval/smoke.py->topogpt3/__init__.py",
-        "gradio_app.py->topogpt3.c"
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/model.py"
       ]
     },
     {
@@ -2051,6 +2040,25 @@
         "eval/noise_sweep.py->topogpt3/model.py",
         "eval/smoke.py->topogpt3/__init__.py",
         "tests/test_jlens.py->topogpt3/jlens.py"
+      ]
+    },
+    {
+      "source": "topo",
+      "target": "run",
+      "verb": "depends_on",
+      "strength": 0.46,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/diag_static.py->topogpt3/train.py",
+        "eval/harness.py->eval/samplers.py",
+        "eval/harness.py->eval/sandbox.py",
+        "eval/noise_sweep.py->eval/harness.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py"
       ]
     },
     {
@@ -2092,10 +2100,143 @@
       ]
     },
     {
+      "source": "gpt3",
+      "target": "gpt2",
+      "verb": "depends_on",
+      "strength": 0.45,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/diag_static.py->topogpt3/__init__.py",
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/diag_static.py->topogpt3/train.py",
+        "eval/harness.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "eval/smoke.py->topogpt3/__init__.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/model.py"
+      ]
+    },
+    {
+      "source": "gpt3",
+      "target": "run",
+      "verb": "depends_on",
+      "strength": 0.45,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/diag_static.py->topogpt3/train.py",
+        "eval/harness.py->eval/samplers.py",
+        "eval/harness.py->eval/sandbox.py",
+        "eval/noise_sweep.py->eval/harness.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py"
+      ]
+    },
+    {
+      "source": "gpt3",
+      "target": "text",
+      "verb": "depends_on",
+      "strength": 0.45,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/noise_sweep.py->eval/harness.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/chat.py",
+        "topogpt3/__init__.py->topogpt3/jlens.py"
+      ]
+    },
+    {
+      "source": "max",
+      "target": "topogpt3",
+      "verb": "depends_on",
+      "strength": 0.45,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/diag_static.py->topogpt3/__init__.py",
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/diag_static.py->topogpt3/train.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/chat.py",
+        "topogpt3/__init__.py->topogpt3/eval_toolcall.py",
+        "topogpt3/__init__.py->topogpt3/inference.py",
+        "topogpt3/__init__.py->topogpt3/inference_hrm.py"
+      ]
+    },
+    {
+      "source": "model",
+      "target": "topo",
+      "verb": "depends_on",
+      "strength": 0.45,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/governor_smoke.py->topogpt3/__init__.py",
+        "eval/harness.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->eval/harness.py",
+        "eval/noise_sweep.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "eval/repair.py->topogpt3/__init__.py",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py"
+      ]
+    },
+    {
+      "source": "topo",
+      "target": "max",
+      "verb": "depends_on",
+      "strength": 0.45,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->topogpt3.c",
+        "eval/diag_static.py->topogpt3/__init__.py",
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/diag_static.py->topogpt3/train.py",
+        "eval/harness.py->eval/sandbox.py",
+        "eval/harness.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "eval/smoke.py->topogpt3/__init__.py",
+        "gradio_app.py->topogpt3.c"
+      ]
+    },
+    {
+      "source": "topogpt3",
+      "target": "apply",
+      "verb": "depends_on",
+      "strength": 0.45,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->topogpt3.c",
+        "topogpt3/__init__.py->topogpt3/chat.py",
+        "topogpt3/__init__.py->topogpt3/inference.py",
+        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
+        "topogpt3/__init__.py->topogpt3/jlens.py",
+        "topogpt3/__init__.py->topogpt3/lens_model.py",
+        "topogpt3/__init__.py->topogpt3/lora.py",
+        "topogpt3/__init__.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/train.py",
+        "topogpt3/__init__.py->topogpt3/yarn.py"
+      ]
+    },
+    {
       "source": "topogpt3",
       "target": "load",
       "verb": "depends_on",
-      "strength": 0.46,
+      "strength": 0.45,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
@@ -2149,162 +2290,10 @@
       ]
     },
     {
-      "source": "gpt3",
-      "target": "text",
-      "verb": "depends_on",
-      "strength": 0.44,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/noise_sweep.py->eval/harness.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "tests/test_jlens.py->topogpt3/jlens.py",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/chat.py",
-        "topogpt3/__init__.py->topogpt3/jlens.py"
-      ]
-    },
-    {
-      "source": "max",
-      "target": "topogpt3",
-      "verb": "depends_on",
-      "strength": 0.44,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/diag_static.py->topogpt3/__init__.py",
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/diag_static.py->topogpt3/train.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/chat.py",
-        "topogpt3/__init__.py->topogpt3/eval_toolcall.py",
-        "topogpt3/__init__.py->topogpt3/inference.py",
-        "topogpt3/__init__.py->topogpt3/inference_hrm.py"
-      ]
-    },
-    {
-      "source": "model",
-      "target": "topo",
-      "verb": "depends_on",
-      "strength": 0.44,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/governor_smoke.py->topogpt3/__init__.py",
-        "eval/harness.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->eval/harness.py",
-        "eval/noise_sweep.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "eval/repair.py->topogpt3/__init__.py",
-        "tests/test_jlens.py->topogpt3/jlens.py",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py"
-      ]
-    },
-    {
-      "source": "topogpt3",
-      "target": "apply",
-      "verb": "depends_on",
-      "strength": 0.44,
-      "confidence": "INFERRED",
-      "evidence": [
-        "app.py->topogpt3.c",
-        "topogpt3/__init__.py->topogpt3/chat.py",
-        "topogpt3/__init__.py->topogpt3/inference.py",
-        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
-        "topogpt3/__init__.py->topogpt3/jlens.py",
-        "topogpt3/__init__.py->topogpt3/lens_model.py",
-        "topogpt3/__init__.py->topogpt3/lora.py",
-        "topogpt3/__init__.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/train.py",
-        "topogpt3/__init__.py->topogpt3/yarn.py"
-      ]
-    },
-    {
-      "source": "topogpt3",
-      "target": "weights",
-      "verb": "depends_on",
-      "strength": 0.44,
-      "confidence": "INFERRED",
-      "evidence": [
-        "app.py->topogpt3.c",
-        "topogpt3/__init__.py->topogpt3/inference.py",
-        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
-        "topogpt3/__init__.py->topogpt3/jlens.py",
-        "topogpt3/__init__.py->topogpt3/lens_model.py",
-        "topogpt3/__init__.py->topogpt3/lora.py",
-        "topogpt3/__init__.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/trainer_utils_topo.py",
-        "topogpt3/__main__.py->topogpt3/convert.py",
-        "topogpt3/__main__.py->topogpt3/inference.py"
-      ]
-    },
-    {
-      "source": "gpt2",
-      "target": "topo",
-      "verb": "depends_on",
-      "strength": 0.43,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/noise_sweep.py->eval/harness.py",
-        "eval/noise_sweep.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/chat.py",
-        "topogpt3/__init__.py->topogpt3/eval_toolcall.py",
-        "topogpt3/__init__.py->topogpt3/inference.py",
-        "topogpt3/__init__.py->topogpt3/inference_hrm.py"
-      ]
-    },
-    {
-      "source": "gpt3",
-      "target": "config",
-      "verb": "depends_on",
-      "strength": 0.43,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/diag_static.py->topogpt3/train.py",
-        "eval/harness.py->eval/sandbox.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "tests/test_jlens.py->topogpt3/jlens.py",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/inference.py"
-      ]
-    },
-    {
-      "source": "gpt3",
-      "target": "layer",
-      "verb": "depends_on",
-      "strength": 0.43,
-      "confidence": "INFERRED",
-      "evidence": [
-        "app.py->topogpt3.c",
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/diag_static.py->topogpt3/train.py",
-        "eval/harness.py->eval/sandbox.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "gradio_app.py->topogpt3.c",
-        "tests/test_jlens.py->topogpt3/jlens.py",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py"
-      ]
-    },
-    {
       "source": "topo",
       "target": "build",
       "verb": "depends_on",
-      "strength": 0.43,
+      "strength": 0.44,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
@@ -2320,67 +2309,10 @@
       ]
     },
     {
-      "source": "topo",
-      "target": "config",
-      "verb": "depends_on",
-      "strength": 0.43,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/diag_static.py->topogpt3/train.py",
-        "eval/harness.py->eval/sandbox.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "tests/test_jlens.py->topogpt3/jlens.py",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/inference.py"
-      ]
-    },
-    {
-      "source": "topo",
-      "target": "layer",
-      "verb": "depends_on",
-      "strength": 0.43,
-      "confidence": "INFERRED",
-      "evidence": [
-        "app.py->topogpt3.c",
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/diag_static.py->topogpt3/train.py",
-        "eval/harness.py->eval/sandbox.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "gradio_app.py->topogpt3.c",
-        "tests/test_jlens.py->topogpt3/jlens.py",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py"
-      ]
-    },
-    {
-      "source": "topogpt3",
-      "target": "prompt",
-      "verb": "depends_on",
-      "strength": 0.43,
-      "confidence": "INFERRED",
-      "evidence": [
-        "app.py->topogpt3.c",
-        "eval/harness.py->topogpt3/__init__.py",
-        "topogpt3/__init__.py->topogpt3/chat.py",
-        "topogpt3/__init__.py->topogpt3/inference.py",
-        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
-        "topogpt3/__init__.py->topogpt3/jlens.py",
-        "topogpt3/__init__.py->topogpt3/lens_model.py",
-        "topogpt3/__init__.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/tools_agent.py",
-        "topogpt3/__main__.py->topogpt3/api_server.py"
-      ]
-    },
-    {
       "source": "topogpt3",
       "target": "returns",
       "verb": "depends_on",
-      "strength": 0.43,
+      "strength": 0.44,
       "confidence": "INFERRED",
       "evidence": [
         "eval/harness.py->eval/samplers.py",
@@ -2399,7 +2331,7 @@
       "source": "topogpt3",
       "target": "tokens",
       "verb": "depends_on",
-      "strength": 0.43,
+      "strength": 0.44,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
@@ -2411,6 +2343,25 @@
         "topogpt3/__init__.py->topogpt3/model.py",
         "topogpt3/__init__.py->topogpt3/rewards.py",
         "topogpt3/__init__.py->topogpt3/train.py",
+        "topogpt3/__main__.py->topogpt3/inference.py"
+      ]
+    },
+    {
+      "source": "topogpt3",
+      "target": "weights",
+      "verb": "depends_on",
+      "strength": 0.44,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->topogpt3.c",
+        "topogpt3/__init__.py->topogpt3/inference.py",
+        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
+        "topogpt3/__init__.py->topogpt3/jlens.py",
+        "topogpt3/__init__.py->topogpt3/lens_model.py",
+        "topogpt3/__init__.py->topogpt3/lora.py",
+        "topogpt3/__init__.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/trainer_utils_topo.py",
+        "topogpt3/__main__.py->topogpt3/convert.py",
         "topogpt3/__main__.py->topogpt3/inference.py"
       ]
     },
@@ -2434,6 +2385,25 @@
       ]
     },
     {
+      "source": "gpt2",
+      "target": "topo",
+      "verb": "depends_on",
+      "strength": 0.42,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/noise_sweep.py->eval/harness.py",
+        "eval/noise_sweep.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/chat.py",
+        "topogpt3/__init__.py->topogpt3/eval_toolcall.py",
+        "topogpt3/__init__.py->topogpt3/inference.py",
+        "topogpt3/__init__.py->topogpt3/inference_hrm.py"
+      ]
+    },
+    {
       "source": "gpt3",
       "target": "build",
       "verb": "depends_on",
@@ -2450,6 +2420,44 @@
         "gradio_app.py->topogpt3.c",
         "tests/test_jlens.py->topogpt3/lens_model.py",
         "tests/test_lens_model.py->topogpt3/lens_model.py"
+      ]
+    },
+    {
+      "source": "gpt3",
+      "target": "config",
+      "verb": "depends_on",
+      "strength": 0.42,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/diag_static.py->topogpt3/train.py",
+        "eval/harness.py->eval/sandbox.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/inference.py"
+      ]
+    },
+    {
+      "source": "gpt3",
+      "target": "json",
+      "verb": "depends_on",
+      "strength": 0.42,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/diag_static.py->topogpt3/train.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/chat.py",
+        "topogpt3/__init__.py->topogpt3/inference.py",
+        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
+        "topogpt3/__init__.py->topogpt3/lens_model.py"
       ]
     },
     {
@@ -2492,21 +2500,40 @@
     },
     {
       "source": "topo",
-      "target": "file",
+      "target": "config",
       "verb": "depends_on",
       "strength": 0.42,
       "confidence": "INFERRED",
       "evidence": [
-        "app.py->topogpt3.c",
         "eval/diag_static.py->topogpt3/model.py",
         "eval/diag_static.py->topogpt3/train.py",
+        "eval/harness.py->eval/sandbox.py",
         "eval/noise_sweep.py->topogpt3/model.py",
-        "gradio_app.py->topogpt3.c",
         "tests/test_jlens.py->topogpt3/jlens.py",
         "tests/test_jlens.py->topogpt3/lens_model.py",
         "tests/test_lens_model.py->topogpt3/jlens.py",
         "tests/test_lens_model.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/model.py"
+        "tests/test_lens_model.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/inference.py"
+      ]
+    },
+    {
+      "source": "topo",
+      "target": "json",
+      "verb": "depends_on",
+      "strength": 0.42,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/diag_static.py->topogpt3/train.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/chat.py",
+        "topogpt3/__init__.py->topogpt3/inference.py",
+        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
+        "topogpt3/__init__.py->topogpt3/lens_model.py"
       ]
     },
     {
@@ -2530,9 +2557,66 @@
     },
     {
       "source": "topogpt3",
-      "target": "checkpoint",
+      "target": "prompt",
       "verb": "depends_on",
       "strength": 0.42,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->topogpt3.c",
+        "eval/harness.py->topogpt3/__init__.py",
+        "topogpt3/__init__.py->topogpt3/chat.py",
+        "topogpt3/__init__.py->topogpt3/inference.py",
+        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
+        "topogpt3/__init__.py->topogpt3/jlens.py",
+        "topogpt3/__init__.py->topogpt3/lens_model.py",
+        "topogpt3/__init__.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/tools_agent.py",
+        "topogpt3/__main__.py->topogpt3/api_server.py"
+      ]
+    },
+    {
+      "source": "gpt3",
+      "target": "per",
+      "verb": "depends_on",
+      "strength": 0.41,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/diag_static.py->topogpt3/train.py",
+        "eval/harness.py->eval/sandbox.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/inference.py",
+        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
+        "topogpt3/__init__.py->topogpt3/jlens.py"
+      ]
+    },
+    {
+      "source": "topo",
+      "target": "file",
+      "verb": "depends_on",
+      "strength": 0.41,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->topogpt3.c",
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/diag_static.py->topogpt3/train.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "gradio_app.py->topogpt3.c",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/model.py"
+      ]
+    },
+    {
+      "source": "topogpt3",
+      "target": "checkpoint",
+      "verb": "depends_on",
+      "strength": 0.41,
       "confidence": "INFERRED",
       "evidence": [
         "eval/harness.py->topogpt3/__init__.py",
@@ -2551,7 +2635,7 @@
       "source": "topogpt3",
       "target": "train",
       "verb": "depends_on",
-      "strength": 0.42,
+      "strength": 0.41,
       "confidence": "INFERRED",
       "evidence": [
         "eval/harness.py->topogpt3/__init__.py",
@@ -2570,7 +2654,7 @@
       "source": "gpt3",
       "target": "file",
       "verb": "depends_on",
-      "strength": 0.41,
+      "strength": 0.4,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
@@ -2583,51 +2667,13 @@
         "tests/test_lens_model.py->topogpt3/jlens.py",
         "tests/test_lens_model.py->topogpt3/lens_model.py",
         "tests/test_lens_model.py->topogpt3/model.py"
-      ]
-    },
-    {
-      "source": "gpt3",
-      "target": "level",
-      "verb": "depends_on",
-      "strength": 0.41,
-      "confidence": "INFERRED",
-      "evidence": [
-        "app.py->topogpt3.c",
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/harness.py->eval/sandbox.py",
-        "eval/noise_sweep.py->eval/harness.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "gradio_app.py->topogpt3.c",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/lens_model.py",
-        "tests/test_lens_model.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/chat.py"
-      ]
-    },
-    {
-      "source": "gpt3",
-      "target": "per",
-      "verb": "depends_on",
-      "strength": 0.41,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/diag_static.py->topogpt3/train.py",
-        "eval/harness.py->eval/sandbox.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "tests/test_jlens.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/jlens.py",
-        "tests/test_lens_model.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/inference.py",
-        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
-        "topogpt3/__init__.py->topogpt3/jlens.py"
       ]
     },
     {
       "source": "gpt3",
       "target": "tensor",
       "verb": "depends_on",
-      "strength": 0.41,
+      "strength": 0.4,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
@@ -2643,10 +2689,48 @@
       ]
     },
     {
+      "source": "load",
+      "target": "topogpt3",
+      "verb": "depends_on",
+      "strength": 0.4,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/governor_smoke.py->eval/governor.py",
+        "eval/governor_smoke.py->topogpt3/__init__.py",
+        "eval/harness.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->eval/harness.py",
+        "eval/noise_sweep.py->topogpt3/__init__.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "eval/smoke.py->topogpt3/__init__.py",
+        "tests/test_heritage.py->topogpt3/chat.py",
+        "tests/test_heritage.py->topogpt3/eval_toolcall.py",
+        "tests/test_heritage.py->topogpt3/lora.py"
+      ]
+    },
+    {
+      "source": "prompt",
+      "target": "topo",
+      "verb": "depends_on",
+      "strength": 0.4,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/harness.py->topogpt3/__init__.py",
+        "eval/integration_smoke.py->eval/harness.py",
+        "eval/repair.py->topogpt3/__init__.py",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "topogpt3/__init__.py->topogpt3/chat.py",
+        "topogpt3/__init__.py->topogpt3/eval_toolcall.py",
+        "topogpt3/__init__.py->topogpt3/inference.py",
+        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
+        "topogpt3/__init__.py->topogpt3/jlens.py"
+      ]
+    },
+    {
       "source": "quaternion",
       "target": "spectral",
       "verb": "depends_on",
-      "strength": 0.41,
+      "strength": 0.4,
       "confidence": "INFERRED",
       "evidence": [
         "tests/test_heritage.py->topogpt3/lora.py",
@@ -2665,7 +2749,7 @@
       "source": "quaternion",
       "target": "when",
       "verb": "depends_on",
-      "strength": 0.41,
+      "strength": 0.4,
       "confidence": "INFERRED",
       "evidence": [
         "tests/test_heritage.py->topogpt3/chat.py",
@@ -2681,29 +2765,29 @@
       ]
     },
     {
-      "source": "topo",
-      "target": "level",
+      "source": "same",
+      "target": "topogpt3",
       "verb": "depends_on",
-      "strength": 0.41,
+      "strength": 0.4,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
-        "eval/diag_static.py->topogpt3/model.py",
-        "eval/harness.py->eval/sandbox.py",
-        "eval/noise_sweep.py->eval/harness.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "gradio_app.py->topogpt3.c",
+        "eval/harness.py->topogpt3/__init__.py",
+        "eval/repair.py->topogpt3/__init__.py",
+        "tests/test_jlens.py->topogpt3/jlens.py",
         "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
         "tests/test_lens_model.py->topogpt3/lens_model.py",
         "tests/test_lens_model.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/chat.py"
+        "topogpt3/__init__.py->topogpt3/chat.py",
+        "topogpt3/__init__.py->topogpt3/eval_toolcall.py"
       ]
     },
     {
       "source": "topo",
       "target": "tensor",
       "verb": "depends_on",
-      "strength": 0.41,
+      "strength": 0.4,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
@@ -2757,44 +2841,6 @@
       ]
     },
     {
-      "source": "load",
-      "target": "topogpt3",
-      "verb": "depends_on",
-      "strength": 0.39,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/governor_smoke.py->eval/governor.py",
-        "eval/governor_smoke.py->topogpt3/__init__.py",
-        "eval/harness.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->eval/harness.py",
-        "eval/noise_sweep.py->topogpt3/__init__.py",
-        "eval/noise_sweep.py->topogpt3/model.py",
-        "eval/smoke.py->topogpt3/__init__.py",
-        "tests/test_heritage.py->topogpt3/chat.py",
-        "tests/test_heritage.py->topogpt3/eval_toolcall.py",
-        "tests/test_heritage.py->topogpt3/lora.py"
-      ]
-    },
-    {
-      "source": "prompt",
-      "target": "topo",
-      "verb": "depends_on",
-      "strength": 0.39,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/harness.py->topogpt3/__init__.py",
-        "eval/integration_smoke.py->eval/harness.py",
-        "eval/repair.py->topogpt3/__init__.py",
-        "tests/test_jlens.py->topogpt3/jlens.py",
-        "tests/test_jlens.py->topogpt3/lens_model.py",
-        "topogpt3/__init__.py->topogpt3/chat.py",
-        "topogpt3/__init__.py->topogpt3/eval_toolcall.py",
-        "topogpt3/__init__.py->topogpt3/inference.py",
-        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
-        "topogpt3/__init__.py->topogpt3/jlens.py"
-      ]
-    },
-    {
       "source": "spectral",
       "target": "topogpt3",
       "verb": "depends_on",
@@ -2833,29 +2879,10 @@
       ]
     },
     {
-      "source": "spectral",
-      "target": "topo",
-      "verb": "depends_on",
-      "strength": 0.38,
-      "confidence": "INFERRED",
-      "evidence": [
-        "topogpt3/__init__.py->topogpt3/chat.py",
-        "topogpt3/__init__.py->topogpt3/eval_toolcall.py",
-        "topogpt3/__init__.py->topogpt3/inference.py",
-        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
-        "topogpt3/__init__.py->topogpt3/jlens.py",
-        "topogpt3/__init__.py->topogpt3/lens_model.py",
-        "topogpt3/__init__.py->topogpt3/lora.py",
-        "topogpt3/__init__.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/rewards.py",
-        "topogpt3/__init__.py->topogpt3/rollout.py"
-      ]
-    },
-    {
       "source": "topo",
       "target": "generate",
       "verb": "depends_on",
-      "strength": 0.38,
+      "strength": 0.39,
       "confidence": "INFERRED",
       "evidence": [
         "app.py->topogpt3.c",
@@ -2874,7 +2901,7 @@
       "source": "topo",
       "target": "only",
       "verb": "depends_on",
-      "strength": 0.38,
+      "strength": 0.39,
       "confidence": "INFERRED",
       "evidence": [
         "eval/diag_static.py->topogpt3/model.py",
@@ -2893,6 +2920,63 @@
       "source": "topo",
       "target": "return",
       "verb": "depends_on",
+      "strength": 0.39,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->topogpt3.c",
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/harness.py->eval/sandbox.py",
+        "eval/noise_sweep.py->eval/harness.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "gradio_app.py->topogpt3.c",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/inference.py"
+      ]
+    },
+    {
+      "source": "gpt3",
+      "target": "generate",
+      "verb": "depends_on",
+      "strength": 0.38,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->topogpt3.c",
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/noise_sweep.py->eval/harness.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "gradio_app.py->topogpt3.c",
+        "tests/test_lens_model.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/eval_toolcall.py",
+        "topogpt3/__init__.py->topogpt3/inference.py",
+        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
+        "topogpt3/__init__.py->topogpt3/model.py"
+      ]
+    },
+    {
+      "source": "gpt3",
+      "target": "only",
+      "verb": "depends_on",
+      "strength": 0.38,
+      "confidence": "INFERRED",
+      "evidence": [
+        "eval/diag_static.py->topogpt3/model.py",
+        "eval/harness.py->eval/samplers.py",
+        "eval/noise_sweep.py->topogpt3/model.py",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/model.py",
+        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
+        "topogpt3/__init__.py->topogpt3/jlens.py"
+      ]
+    },
+    {
+      "source": "gpt3",
+      "target": "return",
+      "verb": "depends_on",
       "strength": 0.38,
       "confidence": "INFERRED",
       "evidence": [
@@ -2909,90 +2993,33 @@
       ]
     },
     {
-      "source": "topogpt3",
-      "target": "gpt2",
+      "source": "same",
+      "target": "topo",
       "verb": "depends_on",
       "strength": 0.38,
       "confidence": "INFERRED",
       "evidence": [
         "eval/harness.py->topogpt3/__init__.py",
-        "topogpt3/__init__.py->topogpt3/inference.py",
-        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
-        "topogpt3/__init__.py->topogpt3/lens_model.py",
-        "topogpt3/__init__.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/rollout.py",
-        "topogpt3/__init__.py->topogpt3/train.py",
-        "topogpt3/__main__.py->topogpt3/inference.py",
-        "topogpt3/__main__.py->topogpt3/inference_hrm.py",
-        "topogpt3/__main__.py->topogpt3/lens_model.py"
-      ]
-    },
-    {
-      "source": "topogpt3",
-      "target": "layers",
-      "verb": "depends_on",
-      "strength": 0.38,
-      "confidence": "INFERRED",
-      "evidence": [
-        "app.py->topogpt3.c",
-        "eval/harness.py->topogpt3/__init__.py",
-        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
-        "topogpt3/__init__.py->topogpt3/jlens.py",
-        "topogpt3/__init__.py->topogpt3/lens_model.py",
-        "topogpt3/__init__.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/trainer_utils_topo.py",
-        "topogpt3/__init__.py->topogpt3/yarn.py",
-        "topogpt3/__main__.py->topogpt3/inference_hrm.py",
-        "topogpt3/__main__.py->topogpt3/jlens.py"
-      ]
-    },
-    {
-      "source": "topogpt3",
-      "target": "run",
-      "verb": "depends_on",
-      "strength": 0.38,
-      "confidence": "INFERRED",
-      "evidence": [
-        "eval/harness.py->eval/samplers.py",
-        "eval/harness.py->eval/sandbox.py",
-        "topogpt3/__init__.py->topogpt3/eval_toolcall.py",
-        "topogpt3/__init__.py->topogpt3/inference.py",
-        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
-        "topogpt3/__init__.py->topogpt3/jlens.py",
-        "topogpt3/__init__.py->topogpt3/lens_model.py",
-        "topogpt3/__init__.py->topogpt3/model.py",
-        "topogpt3/__init__.py->topogpt3/train.py",
-        "topogpt3/__main__.py->topogpt3/inference.py"
-      ]
-    },
-    {
-      "source": "train",
-      "target": "gpt3",
-      "verb": "depends_on",
-      "strength": 0.38,
-      "confidence": "INFERRED",
-      "evidence": [
+        "eval/repair.py->topogpt3/__init__.py",
+        "tests/test_jlens.py->topogpt3/jlens.py",
+        "tests/test_jlens.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/jlens.py",
+        "tests/test_lens_model.py->topogpt3/lens_model.py",
+        "tests/test_lens_model.py->topogpt3/model.py",
         "topogpt3/__init__.py->topogpt3/chat.py",
         "topogpt3/__init__.py->topogpt3/eval_toolcall.py",
-        "topogpt3/__init__.py->topogpt3/inference.py",
-        "topogpt3/__init__.py->topogpt3/inference_hrm.py",
-        "topogpt3/__init__.py->topogpt3/jlens.py",
-        "topogpt3/__init__.py->topogpt3/lens_model.py",
-        "topogpt3/__init__.py->topogpt3/lora.py",
-        "topogpt3/__init__.py->topogpt3/rewards.py",
-        "topogpt3/__init__.py->topogpt3/rollout.py",
-        "topogpt3/__init__.py->topogpt3/tools_agent.py"
+        "topogpt3/__init__.py->topogpt3/inference.py"
       ]
     }
   ],
   "dialectic": [
-    "Thesis: `all` centralizes 12 files; Antithesis: `apply` pulls 11 files with 7 shared (Jaccard 0.44); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `all` centralizes 12 files; Antithesis: `apply` pulls 12 files with 7 shared (Jaccard 0.41); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
     "Thesis: `all` centralizes 12 files; Antithesis: `checkpoint` pulls 17 files with 8 shared (Jaccard 0.38); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
     "Thesis: `all` centralizes 12 files; Antithesis: `config` pulls 12 files with 8 shared (Jaccard 0.50); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
-    "Thesis: `all` centralizes 12 files; Antithesis: `error` pulls 11 files with 7 shared (Jaccard 0.44); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `all` centralizes 12 files; Antithesis: `error` pulls 12 files with 7 shared (Jaccard 0.41); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
     "Thesis: `all` centralizes 12 files; Antithesis: `file` pulls 13 files with 8 shared (Jaccard 0.47); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
     "Thesis: `all` centralizes 12 files; Antithesis: `gpt2` pulls 13 files with 6 shared (Jaccard 0.32); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
-    "Thesis: `all` centralizes 12 files; Antithesis: `layer` pulls 10 files with 8 shared (Jaccard 0.57); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `all` centralizes 12 files; Antithesis: `json` pulls 12 files with 6 shared (Jaccard 0.33); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
     "Thesis: `all` centralizes 12 files; Antithesis: `layers` pulls 11 files with 7 shared (Jaccard 0.44); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
     "Thesis: `all` centralizes 12 files; Antithesis: `max` pulls 14 files with 7 shared (Jaccard 0.37); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
     "Thesis: `all` centralizes 12 files; Antithesis: `model` pulls 24 files with 9 shared (Jaccard 0.33); Synthesis: should they merge, split by layer, or keep `bridges` explicit?"

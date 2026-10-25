@@ -1,6 +1,6 @@
 # Documentation Coverage
 
-Overall: **50.2%** (339 of 675 public modules, types, and callables). Data members are excluded from the ratio.
+Overall: **50.5%** (348 of 689 public modules, types, and callables). Data members are excluded from the ratio.
 
 [Back to index](index.md)
 
@@ -8,15 +8,16 @@ Overall: **50.2%** (339 of 675 public modules, types, and callables). Data membe
 
 | Kind | Documented | Total | Coverage |
 |---|---|---|---|
-| class | 101 | 117 | 86.3% |
+| class | 102 | 119 | 85.7% |
 | classmethod | 8 | 8 | 100.0% |
-| constructor | 1 | 79 | 1.3% |
+| constructor | 1 | 80 | 1.2% |
 | enum | 0 | 1 | 0.0% |
-| function | 58 | 179 | 32.4% |
+| exception | 1 | 1 | 100.0% |
+| function | 62 | 183 | 33.9% |
 | macro | 4 | 41 | 9.8% |
-| method | 102 | 161 | 63.4% |
-| module | 45 | 50 | 90.0% |
-| property | 3 | 17 | 17.6% |
+| method | 104 | 165 | 63.0% |
+| module | 46 | 51 | 90.2% |
+| property | 3 | 18 | 16.7% |
 | protocol | 1 | 1 | 100.0% |
 | staticmethod | 15 | 18 | 83.3% |
 | struct | 1 | 3 | 33.3% |
@@ -63,6 +64,7 @@ Overall: **50.2%** (339 of 675 public modules, types, and callables). Data membe
 | [`eval.noise_sweep`](modules/eval.noise_sweep.py.md) | 3 | 5 | 60.0% |
 | [`eval.harness`](modules/eval.harness.py.md) | 8 | 13 | 61.5% |
 | [`eval.governor`](modules/eval.governor.py.md) | 10 | 16 | 62.5% |
+| [`topogpt3.structured_output`](modules/topogpt3.structured_output.py.md) | 9 | 14 | 64.3% |
 | [`eval.noise_analysis`](modules/eval.noise_analysis.py.md) | 2 | 3 | 66.7% |
 | [`topogpt3.tools_agent`](modules/topogpt3.tools_agent.py.md) | 2 | 3 | 66.7% |
 | [`eval.samplers`](modules/eval.samplers.py.md) | 3 | 4 | 75.0% |
@@ -80,7 +82,7 @@ Overall: **50.2%** (339 of 675 public modules, types, and callables). Data membe
 
 DOC001 undocumented public item, DOC002 parameter not documented, DOC003 documented parameter missing from the signature (stale doc), DOC004 return value not documented, DOC005 raised exception not documented.
 
-DOC001: 264, DOC004: 2
+DOC001: 268, DOC004: 2
 
 - DOC001 `convert_weights.py:102` function convert is not documented
 - DOC001 `convert_weights.py:160` function main is not documented
@@ -212,31 +214,31 @@ DOC001: 264, DOC004: 2
 - DOC001 `topogpt3.c:224` struct ModelWeights is not documented
 - DOC001 `topogpt3.c:1885` function main is not documented
 - DOC001 `topogpt3/__main__.py:1` module topogpt3/__main__.py is not documented
-- DOC001 `topogpt3/api_server.py:137` class ApiKey is not documented
-- DOC001 `topogpt3/api_server.py:143` class AuthState is not documented
-- DOC001 `topogpt3/api_server.py:148` method AuthState.validate is not documented
-- DOC001 `topogpt3/api_server.py:202` class TokenBucket is not documented
-- DOC001 `topogpt3/api_server.py:208` method TokenBucket.consume is not documented
-- DOC001 `topogpt3/api_server.py:219` class RateLimiter is not documented
-- DOC001 `topogpt3/api_server.py:220` constructor RateLimiter.__init__ is not documented
-- DOC001 `topogpt3/api_server.py:233` method RateLimiter.allow is not documented
-- DOC001 `topogpt3/api_server.py:250` class IpBanner is not documented
-- DOC001 `topogpt3/api_server.py:251` constructor IpBanner.__init__ is not documented
-- DOC001 `topogpt3/api_server.py:257` method IpBanner.record_failure is not documented
-- DOC001 `topogpt3/api_server.py:265` method IpBanner.is_banned is not documented
-- DOC001 `topogpt3/api_server.py:291` class CompletionRequest is not documented
-- DOC001 `topogpt3/api_server.py:310` class Message is not documented
-- DOC001 `topogpt3/api_server.py:316` class ChatCompletionRequest is not documented
-- DOC001 `topogpt3/api_server.py:344` class ServerModel is not documented
-- DOC001 `topogpt3/api_server.py:351` method ServerModel.complete is not documented
-- DOC001 `topogpt3/api_server.py:396` method ServerModel.stream_complete is not documented
-- DOC001 `topogpt3/api_server.py:516` function load_model is not documented
-- DOC001 `topogpt3/api_server.py:537` function lifespan is not documented
-- DOC001 `topogpt3/api_server.py:664` function health is not documented
-- DOC001 `topogpt3/api_server.py:671` function list_models is not documented
-- DOC001 `topogpt3/api_server.py:688` function completions is not documented
-- DOC001 `topogpt3/api_server.py:744` function chat_completions is not documented
-- DOC001 `topogpt3/api_server.py:933` function main is not documented
+- DOC001 `topogpt3/api_server.py:142` class ApiKey is not documented
+- DOC001 `topogpt3/api_server.py:148` class AuthState is not documented
+- DOC001 `topogpt3/api_server.py:153` method AuthState.validate is not documented
+- DOC001 `topogpt3/api_server.py:207` class TokenBucket is not documented
+- DOC001 `topogpt3/api_server.py:213` method TokenBucket.consume is not documented
+- DOC001 `topogpt3/api_server.py:224` class RateLimiter is not documented
+- DOC001 `topogpt3/api_server.py:225` constructor RateLimiter.__init__ is not documented
+- DOC001 `topogpt3/api_server.py:238` method RateLimiter.allow is not documented
+- DOC001 `topogpt3/api_server.py:255` class IpBanner is not documented
+- DOC001 `topogpt3/api_server.py:256` constructor IpBanner.__init__ is not documented
+- DOC001 `topogpt3/api_server.py:262` method IpBanner.record_failure is not documented
+- DOC001 `topogpt3/api_server.py:270` method IpBanner.is_banned is not documented
+- DOC001 `topogpt3/api_server.py:296` class CompletionRequest is not documented
+- DOC001 `topogpt3/api_server.py:318` class Message is not documented
+- DOC001 `topogpt3/api_server.py:324` class ChatCompletionRequest is not documented
+- DOC001 `topogpt3/api_server.py:369` class ServerModel is not documented
+- DOC001 `topogpt3/api_server.py:443` method ServerModel.complete is not documented
+- DOC001 `topogpt3/api_server.py:497` method ServerModel.stream_complete is not documented
+- DOC001 `topogpt3/api_server.py:650` function load_model is not documented
+- DOC001 `topogpt3/api_server.py:671` function lifespan is not documented
+- DOC001 `topogpt3/api_server.py:800` function health is not documented
+- DOC001 `topogpt3/api_server.py:807` function list_models is not documented
+- DOC001 `topogpt3/api_server.py:824` function completions is not documented
+- DOC001 `topogpt3/api_server.py:884` function chat_completions is not documented
+- DOC001 `topogpt3/api_server.py:1097` function main is not documented
 - DOC001 `topogpt3/chat.py:54` function post_processing_chat is not documented
 - DOC001 `topogpt3/chat.py:116` function parse_tool_calls is not documented
 - DOC001 `topogpt3/chat.py:126` function parse_thinking is not documented
@@ -314,6 +316,10 @@ DOC001: 264, DOC004: 2
 - DOC001 `topogpt3/rollout.py:57` method TorchRolloutEngine.rollout is not documented
 - DOC001 `topogpt3/rollout.py:79` method TorchRolloutEngine.update_policy is not documented
 - DOC001 `topogpt3/rollout.py:83` function create_rollout_engine is not documented
+- DOC001 `topogpt3/structured_output.py:32` class GrammarSpec is not documented
+- DOC001 `topogpt3/structured_output.py:36` method GrammarSpec.cache_key is not documented
+- DOC001 `topogpt3/structured_output.py:197` method GrammarConstraint.reset is not documented
+- DOC001 `topogpt3/structured_output.py:201` property GrammarConstraint.is_terminated is not documented
 - DOC001 `topogpt3/tools_agent.py:59` function execute_tool is not documented
 - DOC001 `topogpt3/train.py:170` method TopoGPT3Config.build_topogpt2_config is not documented
 - DOC001 `topogpt3/train.py:445` method GrassmannianTracker.snapshot is not documented

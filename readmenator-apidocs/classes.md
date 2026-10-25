@@ -31,6 +31,8 @@ Project types nested under the project types they derive from. External bases ar
 - [`GenerationReport`](modules/topogpt3.inference.py.md#generationreport) class in `topogpt3.inference`
 - [`GenerationReport`](modules/topogpt3.inference_hrm.py.md#generationreport) class in `topogpt3.inference_hrm`
 - [`GenerationResult`](modules/eval.governor.py.md#generationresult) class in `eval.governor`
+- [`GrammarConstraint`](modules/topogpt3.structured_output.py.md#grammarconstraint) class in `topogpt3.structured_output`
+- [`GrammarSpec`](modules/topogpt3.structured_output.py.md#grammarspec) class in `topogpt3.structured_output`
 - [`GrassmannianTracker`](modules/topogpt3.train.py.md#grassmanniantracker) class in `topogpt3.train`
 - [`HierarchicalRecursiveReasoner`](modules/topogpt3.inference_hrm.py.md#hierarchicalrecursivereasoner) class in `topogpt3.inference_hrm`
 - [`HRMGenerationEngine`](modules/topogpt3.inference_hrm.py.md#hrmgenerationengine) class in `topogpt3.inference_hrm`
@@ -99,6 +101,7 @@ Project types nested under the project types they derive from. External bases ar
 - [`SpectralAutoencoder`](modules/topogpt3.model.py.md#spectralautoencoder) class in `topogpt3.model`(nn.Module)
 - [`SpeculativeDecoder`](modules/topogpt3.model.py.md#speculativedecoder) class in `topogpt3.model`
 - [`StopReason`](modules/eval.governor.py.md#stopreason) enum in `eval.governor`(str, Enum)
+- [`StructuredOutputError`](modules/topogpt3.structured_output.py.md#structuredoutputerror) exception in `topogpt3.structured_output`(ValueError)
 - [`SwiGLU`](modules/topogpt3.model.py.md#swiglu) class in `topogpt3.model`(nn.Module)
 - [`SyntheticDatasetGenerator`](modules/synthetic_dataset.py.md#syntheticdatasetgenerator) class in `synthetic_dataset`
 - [`TextFilter`](modules/topogpt3.model.py.md#textfilter) class in `topogpt3.model`

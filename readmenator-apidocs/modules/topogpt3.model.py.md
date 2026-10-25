@@ -1384,7 +1384,7 @@ Autoregressive generation with KV cache and top-k sampling.
 
 **Returns:** `torch.Tensor` - [B, S_prompt + generated] full token sequence.
 
-*Called by:* [`ServerModel.complete`](topogpt3.api_server.py.md#servermodel-complete), [`TopoGPT2.generate_with_continuation`](#topogpt2-generate_with_continuation), [`main`](topogpt3.train_agent.py.md#main)
+*Called by:* [`TopoGPT2.generate_with_continuation`](#topogpt2-generate_with_continuation), [`main`](topogpt3.train_agent.py.md#main)
 
 <a id="topogpt2-generate_with_continuation"></a>
 

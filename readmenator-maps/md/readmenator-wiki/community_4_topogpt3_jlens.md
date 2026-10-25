@@ -59,7 +59,6 @@ This community groups 4 file(s) rooted at `topogpt3` with dominant language py (
 - [EXTRACTED] depends_on community 1 <-> 4 (strength 0.9): Extracted import edge crosses communities: topogpt3/__init__.py imports topogpt3/lens_model.py.
 - [EXTRACTED] depends_on community 0 <-> 4 (strength 0.9): Extracted import edge crosses communities: topogpt3/__main__.py imports topogpt3/jlens.py.
 - [INFERRED] bridges community 3 <-> 4 (strength 0.5): Inferred cross-community bridge: eval/sandbox_smoke.py reaches tests/test_jlens.py in 5 hops.
-- [INFERRED] bridges community 3 <-> 4 (strength 0.5): Inferred cross-community bridge: eval/sandbox_smoke.py reaches tests/test_lens_model.py in 5 hops.
 
 ## Risks
 

@@ -35,6 +35,9 @@
 - `tests/test_lens_model.py` -> `topogpt3/jlens.py`
 - `tests/test_lens_model.py` -> `topogpt3/lens_model.py`
 - `tests/test_lens_model.py` -> `topogpt3/model.py`
+- `tests/test_structured_output.py` -> `topogpt3/api_server.py`
+- `tests/test_structured_output.py` -> `topogpt3/model.py`
+- `tests/test_structured_output.py` -> `topogpt3/structured_output.py`
 - `topogpt3/__init__.py` -> `topogpt3/chat.py`
 - `topogpt3/__init__.py` -> `topogpt3/eval_toolcall.py`
 - `topogpt3/__init__.py` -> `topogpt3/inference.py`
@@ -66,6 +69,7 @@
 - `topogpt3/api_server.py` -> `topogpt3/chat.py`
 - `topogpt3/api_server.py` -> `topogpt3/continuation.py`
 - `topogpt3/api_server.py` -> `topogpt3/model.py`
+- `topogpt3/api_server.py` -> `topogpt3/structured_output.py`
 - `topogpt3/convert.py` -> `topogpt3/lora.py`
 - `topogpt3/convert.py` -> `topogpt3/model.py`
 - `topogpt3/eval_toolcall.py` -> `topogpt3/chat.py`
@@ -131,6 +135,7 @@
 - `tests/test_heritage.py` -> os, torch
 - `tests/test_jlens.py` -> __future__, pytest, torch
 - `tests/test_lens_model.py` -> __future__, pytest, torch, types
+- `tests/test_structured_output.py` -> fastapi, json, pydantic, pytest, torch
 - `topogpt3.c` -> stdio.h, stdlib.h, string.h
 - `topogpt3/__init__.py` -> __future__
 - `topogpt3/__main__.py` -> __future__, sys
@@ -148,6 +153,7 @@
 - `topogpt3/model.py` -> argparse, collections, dataclasses, datetime, hashlib, json, logging, math, numpy, os, pathlib, safetensors.torch, shutil, sys, tiktoken, time, torch, torch.nn, torch.nn.functional, torch.utils.checkpoint, typing, warnings
 - `topogpt3/rewards.py` -> __future__, re, torch, torch.nn.functional, typing
 - `topogpt3/rollout.py` -> __future__, abc, dataclasses, torch, torch.nn.functional, torch.nn.parallel, typing
+- `topogpt3/structured_output.py` -> __future__, dataclasses, json, threading, typing, xgrammar
 - `topogpt3/tools_agent.py` -> __future__, json, math, pathlib, sys, typing
 - `topogpt3/train.py` -> __future__, argparse, collections, dataclasses, datasets, datetime, json, logging, math, numpy, os, pathlib, safetensors.torch, sys, time, torch, torch.nn, torch.nn.functional, typing
 - `topogpt3/train_agent.py` -> __future__, argparse, copy, json, os, safetensors.torch, sys, topogpt3.datasets_chat, torch, torch.nn.functional, torch.utils.data

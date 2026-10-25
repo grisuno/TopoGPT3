@@ -1,19 +1,19 @@
 {
  "metadata": {
-  "generated_at": "2026-10-25T02:16:22.575570+00:00",
-  "source_tree_hash": "f6cec47091354aaf628047b4981e20b1aa398dc553f71d362820b100e8ed469b",
+  "generated_at": "2026-10-25T02:39:50.391552+00:00",
+  "source_tree_hash": "bedeaf9c8fa9e2f45f504dc7222e993d01665e55377297011a6d5a62f022d5ce",
   "repo_name": "TopoGPT3",
   "depth_level": 2,
   "depth_cap": 3,
   "file_coverage_summary": {
-   "total_files": 53,
-   "analyzed": 53,
+   "total_files": 55,
+   "analyzed": 55,
    "not_analyzed": 0,
    "not_analyzed_by_reason": {}
   },
   "tree_spec": {}
  },
- "description": "Static architecture map of 53 files (c, py, sh) in 6 components: topogpt3: lora, eval, topogpt3: model, topogpt3: sandbox, topogpt3: jlens, root. Structure is extracted statically without LLM calls; component prose may be enriched locally.",
+ "description": "Static architecture map of 55 files (c, py, sh) in 6 components: topogpt3: lora, eval, topogpt3: model, topogpt3: sandbox, topogpt3: jlens, root. Structure is extracted statically without LLM calls; component prose may be enriched locally.",
  "files": {
   "app.py": {
    "language": "py",
@@ -119,6 +119,10 @@
    "language": "py",
    "symbols": 34
   },
+  "tests/test_structured_output.py": {
+   "language": "py",
+   "symbols": 26
+  },
   "topogpt3.c": {
    "language": "c",
    "symbols": 128
@@ -133,7 +137,7 @@
   },
   "topogpt3/api_server.py": {
    "language": "py",
-   "symbols": 46
+   "symbols": 50
   },
   "topogpt3/chat.py": {
    "language": "py",
@@ -186,6 +190,10 @@
   "topogpt3/rollout.py": {
    "language": "py",
    "symbols": 10
+  },
+  "topogpt3/structured_output.py": {
+   "language": "py",
+   "symbols": 18
   },
   "topogpt3/tools_agent.py": {
    "language": "py",
@@ -2021,6 +2029,206 @@
    "type": "FUNCTION",
    "content_hash": "e60374a848822280"
   },
+  "tests/test_structured_output.py|tests/test_structured_output.py::tokenizer": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::tokenizer",
+   "start_line": 19,
+   "end_line": 28,
+   "type": "FUNCTION",
+   "content_hash": "a65a6cb0612939b9"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::TestParseResponseFormat": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::TestParseResponseFormat",
+   "start_line": 29,
+   "end_line": 29,
+   "type": "CLASS",
+   "content_hash": "30be3aefc91f9a54"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_none_and_text": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_none_and_text",
+   "start_line": 30,
+   "end_line": 33,
+   "type": "FUNCTION",
+   "content_hash": "da91e4b2a0cee7db"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_json_object": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_json_object",
+   "start_line": 34,
+   "end_line": 38,
+   "type": "FUNCTION",
+   "content_hash": "87cb00d0fa0ebe7b"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_json_schema": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_json_schema",
+   "start_line": 39,
+   "end_line": 47,
+   "type": "FUNCTION",
+   "content_hash": "0d54f854a5c431be"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_regex": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_regex",
+   "start_line": 77,
+   "end_line": 81,
+   "type": "FUNCTION",
+   "content_hash": "ddc5b3fbf5eca8a8"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_grammar": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_grammar",
+   "start_line": 52,
+   "end_line": 64,
+   "type": "FUNCTION",
+   "content_hash": "c8278757afb58b56"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_invalid_payloads": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_invalid_payloads",
+   "start_line": 65,
+   "end_line": 69,
+   "type": "FUNCTION",
+   "content_hash": "2d29380aa19e803e"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::TestParseSoArgs": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::TestParseSoArgs",
+   "start_line": 70,
+   "end_line": 70,
+   "type": "CLASS",
+   "content_hash": "ae3b64ee25da4eb3"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_json_string_schema": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_json_string_schema",
+   "start_line": 71,
+   "end_line": 76,
+   "type": "FUNCTION",
+   "content_hash": "9a71e1d2bc8a6ccf"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_ebnf": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_ebnf",
+   "start_line": 82,
+   "end_line": 85,
+   "type": "FUNCTION",
+   "content_hash": "af61538234620a0e"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_requires_schema": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_requires_schema",
+   "start_line": 86,
+   "end_line": 89,
+   "type": "FUNCTION",
+   "content_hash": "581bdfe4ab06af09"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_unknown_schema_type": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_unknown_schema_type",
+   "start_line": 90,
+   "end_line": 94,
+   "type": "FUNCTION",
+   "content_hash": "f9ea08de6a3e8bdb"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::TestGrammarConstraint": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::TestGrammarConstraint",
+   "start_line": 95,
+   "end_line": 95,
+   "type": "CLASS",
+   "content_hash": "570d188cee6a14a1"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_json_schema_accepts_and_terminates": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_json_schema_accepts_and_terminates",
+   "start_line": 96,
+   "end_line": 121,
+   "type": "FUNCTION",
+   "content_hash": "a8fd1bf1ef424e76"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_regex_masks_illegal_first_token": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_regex_masks_illegal_first_token",
+   "start_line": 122,
+   "end_line": 135,
+   "type": "FUNCTION",
+   "content_hash": "aacc812130ce644c"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_reset_restores_initial_state": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_reset_restores_initial_state",
+   "start_line": 136,
+   "end_line": 147,
+   "type": "FUNCTION",
+   "content_hash": "da66f8df509e89f7"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_invalid_regex_raises": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_invalid_regex_raises",
+   "start_line": 148,
+   "end_line": 153,
+   "type": "FUNCTION",
+   "content_hash": "cf18a6aabdf0413f"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_constraint_from_request_rejects_both_surfaces": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_constraint_from_request_rejects_both_surfaces",
+   "start_line": 154,
+   "end_line": 162,
+   "type": "FUNCTION",
+   "content_hash": "e658aedf6dfabe6b"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::TestRequestModels": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::TestRequestModels",
+   "start_line": 163,
+   "end_line": 163,
+   "type": "CLASS",
+   "content_hash": "94613681e5ba9f2c"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_chat_accepts_seed_and_response_format": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_chat_accepts_seed_and_response_format",
+   "start_line": 164,
+   "end_line": 175,
+   "type": "FUNCTION",
+   "content_hash": "63ebc6ba514775b9"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_completion_accepts_so_args": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_completion_accepts_so_args",
+   "start_line": 176,
+   "end_line": 184,
+   "type": "FUNCTION",
+   "content_hash": "ceb48496b1dbe5cc"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_negative_seed_rejected": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_negative_seed_rejected",
+   "start_line": 185,
+   "end_line": 194,
+   "type": "FUNCTION",
+   "content_hash": "ab347bfc15574977"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_auto_continue_with_constraint_rejected": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_auto_continue_with_constraint_rejected",
+   "start_line": 195,
+   "end_line": 210,
+   "type": "FUNCTION",
+   "content_hash": "a736a214593b4736"
+  },
+  "tests/test_structured_output.py|tests/test_structured_output.py::test_make_generator_is_reproducible": {
+   "file_path": "tests/test_structured_output.py",
+   "qualified_name": "tests/test_structured_output.py::test_make_generator_is_reproducible",
+   "start_line": 211,
+   "end_line": 218,
+   "type": "FUNCTION",
+   "content_hash": "3182a31cc0c24eee"
+  },
   "topogpt3.c|topogpt3.c::FILE": {
    "file_path": "topogpt3.c",
    "qualified_name": "topogpt3.c::FILE",
@@ -3056,354 +3264,386 @@
   "topogpt3/api_server.py|topogpt3/api_server.py::_setup_logging": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_setup_logging",
-   "start_line": 116,
-   "end_line": 136,
+   "start_line": 121,
+   "end_line": 141,
    "type": "FUNCTION",
-   "content_hash": "b48b974b382ef8a5"
+   "content_hash": "df37f7c56553e0e1"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::ApiKey": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::ApiKey",
-   "start_line": 137,
-   "end_line": 142,
+   "start_line": 142,
+   "end_line": 147,
    "type": "CLASS",
-   "content_hash": "978e8972d0c73a63"
+   "content_hash": "c0a43c0e92edc612"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::AuthState": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::AuthState",
-   "start_line": 143,
-   "end_line": 147,
+   "start_line": 148,
+   "end_line": 152,
    "type": "CLASS",
-   "content_hash": "e20ac9297a7c7360"
+   "content_hash": "4cd35f586ffc4c22"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::validate": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::validate",
-   "start_line": 148,
-   "end_line": 163,
+   "start_line": 153,
+   "end_line": 168,
    "type": "FUNCTION",
-   "content_hash": "c8afa2c6855e11dc"
+   "content_hash": "7b19e6a29daa78f8"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_parse_keys": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_parse_keys",
-   "start_line": 164,
-   "end_line": 191,
+   "start_line": 169,
+   "end_line": 196,
    "type": "FUNCTION",
-   "content_hash": "247feb4866c79a4d"
+   "content_hash": "340aeb7dbe8b0385"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_sha256": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_sha256",
-   "start_line": 192,
-   "end_line": 201,
+   "start_line": 197,
+   "end_line": 206,
    "type": "FUNCTION",
-   "content_hash": "81bc45ed663fc80f"
+   "content_hash": "423e169c9eb13449"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::TokenBucket": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::TokenBucket",
-   "start_line": 202,
-   "end_line": 207,
+   "start_line": 207,
+   "end_line": 212,
    "type": "CLASS",
-   "content_hash": "e6eec3306403bdf1"
+   "content_hash": "c0670d14b44cdfdb"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::consume": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::consume",
-   "start_line": 208,
-   "end_line": 218,
+   "start_line": 213,
+   "end_line": 223,
    "type": "FUNCTION",
-   "content_hash": "1da027819f6c523c"
+   "content_hash": "cfcc7f9cafc59821"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::RateLimiter": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::RateLimiter",
-   "start_line": 219,
-   "end_line": 219,
+   "start_line": 224,
+   "end_line": 224,
    "type": "CLASS",
-   "content_hash": "d749c05d43408346"
+   "content_hash": "f4010aa85d7f3bdf"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::__init__": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::__init__",
-   "start_line": 251,
-   "end_line": 256,
+   "start_line": 256,
+   "end_line": 261,
    "type": "FUNCTION",
-   "content_hash": "da131ad1ff078f37"
+   "content_hash": "997a72646eca88bd"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_cleanup": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_cleanup",
-   "start_line": 227,
-   "end_line": 232,
+   "start_line": 232,
+   "end_line": 237,
    "type": "FUNCTION",
-   "content_hash": "cb45d6d97b5766fd"
+   "content_hash": "af840fbd9ba483e0"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::allow": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::allow",
-   "start_line": 233,
-   "end_line": 249,
+   "start_line": 238,
+   "end_line": 254,
    "type": "FUNCTION",
-   "content_hash": "500c286c5b364d04"
+   "content_hash": "898e39e48a8f2e70"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::IpBanner": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::IpBanner",
-   "start_line": 250,
-   "end_line": 250,
+   "start_line": 255,
+   "end_line": 255,
    "type": "CLASS",
-   "content_hash": "5140aecdb4ec086d"
+   "content_hash": "c0d8e2e05724d53a"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::record_failure": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::record_failure",
-   "start_line": 257,
-   "end_line": 264,
+   "start_line": 262,
+   "end_line": 269,
    "type": "FUNCTION",
-   "content_hash": "c5c23521ea42cae9"
+   "content_hash": "a95af1019d81f79e"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::is_banned": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::is_banned",
-   "start_line": 265,
-   "end_line": 280,
+   "start_line": 270,
+   "end_line": 285,
    "type": "FUNCTION",
-   "content_hash": "f8fb59135ce27e89"
+   "content_hash": "e8e375a2d366dd00"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_sanitize_stop": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_sanitize_stop",
-   "start_line": 281,
-   "end_line": 290,
+   "start_line": 286,
+   "end_line": 295,
    "type": "FUNCTION",
-   "content_hash": "181625d009e5bcfc"
+   "content_hash": "8b716c5dd7472cff"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::CompletionRequest": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::CompletionRequest",
-   "start_line": 291,
-   "end_line": 305,
+   "start_line": 296,
+   "end_line": 313,
    "type": "CLASS",
-   "content_hash": "0be2ead6d6cbb13c"
+   "content_hash": "546a6d75d17866bb"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_normalize_stop": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_normalize_stop",
-   "start_line": 334,
-   "end_line": 343,
+   "start_line": 345,
+   "end_line": 353,
    "type": "FUNCTION",
-   "content_hash": "2030c17d4d9d8a5c"
+   "content_hash": "5beb45a9def64b58"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::Message": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::Message",
-   "start_line": 310,
-   "end_line": 315,
+   "start_line": 318,
+   "end_line": 323,
    "type": "CLASS",
-   "content_hash": "2a03f368cd3e2130"
+   "content_hash": "519b39b138c9d19d"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::ChatCompletionRequest": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::ChatCompletionRequest",
-   "start_line": 316,
-   "end_line": 333,
+   "start_line": 324,
+   "end_line": 344,
    "type": "CLASS",
-   "content_hash": "fe8a23e292f19554"
+   "content_hash": "a380fa1237063d9d"
+  },
+  "topogpt3/api_server.py|topogpt3/api_server.py::_make_generator": {
+   "file_path": "topogpt3/api_server.py",
+   "qualified_name": "topogpt3/api_server.py::_make_generator",
+   "start_line": 354,
+   "end_line": 368,
+   "type": "FUNCTION",
+   "content_hash": "b78e4952ac103937"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::ServerModel": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::ServerModel",
-   "start_line": 344,
-   "end_line": 350,
+   "start_line": 369,
+   "end_line": 375,
    "type": "CLASS",
-   "content_hash": "3fed525090ef69e5"
+   "content_hash": "3be3df91214abfe7"
+  },
+  "topogpt3/api_server.py|topogpt3/api_server.py::_seeded": {
+   "file_path": "topogpt3/api_server.py",
+   "qualified_name": "topogpt3/api_server.py::_seeded",
+   "start_line": 376,
+   "end_line": 390,
+   "type": "FUNCTION",
+   "content_hash": "132215d29282d847"
+  },
+  "topogpt3/api_server.py|topogpt3/api_server.py::_generate": {
+   "file_path": "topogpt3/api_server.py",
+   "qualified_name": "topogpt3/api_server.py::_generate",
+   "start_line": 391,
+   "end_line": 442,
+   "type": "FUNCTION",
+   "content_hash": "d9b9ea76b30d81dc"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::complete": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::complete",
-   "start_line": 351,
-   "end_line": 395,
+   "start_line": 443,
+   "end_line": 496,
    "type": "FUNCTION",
-   "content_hash": "06d78532403ef138"
+   "content_hash": "b363fbf2f4a4ae79"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::stream_complete": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::stream_complete",
-   "start_line": 396,
-   "end_line": 484,
+   "start_line": 497,
+   "end_line": 618,
    "type": "FUNCTION",
-   "content_hash": "f9c159bef8272e8c"
+   "content_hash": "9c8cd3e86deca2e7"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_is_eos": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_is_eos",
-   "start_line": 485,
-   "end_line": 501,
+   "start_line": 619,
+   "end_line": 635,
    "type": "FUNCTION",
-   "content_hash": "1bf57416c5446d12"
+   "content_hash": "81438ea2ada8c4fa"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_resolve_device": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_resolve_device",
-   "start_line": 502,
-   "end_line": 507,
+   "start_line": 636,
+   "end_line": 641,
    "type": "FUNCTION",
-   "content_hash": "33ef21261dfbc7e8"
+   "content_hash": "8f6f4e56ce63d6e0"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_probe_n_kv": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_probe_n_kv",
-   "start_line": 508,
-   "end_line": 515,
+   "start_line": 642,
+   "end_line": 649,
    "type": "FUNCTION",
-   "content_hash": "d3da522e4e907d2a"
+   "content_hash": "3584d9a842884502"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::load_model": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::load_model",
-   "start_line": 516,
-   "end_line": 536,
+   "start_line": 650,
+   "end_line": 670,
    "type": "FUNCTION",
-   "content_hash": "de31e18d2bf03e2b"
+   "content_hash": "a417344f905b4a33"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::lifespan": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::lifespan",
-   "start_line": 537,
-   "end_line": 576,
+   "start_line": 671,
+   "end_line": 710,
    "type": "FUNCTION",
-   "content_hash": "143cf6229e1ebb04"
+   "content_hash": "4b1e631481933efc"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_security_middleware": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_security_middleware",
-   "start_line": 577,
-   "end_line": 604,
+   "start_line": 711,
+   "end_line": 738,
    "type": "FUNCTION",
-   "content_hash": "1d8787041858b085"
+   "content_hash": "64b1392ce842f0b4"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_real_ip": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_real_ip",
-   "start_line": 605,
-   "end_line": 615,
+   "start_line": 739,
+   "end_line": 749,
    "type": "FUNCTION",
-   "content_hash": "bf0f8bf8c98c0217"
+   "content_hash": "18d7d32787290b0d"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_json_error": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_json_error",
-   "start_line": 616,
-   "end_line": 627,
+   "start_line": 750,
+   "end_line": 761,
    "type": "FUNCTION",
-   "content_hash": "66e234a6bb91c127"
+   "content_hash": "2d22f767e59d1a69"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_authenticate": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_authenticate",
-   "start_line": 628,
-   "end_line": 645,
+   "start_line": 762,
+   "end_line": 781,
    "type": "FUNCTION",
-   "content_hash": "865aaf492118841e"
+   "content_hash": "e7ca727b6b4b4b9a"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_check_rate_limit": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_check_rate_limit",
-   "start_line": 646,
-   "end_line": 663,
+   "start_line": 782,
+   "end_line": 799,
    "type": "FUNCTION",
-   "content_hash": "9c14fe3043749525"
+   "content_hash": "b75e6740b2eec999"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::health": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::health",
-   "start_line": 664,
-   "end_line": 670,
+   "start_line": 800,
+   "end_line": 806,
    "type": "FUNCTION",
-   "content_hash": "f320ede5e7df8cc3"
+   "content_hash": "079382a056ec8f35"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::list_models": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::list_models",
-   "start_line": 671,
-   "end_line": 687,
+   "start_line": 807,
+   "end_line": 823,
    "type": "FUNCTION",
-   "content_hash": "f7791009e6a8a469"
+   "content_hash": "4f3e7bf42123b908"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::completions": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::completions",
-   "start_line": 688,
-   "end_line": 743,
+   "start_line": 824,
+   "end_line": 883,
    "type": "FUNCTION",
-   "content_hash": "22ff2e72ce21626b"
+   "content_hash": "5b2fc7d633177f0a"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::chat_completions": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::chat_completions",
-   "start_line": 744,
-   "end_line": 817,
+   "start_line": 884,
+   "end_line": 961,
    "type": "FUNCTION",
-   "content_hash": "15dc2c701e58ba80"
+   "content_hash": "77eec4cde6179c5d"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_check_model": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_check_model",
-   "start_line": 818,
-   "end_line": 822,
+   "start_line": 962,
+   "end_line": 966,
    "type": "FUNCTION",
-   "content_hash": "061792523bba9b92"
+   "content_hash": "b39f0005a989521d"
+  },
+  "topogpt3/api_server.py|topogpt3/api_server.py::_request_constraint": {
+   "file_path": "topogpt3/api_server.py",
+   "qualified_name": "topogpt3/api_server.py::_request_constraint",
+   "start_line": 967,
+   "end_line": 982,
+   "type": "FUNCTION",
+   "content_hash": "6d8240f78a0def02"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_short_id": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_short_id",
-   "start_line": 823,
-   "end_line": 826,
+   "start_line": 983,
+   "end_line": 986,
    "type": "FUNCTION",
-   "content_hash": "f15ad2625acf9098"
+   "content_hash": "5c77da28b726f6c6"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_build_chat_prompt": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_build_chat_prompt",
-   "start_line": 827,
-   "end_line": 845,
+   "start_line": 987,
+   "end_line": 1005,
    "type": "FUNCTION",
-   "content_hash": "ef17e1b98f527cad"
+   "content_hash": "08fd5897189ee358"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_extract_text": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_extract_text",
-   "start_line": 846,
-   "end_line": 859,
+   "start_line": 1006,
+   "end_line": 1019,
    "type": "FUNCTION",
-   "content_hash": "e4b598f5d98394bd"
+   "content_hash": "b7e1c21394e36af2"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_stream_completion": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_stream_completion",
-   "start_line": 860,
-   "end_line": 894,
+   "start_line": 1020,
+   "end_line": 1056,
    "type": "FUNCTION",
-   "content_hash": "2dbd2a01cc08ef1d"
+   "content_hash": "e1a9ad270d370837"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::_stream_chat": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::_stream_chat",
-   "start_line": 895,
-   "end_line": 932,
+   "start_line": 1057,
+   "end_line": 1096,
    "type": "FUNCTION",
-   "content_hash": "8d4e44d14b8c254d"
+   "content_hash": "a872f772b5af9e97"
   },
   "topogpt3/api_server.py|topogpt3/api_server.py::main": {
    "file_path": "topogpt3/api_server.py",
    "qualified_name": "topogpt3/api_server.py::main",
-   "start_line": 933,
-   "end_line": 996,
+   "start_line": 1097,
+   "end_line": 1160,
    "type": "FUNCTION",
-   "content_hash": "b1b857f0b41365dd"
+   "content_hash": "590a50931e86651f"
   },
   "topogpt3/chat.py|topogpt3/chat.py::pre_processing_chat": {
    "file_path": "topogpt3/chat.py",
@@ -6037,6 +6277,150 @@
    "type": "FUNCTION",
    "content_hash": "f0c8a8720ab10608"
   },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::StructuredOutputError": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::StructuredOutputError",
+   "start_line": 27,
+   "end_line": 31,
+   "type": "CLASS",
+   "content_hash": "e9912ec3b396a897"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::GrammarSpec": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::GrammarSpec",
+   "start_line": 32,
+   "end_line": 35,
+   "type": "CLASS",
+   "content_hash": "f003e10e2f3bc526"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::cache_key": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::cache_key",
+   "start_line": 36,
+   "end_line": 45,
+   "type": "FUNCTION",
+   "content_hash": "3c39b93c8eb6ad6f"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::_import_xgrammar": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::_import_xgrammar",
+   "start_line": 46,
+   "end_line": 55,
+   "type": "FUNCTION",
+   "content_hash": "858381ac8fe97a26"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_response_format": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::parse_response_format",
+   "start_line": 56,
+   "end_line": 92,
+   "type": "FUNCTION",
+   "content_hash": "e1a41e7ae291b25f"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_so_args": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::parse_so_args",
+   "start_line": 93,
+   "end_line": 131,
+   "type": "FUNCTION",
+   "content_hash": "d308a6e635062ce0"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::_tokenizer_key": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::_tokenizer_key",
+   "start_line": 132,
+   "end_line": 138,
+   "type": "FUNCTION",
+   "content_hash": "e9f6c85c24f2dc2b"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::_get_compiler": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::_get_compiler",
+   "start_line": 139,
+   "end_line": 161,
+   "type": "FUNCTION",
+   "content_hash": "96bc11a6a03dc7c7"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::_compile": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::_compile",
+   "start_line": 162,
+   "end_line": 181,
+   "type": "FUNCTION",
+   "content_hash": "b501cb55eeea5668"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::GrammarConstraint": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::GrammarConstraint",
+   "start_line": 182,
+   "end_line": 184,
+   "type": "CLASS",
+   "content_hash": "32d6bb3ea2ab38ac"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::__init__": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::__init__",
+   "start_line": 185,
+   "end_line": 191,
+   "type": "FUNCTION",
+   "content_hash": "62e742e0605a73fc"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::_new_matcher": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::_new_matcher",
+   "start_line": 192,
+   "end_line": 196,
+   "type": "FUNCTION",
+   "content_hash": "4d0d99294127c1c0"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::reset": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::reset",
+   "start_line": 197,
+   "end_line": 200,
+   "type": "FUNCTION",
+   "content_hash": "1e9877ee97e99b09"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::is_terminated": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::is_terminated",
+   "start_line": 201,
+   "end_line": 203,
+   "type": "FUNCTION",
+   "content_hash": "3554859f104266b2"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::apply": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::apply",
+   "start_line": 204,
+   "end_line": 210,
+   "type": "FUNCTION",
+   "content_hash": "aa88ab0ea01e8282"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::accept": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::accept",
+   "start_line": 211,
+   "end_line": 217,
+   "type": "FUNCTION",
+   "content_hash": "f9a64bf120d06299"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::build_constraint": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::build_constraint",
+   "start_line": 218,
+   "end_line": 239,
+   "type": "FUNCTION",
+   "content_hash": "603b35ee2c002e85"
+  },
+  "topogpt3/structured_output.py|topogpt3/structured_output.py::constraint_from_request": {
+   "file_path": "topogpt3/structured_output.py",
+   "qualified_name": "topogpt3/structured_output.py::constraint_from_request",
+   "start_line": 240,
+   "end_line": 251,
+   "type": "FUNCTION",
+   "content_hash": "d3d3c5ba8a713371"
+  },
   "topogpt3/tools_agent.py|topogpt3/tools_agent.py::execute_tool": {
    "file_path": "topogpt3/tools_agent.py",
    "qualified_name": "topogpt3/tools_agent.py::execute_tool",
@@ -7586,7 +7970,7 @@
   },
   {
    "name": "topogpt3: model",
-   "description": "topogpt3: model groups 8 files (py) around TopoGPT2Config, __post_init__, setup_logger, set_seed, QuaternionOps. Diagnostico estatico de un checkpoint TopoGPT3 congelado.",
+   "description": "topogpt3: model groups 10 files (py) around TopoGPT2Config, __post_init__, setup_logger, set_seed, QuaternionOps. Diagnostico estatico de un checkpoint TopoGPT3 congelado.",
    "key_entities": [
     {
      "qualified_name": "topogpt3/model.py::TopoGPT2Config",
@@ -7690,6 +8074,37 @@
      ]
     },
     {
+     "file_path": "tests/test_structured_output.py",
+     "methods": [
+      "tests/test_structured_output.py::tokenizer",
+      "tests/test_structured_output.py::TestParseResponseFormat",
+      "tests/test_structured_output.py::test_none_and_text",
+      "tests/test_structured_output.py::test_json_object",
+      "tests/test_structured_output.py::test_json_schema",
+      "tests/test_structured_output.py::test_regex",
+      "tests/test_structured_output.py::test_grammar",
+      "tests/test_structured_output.py::test_invalid_payloads",
+      "tests/test_structured_output.py::TestParseSoArgs",
+      "tests/test_structured_output.py::test_json_string_schema",
+      "tests/test_structured_output.py::test_regex",
+      "tests/test_structured_output.py::test_ebnf",
+      "tests/test_structured_output.py::test_requires_schema",
+      "tests/test_structured_output.py::test_unknown_schema_type",
+      "tests/test_structured_output.py::TestGrammarConstraint",
+      "tests/test_structured_output.py::test_json_schema_accepts_and_terminates",
+      "tests/test_structured_output.py::test_regex_masks_illegal_first_token",
+      "tests/test_structured_output.py::test_reset_restores_initial_state",
+      "tests/test_structured_output.py::test_invalid_regex_raises",
+      "tests/test_structured_output.py::test_constraint_from_request_rejects_both_surfaces",
+      "tests/test_structured_output.py::TestRequestModels",
+      "tests/test_structured_output.py::test_chat_accepts_seed_and_response_format",
+      "tests/test_structured_output.py::test_completion_accepts_so_args",
+      "tests/test_structured_output.py::test_negative_seed_rejected",
+      "tests/test_structured_output.py::test_auto_continue_with_constraint_rejected",
+      "tests/test_structured_output.py::test_make_generator_is_reproducible"
+     ]
+    },
+    {
      "file_path": "topogpt3/api_server.py",
      "methods": [
       "topogpt3/api_server.py::_setup_logging",
@@ -7714,7 +8129,10 @@
       "topogpt3/api_server.py::Message",
       "topogpt3/api_server.py::ChatCompletionRequest",
       "topogpt3/api_server.py::_normalize_stop",
+      "topogpt3/api_server.py::_make_generator",
       "topogpt3/api_server.py::ServerModel",
+      "topogpt3/api_server.py::_seeded",
+      "topogpt3/api_server.py::_generate",
       "topogpt3/api_server.py::complete",
       "topogpt3/api_server.py::stream_complete",
       "topogpt3/api_server.py::_is_eos",
@@ -7732,6 +8150,7 @@
       "topogpt3/api_server.py::completions",
       "topogpt3/api_server.py::chat_completions",
       "topogpt3/api_server.py::_check_model",
+      "topogpt3/api_server.py::_request_constraint",
       "topogpt3/api_server.py::_short_id",
       "topogpt3/api_server.py::_build_chat_prompt",
       "topogpt3/api_server.py::_extract_text",
@@ -8035,6 +8454,29 @@
      ]
     },
     {
+     "file_path": "topogpt3/structured_output.py",
+     "methods": [
+      "topogpt3/structured_output.py::StructuredOutputError",
+      "topogpt3/structured_output.py::GrammarSpec",
+      "topogpt3/structured_output.py::cache_key",
+      "topogpt3/structured_output.py::_import_xgrammar",
+      "topogpt3/structured_output.py::parse_response_format",
+      "topogpt3/structured_output.py::parse_so_args",
+      "topogpt3/structured_output.py::_tokenizer_key",
+      "topogpt3/structured_output.py::_get_compiler",
+      "topogpt3/structured_output.py::_compile",
+      "topogpt3/structured_output.py::GrammarConstraint",
+      "topogpt3/structured_output.py::__init__",
+      "topogpt3/structured_output.py::_new_matcher",
+      "topogpt3/structured_output.py::reset",
+      "topogpt3/structured_output.py::is_terminated",
+      "topogpt3/structured_output.py::apply",
+      "topogpt3/structured_output.py::accept",
+      "topogpt3/structured_output.py::build_constraint",
+      "topogpt3/structured_output.py::constraint_from_request"
+     ]
+    },
+    {
      "file_path": "topogpt3/train.py",
      "methods": [
       "topogpt3/train.py::TopoGPT3Config",
@@ -8294,8 +8736,117 @@
      "top_symbols_more": 23
     },
     {
+     "name": "tests",
+     "description": "tests groups 1 files (py) around tokenizer, TestParseResponseFormat, test_none_and_text, test_json_object, test_json_schema. Tests for DeepInfer-style structured outputs and deterministic seeds.",
+     "key_entities": [
+      {
+       "qualified_name": "tests/test_structured_output.py::tokenizer",
+       "reference_file": "tests/test_structured_output.py",
+       "reference_start_line": 19,
+       "reference_end_line": 28
+      },
+      {
+       "qualified_name": "tests/test_structured_output.py::TestParseResponseFormat",
+       "reference_file": "tests/test_structured_output.py",
+       "reference_start_line": 29,
+       "reference_end_line": 29
+      },
+      {
+       "qualified_name": "tests/test_structured_output.py::test_none_and_text",
+       "reference_file": "tests/test_structured_output.py",
+       "reference_start_line": 30,
+       "reference_end_line": 33
+      },
+      {
+       "qualified_name": "tests/test_structured_output.py::test_json_object",
+       "reference_file": "tests/test_structured_output.py",
+       "reference_start_line": 34,
+       "reference_end_line": 38
+      },
+      {
+       "qualified_name": "tests/test_structured_output.py::test_json_schema",
+       "reference_file": "tests/test_structured_output.py",
+       "reference_start_line": 39,
+       "reference_end_line": 47
+      },
+      {
+       "qualified_name": "tests/test_structured_output.py::test_regex",
+       "reference_file": "tests/test_structured_output.py",
+       "reference_start_line": 48,
+       "reference_end_line": 51
+      },
+      {
+       "qualified_name": "tests/test_structured_output.py::test_grammar",
+       "reference_file": "tests/test_structured_output.py",
+       "reference_start_line": 52,
+       "reference_end_line": 64
+      },
+      {
+       "qualified_name": "tests/test_structured_output.py::test_invalid_payloads",
+       "reference_file": "tests/test_structured_output.py",
+       "reference_start_line": 65,
+       "reference_end_line": 69
+      }
+     ],
+     "source_cluster_ids": [],
+     "file_methods": [
+      {
+       "file_path": "tests/test_structured_output.py",
+       "methods": [
+        "tests/test_structured_output.py::tokenizer",
+        "tests/test_structured_output.py::TestParseResponseFormat",
+        "tests/test_structured_output.py::test_none_and_text",
+        "tests/test_structured_output.py::test_json_object",
+        "tests/test_structured_output.py::test_json_schema",
+        "tests/test_structured_output.py::test_regex",
+        "tests/test_structured_output.py::test_grammar",
+        "tests/test_structured_output.py::test_invalid_payloads",
+        "tests/test_structured_output.py::TestParseSoArgs",
+        "tests/test_structured_output.py::test_json_string_schema",
+        "tests/test_structured_output.py::test_regex",
+        "tests/test_structured_output.py::test_ebnf",
+        "tests/test_structured_output.py::test_requires_schema",
+        "tests/test_structured_output.py::test_unknown_schema_type",
+        "tests/test_structured_output.py::TestGrammarConstraint",
+        "tests/test_structured_output.py::test_json_schema_accepts_and_terminates",
+        "tests/test_structured_output.py::test_regex_masks_illegal_first_token",
+        "tests/test_structured_output.py::test_reset_restores_initial_state",
+        "tests/test_structured_output.py::test_invalid_regex_raises",
+        "tests/test_structured_output.py::test_constraint_from_request_rejects_both_surfaces",
+        "tests/test_structured_output.py::TestRequestModels",
+        "tests/test_structured_output.py::test_chat_accepts_seed_and_response_format",
+        "tests/test_structured_output.py::test_completion_accepts_so_args",
+        "tests/test_structured_output.py::test_negative_seed_rejected",
+        "tests/test_structured_output.py::test_auto_continue_with_constraint_rejected",
+        "tests/test_structured_output.py::test_make_generator_is_reproducible"
+       ]
+      }
+     ],
+     "component_id": "3.3",
+     "can_expand": false,
+     "components": [],
+     "components_relations": [],
+     "layer": "testing",
+     "symbol_count": 26,
+     "top_symbols": [
+      {
+       "n": "tokenizer",
+       "k": "function"
+      },
+      {
+       "n": "TestParseResponseFormat",
+       "k": "class"
+      },
+      {
+       "n": "test_none_and_text",
+       "k": "method"
+      }
+     ],
+     "top_symbols_more": 22
+    },
+    {
      "name": "topogpt3",
-     "description": "topogpt3 groups 6 files (py) around TopoGPT2Config, __post_init__, setup_logger, set_seed, QuaternionOps. OpenAI-compatible HTTP API server so TopoGPT3 can be used as a backend for coding...",
+     "description": "topogpt3 groups 7 files (py) around TopoGPT2Config, __post_init__, setup_logger, set_seed, QuaternionOps. OpenAI-compatible HTTP API server so TopoGPT3 can be used as a backend for coding...",
      "key_entities": [
       {
        "qualified_name": "topogpt3/model.py::TopoGPT2Config",
@@ -8373,7 +8924,10 @@
         "topogpt3/api_server.py::Message",
         "topogpt3/api_server.py::ChatCompletionRequest",
         "topogpt3/api_server.py::_normalize_stop",
+        "topogpt3/api_server.py::_make_generator",
         "topogpt3/api_server.py::ServerModel",
+        "topogpt3/api_server.py::_seeded",
+        "topogpt3/api_server.py::_generate",
         "topogpt3/api_server.py::complete",
         "topogpt3/api_server.py::stream_complete",
         "topogpt3/api_server.py::_is_eos",
@@ -8391,6 +8945,7 @@
         "topogpt3/api_server.py::completions",
         "topogpt3/api_server.py::chat_completions",
         "topogpt3/api_server.py::_check_model",
+        "topogpt3/api_server.py::_request_constraint",
         "topogpt3/api_server.py::_short_id",
         "topogpt3/api_server.py::_build_chat_prompt",
         "topogpt3/api_server.py::_extract_text",
@@ -8694,6 +9249,29 @@
        ]
       },
       {
+       "file_path": "topogpt3/structured_output.py",
+       "methods": [
+        "topogpt3/structured_output.py::StructuredOutputError",
+        "topogpt3/structured_output.py::GrammarSpec",
+        "topogpt3/structured_output.py::cache_key",
+        "topogpt3/structured_output.py::_import_xgrammar",
+        "topogpt3/structured_output.py::parse_response_format",
+        "topogpt3/structured_output.py::parse_so_args",
+        "topogpt3/structured_output.py::_tokenizer_key",
+        "topogpt3/structured_output.py::_get_compiler",
+        "topogpt3/structured_output.py::_compile",
+        "topogpt3/structured_output.py::GrammarConstraint",
+        "topogpt3/structured_output.py::__init__",
+        "topogpt3/structured_output.py::_new_matcher",
+        "topogpt3/structured_output.py::reset",
+        "topogpt3/structured_output.py::is_terminated",
+        "topogpt3/structured_output.py::apply",
+        "topogpt3/structured_output.py::accept",
+        "topogpt3/structured_output.py::build_constraint",
+        "topogpt3/structured_output.py::constraint_from_request"
+       ]
+      },
+      {
        "file_path": "topogpt3/train.py",
        "methods": [
         "topogpt3/train.py::TopoGPT3Config",
@@ -8761,12 +9339,12 @@
        ]
       }
      ],
-     "component_id": "3.3",
+     "component_id": "3.4",
      "can_expand": false,
      "components": [],
      "components_relations": [],
      "layer": "utility",
-     "symbol_count": 382,
+     "symbol_count": 404,
      "top_symbols": [
       {
        "n": "TopoGPT2Config",
@@ -8781,7 +9359,7 @@
        "k": "function"
       }
      ],
-     "top_symbols_more": 278
+     "top_symbols_more": 298
     }
    ],
    "components_relations": [
@@ -8883,7 +9461,7 @@
       }
      ],
      "src_id": "3.1",
-     "dst_id": "3.3",
+     "dst_id": "3.4",
      "is_static": true,
      "all_edges": [
       {
@@ -8997,7 +9575,7 @@
       }
      ],
      "src_id": "3.2",
-     "dst_id": "3.3",
+     "dst_id": "3.4",
      "is_static": true,
      "all_edges": [
       {
@@ -9007,6 +9585,604 @@
         {
          "line": 462,
          "column": 16
+        }
+       ],
+       "description": ""
+      }
+     ]
+    },
+    {
+     "relation": "calls into",
+     "src_name": "tests",
+     "dst_name": "topogpt3",
+     "evidence": "7 imports, 45 calls across the boundary",
+     "import_count": 7,
+     "call_count": 45,
+     "key_edges": [
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::tokenizer",
+       "target": "topogpt3/model.py|topogpt3/model.py::BPETokenizer",
+       "call_sites": [
+        {
+         "line": 24,
+         "column": 15
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_none_and_text",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_response_format",
+       "call_sites": [
+        {
+         "line": 31,
+         "column": 15
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_none_and_text",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_response_format",
+       "call_sites": [
+        {
+         "line": 32,
+         "column": 15
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_json_object",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::GrammarSpec",
+       "call_sites": [
+        {
+         "line": 35,
+         "column": 65
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_json_object",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_response_format",
+       "call_sites": [
+        {
+         "line": 35,
+         "column": 15
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_json_schema",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_response_format",
+       "call_sites": [
+        {
+         "line": 40,
+         "column": 15
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_json_schema",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::GrammarSpec",
+       "call_sites": [
+        {
+         "line": 46,
+         "column": 23
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_regex",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_response_format",
+       "call_sites": [
+        {
+         "line": 49,
+         "column": 15
+        }
+       ],
+       "description": ""
+      }
+     ],
+     "src_id": "3.3",
+     "dst_id": "3.4",
+     "is_static": true,
+     "all_edges": [
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::tokenizer",
+       "target": "topogpt3/model.py|topogpt3/model.py::BPETokenizer",
+       "call_sites": [
+        {
+         "line": 24,
+         "column": 15
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_none_and_text",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_response_format",
+       "call_sites": [
+        {
+         "line": 31,
+         "column": 15
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_none_and_text",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_response_format",
+       "call_sites": [
+        {
+         "line": 32,
+         "column": 15
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_json_object",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::GrammarSpec",
+       "call_sites": [
+        {
+         "line": 35,
+         "column": 65
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_json_object",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_response_format",
+       "call_sites": [
+        {
+         "line": 35,
+         "column": 15
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_json_schema",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_response_format",
+       "call_sites": [
+        {
+         "line": 40,
+         "column": 15
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_json_schema",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::GrammarSpec",
+       "call_sites": [
+        {
+         "line": 46,
+         "column": 23
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_regex",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_response_format",
+       "call_sites": [
+        {
+         "line": 49,
+         "column": 15
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_regex",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::GrammarSpec",
+       "call_sites": [
+        {
+         "line": 50,
+         "column": 23
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_grammar",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_response_format",
+       "call_sites": [
+        {
+         "line": 53,
+         "column": 15
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_grammar",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::GrammarSpec",
+       "call_sites": [
+        {
+         "line": 54,
+         "column": 23
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_invalid_payloads",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_response_format",
+       "call_sites": [
+        {
+         "line": 67,
+         "column": 12
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_json_string_schema",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_so_args",
+       "call_sites": [
+        {
+         "line": 72,
+         "column": 15
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_json_string_schema",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::GrammarSpec",
+       "call_sites": [
+        {
+         "line": 75,
+         "column": 23
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_regex",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::GrammarSpec",
+       "call_sites": [
+        {
+         "line": 78,
+         "column": 74
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_regex",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_so_args",
+       "call_sites": [
+        {
+         "line": 78,
+         "column": 15
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_ebnf",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_so_args",
+       "call_sites": [
+        {
+         "line": 83,
+         "column": 15
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_ebnf",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::GrammarSpec",
+       "call_sites": [
+        {
+         "line": 84,
+         "column": 23
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_requires_schema",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_so_args",
+       "call_sites": [
+        {
+         "line": 88,
+         "column": 12
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_unknown_schema_type",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_so_args",
+       "call_sites": [
+        {
+         "line": 92,
+         "column": 12
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_json_schema_accepts_and_terminates",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_response_format",
+       "call_sites": [
+        {
+         "line": 98,
+         "column": 15
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_json_schema_accepts_and_terminates",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::build_constraint",
+       "call_sites": [
+        {
+         "line": 112,
+         "column": 21
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_json_schema_accepts_and_terminates",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::apply",
+       "call_sites": [
+        {
+         "line": 115,
+         "column": 8
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_json_schema_accepts_and_terminates",
+       "target": "topogpt3/model.py|topogpt3/model.py::encode",
+       "call_sites": [
+        {
+         "line": 118,
+         "column": 24
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_json_schema_accepts_and_terminates",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::accept",
+       "call_sites": [
+        {
+         "line": 119,
+         "column": 19
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_regex_masks_illegal_first_token",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::build_constraint",
+       "call_sites": [
+        {
+         "line": 124,
+         "column": 21
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_regex_masks_illegal_first_token",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_so_args",
+       "call_sites": [
+        {
+         "line": 125,
+         "column": 23
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_regex_masks_illegal_first_token",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::apply",
+       "call_sites": [
+        {
+         "line": 129,
+         "column": 8
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_regex_masks_illegal_first_token",
+       "target": "topogpt3/model.py|topogpt3/model.py::encode",
+       "call_sites": [
+        {
+         "line": 131,
+         "column": 18
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_regex_masks_illegal_first_token",
+       "target": "topogpt3/model.py|topogpt3/model.py::encode",
+       "call_sites": [
+        {
+         "line": 132,
+         "column": 22
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_reset_restores_initial_state",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::build_constraint",
+       "call_sites": [
+        {
+         "line": 138,
+         "column": 21
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_reset_restores_initial_state",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::parse_response_format",
+       "call_sites": [
+        {
+         "line": 139,
+         "column": 23
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_reset_restores_initial_state",
+       "target": "topogpt3/model.py|topogpt3/model.py::encode",
+       "call_sites": [
+        {
+         "line": 141,
+         "column": 24
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_reset_restores_initial_state",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::accept",
+       "call_sites": [
+        {
+         "line": 142,
+         "column": 19
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_reset_restores_initial_state",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::reset",
+       "call_sites": [
+        {
+         "line": 145,
+         "column": 8
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_invalid_regex_raises",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::GrammarSpec",
+       "call_sites": [
+        {
+         "line": 151,
+         "column": 40
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_invalid_regex_raises",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::build_constraint",
+       "call_sites": [
+        {
+         "line": 151,
+         "column": 12
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_constraint_from_request_rejects_both_surfaces",
+       "target": "topogpt3/structured_output.py|topogpt3/structured_output.py::constraint_from_request",
+       "call_sites": [
+        {
+         "line": 156,
+         "column": 8
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_chat_accepts_seed_and_response_format",
+       "target": "topogpt3/api_server.py|topogpt3/api_server.py::ChatCompletionRequest",
+       "call_sites": [
+        {
+         "line": 168,
+         "column": 14
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_completion_accepts_so_args",
+       "target": "topogpt3/api_server.py|topogpt3/api_server.py::CompletionRequest",
+       "call_sites": [
+        {
+         "line": 180,
+         "column": 14
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_negative_seed_rejected",
+       "target": "topogpt3/api_server.py|topogpt3/api_server.py::CompletionRequest",
+       "call_sites": [
+        {
+         "line": 192,
+         "column": 12
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_auto_continue_with_constraint_rejected",
+       "target": "topogpt3/api_server.py|topogpt3/api_server.py::CompletionRequest",
+       "call_sites": [
+        {
+         "line": 201,
+         "column": 10
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_auto_continue_with_constraint_rejected",
+       "target": "topogpt3/api_server.py|topogpt3/api_server.py::_request_constraint",
+       "call_sites": [
+        {
+         "line": 207,
+         "column": 8
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_make_generator_is_reproducible",
+       "target": "topogpt3/api_server.py|topogpt3/api_server.py::_make_generator",
+       "call_sites": [
+        {
+         "line": 216,
+         "column": 50
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "tests/test_structured_output.py|tests/test_structured_output.py::test_make_generator_is_reproducible",
+       "target": "topogpt3/api_server.py|topogpt3/api_server.py::_make_generator",
+       "call_sites": [
+        {
+         "line": 217,
+         "column": 51
         }
        ],
        "description": ""
@@ -9110,7 +10286,7 @@
        "description": ""
       }
      ],
-     "src_id": "3.3",
+     "src_id": "3.4",
      "dst_id": "3.2",
      "is_static": true,
      "all_edges": [
@@ -9228,7 +10404,7 @@
     }
    ],
    "layer": "utility",
-   "symbol_count": 422,
+   "symbol_count": 470,
    "top_symbols": [
     {
      "n": "TopoGPT2Config",
@@ -9243,7 +10419,7 @@
      "k": "function"
     }
    ],
-   "top_symbols_more": 302,
+   "top_symbols_more": 347,
    "hub": true
   },
   {
@@ -11832,17 +13008,28 @@
    "relation": "calls into",
    "src_name": "topogpt3: model",
    "dst_name": "root",
-   "evidence": "0 imports, 13 calls across the boundary",
+   "evidence": "0 imports, 14 calls across the boundary",
    "import_count": 0,
-   "call_count": 13,
+   "call_count": 14,
    "key_edges": [
+    {
+     "source": "topogpt3/api_server.py|topogpt3/api_server.py::_generate",
+     "target": "topogpt3.c|topogpt3.c::softmax",
+     "call_sites": [
+      {
+       "line": 421,
+       "column": 24
+      }
+     ],
+     "description": ""
+    },
     {
      "source": "topogpt3/api_server.py|topogpt3/api_server.py::stream_complete",
      "target": "topogpt3.c|topogpt3.c::softmax",
      "call_sites": [
       {
-       "line": 429,
-       "column": 24
+       "line": 552,
+       "column": 28
       }
      ],
      "description": ""
@@ -11912,17 +13099,6 @@
       }
      ],
      "description": ""
-    },
-    {
-     "source": "topogpt3/model.py|topogpt3/model.py::generate",
-     "target": "topogpt3.c|topogpt3.c::softmax",
-     "call_sites": [
-      {
-       "line": 1213,
-       "column": 37
-      }
-     ],
-     "description": ""
     }
    ],
    "src_id": "3",
@@ -11930,12 +13106,23 @@
    "is_static": true,
    "all_edges": [
     {
+     "source": "topogpt3/api_server.py|topogpt3/api_server.py::_generate",
+     "target": "topogpt3.c|topogpt3.c::softmax",
+     "call_sites": [
+      {
+       "line": 421,
+       "column": 24
+      }
+     ],
+     "description": ""
+    },
+    {
      "source": "topogpt3/api_server.py|topogpt3/api_server.py::stream_complete",
      "target": "topogpt3.c|topogpt3.c::softmax",
      "call_sites": [
       {
-       "line": 429,
-       "column": 24
+       "line": 552,
+       "column": 28
       }
      ],
      "description": ""

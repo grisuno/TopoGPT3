@@ -296,6 +296,58 @@ curl -s http://localhost:8800/v1/chat/completions \
   -d '{"messages":[{"role":"user","content":"fibonacci"}],"stream":true}'
 ```
 
+### Structured outputs and deterministic seeds
+
+The server adopts the structured-output surface used by DeepInfer and
+OpenAI. Constrained decoding is powered by
+[xgrammar](https://github.com/mlc-ai/xgrammar) and works for both
+streaming and non-streaming requests.
+
+```bash
+# JSON Schema (OpenAI response_format)
+curl -s http://localhost:8800/v1/chat/completions \
+  -H "Authorization: Bearer sk-my-secret-key-12345" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "messages":[{"role":"user","content":"Return a person as JSON."}],
+    "response_format":{
+      "type":"json_schema",
+      "json_schema":{
+        "name":"person",
+        "schema":{
+          "type":"object",
+          "properties":{"name":{"type":"string"},"age":{"type":"integer"}},
+          "required":["name","age"],
+          "additionalProperties":false
+        }
+      }
+    },
+    "seed":42
+  }'
+
+# Regex constraint (DeepInfer-style so_args)
+curl -s http://localhost:8800/v1/completions \
+  -H "Authorization: Bearer sk-my-secret-key-12345" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"Ticket: ","so_args":{"schema_type":"regex","schema":"[A-Z]{2}-[0-9]{3}"},"seed":7}'
+
+# EBNF grammar
+curl -s http://localhost:8800/v1/completions \
+  -H "Authorization: Bearer sk-my-secret-key-12345" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"","so_args":{"schema_type":"ebnf","schema":"root ::= \"answer=\" (\"yes\" | \"no\")"}}'
+```
+
+- `response_format.type` accepts `text`, `json_object`, `json_schema`,
+  `regex`, and `grammar`.
+- `so_args.schema_type` accepts `json`, `regex`, and `ebnf`, matching
+  DeepInfer's `SamplingParams`.
+- `seed` fixes the sampling RNG per request; identical prompts and
+  parameters produce identical output.
+- `auto_continue` cannot be combined with a structured-output constraint.
+- xgrammar ships with the `api` and `structured` extras:
+  `pip install -e ".[api]"` or `pip install -e ".[structured]"`.
+
 ## Inference
 
 Two engines share the same checkpoint:
@@ -1038,3 +1090,60 @@ If you are interested in this project, explore the architecture evolution:
 - [TopoBrain](https://github.com/grisuno/TopoBrain): Topo applied to neural networks.
 - [ReadMenator](https://github.com/grisuno/ReadMenator): Knowledge graph generator without LLMs.
 - [TopoGPT2](https://github.com/grisuno/TopoGPT2): Previous evolution of the model.
+
+<!-- readmenator-kb-link -->
+## Knowledge Base
+
+This project has been analyzed by [ReadMenator](https://github.com/grisuno/ReadMenator),
+a zero-token polyglot static analysis tool. Regenerate with
+`pip install readmenator && readmenator . --rebuild`. Analysis outputs:
+
+- **[KNOWLEDGE_BASE.md](./KNOWLEDGE_BASE.md)** -- Full architecture reference with all
+  classes, functions, imports, dependency graphs, UML class diagrams, security
+  audit findings, community analysis, taint paths, hotspots, cycles, and more.
+- **[readmenator-agent/](./readmenator-agent/)** -- Agent-friendly, grep-optimized index.
+  - `INDEX.md` -- Quick reference: what each file does
+  - `SYMBOLS.md` -- Every symbol with file:line
+  - `ARCHITECTURE.md` -- Internal dependency pairs + external imports
+  - `API.md` -- Public function contracts
+  - `GOTCHAS.md` -- Change warnings (blast radius, cycles, hotspots)
+  - `SECURITY.md` -- Findings by severity with fix hints
+  - `MEMORY.md` -- Rules, workflow, style, deliverables, session log
+  - `MANIFEST.json` -- Freshness (git_commit + source_fingerprint) + read order
+  - `KB_<subsystem>.md` -- Per-subsystem context
+  - `recipes/*.md` -- Grounded task guides (add-function, fix-cycle, ...)
+- **[readmenator-wiki/](./readmenator-wiki/)** -- Navigable wiki (start here for the big picture).
+  - `index.md` -- Entry point: overview, reading order, god nodes, connections
+  - `community_*.md` -- One synthesis page per code community
+  - `connections.json` -- Typed bridges between communities
+  - `queries.md` -- Suggested questions + answer log
+  - `REPORT.md` -- Honest audit: coverage, confidence, limits
+- **[readmenator-graphrag/](./readmenator-graphrag/)** -- Zero-token GraphRAG index.
+  - `index.json` + `REPORTS.md` -- Query with `readmenator . ask "<question>"`
+- **[readmenator-apidocs/](./readmenator-apidocs/)** -- API reference (Sphinx/Doxygen style).
+  - `index.md` + `modules/*.md` -- Signatures, parameters, returns, raises, examples, call graphs
+  - `architecture.md` -- Tiered architecture + execution flows (control flow, call tree, sequence)
+  - `classes.md`, `genindex.md`, `COVERAGE.md` -- Hierarchy, A-Z index, doc coverage + warnings
+  - `index.html` + `api/` -- Offline searchable browser and machine-readable model (`api/index.json`, `api/modules/*.jsonl` one entity per line)
+- **[readmenator-maps/](./readmenator-maps/)** -- Interactive gallery (`index.html`).
+  - 5 system maps: architecture, workflow, sequence, dataflow, lifecycle
+  - `graph-force.html` -- Force-graph explorer (2D/3D, reach, paths, lenses)
+  - `graph-bundle.html` -- Edge bundle explorer (circle + sphere)
+  - `components.html` -- Component diagrams
+- **[docs/](./docs/)** -- Static site (GitHub Pages ready).
+  - Gallery copy + `llms.txt` (agent entry point) + `md/` docs + video
+- **[readmenator-diagrams/](./readmenator-diagrams/)** -- Component diagrams.
+  - `analysis.json` + `graph LR` markdown + per-component pages + `index.html`
+- **[readmenator-rules/](./readmenator-rules/)** -- Suggested Semgrep rules (`*.yml`),
+  `yara_rules.yar` (YARA-lite) + `exclusions.yaml` (false-positive blocklist)
+- **[readmenator.mp4](./readmenator.mp4)** -- Cinematic synthwave overview video
+- **[.cursorrules](./.cursorrules)** -- Generated AI assistant rules
+- **[readmenator_audit.sarif](./readmenator_audit.sarif)** -- SARIF v2.1.0 audit (when security scan is on)
+
+Cache (`.readmenator_cache/`), packaged agent skills (`.claude/skills/`), and the
+GitHub wiki mirror are also produced on `run`/`--rebuild`.
+
+AI agents: Read `readmenator-wiki/index.md` first for the big picture, then `readmenator-agent/INDEX.md` for grep-friendly lookup.
+Developers: Read `KNOWLEDGE_BASE.md` for full architecture reference, open `readmenator-maps/index.html` for the visual gallery.
+<!-- /readmenator-kb-link -->
+

@@ -1,13 +1,13 @@
 # Second Brain
 
-*Last synthesized: 2026-10-24 | 53 files | 7 concept pages | offline, zero tokens*
+*Last synthesized: 2026-10-24 | 55 files | 7 concept pages | offline, zero tokens*
 
 > Raw sources -> readmenator wiki -> links (Karpathy LLM Wiki Pattern, deterministic).
 > Start here, then open one community page. Prefer grep over full reads.
 
 ## Vault Overview
 
-The codebase centres on `model.py`, `__init__.py`, `__main__.py`. Architecturally it is 5 layers, dominant utility (46 files) across 7 import-based communities. Recorded risk surface: 0 security findings and 0 dependency cycles.
+The codebase centres on `model.py`, `__init__.py`, `__main__.py`. Architecturally it is 5 layers, dominant utility (47 files) across 7 import-based communities. Recorded risk surface: 0 security findings and 0 dependency cycles.
 
 Surprising tissue lives between topogpt3: lora, eval, topogpt3: model: 9 extracted cross-community imports and 11 inferred bridges. Follow `connections.json` sorted by strength before refactoring.
 
@@ -17,14 +17,14 @@ Open work clusters around documentation (87% file coverage), 0 security findings
 
 | Metric | Value |
 |--------|-------|
-| Files | 53 |
-| Symbols | 933 |
-| Resolved imports | 112 |
+| Files | 55 |
+| Symbols | 981 |
+| Resolved imports | 120 |
 | Languages | c, py, sh |
 | Communities | 7 |
-| Doc coverage | 87% (46/53 files) |
+| Doc coverage | 87% (48/55 files) |
 | Security findings | 0 |
-| Estimated read cost | ~27351 tokens (chars/4, offline so $0) |
+| Estimated read cost | ~27905 tokens (chars/4, offline so $0) |
 
 ## Reading Order
 
@@ -41,7 +41,7 @@ readmenator query "<question>" --target TopoGPT3
 
 - [topogpt3: lora (12 files, cohesion 0.49)](./community_0_topogpt3_lora.md)
 - [eval (11 files, cohesion 0.43)](./community_1_eval.md)
-- [topogpt3: model (8 files, cohesion 0.32)](./community_2_topogpt3_model.md)
+- [topogpt3: model (10 files, cohesion 0.40)](./community_2_topogpt3_model.md)
 - [topogpt3: sandbox (7 files, cohesion 0.41)](./community_3_topogpt3_sandbox.md)
 - [topogpt3: jlens (4 files, cohesion 0.45)](./community_4_topogpt3_jlens.md)
 - [root (3 files, cohesion 1.00)](./community_5_root.md)
@@ -51,11 +51,11 @@ readmenator query "<question>" --target TopoGPT3
 
 | File | Score |
 |------|-------|
-| `topogpt3/model.py` | 56.8 |
+| `topogpt3/model.py` | 58.8 |
 | `topogpt3/__init__.py` | 42.0 |
 | `topogpt3/__main__.py` | 28.1 |
+| `topogpt3/api_server.py` | 17.0 |
 | `tests/test_heritage.py` | 16.9 |
-| `topogpt3.c` | 16.8 |
 
 ## Strongest Connections
 

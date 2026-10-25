@@ -28,10 +28,11 @@
 | `tests/test_heritage.py` | Advanced-training tests: LoRA/RL/chat modules preserve quaternionic identity. | tests | 9 | 0 |
 | `tests/test_jlens.py` | TestValidPositionMask: Feature: valid_position_mask excludes attention-sink and final positions. | tests | 51 | 0 |
 | `tests/test_lens_model.py` | TestTopoGPT3LensConfig: Feature: TopoGPT3LensConfig provides centralized adapter configuration. | tests | 34 | 0 |
+| `tests/test_structured_output.py` | Tests for DeepInfer-style structured outputs and deterministic seeds. | tests | 26 | 0 |
 | `topogpt3.c` | FILE: topogpt3 -p "prompt" [-n N] [-t T]   Headless mode topogpt3 -i... | root | 128 | 2 |
 | `topogpt3/__init__.py` | TopoGPT3: complex-valued spectral language model for code. | topogpt3 | 0 | 7 |
 | `topogpt3/__main__.py` | main: TopoGPT3 entry point. | topogpt3 | 1 | 0 |
-| `topogpt3/api_server.py` | OpenAI-compatible HTTP API server so TopoGPT3 can be used as a backend for coding agents (e.g. | topogpt3 | 46 | 1 |
+| `topogpt3/api_server.py` | OpenAI-compatible HTTP API server so TopoGPT3 can be used as a backend for coding agents (e.g. | topogpt3 | 50 | 2 |
 | `topogpt3/chat.py` | Chat template + special tokens for TopoGPT3. | topogpt3 | 7 | 6 |
 | `topogpt3/continuation.py` | Auto-continuation engine: detects truncated responses and feeds the last incomplete lines back... | topogpt3 | 5 | 3 |
 | `topogpt3/convert.py` | Export / convert utilities for TopoGPT3 checkpoints. | topogpt3 | 3 | 1 |
@@ -42,9 +43,10 @@
 | `topogpt3/jlens.py` | TopoGPT3JLensFitConfig: Centralized configuration for Jacobian lens fitting. | topogpt3 | 29 | 4 |
 | `topogpt3/lens_model.py` | LensModel: What the lens needs from a model. | topogpt3 | 29 | 5 |
 | `topogpt3/lora.py` | Native LoRA for TopoGPT3. | topogpt3 | 12 | 4 |
-| `topogpt3/model.py` | TopoGPT2: Quaternion-Enhanced Topological Transformer Language Model  Author: Gris Iscomeback... | topogpt3 | 188 | 16 |
+| `topogpt3/model.py` | TopoGPT2: Quaternion-Enhanced Topological Transformer Language Model  Author: Gris Iscomeback... | topogpt3 | 188 | 17 |
 | `topogpt3/rewards.py` | Reward + advantage + loss helpers for TopoGPT3 group-RL. | topogpt3 | 9 | 7 |
 | `topogpt3/rollout.py` | Rollout engine for TopoGPT3 RL self-sampling. | topogpt3 | 10 | 4 |
+| `topogpt3/structured_output.py` | Constrained decoding for the TopoGPT3 OpenAI-compatible server. | topogpt3 | 18 | 2 |
 | `topogpt3/tools_agent.py` | Code-first tool definitions for TopoGPT3 Agent-RL. | topogpt3 | 2 | 4 |
 | `topogpt3/train.py` | TopoGPT3: Grassmannian / Berry-Holonomy extension of TopoGPT2  Author: Gris Iscomeback License... | topogpt3 | 62 | 4 |
 | `topogpt3/train_agent.py` | Agentic RL for TopoGPT3 (multi-turn Tool-Use). | topogpt3 | 2 | 1 |

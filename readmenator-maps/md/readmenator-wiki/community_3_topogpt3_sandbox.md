@@ -64,15 +64,13 @@ This community groups 7 file(s) rooted at `topogpt3` with dominant language py (
 - [INFERRED] bridges community 1 <-> 3 (strength 0.5): Inferred cross-community bridge: eval/governor.py reaches eval/sandbox_smoke.py in 5 hops.
 - [INFERRED] bridges community 3 <-> 2 (strength 0.5): Inferred cross-community bridge: eval/sandbox_smoke.py reaches synthetic_dataset.py in 5 hops.
 - [INFERRED] bridges community 3 <-> 4 (strength 0.5): Inferred cross-community bridge: eval/sandbox_smoke.py reaches tests/test_jlens.py in 5 hops.
-- [INFERRED] bridges community 3 <-> 4 (strength 0.5): Inferred cross-community bridge: eval/sandbox_smoke.py reaches tests/test_lens_model.py in 5 hops.
-- [INFERRED] bridges community 3 <-> 2 (strength 0.5): Inferred cross-community bridge: eval/sandbox_smoke.py reaches topogpt3/continuation.py in 5 hops.
 
 ## Risks
 
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/chat.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/tools_agent.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/yarn.py` via `eval` (2 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/eval_toolcall.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/chat.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/yarn.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/tools_agent.py` via `eval` (2 hops)
 - [taint critical] `eval/governor_smoke.py` -> `eval/sandbox.py` via `eval` (3 hops)
 
 ## Open Questions

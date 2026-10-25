@@ -32,7 +32,7 @@ graph LR
 
 ## Details
 
-Static architecture map of 53 files (c, py, sh) in 6 components: topogpt3: lora, eval, topogpt3: model, topogpt3: sandbox, topogpt3: jlens, root. Structure is extracted statically without LLM calls; component prose may be enriched locally.
+Static architecture map of 55 files (c, py, sh) in 6 components: topogpt3: lora, eval, topogpt3: model, topogpt3: sandbox, topogpt3: jlens, root. Structure is extracted statically without LLM calls; component prose may be enriched locally.
 
 ### topogpt3: lora (1)
 
@@ -66,7 +66,7 @@ eval groups 11 files (py) around load_humaneval, build_prompt, extract_candidate
 
 ### topogpt3: model (3)
 
-topogpt3: model groups 8 files (py) around TopoGPT2Config, __post_init__, setup_logger, set_seed, QuaternionOps. Diagnostico estatico de un checkpoint TopoGPT3 congelado.
+topogpt3: model groups 10 files (py) around TopoGPT2Config, __post_init__, setup_logger, set_seed, QuaternionOps. Diagnostico estatico de un checkpoint TopoGPT3 congelado.
 
 **Related Classes/Methods**:
 

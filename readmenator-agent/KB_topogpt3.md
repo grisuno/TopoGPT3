@@ -21,54 +21,58 @@ Pages: [KB_topogpt3.md](KB_topogpt3.md), [KB_topogpt3_p2.md](KB_topogpt3_p2.md)
 - Layer: presentation
 - Language: py
 - Symbols:
-  - `_setup_logging` (function, line 116) `def _setup_logging(verbose)`
-  - `ApiKey` (class, line 137) `class ApiKey`
-  - `AuthState` (class, line 143) `class AuthState`
-  - `_parse_keys` (function, line 164) `def _parse_keys(raw)`
-  - `_sha256` (function, line 192) `def _sha256(raw)`
-  - `TokenBucket` (class, line 202) `class TokenBucket`
-  - `RateLimiter` (class, line 219) `class RateLimiter`
-  - `IpBanner` (class, line 250) `class IpBanner`
-  - `_sanitize_stop` (function, line 281) `def _sanitize_stop(stop)`
-  - `CompletionRequest` (class, line 291) `class CompletionRequest(BaseModel)`
-  - `Message` (class, line 310) `class Message(BaseModel)`
-  - `ChatCompletionRequest` (class, line 316) `class ChatCompletionRequest(BaseModel)`
-  - `ServerModel` (class, line 344) `class ServerModel`
-  - `_resolve_device` (function, line 502) `def _resolve_device(device)`
-  - `_probe_n_kv` (function, line 508) `def _probe_n_kv(checkpoint_dir)`
-  - `load_model` (function, line 516) `def load_model(checkpoint, device)`
-  - `lifespan` (function, line 537) `def lifespan(app)`
-  - `_security_middleware` (function, line 577) `def _security_middleware(request, call_next)`
-  - `_real_ip` (function, line 605) `def _real_ip(request)`
-  - `_json_error` (function, line 616) `def _json_error(status, detail)`
-  - `_authenticate` (function, line 628) `def _authenticate(request)`
-  - `_check_rate_limit` (function, line 646) `def _check_rate_limit(api_key, request)`
-  - `health` (function, line 664) `def health(request)`
-  - `list_models` (function, line 671) `def list_models(request)`
-  - `completions` (function, line 688) `def completions(req, request)`
-  - `chat_completions` (function, line 744) `def chat_completions(req, request)`
-  - `_check_model` (function, line 818) `def _check_model()`
-  - `_short_id` (function, line 823) `def _short_id()`
-  - `_build_chat_prompt` (function, line 827) `def _build_chat_prompt(messages)`
-  - `_extract_text` (function, line 846) `def _extract_text(content)`
-  - `_stream_completion` (function, line 860) `def _stream_completion(prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...`
-  - `_stream_chat` (function, line 895) `def _stream_chat(t0_ms, prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...`
-  - `main` (function, line 933) `def main()`
-  - `validate` (method, line 148) `def validate(self, raw)`
-  - `consume` (method, line 208) `def consume(self, n)`
-  - `__init__` (method, line 220) `def __init__(self, user_rps, admin_rps, capacity)`
-  - `_cleanup` (method, line 227) `def _cleanup(self)`
-  - `allow` (method, line 233) `def allow(self, key, role)`
-  - `__init__` (method, line 251) `def __init__(self, max_failures, window)`
-  - `record_failure` (method, line 257) `def record_failure(self, ip)`
-  - `is_banned` (method, line 265) `def is_banned(self, ip)`
-  - `_normalize_stop` (method, line 306) `def _normalize_stop(cls, v)`
-  - `_normalize_stop` (method, line 334) `def _normalize_stop(cls, v)`
-  - `complete` (method, line 351) `def complete(self, prompt)`
-  - `stream_complete` (method, line 396) `def stream_complete(self, prompt)`
-  - `_is_eos` (method, line 485) `def _is_eos(self, token_id)`
-- Depends on: `topogpt3/chat.py`, `topogpt3/continuation.py`, `topogpt3/model.py`
-- Imported by: `topogpt3/__main__.py`
+  - `_setup_logging` (function, line 121) `def _setup_logging(verbose)`
+  - `ApiKey` (class, line 142) `class ApiKey`
+  - `AuthState` (class, line 148) `class AuthState`
+  - `_parse_keys` (function, line 169) `def _parse_keys(raw)`
+  - `_sha256` (function, line 197) `def _sha256(raw)`
+  - `TokenBucket` (class, line 207) `class TokenBucket`
+  - `RateLimiter` (class, line 224) `class RateLimiter`
+  - `IpBanner` (class, line 255) `class IpBanner`
+  - `_sanitize_stop` (function, line 286) `def _sanitize_stop(stop)`
+  - `CompletionRequest` (class, line 296) `class CompletionRequest(BaseModel)`
+  - `Message` (class, line 318) `class Message(BaseModel)`
+  - `ChatCompletionRequest` (class, line 324) `class ChatCompletionRequest(BaseModel)`
+  - `_make_generator` (function, line 354) `def _make_generator(seed, device)`
+  - `ServerModel` (class, line 369) `class ServerModel`
+  - `_resolve_device` (function, line 636) `def _resolve_device(device)`
+  - `_probe_n_kv` (function, line 642) `def _probe_n_kv(checkpoint_dir)`
+  - `load_model` (function, line 650) `def load_model(checkpoint, device)`
+  - `lifespan` (function, line 671) `def lifespan(app)`
+  - `_security_middleware` (function, line 711) `def _security_middleware(request, call_next)`
+  - `_real_ip` (function, line 739) `def _real_ip(request)`
+  - `_json_error` (function, line 750) `def _json_error(status, detail)`
+  - `_authenticate` (function, line 762) `def _authenticate(request)`
+  - `_check_rate_limit` (function, line 782) `def _check_rate_limit(api_key, request)`
+  - `health` (function, line 800) `def health(request)`
+  - `list_models` (function, line 807) `def list_models(request)`
+  - `completions` (function, line 824) `def completions(req, request)`
+  - `chat_completions` (function, line 884) `def chat_completions(req, request)`
+  - `_check_model` (function, line 962) `def _check_model()`
+  - `_request_constraint` (function, line 967) `def _request_constraint(req)`
+  - `_short_id` (function, line 983) `def _short_id()`
+  - `_build_chat_prompt` (function, line 987) `def _build_chat_prompt(messages)`
+  - `_extract_text` (function, line 1006) `def _extract_text(content)`
+  - `_stream_completion` (function, line 1020) `def _stream_completion(prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...`
+  - `_stream_chat` (function, line 1057) `def _stream_chat(t0_ms, prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...`
+  - `main` (function, line 1097) `def main()`
+  - `validate` (method, line 153) `def validate(self, raw)`
+  - `consume` (method, line 213) `def consume(self, n)`
+  - `__init__` (method, line 225) `def __init__(self, user_rps, admin_rps, capacity)`
+  - `_cleanup` (method, line 232) `def _cleanup(self)`
+  - `allow` (method, line 238) `def allow(self, key, role)`
+  - `__init__` (method, line 256) `def __init__(self, max_failures, window)`
+  - `record_failure` (method, line 262) `def record_failure(self, ip)`
+  - `is_banned` (method, line 270) `def is_banned(self, ip)`
+  - `_normalize_stop` (method, line 314) `def _normalize_stop(cls, v)`
+  - `_normalize_stop` (method, line 345) `def _normalize_stop(cls, v)`
+  - `_seeded` (method, line 376) `def _seeded(self, seed)`
+  - `_generate` (method, line 391) `def _generate(self, token_ids)`
+  - `complete` (method, line 443) `def complete(self, prompt)`
+  - `stream_complete` (method, line 497) `def stream_complete(self, prompt)`
+  - `_is_eos` (method, line 619) `def _is_eos(self, token_id)`
+- Depends on: `topogpt3/chat.py`, `topogpt3/continuation.py`, `topogpt3/model.py`, `topogpt3/structured_output.py`
+- Imported by: `tests/test_structured_output.py`, `topogpt3/__main__.py`
 
 ## topogpt3/chat.py
 - Doc: Chat template + special tokens for TopoGPT3.

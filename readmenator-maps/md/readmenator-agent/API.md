@@ -280,24 +280,24 @@ Depends on: `topogpt3/api_server.py`, `topogpt3/convert.py`, `topogpt3/export_ch
 - `main` (function) `topogpt3/__main__.py:6` `def main()` -- TopoGPT3 entry point.
 
 ## topogpt3/api_server.py
-Depends on: `topogpt3/chat.py`, `topogpt3/continuation.py`, `topogpt3/model.py`
-Imported by: `topogpt3/__main__.py`
-- `AuthState.validate` (method) `topogpt3/api_server.py:148` `def validate(self, raw)`
-- `TokenBucket.consume` (method) `topogpt3/api_server.py:208` `def consume(self, n)`
-- `RateLimiter.__init__` (method) `topogpt3/api_server.py:220` `def __init__(self, user_rps, admin_rps, capacity)`
-- `RateLimiter.allow` (method) `topogpt3/api_server.py:233` `def allow(self, key, role)`
-- `IpBanner.__init__` (method) `topogpt3/api_server.py:251` `def __init__(self, max_failures, window)`
-- `IpBanner.record_failure` (method) `topogpt3/api_server.py:257` `def record_failure(self, ip)`
-- `IpBanner.is_banned` (method) `topogpt3/api_server.py:265` `def is_banned(self, ip)`
-- `ServerModel.complete` (method) `topogpt3/api_server.py:351` `def complete(self, prompt)`
-- `ServerModel.stream_complete` (method) `topogpt3/api_server.py:396` `def stream_complete(self, prompt)`
-- `load_model` (function) `topogpt3/api_server.py:516` `def load_model(checkpoint, device)`
-- `lifespan` (function) `topogpt3/api_server.py:537` `def lifespan(app)`
-- `health` (function) `topogpt3/api_server.py:664` `def health(request)`
-- `list_models` (function) `topogpt3/api_server.py:671` `def list_models(request)`
-- `completions` (function) `topogpt3/api_server.py:688` `def completions(req, request)`
-- `chat_completions` (function) `topogpt3/api_server.py:744` `def chat_completions(req, request)`
-- `main` (function) `topogpt3/api_server.py:933` `def main()`
+Depends on: `topogpt3/chat.py`, `topogpt3/continuation.py`, `topogpt3/model.py`, `topogpt3/structured_output.py`
+Imported by: `tests/test_structured_output.py`, `topogpt3/__main__.py`
+- `AuthState.validate` (method) `topogpt3/api_server.py:153` `def validate(self, raw)`
+- `TokenBucket.consume` (method) `topogpt3/api_server.py:213` `def consume(self, n)`
+- `RateLimiter.__init__` (method) `topogpt3/api_server.py:225` `def __init__(self, user_rps, admin_rps, capacity)`
+- `RateLimiter.allow` (method) `topogpt3/api_server.py:238` `def allow(self, key, role)`
+- `IpBanner.__init__` (method) `topogpt3/api_server.py:256` `def __init__(self, max_failures, window)`
+- `IpBanner.record_failure` (method) `topogpt3/api_server.py:262` `def record_failure(self, ip)`
+- `IpBanner.is_banned` (method) `topogpt3/api_server.py:270` `def is_banned(self, ip)`
+- `ServerModel.complete` (method) `topogpt3/api_server.py:443` `def complete(self, prompt)`
+- `ServerModel.stream_complete` (method) `topogpt3/api_server.py:497` `def stream_complete(self, prompt)`
+- `load_model` (function) `topogpt3/api_server.py:650` `def load_model(checkpoint, device)`
+- `lifespan` (function) `topogpt3/api_server.py:671` `def lifespan(app)`
+- `health` (function) `topogpt3/api_server.py:800` `def health(request)`
+- `list_models` (function) `topogpt3/api_server.py:807` `def list_models(request)`
+- `completions` (function) `topogpt3/api_server.py:824` `def completions(req, request)`
+- `chat_completions` (function) `topogpt3/api_server.py:884` `def chat_completions(req, request)`
+- `main` (function) `topogpt3/api_server.py:1097` `def main()`
 
 ## topogpt3/chat.py
 Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/api_server.py`, `topogpt3/eval_toolcall.py`, `topogpt3/tools_agent.py`, `topogpt3/train_agent.py`

@@ -30,7 +30,7 @@ flowchart TB
     end
     subgraph lane_3["Tier 4"]
         direction LR
-        n_c2["topogpt3: model<br/>8 files, 422 symbols<br/>Core / utility"]:::cycle
+        n_c2["topogpt3: model<br/>9 files, 444 symbols<br/>Core / utility"]:::cycle
     end
     subgraph lane_4["Tier 5 - foundation"]
         direction LR

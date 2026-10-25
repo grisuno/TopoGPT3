@@ -9,6 +9,7 @@
 ## A
 
 - [`absorb`](modules/topogpt3.inference_hrm.py.md#generationreasoningsummary-absorb) method of `GenerationReasoningSummary` in `topogpt3.inference_hrm`
+- [`accept`](modules/topogpt3.structured_output.py.md#grammarconstraint-accept) method of `GrammarConstraint` in `topogpt3.structured_output`
 - [`ActivationRecorder`](modules/topogpt3.jlens.py.md#activationrecorder) class in `topogpt3.jlens`
 - [`AE_RECON_WEIGHT`](modules/topogpt3.model.py.md#topogpt2config-ae_recon_weight) attribute of `TopoGPT2Config` in `topogpt3.model`
 - [`agent_reward`](modules/topogpt3.train_agent.py.md#agent_reward) function in `topogpt3.train_agent`
@@ -16,6 +17,7 @@
 - [`allowed_builtin_names`](modules/eval.sandbox.py.md#sandboxconfig-allowed_builtin_names) attribute of `SandboxConfig` in `eval.sandbox`
 - [`amp_dtype`](modules/topogpt3.model.py.md#curriculumtrainer-amp_dtype) property of `CurriculumTrainer` in `topogpt3.model`
 - [`ApiKey`](modules/topogpt3.api_server.py.md#apikey) class in `topogpt3.api_server`
+- [`apply`](modules/topogpt3.structured_output.py.md#grammarconstraint-apply) method of `GrammarConstraint` in `topogpt3.structured_output`
 - [`apply`](modules/topogpt3.jlens.py.md#jacobianlens-apply) method of `JacobianLens` in `topogpt3.jlens`
 - [`apply`](modules/topogpt3.inference.py.md#seedsynchronizer-apply) method of `SeedSynchronizer` in `topogpt3.inference`
 - [`apply`](modules/topogpt3.inference_hrm.py.md#seedsynchronizer-apply) method of `SeedSynchronizer` in `topogpt3.inference_hrm`
@@ -66,6 +68,7 @@
 - [`build`](modules/topogpt3.inference.py.md#topogpt2configaligner-build) method of `TopoGPT2ConfigAligner` in `topogpt3.inference`
 - [`build`](modules/topogpt3.inference_hrm.py.md#topogpt2configaligner-build) method of `TopoGPT2ConfigAligner` in `topogpt3.inference_hrm`
 - [`build_backend`](modules/synthetic_dataset.py.md#build_backend) function in `synthetic_dataset`
+- [`build_constraint`](modules/topogpt3.structured_output.py.md#build_constraint) function in `topogpt3.structured_output`
 - [`build_file_tiers`](modules/topogpt3.model.py.md#build_file_tiers) function in `topogpt3.model`
 - [`build_logger`](modules/synthetic_dataset.py.md#build_logger) function in `synthetic_dataset`
 - [`build_parser`](modules/topogpt3.inference.py.md#cliargumentparser-build_parser) staticmethod of `CliArgumentParser` in `topogpt3.inference`
@@ -81,6 +84,7 @@
 
 ## C
 
+- [`cache_key`](modules/topogpt3.structured_output.py.md#grammarspec-cache_key) method of `GrammarSpec` in `topogpt3.structured_output`
 - [`cache_tokens`](modules/topogpt3.model.py.md#curriculumtrainer-cache_tokens) method of `CurriculumTrainer` in `topogpt3.model`
 - [`cache_warm_start_weight`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-cache_warm_start_weight) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
 - [`cancel`](modules/eval.governor.py.md#generationgovernor-cancel) method of `GenerationGovernor` in `eval.governor`
@@ -138,6 +142,7 @@
 - [`conjugate`](modules/topogpt3.model.py.md#quaternionops-conjugate) staticmethod of `QuaternionOps` in `topogpt3.model`
 - [`conjugation_distance_su2`](modules/topogpt3.train.py.md#grassmanniantracker-conjugation_distance_su2) staticmethod of `GrassmannianTracker` in `topogpt3.train`
 - [`consistency_across_runs`](modules/eval.noise_analysis.py.md#consistency_across_runs) function in `eval.noise_analysis`
+- [`constraint_from_request`](modules/topogpt3.structured_output.py.md#constraint_from_request) function in `topogpt3.structured_output`
 - [`consume`](modules/topogpt3.api_server.py.md#tokenbucket-consume) method of `TokenBucket` in `topogpt3.api_server`
 - [`content`](modules/topogpt3.api_server.py.md#message-content) attribute of `Message` in `topogpt3.api_server`
 - [`context_length_diagnostic`](modules/eval.diag_static.py.md#context_length_diagnostic) function in `eval.diag_static`
@@ -344,6 +349,8 @@
 - [`GRADIENT_CHECKPOINTING_FACTOR`](modules/topogpt3.train.py.md#topogpt3config-gradient_checkpointing_factor) attribute of `TopoGPT3Config` in `topogpt3.train`
 - [`GRADIENT_CLIP_NORM`](modules/topogpt3.model.py.md#topogpt2config-gradient_clip_norm) attribute of `TopoGPT2Config` in `topogpt3.model`
 - [`GRADIENT_CLIP_NORM`](modules/topogpt3.train.py.md#topogpt3config-gradient_clip_norm) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`GrammarConstraint`](modules/topogpt3.structured_output.py.md#grammarconstraint) class in `topogpt3.structured_output`
+- [`GrammarSpec`](modules/topogpt3.structured_output.py.md#grammarspec) class in `topogpt3.structured_output`
 - [`GRASS_ELBOW_RATIO`](modules/topogpt3.train.py.md#topogpt3config-grass_elbow_ratio) attribute of `TopoGPT3Config` in `topogpt3.train`
 - [`GRASS_FISHER_BATCHES`](modules/topogpt3.train.py.md#topogpt3config-grass_fisher_batches) attribute of `TopoGPT3Config` in `topogpt3.train`
 - [`GRASS_FISHER_GRADS`](modules/topogpt3.train.py.md#topogpt3config-grass_fisher_grads) attribute of `TopoGPT3Config` in `topogpt3.train`
@@ -409,6 +416,7 @@
 - [`__init__`](modules/topogpt3.inference_hrm.py.md#gausspatchapplier-__init__) constructor of `GaussPatchApplier` in `topogpt3.inference_hrm`
 - [`__init__`](modules/topogpt3.inference.py.md#generationengine-__init__) constructor of `GenerationEngine` in `topogpt3.inference`
 - [`__init__`](modules/eval.governor.py.md#generationgovernor-__init__) constructor of `GenerationGovernor` in `eval.governor`
+- [`__init__`](modules/topogpt3.structured_output.py.md#grammarconstraint-__init__) constructor of `GrammarConstraint` in `topogpt3.structured_output`
 - [`__init__`](modules/topogpt3.train.py.md#grassmanniantracker-__init__) constructor of `GrassmannianTracker` in `topogpt3.train`
 - [`__init__`](modules/synthetic_dataset.py.md#groqbackend-__init__) constructor of `GroqBackend` in `synthetic_dataset`
 - [`__init__`](modules/topogpt3.inference_hrm.py.md#hrmgenerationengine-__init__) constructor of `HRMGenerationEngine` in `topogpt3.inference_hrm`
@@ -482,6 +490,7 @@
 - [`is_closed`](modules/eval.governor.py.md#tokenstream-is_closed) method of `TokenStream` in `eval.governor`
 - [`is_main_process`](modules/topogpt3.trainer_utils_topo.py.md#is_main_process) function in `topogpt3.trainer_utils_topo`
 - [`is_response_complete`](modules/topogpt3.continuation.py.md#is_response_complete) function in `topogpt3.continuation`
+- [`is_terminated`](modules/topogpt3.structured_output.py.md#grammarconstraint-is_terminated) property of `GrammarConstraint` in `topogpt3.structured_output`
 
 <a id="j"></a>
 
@@ -497,6 +506,7 @@
 - [`k3_kl`](modules/topogpt3.rewards.py.md#k3_kl) function in `topogpt3.rewards`
 - [`key_hash`](modules/topogpt3.api_server.py.md#apikey-key_hash) attribute of `ApiKey` in `topogpt3.api_server`
 - [`keys`](modules/topogpt3.api_server.py.md#authstate-keys) attribute of `AuthState` in `topogpt3.api_server`
+- [`kind`](modules/topogpt3.structured_output.py.md#grammarspec-kind) attribute of `GrammarSpec` in `topogpt3.structured_output`
 
 <a id="l"></a>
 
@@ -603,6 +613,7 @@
 - [`mark_done`](modules/eval.governor.py.md#tokenstream-mark_done) method of `TokenStream` in `eval.governor`
 - [`max_ast_depth`](modules/eval.sandbox.py.md#sandboxconfig-max_ast_depth) attribute of `SandboxConfig` in `eval.sandbox`
 - [`MAX_AUTH_FAILURES`](modules/topogpt3.api_server.py.md#max_auth_failures) constant in `topogpt3.api_server`
+- [`MAX_CACHED_GRAMMARS`](modules/topogpt3.structured_output.py.md#max_cached_grammars) constant in `topogpt3.structured_output`
 - [`max_checkpoint_bytes`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-max_checkpoint_bytes) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
 - [`max_checkpoint_bytes`](modules/topogpt3.inference.py.md#inferencesettings-max_checkpoint_bytes) attribute of `InferenceSettings` in `topogpt3.inference`
 - [`MAX_CHECKPOINTS`](modules/topogpt3.model.py.md#topogpt2config-max_checkpoints) attribute of `TopoGPT2Config` in `topogpt3.model`
@@ -784,12 +795,15 @@
 - [`parse`](modules/topogpt3.inference_hrm.py.md#cliargumentparser-parse) staticmethod of `CliArgumentParser` in `topogpt3.inference_hrm`
 - [`parse_args`](modules/synthetic_dataset.py.md#parse_args) function in `synthetic_dataset`
 - [`parse_args`](modules/topogpt3.train.py.md#parse_args) function in `topogpt3.train`
+- [`parse_response_format`](modules/topogpt3.structured_output.py.md#parse_response_format) function in `topogpt3.structured_output`
+- [`parse_so_args`](modules/topogpt3.structured_output.py.md#parse_so_args) function in `topogpt3.structured_output`
 - [`parse_thinking`](modules/topogpt3.chat.py.md#parse_thinking) function in `topogpt3.chat`
 - [`parse_tool_calls`](modules/topogpt3.chat.py.md#parse_tool_calls) function in `topogpt3.chat`
 - [`pass_at_k`](modules/eval.analyze.py.md#pass_at_k) function in `eval.analyze`
 - [`pass_at_k`](modules/eval.report.py.md#pass_at_k) function in `eval.report`
 - [`pass_at_k_unbiased`](modules/eval.temp_sweep.py.md#pass_at_k_unbiased) function in `eval.temp_sweep`
 - [`patch_config_for_resume`](modules/topogpt3.model.py.md#checkpointmanager-patch_config_for_resume) method of `CheckpointManager` in `topogpt3.model`
+- [`payload`](modules/topogpt3.structured_output.py.md#grammarspec-payload) attribute of `GrammarSpec` in `topogpt3.structured_output`
 - [`per_token_logps`](modules/topogpt3.rollout.py.md#rolloutresult-per_token_logps) attribute of `RolloutResult` in `topogpt3.rollout`
 - [`Phase0_KernelOptimizer`](modules/topogpt3.model.py.md#phase0_kerneloptimizer) class in `topogpt3.model`
 - [`Phase1_BatchProspector`](modules/topogpt3.model.py.md#phase1_batchprospector) class in `topogpt3.model`
@@ -887,8 +901,11 @@
 - [`report`](modules/topogpt3.model.py.md#textfilter-report) method of `TextFilter` in `topogpt3.model`
 - [`require_existing_file`](modules/topogpt3.inference.py.md#securepathresolver-require_existing_file) staticmethod of `SecurePathResolver` in `topogpt3.inference`
 - [`require_existing_file`](modules/topogpt3.inference_hrm.py.md#securepathresolver-require_existing_file) staticmethod of `SecurePathResolver` in `topogpt3.inference_hrm`
+- [`reset`](modules/topogpt3.structured_output.py.md#grammarconstraint-reset) method of `GrammarConstraint` in `topogpt3.structured_output`
 - [`resolve_under`](modules/topogpt3.inference.py.md#securepathresolver-resolve_under) staticmethod of `SecurePathResolver` in `topogpt3.inference`
 - [`resolve_under`](modules/topogpt3.inference_hrm.py.md#securepathresolver-resolve_under) staticmethod of `SecurePathResolver` in `topogpt3.inference_hrm`
+- [`response_format`](modules/topogpt3.api_server.py.md#chatcompletionrequest-response_format) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`response_format`](modules/topogpt3.api_server.py.md#completionrequest-response_format) attribute of `CompletionRequest` in `topogpt3.api_server`
 - [`result_separator_char`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-result_separator_char) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
 - [`result_separator_char`](modules/topogpt3.inference.py.md#inferencesettings-result_separator_char) attribute of `InferenceSettings` in `topogpt3.inference`
 - [`result_separator_width`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-result_separator_width) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
@@ -961,6 +978,8 @@
 - [`scan`](modules/topogpt3.model.py.md#filemanifest-scan) method of `FileManifest` in `topogpt3.model`
 - [`SecurePathResolver`](modules/topogpt3.inference.py.md#securepathresolver) class in `topogpt3.inference`
 - [`SecurePathResolver`](modules/topogpt3.inference_hrm.py.md#securepathresolver) class in `topogpt3.inference_hrm`
+- [`seed`](modules/topogpt3.api_server.py.md#chatcompletionrequest-seed) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`seed`](modules/topogpt3.api_server.py.md#completionrequest-seed) attribute of `CompletionRequest` in `topogpt3.api_server`
 - [`seed`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-seed) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
 - [`seed`](modules/topogpt3.inference.py.md#inferencesettings-seed) attribute of `InferenceSettings` in `topogpt3.inference`
 - [`seed`](modules/topogpt3.jlens.py.md#topogpt3jlensfitconfig-seed) attribute of `TopoGPT3JLensFitConfig` in `topogpt3.jlens`
@@ -988,6 +1007,8 @@
 - [`slot_dir`](modules/topogpt3.inference_hrm.py.md#checkpointpaths-slot_dir) property of `CheckpointPaths` in `topogpt3.inference_hrm`
 - [`snapshot`](modules/topogpt3.train.py.md#grassmanniantracker-snapshot) method of `GrassmannianTracker` in `topogpt3.train`
 - [`snprintf`](modules/topogpt3.c.md#snprintf) function in `topogpt3.c`
+- [`so_args`](modules/topogpt3.api_server.py.md#chatcompletionrequest-so_args) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`so_args`](modules/topogpt3.api_server.py.md#completionrequest-so_args) attribute of `CompletionRequest` in `topogpt3.api_server`
 - [`source_directory`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-source_directory) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
 - [`source_directory`](modules/topogpt3.inference.py.md#inferencesettings-source_directory) attribute of `InferenceSettings` in `topogpt3.inference`
 - [`source_layers`](modules/topogpt3.jlens.py.md#topogpt3jlensfitconfig-source_layers) attribute of `TopoGPT3JLensFitConfig` in `topogpt3.jlens`
@@ -1030,6 +1051,7 @@
 - [`strlen`](modules/topogpt3.c.md#strlen) function in `topogpt3.c`
 - [`strncmp`](modules/topogpt3.c.md#strncmp) function in `topogpt3.c`
 - [`strstr`](modules/topogpt3.c.md#strstr) function in `topogpt3.c`
+- [`StructuredOutputError`](modules/topogpt3.structured_output.py.md#structuredoutputerror) exception in `topogpt3.structured_output`
 - [`summarize`](modules/eval.analyze.py.md#summarize) function in `eval.analyze`
 - [`summarize`](modules/eval.analyze_results.py.md#summarize) function in `eval.analyze_results`
 - [`summarize`](modules/eval.temp_sweep.py.md#summarize) function in `eval.temp_sweep`

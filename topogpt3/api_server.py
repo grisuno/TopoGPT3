@@ -60,7 +60,7 @@ import secrets
 import sys
 import time
 from collections import defaultdict
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, contextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Awaitable, Callable, Dict, List, Optional, Set
@@ -81,6 +81,11 @@ except ImportError:
     )
 
 from .model import BPETokenizer, TopoGPT2, TopoGPT2Config, set_seed
+from .structured_output import (
+    GrammarConstraint,
+    StructuredOutputError,
+    constraint_from_request,
+)
 from safetensors.torch import load_file
 
 
@@ -300,6 +305,9 @@ class CompletionRequest(BaseModel):
     stream: bool = False
     auto_continue: bool = False
     max_continuations: int = Field(default=3, ge=0, le=10)
+    seed: int | None = Field(default=None, ge=0, le=2**63 - 1)
+    response_format: Any = None
+    so_args: Any = None
 
     @field_validator("stop", mode="before")
     @classmethod
@@ -325,6 +333,9 @@ class ChatCompletionRequest(BaseModel):
     stream: bool = False
     auto_continue: bool = False
     max_continuations: int = Field(default=3, ge=0, le=10)
+    seed: int | None = Field(default=None, ge=0, le=2**63 - 1)
+    response_format: Any = None
+    so_args: Any = None
     # tool definitions + adaptive thinking switch
     tools: Any = None
     open_thinking: bool = False
@@ -340,12 +351,93 @@ class ChatCompletionRequest(BaseModel):
 # ═══════════════════════════════════════════════════════════════════════════
 
 
+def _make_generator(seed: int | None, device: str) -> torch.Generator | None:
+    """Per-request RNG so a fixed ``seed`` reproduces the exact same sample."""
+    if seed is None:
+        return None
+    if device.startswith("cuda"):
+        generator = torch.Generator(device=torch.device(device))
+    elif device == "cpu":
+        generator = torch.Generator(device="cpu")
+    else:
+        return None
+    generator.manual_seed(int(seed))
+    return generator
+
+
 @dataclass
 class ServerModel:
     model: TopoGPT2
     tokenizer: BPETokenizer
     device: str
     checkpoint: str
+
+    @contextmanager
+    def _seeded(self, seed: int | None):
+        if seed is None:
+            yield
+            return
+        cuda_devices: list[int] = []
+        if self.device.startswith("cuda"):
+            index = self.device.partition(":")[2]
+            cuda_devices = [int(index) if index else torch.cuda.current_device()]
+        with torch.random.fork_rng(devices=cuda_devices):
+            torch.manual_seed(int(seed))
+            if cuda_devices:
+                torch.cuda.manual_seed_all(int(seed))
+            yield
+
+    @torch.no_grad()
+    def _generate(
+        self,
+        token_ids: torch.Tensor,
+        *,
+        max_new_tokens: int,
+        temperature: float,
+        top_k: int,
+        repetition_penalty: float,
+        seed: int | None,
+        constraint: GrammarConstraint | None,
+    ) -> torch.Tensor:
+        generator = _make_generator(seed, self.device)
+        logits, _, past_kvs = self.model(token_ids)
+        for _ in range(max_new_tokens):
+            step = logits[:, -1, :]
+            if repetition_penalty != 1.0:
+                mask = torch.zeros_like(step, dtype=torch.bool)
+                mask.scatter_(1, token_ids, True)
+                step = torch.where(mask, step / repetition_penalty, step)
+            if temperature <= 1e-6:
+                if constraint is not None:
+                    constraint.apply(step)
+                next_tok = step.argmax(dim=-1, keepdim=True)
+            else:
+                step = step / temperature
+                if top_k > 0:
+                    v, _ = torch.topk(step, min(top_k, step.size(-1)))
+                    step[step < v[:, -1:]] = float("-inf")
+                if constraint is not None:
+                    constraint.apply(step)
+                probs = torch.softmax(step, dim=-1)
+                if not torch.isfinite(probs).all() or probs.sum().item() <= 0:
+                    break
+                next_tok = torch.multinomial(probs, 1, generator=generator)
+
+            token_id = int(next_tok.item())
+            if constraint is not None:
+                if not constraint.accept(token_id):
+                    break
+                finished = constraint.is_terminated
+            else:
+                if self._is_eos(token_id):
+                    break
+                finished = False
+
+            token_ids = torch.cat([token_ids, next_tok], dim=1)
+            if finished:
+                break
+            logits, _, past_kvs = self.model(next_tok, past_kvs=past_kvs)
+        return token_ids
 
     @torch.no_grad()
     def complete(
@@ -359,6 +451,8 @@ class ServerModel:
         stop: list[str] | None = None,
         auto_continue: bool = False,
         max_continuations: int = 3,
+        seed: int | None = None,
+        constraint: GrammarConstraint | None = None,
     ) -> str:
         ids = self.tokenizer.encode(prompt)
         if not ids:
@@ -367,22 +461,29 @@ class ServerModel:
         ids = ids[-max_ctx:]
         x = torch.tensor([ids], dtype=torch.long, device=self.device)
         if auto_continue:
-            out = self.model.generate_with_continuation(
-                x,
-                tokenizer=self.tokenizer,
-                max_new_tokens=max_new_tokens,
-                temperature=temperature,
-                top_k=top_k,
-                repetition_penalty=repetition_penalty,
-                max_continuations=max_continuations,
-            )
+            if constraint is not None:
+                raise StructuredOutputError(
+                    "auto_continue cannot be combined with structured output"
+                )
+            with self._seeded(seed):
+                out = self.model.generate_with_continuation(
+                    x,
+                    tokenizer=self.tokenizer,
+                    max_new_tokens=max_new_tokens,
+                    temperature=temperature,
+                    top_k=top_k,
+                    repetition_penalty=repetition_penalty,
+                    max_continuations=max_continuations,
+                )
         else:
-            out = self.model.generate(
+            out = self._generate(
                 x,
                 max_new_tokens=max_new_tokens,
                 temperature=temperature,
                 top_k=top_k,
                 repetition_penalty=repetition_penalty,
+                seed=seed,
+                constraint=constraint,
             )
         text = self.tokenizer.decode(out[0].tolist())
         if stop:
@@ -404,43 +505,73 @@ class ServerModel:
         stop: list[str] | None = None,
         auto_continue: bool = False,
         max_continuations: int = 3,
+        seed: int | None = None,
+        constraint: GrammarConstraint | None = None,
     ):
         ids = self.tokenizer.encode(prompt)
         if not ids:
             return
+        if auto_continue and constraint is not None:
+            raise StructuredOutputError(
+                "auto_continue cannot be combined with structured output"
+            )
         max_ctx = self.model.config.MAX_SEQ_LEN
         ids = ids[-max_ctx:]
         x = torch.tensor([ids], dtype=torch.long, device=self.device)
         max_tokens = min(max_new_tokens, MAX_OUTPUT_TOKENS)
+        generator = _make_generator(seed, self.device)
         prev_text = self.tokenizer.decode(x[0].tolist())
-        prev_bytes = len(prev_text.encode("utf-8"))
+        prev_chars = len(prev_text)
         out = x
         continuation_count = 0
 
         while True:
             stopped_on_eos = False
+            grammar_finished = False
+            if constraint is not None:
+                constraint.reset()
             for _ in range(max_tokens):
                 with torch.no_grad():
                     logits, _, _ = self.model(out)
-                logits = logits[:, -1, :] / max(temperature, 1e-6)
-                if top_k > 0:
-                    v, _ = torch.topk(logits, min(top_k, logits.size(-1)))
-                    logits[logits < v[:, -1:]] = float("-inf")
-                probs = torch.softmax(logits, dim=-1)
+                step = logits[:, -1, :]
                 if repetition_penalty != 1.0:
-                    for idx in set(out[0].tolist()):
-                        probs[0, idx] /= repetition_penalty
-                        probs[0, idx] = probs[0, idx].clamp(min=1e-30)
-                    probs = probs / probs.sum()
-                next_id = torch.multinomial(probs, 1)
-                if self._is_eos(next_id.item()):
+                    mask = torch.zeros_like(step, dtype=torch.bool)
+                    mask.scatter_(1, out, True)
+                    step = torch.where(mask, step / repetition_penalty, step)
+                if temperature <= 1e-6:
+                    if constraint is not None:
+                        constraint.apply(step)
+                    next_id = step.argmax(dim=-1, keepdim=True)
+                else:
+                    step = step / temperature
+                    if top_k > 0:
+                        v, _ = torch.topk(step, min(top_k, step.size(-1)))
+                        step[step < v[:, -1:]] = float("-inf")
+                    if constraint is not None:
+                        constraint.apply(step)
+                    probs = torch.softmax(step, dim=-1)
+                    if not torch.isfinite(probs).all() or probs.sum().item() <= 0:
+                        break
+                    next_id = torch.multinomial(probs, 1, generator=generator)
+
+                token_id = int(next_id.item())
+                if constraint is not None:
+                    if not constraint.accept(token_id):
+                        grammar_finished = True
+                        break
+                    if constraint.is_terminated:
+                        grammar_finished = True
+                elif self._is_eos(token_id):
                     stopped_on_eos = True
                     break
+
                 out = torch.cat([out, next_id], dim=1)
                 full_text = self.tokenizer.decode(out[0].tolist())
-                chunk = full_text[prev_bytes:]
-                prev_bytes = len(full_text.encode("utf-8"))
+                chunk = full_text[prev_chars:]
+                prev_chars = len(full_text)
                 if not chunk:
+                    if grammar_finished:
+                        return
                     continue
                 if stop:
                     stopped = False
@@ -451,11 +582,14 @@ class ServerModel:
                             stopped = True
                             break
                     if stopped:
-                        yield chunk
+                        if chunk:
+                            yield chunk
                         return
                 yield chunk
+                if grammar_finished:
+                    return
 
-            if not auto_continue or not stopped_on_eos:
+            if grammar_finished or not auto_continue or not stopped_on_eos:
                 break
 
             from .continuation import is_response_complete, extract_tail_for_continuation
@@ -480,11 +614,11 @@ class ServerModel:
             tail_ids = tail_ids[-max_ctx:]
             out = torch.tensor([tail_ids], dtype=torch.long, device=self.device)
             prev_text = tail_text
-            prev_bytes = len(tail_text.encode("utf-8"))
+            prev_chars = len(tail_text)
 
     def _is_eos(self, token_id: int) -> bool:
         try:
-            return self.tokenizer._tok.decode_single_token_bytes(token_id) == b"<|endoftext|>"
+            return int(token_id) == int(self.tokenizer.eot_token())
         except Exception:
             return False
 
@@ -628,6 +762,8 @@ def _json_error(status: int, detail: str) -> JSONResponse:
 async def _authenticate(request: Request) -> ApiKey:
     """FastAPI dependency: extract & validate Bearer token."""
     client_ip = _real_ip(request)
+    if not _AUTH.enabled:
+        return _AUTH.validate(None)
     auth_header = request.headers.get("Authorization", "")
     if not auth_header.lower().startswith("bearer "):
         _IP_BANNER.record_failure(client_ip)
@@ -689,6 +825,7 @@ async def completions(req: CompletionRequest, request: Request):
     _api_key = await _authenticate(request)
     await _check_rate_limit(_api_key, request)
     _check_model()
+    constraint = _request_constraint(req)
 
     _audit_logger.info(
         '{"event":"completion","role":"%s","stream":%s,"prompt_len":%d,"max_tokens":%d}',
@@ -701,6 +838,7 @@ async def completions(req: CompletionRequest, request: Request):
                 req.prompt, req.max_tokens, req.temperature,
                 req.top_k, req.repetition_penalty, req.stop,
                 req.auto_continue, req.max_continuations,
+                seed=req.seed, constraint=constraint,
             ),
             media_type="text/event-stream",
         )
@@ -715,6 +853,8 @@ async def completions(req: CompletionRequest, request: Request):
         stop=req.stop,
         auto_continue=req.auto_continue,
         max_continuations=req.max_continuations,
+        seed=req.seed,
+        constraint=constraint,
     )
     elapsed = time.monotonic() - t0
     prompt_tokens = len(_MODEL.tokenizer.encode(req.prompt[:MAX_PROMPT_CHARS]))
@@ -745,6 +885,7 @@ async def chat_completions(req: ChatCompletionRequest, request: Request):
     _api_key = await _authenticate(request)
     await _check_rate_limit(_api_key, request)
     _check_model()
+    constraint = _request_constraint(req)
 
     prompt = _build_chat_prompt(req.messages)
     _audit_logger.info(
@@ -758,6 +899,7 @@ async def chat_completions(req: ChatCompletionRequest, request: Request):
                 int(time.time() * 1000), prompt, req.max_tokens,
                 req.temperature, req.top_k, req.repetition_penalty, req.stop,
                 req.auto_continue, req.max_continuations,
+                seed=req.seed, constraint=constraint,
             ),
             media_type="text/event-stream",
         )
@@ -772,6 +914,8 @@ async def chat_completions(req: ChatCompletionRequest, request: Request):
         stop=req.stop,
         auto_continue=req.auto_continue,
         max_continuations=req.max_continuations,
+        seed=req.seed,
+        constraint=constraint,
     )
     response_text = text[len(prompt):]
     # split <think>/<tool_call> into OpenAI-style fields
@@ -820,6 +964,22 @@ def _check_model():
         raise HTTPException(status_code=503, detail="Model not loaded yet")
 
 
+def _request_constraint(req: Any) -> GrammarConstraint | None:
+    if req.auto_continue and (
+        req.response_format is not None or req.so_args is not None
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail="auto_continue cannot be combined with structured output",
+        )
+    try:
+        return constraint_from_request(
+            _MODEL.tokenizer, req.response_format, req.so_args
+        )
+    except StructuredOutputError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
 def _short_id() -> str:
     return secrets.token_hex(8)
 
@@ -861,6 +1021,7 @@ async def _stream_completion(
     prompt: str, max_tokens: int, temperature: float,
     top_k: int, repetition_penalty: float, stop: list[str],
     auto_continue: bool = False, max_continuations: int = 3,
+    seed: int | None = None, constraint: GrammarConstraint | None = None,
 ):
     t0 = int(time.time())
     short_id = _short_id()
@@ -868,6 +1029,7 @@ async def _stream_completion(
         prompt, max_new_tokens=max_tokens, temperature=temperature,
         top_k=top_k, repetition_penalty=repetition_penalty, stop=stop,
         auto_continue=auto_continue, max_continuations=max_continuations,
+        seed=seed, constraint=constraint,
     ):
         data = {
             "id": f"cmpl-{short_id}",
@@ -896,11 +1058,13 @@ async def _stream_chat(
     t0_ms: int, prompt: str, max_tokens: int, temperature: float,
     top_k: int, repetition_penalty: float, stop: list[str],
     auto_continue: bool = False, max_continuations: int = 3,
+    seed: int | None = None, constraint: GrammarConstraint | None = None,
 ):
     for chunk_text in _MODEL.stream_complete(
         prompt, max_new_tokens=max_tokens, temperature=temperature,
         top_k=top_k, repetition_penalty=repetition_penalty, stop=stop,
         auto_continue=auto_continue, max_continuations=max_continuations,
+        seed=seed, constraint=constraint,
     ):
         data = {
             "id": f"chatcmpl-{_short_id()}",

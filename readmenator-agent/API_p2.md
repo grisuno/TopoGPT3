@@ -3,7 +3,7 @@ Previous: [API.md](API.md)
 
 ## topogpt3/model.py
 Depends on: `synthetic_dataset.py`, `topogpt3/continuation.py`, `topogpt3/yarn.py`
-Imported by: `eval/diag_static.py`, `eval/noise_sweep.py`, `tests/test_heritage.py`, `tests/test_lens_model.py`, `topogpt3/__init__.py`, `topogpt3/api_server.py`, `topogpt3/convert.py`, `topogpt3/export_chat.py`, `topogpt3/lens_model.py`, `topogpt3/train.py`, `topogpt3/train_agent.py`, `topogpt3/train_distill.py`, `topogpt3/train_dpo.py`, `topogpt3/train_grpo.py`, `topogpt3/train_lora.py`, `topogpt3/train_ppo.py`
+Imported by: `eval/diag_static.py`, `eval/noise_sweep.py`, `tests/test_heritage.py`, `tests/test_lens_model.py`, `tests/test_structured_output.py`, `topogpt3/__init__.py`, `topogpt3/api_server.py`, `topogpt3/convert.py`, `topogpt3/export_chat.py`, `topogpt3/lens_model.py`, `topogpt3/train.py`, `topogpt3/train_agent.py`, `topogpt3/train_distill.py`, `topogpt3/train_dpo.py`, `topogpt3/train_grpo.py`, `topogpt3/train_lora.py`, `topogpt3/train_ppo.py`
 - `setup_logger` (function) `topogpt3/model.py:192` `def setup_logger(name, level)`
 - `set_seed` (function) `topogpt3/model.py:202` `def set_seed(seed, device)`
 - `QuaternionOps.hamilton_product` (method) `topogpt3/model.py:222` `def hamilton_product(q1, q2)` -- Producto de Hamilton q1 ⊗ q2.
@@ -139,6 +139,19 @@ Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/train_g
 - `TorchRolloutEngine.rollout` (method) `topogpt3/rollout.py:57` `def rollout(self, prompt_ids, num_generations, max_new_tokens, temperature, tokenizer)`
 - `TorchRolloutEngine.update_policy` (method) `topogpt3/rollout.py:79` `def update_policy(self, model)`
 - `create_rollout_engine` (function) `topogpt3/rollout.py:83` `def create_rollout_engine(policy_model, tokenizer, device)`
+
+## topogpt3/structured_output.py
+Imported by: `tests/test_structured_output.py`, `topogpt3/api_server.py`
+- `GrammarSpec.cache_key` (method) `topogpt3/structured_output.py:36` `def cache_key(self)`
+- `parse_response_format` (function) `topogpt3/structured_output.py:56` `def parse_response_format(response_format)` -- Translate an OpenAI ``response_format`` payload into a GrammarSpec.
+- `parse_so_args` (function) `topogpt3/structured_output.py:93` `def parse_so_args(so_args)` -- Translate a DeepInfer-style ``so_args`` payload into a GrammarSpec.
+- `GrammarConstraint.__init__` (method) `topogpt3/structured_output.py:185` `def __init__(self, xg, compiled, vocab_size)`
+- `GrammarConstraint.reset` (method) `topogpt3/structured_output.py:197` `def reset(self)`
+- `GrammarConstraint.is_terminated` (method) `topogpt3/structured_output.py:201` `def is_terminated(self)`
+- `GrammarConstraint.apply` (method) `topogpt3/structured_output.py:204` `def apply(self, logits)` -- Mask disallowed tokens in ``logits`` with ``-inf`` in place.
+- `GrammarConstraint.accept` (method) `topogpt3/structured_output.py:211` `def accept(self, token_id)` -- Feed an emitted token to the matcher.
+- `build_constraint` (function) `topogpt3/structured_output.py:218` `def build_constraint(tokenizer, spec)` -- Compile ``spec`` (cached) and return a fresh matcher for one request.
+- `constraint_from_request` (function) `topogpt3/structured_output.py:240` `def constraint_from_request(tokenizer, response_format, so_args)` -- Resolve either request surface into a ready-to-use constraint.
 
 ## topogpt3/tools_agent.py
 Depends on: `eval/sandbox.py`, `topogpt3/chat.py`

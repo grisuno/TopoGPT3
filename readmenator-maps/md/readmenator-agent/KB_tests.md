@@ -114,3 +114,36 @@
   - `test_empty_sequence` (method, line 281) `def test_empty_sequence(self)`
   - `test_single_token` (method, line 291) `def test_single_token(self)`
 - Depends on: `topogpt3/jlens.py`, `topogpt3/lens_model.py`, `topogpt3/model.py`
+
+## tests/test_structured_output.py
+- Doc: Tests for DeepInfer-style structured outputs and deterministic seeds.
+- Layer: testing
+- Language: py
+- Symbols:
+  - `tokenizer` (function, line 19) `def tokenizer()`
+  - `TestParseResponseFormat` (class, line 29) `class TestParseResponseFormat`
+  - `TestParseSoArgs` (class, line 70) `class TestParseSoArgs`
+  - `TestGrammarConstraint` (class, line 95) `class TestGrammarConstraint`
+  - `test_constraint_from_request_rejects_both_surfaces` (function, line 154) `def test_constraint_from_request_rejects_both_surfaces(tokenizer)`
+  - `TestRequestModels` (class, line 163) `class TestRequestModels`
+  - `test_auto_continue_with_constraint_rejected` (function, line 195) `def test_auto_continue_with_constraint_rejected()`
+  - `test_make_generator_is_reproducible` (function, line 211) `def test_make_generator_is_reproducible()`
+  - `test_none_and_text` (method, line 30) `def test_none_and_text(self)`
+  - `test_json_object` (method, line 34) `def test_json_object(self)`
+  - `test_json_schema` (method, line 39) `def test_json_schema(self)`
+  - `test_regex` (method, line 48) `def test_regex(self)`
+  - `test_grammar` (method, line 52) `def test_grammar(self)`
+  - `test_invalid_payloads` (method, line 65) `def test_invalid_payloads(self, bad)`
+  - `test_json_string_schema` (method, line 71) `def test_json_string_schema(self)`
+  - `test_regex` (method, line 77) `def test_regex(self)`
+  - `test_ebnf` (method, line 82) `def test_ebnf(self)`
+  - `test_requires_schema` (method, line 86) `def test_requires_schema(self)`
+  - `test_unknown_schema_type` (method, line 90) `def test_unknown_schema_type(self)`
+  - `test_json_schema_accepts_and_terminates` (method, line 96) `def test_json_schema_accepts_and_terminates(self, tokenizer)`
+  - `test_regex_masks_illegal_first_token` (method, line 122) `def test_regex_masks_illegal_first_token(self, tokenizer)`
+  - `test_reset_restores_initial_state` (method, line 136) `def test_reset_restores_initial_state(self, tokenizer)`
+  - `test_invalid_regex_raises` (method, line 148) `def test_invalid_regex_raises(self, tokenizer)`
+  - `test_chat_accepts_seed_and_response_format` (method, line 164) `def test_chat_accepts_seed_and_response_format(self)`
+  - `test_completion_accepts_so_args` (method, line 176) `def test_completion_accepts_so_args(self)`
+  - `test_negative_seed_rejected` (method, line 185) `def test_negative_seed_rejected(self)`
+- Depends on: `topogpt3/api_server.py`, `topogpt3/model.py`, `topogpt3/structured_output.py`

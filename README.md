@@ -296,6 +296,58 @@ curl -s http://localhost:8800/v1/chat/completions \
   -d '{"messages":[{"role":"user","content":"fibonacci"}],"stream":true}'
 ```
 
+### Structured outputs and deterministic seeds
+
+The server adopts the structured-output surface used by DeepInfer and
+OpenAI. Constrained decoding is powered by
+[xgrammar](https://github.com/mlc-ai/xgrammar) and works for both
+streaming and non-streaming requests.
+
+```bash
+# JSON Schema (OpenAI response_format)
+curl -s http://localhost:8800/v1/chat/completions \
+  -H "Authorization: Bearer sk-my-secret-key-12345" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "messages":[{"role":"user","content":"Return a person as JSON."}],
+    "response_format":{
+      "type":"json_schema",
+      "json_schema":{
+        "name":"person",
+        "schema":{
+          "type":"object",
+          "properties":{"name":{"type":"string"},"age":{"type":"integer"}},
+          "required":["name","age"],
+          "additionalProperties":false
+        }
+      }
+    },
+    "seed":42
+  }'
+
+# Regex constraint (DeepInfer-style so_args)
+curl -s http://localhost:8800/v1/completions \
+  -H "Authorization: Bearer sk-my-secret-key-12345" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"Ticket: ","so_args":{"schema_type":"regex","schema":"[A-Z]{2}-[0-9]{3}"},"seed":7}'
+
+# EBNF grammar
+curl -s http://localhost:8800/v1/completions \
+  -H "Authorization: Bearer sk-my-secret-key-12345" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"","so_args":{"schema_type":"ebnf","schema":"root ::= \"answer=\" (\"yes\" | \"no\")"}}'
+```
+
+- `response_format.type` accepts `text`, `json_object`, `json_schema`,
+  `regex`, and `grammar`.
+- `so_args.schema_type` accepts `json`, `regex`, and `ebnf`, matching
+  DeepInfer's `SamplingParams`.
+- `seed` fixes the sampling RNG per request; identical prompts and
+  parameters produce identical output.
+- `auto_continue` cannot be combined with a structured-output constraint.
+- xgrammar ships with the `api` and `structured` extras:
+  `pip install -e ".[api]"` or `pip install -e ".[structured]"`.
+
 ## Inference
 
 Two engines share the same checkpoint:
@@ -1095,3 +1147,10 @@ AI agents: Read `readmenator-wiki/index.md` first for the big picture, then `rea
 Developers: Read `KNOWLEDGE_BASE.md` for full architecture reference, open `readmenator-maps/index.html` for the visual gallery.
 <!-- /readmenator-kb-link -->
 
+<!-- deploynator-footer -->
+
+---
+
+Deployed with [deploynator](https://github.com/grisuno/deploynator)
+
+<!-- /deploynator-footer -->

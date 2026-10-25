@@ -242,6 +242,32 @@ Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `test_tokenizer_setter` | method | `tests/test_lens_model.py:191` | `def test_tokenizer_setter(self, lens_model)` |
 | `test_unembed_produces_logits` | method | `tests/test_lens_model.py:141` | `def test_unembed_produces_logits(self, lens_model)` |
 | `test_weight_tied` | method | `tests/test_lens_model.py:59` | `def test_weight_tied(self)` |
+| `TestGrammarConstraint` | class | `tests/test_structured_output.py:95` | `class TestGrammarConstraint` |
+| `TestParseResponseFormat` | class | `tests/test_structured_output.py:29` | `class TestParseResponseFormat` |
+| `TestParseSoArgs` | class | `tests/test_structured_output.py:70` | `class TestParseSoArgs` |
+| `TestRequestModels` | class | `tests/test_structured_output.py:163` | `class TestRequestModels` |
+| `test_auto_continue_with_constraint_rejected` | function | `tests/test_structured_output.py:195` | `def test_auto_continue_with_constraint_rejected()` |
+| `test_chat_accepts_seed_and_response_format` | method | `tests/test_structured_output.py:164` | `def test_chat_accepts_seed_and_response_format(self)` |
+| `test_completion_accepts_so_args` | method | `tests/test_structured_output.py:176` | `def test_completion_accepts_so_args(self)` |
+| `test_constraint_from_request_rejects_both_surfaces` | function | `tests/test_structured_output.py:154` | `def test_constraint_from_request_rejects_both_surfaces(tokenizer)` |
+| `test_ebnf` | method | `tests/test_structured_output.py:82` | `def test_ebnf(self)` |
+| `test_grammar` | method | `tests/test_structured_output.py:52` | `def test_grammar(self)` |
+| `test_invalid_payloads` | method | `tests/test_structured_output.py:65` | `def test_invalid_payloads(self, bad)` |
+| `test_invalid_regex_raises` | method | `tests/test_structured_output.py:148` | `def test_invalid_regex_raises(self, tokenizer)` |
+| `test_json_object` | method | `tests/test_structured_output.py:34` | `def test_json_object(self)` |
+| `test_json_schema` | method | `tests/test_structured_output.py:39` | `def test_json_schema(self)` |
+| `test_json_schema_accepts_and_terminates` | method | `tests/test_structured_output.py:96` | `def test_json_schema_accepts_and_terminates(self, tokenizer)` |
+| `test_json_string_schema` | method | `tests/test_structured_output.py:71` | `def test_json_string_schema(self)` |
+| `test_make_generator_is_reproducible` | function | `tests/test_structured_output.py:211` | `def test_make_generator_is_reproducible()` |
+| `test_negative_seed_rejected` | method | `tests/test_structured_output.py:185` | `def test_negative_seed_rejected(self)` |
+| `test_none_and_text` | method | `tests/test_structured_output.py:30` | `def test_none_and_text(self)` |
+| `test_regex` | method | `tests/test_structured_output.py:48` | `def test_regex(self)` |
+| `test_regex` | method | `tests/test_structured_output.py:77` | `def test_regex(self)` |
+| `test_regex_masks_illegal_first_token` | method | `tests/test_structured_output.py:122` | `def test_regex_masks_illegal_first_token(self, tokenizer)` |
+| `test_requires_schema` | method | `tests/test_structured_output.py:86` | `def test_requires_schema(self)` |
+| `test_reset_restores_initial_state` | method | `tests/test_structured_output.py:136` | `def test_reset_restores_initial_state(self, tokenizer)` |
+| `test_unknown_schema_type` | method | `tests/test_structured_output.py:90` | `def test_unknown_schema_type(self)` |
+| `tokenizer` | function | `tests/test_structured_output.py:19` | `def tokenizer()` |
 | `D_HEAD` | macro | `topogpt3.c:70` | `#define D_HEAD` |
 | `D_LAT_Q` | macro | `topogpt3.c:82` | `#define D_LAT_Q` |
 | `D_MODEL` | macro | `topogpt3.c:66` | `#define D_MODEL` |
@@ -371,52 +397,56 @@ Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `torus_brain_forward` | function | `topogpt3.c:888` | `static void torus_brain_forward(const float *x, float *out, float *recon_loss,                   ...` |
 | `torus_soft_assign` | function | `topogpt3.c:821` | `static void torus_soft_assign(const float *phi1, const float *phi2,                              ...` |
 | `main` | function | `topogpt3/__main__.py:6` | `def main()` |
-| `ApiKey` | class | `topogpt3/api_server.py:137` | `class ApiKey` |
-| `AuthState` | class | `topogpt3/api_server.py:143` | `class AuthState` |
-| `ChatCompletionRequest` | class | `topogpt3/api_server.py:316` | `class ChatCompletionRequest(BaseModel)` |
-| `CompletionRequest` | class | `topogpt3/api_server.py:291` | `class CompletionRequest(BaseModel)` |
-| `IpBanner` | class | `topogpt3/api_server.py:250` | `class IpBanner` |
-| `Message` | class | `topogpt3/api_server.py:310` | `class Message(BaseModel)` |
-| `RateLimiter` | class | `topogpt3/api_server.py:219` | `class RateLimiter` |
-| `ServerModel` | class | `topogpt3/api_server.py:344` | `class ServerModel` |
-| `TokenBucket` | class | `topogpt3/api_server.py:202` | `class TokenBucket` |
-| `__init__` | method | `topogpt3/api_server.py:220` | `def __init__(self, user_rps, admin_rps, capacity)` |
-| `__init__` | method | `topogpt3/api_server.py:251` | `def __init__(self, max_failures, window)` |
-| `_authenticate` | function | `topogpt3/api_server.py:628` | `def _authenticate(request)` |
-| `_build_chat_prompt` | function | `topogpt3/api_server.py:827` | `def _build_chat_prompt(messages)` |
-| `_check_model` | function | `topogpt3/api_server.py:818` | `def _check_model()` |
-| `_check_rate_limit` | function | `topogpt3/api_server.py:646` | `def _check_rate_limit(api_key, request)` |
-| `_cleanup` | method | `topogpt3/api_server.py:227` | `def _cleanup(self)` |
-| `_extract_text` | function | `topogpt3/api_server.py:846` | `def _extract_text(content)` |
-| `_is_eos` | method | `topogpt3/api_server.py:485` | `def _is_eos(self, token_id)` |
-| `_json_error` | function | `topogpt3/api_server.py:616` | `def _json_error(status, detail)` |
-| `_normalize_stop` | method | `topogpt3/api_server.py:306` | `def _normalize_stop(cls, v)` |
-| `_normalize_stop` | method | `topogpt3/api_server.py:334` | `def _normalize_stop(cls, v)` |
-| `_parse_keys` | function | `topogpt3/api_server.py:164` | `def _parse_keys(raw)` |
-| `_probe_n_kv` | function | `topogpt3/api_server.py:508` | `def _probe_n_kv(checkpoint_dir)` |
-| `_real_ip` | function | `topogpt3/api_server.py:605` | `def _real_ip(request)` |
-| `_resolve_device` | function | `topogpt3/api_server.py:502` | `def _resolve_device(device)` |
-| `_sanitize_stop` | function | `topogpt3/api_server.py:281` | `def _sanitize_stop(stop)` |
-| `_security_middleware` | function | `topogpt3/api_server.py:577` | `def _security_middleware(request, call_next)` |
-| `_setup_logging` | function | `topogpt3/api_server.py:116` | `def _setup_logging(verbose)` |
-| `_sha256` | function | `topogpt3/api_server.py:192` | `def _sha256(raw)` |
-| `_short_id` | function | `topogpt3/api_server.py:823` | `def _short_id()` |
-| `_stream_chat` | function | `topogpt3/api_server.py:895` | `def _stream_chat(t0_ms, prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...` |
-| `_stream_completion` | function | `topogpt3/api_server.py:860` | `def _stream_completion(prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...` |
-| `allow` | method | `topogpt3/api_server.py:233` | `def allow(self, key, role)` |
-| `chat_completions` | function | `topogpt3/api_server.py:744` | `def chat_completions(req, request)` |
-| `complete` | method | `topogpt3/api_server.py:351` | `def complete(self, prompt)` |
-| `completions` | function | `topogpt3/api_server.py:688` | `def completions(req, request)` |
-| `consume` | method | `topogpt3/api_server.py:208` | `def consume(self, n)` |
-| `health` | function | `topogpt3/api_server.py:664` | `def health(request)` |
-| `is_banned` | method | `topogpt3/api_server.py:265` | `def is_banned(self, ip)` |
-| `lifespan` | function | `topogpt3/api_server.py:537` | `def lifespan(app)` |
-| `list_models` | function | `topogpt3/api_server.py:671` | `def list_models(request)` |
-| `load_model` | function | `topogpt3/api_server.py:516` | `def load_model(checkpoint, device)` |
-| `main` | function | `topogpt3/api_server.py:933` | `def main()` |
-| `record_failure` | method | `topogpt3/api_server.py:257` | `def record_failure(self, ip)` |
-| `stream_complete` | method | `topogpt3/api_server.py:396` | `def stream_complete(self, prompt)` |
-| `validate` | method | `topogpt3/api_server.py:148` | `def validate(self, raw)` |
+| `ApiKey` | class | `topogpt3/api_server.py:142` | `class ApiKey` |
+| `AuthState` | class | `topogpt3/api_server.py:148` | `class AuthState` |
+| `ChatCompletionRequest` | class | `topogpt3/api_server.py:324` | `class ChatCompletionRequest(BaseModel)` |
+| `CompletionRequest` | class | `topogpt3/api_server.py:296` | `class CompletionRequest(BaseModel)` |
+| `IpBanner` | class | `topogpt3/api_server.py:255` | `class IpBanner` |
+| `Message` | class | `topogpt3/api_server.py:318` | `class Message(BaseModel)` |
+| `RateLimiter` | class | `topogpt3/api_server.py:224` | `class RateLimiter` |
+| `ServerModel` | class | `topogpt3/api_server.py:369` | `class ServerModel` |
+| `TokenBucket` | class | `topogpt3/api_server.py:207` | `class TokenBucket` |
+| `__init__` | method | `topogpt3/api_server.py:225` | `def __init__(self, user_rps, admin_rps, capacity)` |
+| `__init__` | method | `topogpt3/api_server.py:256` | `def __init__(self, max_failures, window)` |
+| `_authenticate` | function | `topogpt3/api_server.py:762` | `def _authenticate(request)` |
+| `_build_chat_prompt` | function | `topogpt3/api_server.py:987` | `def _build_chat_prompt(messages)` |
+| `_check_model` | function | `topogpt3/api_server.py:962` | `def _check_model()` |
+| `_check_rate_limit` | function | `topogpt3/api_server.py:782` | `def _check_rate_limit(api_key, request)` |
+| `_cleanup` | method | `topogpt3/api_server.py:232` | `def _cleanup(self)` |
+| `_extract_text` | function | `topogpt3/api_server.py:1006` | `def _extract_text(content)` |
+| `_generate` | method | `topogpt3/api_server.py:391` | `def _generate(self, token_ids)` |
+| `_is_eos` | method | `topogpt3/api_server.py:619` | `def _is_eos(self, token_id)` |
+| `_json_error` | function | `topogpt3/api_server.py:750` | `def _json_error(status, detail)` |
+| `_make_generator` | function | `topogpt3/api_server.py:354` | `def _make_generator(seed, device)` |
+| `_normalize_stop` | method | `topogpt3/api_server.py:314` | `def _normalize_stop(cls, v)` |
+| `_normalize_stop` | method | `topogpt3/api_server.py:345` | `def _normalize_stop(cls, v)` |
+| `_parse_keys` | function | `topogpt3/api_server.py:169` | `def _parse_keys(raw)` |
+| `_probe_n_kv` | function | `topogpt3/api_server.py:642` | `def _probe_n_kv(checkpoint_dir)` |
+| `_real_ip` | function | `topogpt3/api_server.py:739` | `def _real_ip(request)` |
+| `_request_constraint` | function | `topogpt3/api_server.py:967` | `def _request_constraint(req)` |
+| `_resolve_device` | function | `topogpt3/api_server.py:636` | `def _resolve_device(device)` |
+| `_sanitize_stop` | function | `topogpt3/api_server.py:286` | `def _sanitize_stop(stop)` |
+| `_security_middleware` | function | `topogpt3/api_server.py:711` | `def _security_middleware(request, call_next)` |
+| `_seeded` | method | `topogpt3/api_server.py:376` | `def _seeded(self, seed)` |
+| `_setup_logging` | function | `topogpt3/api_server.py:121` | `def _setup_logging(verbose)` |
+| `_sha256` | function | `topogpt3/api_server.py:197` | `def _sha256(raw)` |
+| `_short_id` | function | `topogpt3/api_server.py:983` | `def _short_id()` |
+| `_stream_chat` | function | `topogpt3/api_server.py:1057` | `def _stream_chat(t0_ms, prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...` |
+| `_stream_completion` | function | `topogpt3/api_server.py:1020` | `def _stream_completion(prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...` |
+| `allow` | method | `topogpt3/api_server.py:238` | `def allow(self, key, role)` |
+| `chat_completions` | function | `topogpt3/api_server.py:884` | `def chat_completions(req, request)` |
+| `complete` | method | `topogpt3/api_server.py:443` | `def complete(self, prompt)` |
+| `completions` | function | `topogpt3/api_server.py:824` | `def completions(req, request)` |
+| `consume` | method | `topogpt3/api_server.py:213` | `def consume(self, n)` |
+| `health` | function | `topogpt3/api_server.py:800` | `def health(request)` |
+| `is_banned` | method | `topogpt3/api_server.py:270` | `def is_banned(self, ip)` |
+| `lifespan` | function | `topogpt3/api_server.py:671` | `def lifespan(app)` |
+| `list_models` | function | `topogpt3/api_server.py:807` | `def list_models(request)` |
+| `load_model` | function | `topogpt3/api_server.py:650` | `def load_model(checkpoint, device)` |
+| `main` | function | `topogpt3/api_server.py:1097` | `def main()` |
+| `record_failure` | method | `topogpt3/api_server.py:262` | `def record_failure(self, ip)` |
+| `stream_complete` | method | `topogpt3/api_server.py:497` | `def stream_complete(self, prompt)` |
+| `validate` | method | `topogpt3/api_server.py:153` | `def validate(self, raw)` |
 | `_fmt_tool_defs` | function | `topogpt3/chat.py:60` | `def _fmt_tool_defs(tools)` |
 | `apply_chat_template` | function | `topogpt3/chat.py:71` | `def apply_chat_template(messages, tools, add_generation_prompt, open_thinking)` |
 | `parse_thinking` | function | `topogpt3/chat.py:126` | `def parse_thinking(text)` |
@@ -466,35 +496,5 @@ Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `__init__` | method | `topogpt3/inference.py:383` | `def __init__(self, settings, source_module, logger)` |
 | `__init__` | method | `topogpt3/inference.py:420` | `def __init__(self, settings, source_module, logger)` |
 | `__init__` | method | `topogpt3/inference.py:478` | `def __init__(self, settings, logger)` |
-| `__init__` | method | `topogpt3/inference.py:536` | `def __init__(self, settings, logger)` |
-| `__init__` | method | `topogpt3/inference.py:565` | `def __init__(self, settings, logger)` |
-| `apply` | method | `topogpt3/inference.py:426` | `def apply(self)` |
-| `apply_if_enabled` | method | `topogpt3/inference.py:371` | `def apply_if_enabled(self)` |
-| `assemble` | method | `topogpt3/inference.py:389` | `def assemble(self, aligned_cfg, paths)` |
-| `assert_ready` | method | `topogpt3/inference.py:255` | `def assert_ready(self)` |
-| `build` | method | `topogpt3/inference.py:162` | `def build(settings)` |
-| `build` | method | `topogpt3/inference.py:327` | `def build(self, n_kv_heads, vocab_size)` |
-| `build` | method | `topogpt3/inference.py:356` | `def build(self)` |
-| `build_parser` | method | `topogpt3/inference.py:619` | `def build_parser()` |
-| `detect_n_kv_heads` | method | `topogpt3/inference.py:281` | `def detect_n_kv_heads(self, weights_path, d_model, n_heads)` |
-| `execute` | method | `topogpt3/inference.py:571` | `def execute(self)` |
-| `from_settings` | method | `topogpt3/inference.py:450` | `def from_settings(cls, settings)` |
-| `load` | method | `topogpt3/inference.py:219` | `def load(self)` |
-| `main` | function | `topogpt3/inference.py:721` | `def main(argv)` |
-| `model_file` | method | `topogpt3/inference.py:243` | `def model_file(self)` |
-| `parse` | method | `topogpt3/inference.py:698` | `def parse(argv)` |
-| `preset` | method | `topogpt3/inference.py:116` | `def preset(self)` |
-| `render` | method | `topogpt3/inference.py:540` | `def render(self, report)` |
-| `require_existing_file` | method | `topogpt3/inference.py:198` | `def require_existing_file(path, expected_suffix)` |
-| `resolve_under` | method | `topogpt3/inference.py:182` | `def resolve_under(root)` |
-| `run` | method | `topogpt3/inference.py:483` | `def run(self, model, tokenizer, prompt, policy)` |
-| `scale_presets` | method | `topogpt3/inference.py:103` | `def scale_presets()` |
-| `slot_dir` | method | `topogpt3/inference.py:239` | `def slot_dir(self)` |
-| `state_file` | method | `topogpt3/inference.py:249` | `def state_file(self)` |
-| `tokens_per_second` | method | `topogpt3/inference.py:470` | `def tokens_per_second(self, elapsed_floor)` |
-| `validate` | method | `topogpt3/inference.py:126` | `def validate(self)` |
-| `CheckpointPaths` | class | `topogpt3/inference_hrm.py:413` | `class CheckpointPaths` |
-| `CliArgumentParser` | class | `topogpt3/inference_hrm.py:1283` | `class CliArgumentParser` |
-| `GaussPatchApplier` | class | `topogpt3/inference_hrm.py:546` | `class GaussPatchApplier` |
 
 Next: [SYMBOLS_p2.md](SYMBOLS_p2.md)

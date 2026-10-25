@@ -195,7 +195,7 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
   - `run` (method, line 3509) `def run(self, run_prospect, refine_epochs, resume, prospect_steps, probe_seeds, seed_start)`
   - `ckpt_fn` (function, line 1050) `def ckpt_fn(x_in)`
 - Depends on: `synthetic_dataset.py`, `topogpt3/continuation.py`, `topogpt3/yarn.py`
-- Imported by: `eval/diag_static.py`, `eval/noise_sweep.py`, `tests/test_heritage.py`, `tests/test_lens_model.py`, `topogpt3/__init__.py`, `topogpt3/api_server.py`, `topogpt3/convert.py`, `topogpt3/export_chat.py`, `topogpt3/lens_model.py`, `topogpt3/train.py`, `topogpt3/train_agent.py`, `topogpt3/train_distill.py`, `topogpt3/train_dpo.py`, `topogpt3/train_grpo.py`, `topogpt3/train_lora.py`, `topogpt3/train_ppo.py`
+- Imported by: `eval/diag_static.py`, `eval/noise_sweep.py`, `tests/test_heritage.py`, `tests/test_lens_model.py`, `tests/test_structured_output.py`, `topogpt3/__init__.py`, `topogpt3/api_server.py`, `topogpt3/convert.py`, `topogpt3/export_chat.py`, `topogpt3/lens_model.py`, `topogpt3/train.py`, `topogpt3/train_agent.py`, `topogpt3/train_distill.py`, `topogpt3/train_dpo.py`, `topogpt3/train_grpo.py`, `topogpt3/train_lora.py`, `topogpt3/train_ppo.py`
 
 ## topogpt3/rewards.py
 - Doc: Reward + advantage + loss helpers for TopoGPT3 group-RL.
@@ -229,6 +229,31 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
   - `rollout` (method, line 57) `def rollout(self, prompt_ids, num_generations, max_new_tokens, temperature, tokenizer)`
   - `update_policy` (method, line 79) `def update_policy(self, model)`
 - Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/train_grpo.py`, `topogpt3/train_ppo.py`
+
+## topogpt3/structured_output.py
+- Doc: Constrained decoding for the TopoGPT3 OpenAI-compatible server.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `StructuredOutputError` (class, line 27) `class StructuredOutputError(ValueError)`
+  - `GrammarSpec` (class, line 32) `class GrammarSpec`
+  - `_import_xgrammar` (function, line 46) `def _import_xgrammar()`
+  - `parse_response_format` (function, line 56) `def parse_response_format(response_format)`
+  - `parse_so_args` (function, line 93) `def parse_so_args(so_args)`
+  - `_tokenizer_key` (function, line 132) `def _tokenizer_key(tokenizer)`
+  - `_get_compiler` (function, line 139) `def _get_compiler(tokenizer)`
+  - `_compile` (function, line 162) `def _compile(spec, compiler)`
+  - `GrammarConstraint` (class, line 182) `class GrammarConstraint`
+  - `build_constraint` (function, line 218) `def build_constraint(tokenizer, spec)`
+  - `constraint_from_request` (function, line 240) `def constraint_from_request(tokenizer, response_format, so_args)`
+  - `cache_key` (method, line 36) `def cache_key(self)`
+  - `__init__` (method, line 185) `def __init__(self, xg, compiled, vocab_size)`
+  - `_new_matcher` (method, line 192) `def _new_matcher(self)`
+  - `reset` (method, line 197) `def reset(self)`
+  - `is_terminated` (method, line 201) `def is_terminated(self)`
+  - `apply` (method, line 204) `def apply(self, logits)`
+  - `accept` (method, line 211) `def accept(self, token_id)`
+- Imported by: `tests/test_structured_output.py`, `topogpt3/api_server.py`
 
 ## topogpt3/tools_agent.py
 - Doc: Code-first tool definitions for TopoGPT3 Agent-RL.

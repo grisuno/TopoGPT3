@@ -3,6 +3,36 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `__init__` | method | `topogpt3/inference.py:536` | `def __init__(self, settings, logger)` |
+| `__init__` | method | `topogpt3/inference.py:565` | `def __init__(self, settings, logger)` |
+| `apply` | method | `topogpt3/inference.py:426` | `def apply(self)` |
+| `apply_if_enabled` | method | `topogpt3/inference.py:371` | `def apply_if_enabled(self)` |
+| `assemble` | method | `topogpt3/inference.py:389` | `def assemble(self, aligned_cfg, paths)` |
+| `assert_ready` | method | `topogpt3/inference.py:255` | `def assert_ready(self)` |
+| `build` | method | `topogpt3/inference.py:162` | `def build(settings)` |
+| `build` | method | `topogpt3/inference.py:327` | `def build(self, n_kv_heads, vocab_size)` |
+| `build` | method | `topogpt3/inference.py:356` | `def build(self)` |
+| `build_parser` | method | `topogpt3/inference.py:619` | `def build_parser()` |
+| `detect_n_kv_heads` | method | `topogpt3/inference.py:281` | `def detect_n_kv_heads(self, weights_path, d_model, n_heads)` |
+| `execute` | method | `topogpt3/inference.py:571` | `def execute(self)` |
+| `from_settings` | method | `topogpt3/inference.py:450` | `def from_settings(cls, settings)` |
+| `load` | method | `topogpt3/inference.py:219` | `def load(self)` |
+| `main` | function | `topogpt3/inference.py:721` | `def main(argv)` |
+| `model_file` | method | `topogpt3/inference.py:243` | `def model_file(self)` |
+| `parse` | method | `topogpt3/inference.py:698` | `def parse(argv)` |
+| `preset` | method | `topogpt3/inference.py:116` | `def preset(self)` |
+| `render` | method | `topogpt3/inference.py:540` | `def render(self, report)` |
+| `require_existing_file` | method | `topogpt3/inference.py:198` | `def require_existing_file(path, expected_suffix)` |
+| `resolve_under` | method | `topogpt3/inference.py:182` | `def resolve_under(root)` |
+| `run` | method | `topogpt3/inference.py:483` | `def run(self, model, tokenizer, prompt, policy)` |
+| `scale_presets` | method | `topogpt3/inference.py:103` | `def scale_presets()` |
+| `slot_dir` | method | `topogpt3/inference.py:239` | `def slot_dir(self)` |
+| `state_file` | method | `topogpt3/inference.py:249` | `def state_file(self)` |
+| `tokens_per_second` | method | `topogpt3/inference.py:470` | `def tokens_per_second(self, elapsed_floor)` |
+| `validate` | method | `topogpt3/inference.py:126` | `def validate(self)` |
+| `CheckpointPaths` | class | `topogpt3/inference_hrm.py:413` | `class CheckpointPaths` |
+| `CliArgumentParser` | class | `topogpt3/inference_hrm.py:1283` | `class CliArgumentParser` |
+| `GaussPatchApplier` | class | `topogpt3/inference_hrm.py:546` | `class GaussPatchApplier` |
 | `GenerationReasoningSummary` | class | `topogpt3/inference_hrm.py:661` | `class GenerationReasoningSummary` |
 | `GenerationReport` | class | `topogpt3/inference_hrm.py:985` | `class GenerationReport` |
 | `HRMGenerationEngine` | class | `topogpt3/inference_hrm.py:1000` | `class HRMGenerationEngine` |
@@ -353,6 +383,24 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `rollout` | method | `topogpt3/rollout.py:57` | `def rollout(self, prompt_ids, num_generations, max_new_tokens, temperature, tokenizer)` |
 | `update_policy` | method | `topogpt3/rollout.py:46` | `def update_policy(self, model)` |
 | `update_policy` | method | `topogpt3/rollout.py:79` | `def update_policy(self, model)` |
+| `GrammarConstraint` | class | `topogpt3/structured_output.py:182` | `class GrammarConstraint` |
+| `GrammarSpec` | class | `topogpt3/structured_output.py:32` | `class GrammarSpec` |
+| `StructuredOutputError` | class | `topogpt3/structured_output.py:27` | `class StructuredOutputError(ValueError)` |
+| `__init__` | method | `topogpt3/structured_output.py:185` | `def __init__(self, xg, compiled, vocab_size)` |
+| `_compile` | function | `topogpt3/structured_output.py:162` | `def _compile(spec, compiler)` |
+| `_get_compiler` | function | `topogpt3/structured_output.py:139` | `def _get_compiler(tokenizer)` |
+| `_import_xgrammar` | function | `topogpt3/structured_output.py:46` | `def _import_xgrammar()` |
+| `_new_matcher` | method | `topogpt3/structured_output.py:192` | `def _new_matcher(self)` |
+| `_tokenizer_key` | function | `topogpt3/structured_output.py:132` | `def _tokenizer_key(tokenizer)` |
+| `accept` | method | `topogpt3/structured_output.py:211` | `def accept(self, token_id)` |
+| `apply` | method | `topogpt3/structured_output.py:204` | `def apply(self, logits)` |
+| `build_constraint` | function | `topogpt3/structured_output.py:218` | `def build_constraint(tokenizer, spec)` |
+| `cache_key` | method | `topogpt3/structured_output.py:36` | `def cache_key(self)` |
+| `constraint_from_request` | function | `topogpt3/structured_output.py:240` | `def constraint_from_request(tokenizer, response_format, so_args)` |
+| `is_terminated` | method | `topogpt3/structured_output.py:201` | `def is_terminated(self)` |
+| `parse_response_format` | function | `topogpt3/structured_output.py:56` | `def parse_response_format(response_format)` |
+| `parse_so_args` | function | `topogpt3/structured_output.py:93` | `def parse_so_args(so_args)` |
+| `reset` | method | `topogpt3/structured_output.py:197` | `def reset(self)` |
 | `execute_tool` | function | `topogpt3/tools_agent.py:59` | `def execute_tool(name, args)` |
 | `rollout_multiturn` | function | `topogpt3/tools_agent.py:80` | `def rollout_multiturn(generate_fn, tokenizer, messages, tools, max_turns, max_new_tokens, open_thinking)` |
 | `BlockTokenDataset` | class | `topogpt3/train.py:1000` | `class BlockTokenDataset(Dataset)` |
