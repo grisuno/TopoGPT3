@@ -248,7 +248,7 @@ flowchart LR
 
 ### `ScalePreset`
 
-`class` `dataclass` | [topogpt3/inference_hrm.py:54](../../topogpt3/inference_hrm.py#L54)
+`class` `dataclass` | [topogpt3/inference_hrm.py:56](../../topogpt3/inference_hrm.py#L56)
 
 Decorators: `@dataclass(frozen=True)`
 
@@ -273,7 +273,7 @@ Immutable architecture preset for a named model scale.
 
 ### `RecursiveReasoningConfig`
 
-`class` `dataclass` | [topogpt3/inference_hrm.py:64](../../topogpt3/inference_hrm.py#L64)
+`class` `dataclass` | [topogpt3/inference_hrm.py:66](../../topogpt3/inference_hrm.py#L66)
 
 Decorators: `@dataclass(frozen=True)`
 
@@ -319,7 +319,7 @@ activation distribution at every layer boundary.
 
 ### `HRMInferenceSettings`
 
-`class` `dataclass` | [topogpt3/inference_hrm.py:134](../../topogpt3/inference_hrm.py#L134)
+`class` `dataclass` | [topogpt3/inference_hrm.py:136](../../topogpt3/inference_hrm.py#L136)
 
 Decorators: `@dataclass`
 
@@ -337,7 +337,7 @@ embed literals.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| [`model_scale`](#hrminferencesettings-model_scale) | `str` | `'small'` |  |
+| [`model_scale`](#hrminferencesettings-model_scale) | `str` | `'auto'` |  |
 | [`device`](#hrminferencesettings-device) | `str` | `field(default_factory=lambda: 'cuda' if torch.cuda.is_available() else 'cpu')` |  |
 | [`seed`](#hrminferencesettings-seed) | `int` | `42` |  |
 | [`checkpoint_dir`](#hrminferencesettings-checkpoint_dir) | `str` | `'checkpoints_topogpt3'` |  |
@@ -412,7 +412,7 @@ embed literals.
 
 #### `HRMInferenceSettings.scale_presets`
 
-`staticmethod` | [topogpt3/inference_hrm.py:221](../../topogpt3/inference_hrm.py#L221)
+`staticmethod` | [topogpt3/inference_hrm.py:223](../../topogpt3/inference_hrm.py#L223)
 
 Decorators: `@staticmethod`
 
@@ -520,7 +520,7 @@ Return a configured Logger with a single deduplicated stdout handler.
 
 ### `SecurePathResolver`
 
-`class` | [topogpt3/inference_hrm.py:363](../../topogpt3/inference_hrm.py#L363)
+`class` | [topogpt3/inference_hrm.py:365](../../topogpt3/inference_hrm.py#L365)
 
 ```python
 class SecurePathResolver
@@ -539,7 +539,7 @@ Resolves filesystem paths while rejecting traversal outside their root.
 
 #### `SecurePathResolver.resolve_under`
 
-`staticmethod` | [topogpt3/inference_hrm.py:367](../../topogpt3/inference_hrm.py#L367)
+`staticmethod` | [topogpt3/inference_hrm.py:369](../../topogpt3/inference_hrm.py#L369)
 
 Decorators: `@staticmethod`
 
@@ -568,12 +568,12 @@ Raises ValueError if the resolved path escapes root.
 
 #### `SecurePathResolver.require_existing_file`
 
-`staticmethod` | [topogpt3/inference_hrm.py:383](../../topogpt3/inference_hrm.py#L383)
+`staticmethod` | [topogpt3/inference_hrm.py:385](../../topogpt3/inference_hrm.py#L385)
 
 Decorators: `@staticmethod`
 
 ```python
-def require_existing_file(path: Path, expected_suffix: Optional[str] = None) -> Path
+def require_existing_file(path: Path, expected_suffix: str | None = None) -> Path
 ```
 
 Validate path points to an existing regular file with the expected suffix.
@@ -583,7 +583,7 @@ Validate path points to an existing regular file with the expected suffix.
 | Name | Type | Default | Description |
 |---|---|---|---|
 | `path` | `Path` |  |  |
-| `expected_suffix` | `Optional[str]` | `None` |  |
+| `expected_suffix` | `str \| None` | `None` |  |
 
 **Returns:** `Path`
 
@@ -598,7 +598,7 @@ Validate path points to an existing regular file with the expected suffix.
 
 ### `SourceModuleLoader`
 
-`class` | [topogpt3/inference_hrm.py:397](../../topogpt3/inference_hrm.py#L397)
+`class` | [topogpt3/inference_hrm.py:398](../../topogpt3/inference_hrm.py#L398)
 
 ```python
 class SourceModuleLoader
@@ -617,7 +617,7 @@ Resolves the TopoGPT3 runtime module via the package import system.
 
 #### `SourceModuleLoader.__init__`
 
-`constructor` | [topogpt3/inference_hrm.py:400](../../topogpt3/inference_hrm.py#L400)
+`constructor` | [topogpt3/inference_hrm.py:401](../../topogpt3/inference_hrm.py#L401)
 
 ```python
 def __init__(self, settings: HRMInferenceSettings, logger: logging.Logger)
@@ -636,7 +636,7 @@ def __init__(self, settings: HRMInferenceSettings, logger: logging.Logger)
 
 #### `SourceModuleLoader.load`
 
-`method` | [topogpt3/inference_hrm.py:404](../../topogpt3/inference_hrm.py#L404)
+`method` | [topogpt3/inference_hrm.py:405](../../topogpt3/inference_hrm.py#L405)
 
 ```python
 def load(self) -> Any
@@ -652,7 +652,7 @@ Return the topogpt3.train module which re-exports model symbols.
 
 ### `CheckpointPaths`
 
-`class` | [topogpt3/inference_hrm.py:413](../../topogpt3/inference_hrm.py#L413)
+`class` | [topogpt3/inference_hrm.py:416](../../topogpt3/inference_hrm.py#L416)
 
 ```python
 class CheckpointPaths
@@ -674,7 +674,7 @@ Computes and validates checkpoint file paths under a single root.
 
 #### `CheckpointPaths.__init__`
 
-`constructor` | [topogpt3/inference_hrm.py:416](../../topogpt3/inference_hrm.py#L416)
+`constructor` | [topogpt3/inference_hrm.py:419](../../topogpt3/inference_hrm.py#L419)
 
 ```python
 def __init__(self, settings: HRMInferenceSettings)
@@ -694,7 +694,7 @@ def __init__(self, settings: HRMInferenceSettings)
 
 #### `CheckpointPaths.slot_dir`
 
-`property` | [topogpt3/inference_hrm.py:424](../../topogpt3/inference_hrm.py#L424)
+`property` | [topogpt3/inference_hrm.py:428](../../topogpt3/inference_hrm.py#L428)
 
 Decorators: `@property`
 
@@ -710,7 +710,7 @@ Directory holding the active checkpoint slot.
 
 #### `CheckpointPaths.model_file`
 
-`method` | [topogpt3/inference_hrm.py:428](../../topogpt3/inference_hrm.py#L428)
+`method` | [topogpt3/inference_hrm.py:432](../../topogpt3/inference_hrm.py#L432)
 
 ```python
 def model_file(self) -> Path
@@ -726,7 +726,7 @@ Resolved path to the safetensors weights file inside the slot.
 
 #### `CheckpointPaths.state_file`
 
-`method` | [topogpt3/inference_hrm.py:434](../../topogpt3/inference_hrm.py#L434)
+`method` | [topogpt3/inference_hrm.py:439](../../topogpt3/inference_hrm.py#L439)
 
 ```python
 def state_file(self) -> Path
@@ -742,7 +742,7 @@ Resolved path to the JSON training-state file inside the slot.
 
 #### `CheckpointPaths.assert_ready`
 
-`method` | [topogpt3/inference_hrm.py:440](../../topogpt3/inference_hrm.py#L440)
+`method` | [topogpt3/inference_hrm.py:446](../../topogpt3/inference_hrm.py#L446)
 
 ```python
 def assert_ready(self) -> None
@@ -762,7 +762,7 @@ Verify weights exist and the on-disk size lies within safety bounds.
 
 ### `WeightShapeProbe`
 
-`class` | [topogpt3/inference_hrm.py:459](../../topogpt3/inference_hrm.py#L459)
+`class` | [topogpt3/inference_hrm.py:464](../../topogpt3/inference_hrm.py#L464)
 
 ```python
 class WeightShapeProbe
@@ -781,7 +781,7 @@ Reads tensor metadata from safetensors to infer architecture details.
 
 #### `WeightShapeProbe.__init__`
 
-`constructor` | [topogpt3/inference_hrm.py:462](../../topogpt3/inference_hrm.py#L462)
+`constructor` | [topogpt3/inference_hrm.py:467](../../topogpt3/inference_hrm.py#L467)
 
 ```python
 def __init__(self, settings: HRMInferenceSettings, logger: logging.Logger)
@@ -800,10 +800,10 @@ def __init__(self, settings: HRMInferenceSettings, logger: logging.Logger)
 
 #### `WeightShapeProbe.detect_n_kv_heads`
 
-`method` | [topogpt3/inference_hrm.py:466](../../topogpt3/inference_hrm.py#L466)
+`method` | [topogpt3/inference_hrm.py:471](../../topogpt3/inference_hrm.py#L471)
 
 ```python
-def detect_n_kv_heads(self, weights_path: Path, d_model: int, n_heads: int) -> Optional[int]
+def detect_n_kv_heads(self, weights_path: Path, d_model: int, n_heads: int) -> int | None
 ```
 
 Recover N_KV_HEADS used at training by inspecting the k_proj shape.
@@ -819,7 +819,7 @@ fall back to scale defaults rather than guess.
 | `d_model` | `int` |  |  |
 | `n_heads` | `int` |  |  |
 
-**Returns:** `Optional[int]`
+**Returns:** `int | None`
 
 **Raises**
 
@@ -831,7 +831,7 @@ fall back to scale defaults rather than guess.
 
 ### `TopoGPT2ConfigAligner`
 
-`class` | [topogpt3/inference_hrm.py:502](../../topogpt3/inference_hrm.py#L502)
+`class` | [topogpt3/inference_hrm.py:511](../../topogpt3/inference_hrm.py#L511)
 
 ```python
 class TopoGPT2ConfigAligner
@@ -850,7 +850,7 @@ Builds a TopoGPT2Config matching the loaded checkpoint and tokenizer.
 
 #### `TopoGPT2ConfigAligner.__init__`
 
-`constructor` | [topogpt3/inference_hrm.py:505](../../topogpt3/inference_hrm.py#L505)
+`constructor` | [topogpt3/inference_hrm.py:514](../../topogpt3/inference_hrm.py#L514)
 
 ```python
 def __init__(self, settings: HRMInferenceSettings, source_module: Any, logger: logging.Logger)
@@ -870,10 +870,10 @@ def __init__(self, settings: HRMInferenceSettings, source_module: Any, logger: l
 
 #### `TopoGPT2ConfigAligner.build`
 
-`method` | [topogpt3/inference_hrm.py:511](../../topogpt3/inference_hrm.py#L511)
+`method` | [topogpt3/inference_hrm.py:521](../../topogpt3/inference_hrm.py#L521)
 
 ```python
-def build(self, n_kv_heads: Optional[int], vocab_size: int) -> Any
+def build(self, n_kv_heads: int | None, vocab_size: int) -> Any
 ```
 
 Return a TopoGPT2Config dataclass ready to instantiate the model.
@@ -882,10 +882,12 @@ Return a TopoGPT2Config dataclass ready to instantiate the model.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `n_kv_heads` | `Optional[int]` |  |  |
+| `n_kv_heads` | `int \| None` |  |  |
 | `vocab_size` | `int` |  |  |
 
 **Returns:** `Any`
+
+*Calls:* [`config_from_checkpoint`](topogpt3.checkpoint_meta.py.md#config_from_checkpoint)
 
 ---
 
@@ -893,7 +895,7 @@ Return a TopoGPT2Config dataclass ready to instantiate the model.
 
 ### `TokenizerFactory`
 
-`class` | [topogpt3/inference_hrm.py:533](../../topogpt3/inference_hrm.py#L533)
+`class` | [topogpt3/inference_hrm.py:570](../../topogpt3/inference_hrm.py#L570)
 
 ```python
 class TokenizerFactory
@@ -912,7 +914,7 @@ Builds a BPETokenizer instance using the configured encoding.
 
 #### `TokenizerFactory.__init__`
 
-`constructor` | [topogpt3/inference_hrm.py:536](../../topogpt3/inference_hrm.py#L536)
+`constructor` | [topogpt3/inference_hrm.py:573](../../topogpt3/inference_hrm.py#L573)
 
 ```python
 def __init__(self, settings: HRMInferenceSettings, source_module: Any)
@@ -931,7 +933,7 @@ def __init__(self, settings: HRMInferenceSettings, source_module: Any)
 
 #### `TokenizerFactory.build`
 
-`method` | [topogpt3/inference_hrm.py:540](../../topogpt3/inference_hrm.py#L540)
+`method` | [topogpt3/inference_hrm.py:577](../../topogpt3/inference_hrm.py#L577)
 
 ```python
 def build(self) -> Any
@@ -947,7 +949,7 @@ Return an instance of BPETokenizer bound to the configured encoding.
 
 ### `GaussPatchApplier`
 
-`class` | [topogpt3/inference_hrm.py:546](../../topogpt3/inference_hrm.py#L546)
+`class` | [topogpt3/inference_hrm.py:583](../../topogpt3/inference_hrm.py#L583)
 
 ```python
 class GaussPatchApplier
@@ -966,7 +968,7 @@ Applies the idempotent Gauss complex-multiply patch when enabled.
 
 #### `GaussPatchApplier.__init__`
 
-`constructor` | [topogpt3/inference_hrm.py:549](../../topogpt3/inference_hrm.py#L549)
+`constructor` | [topogpt3/inference_hrm.py:586](../../topogpt3/inference_hrm.py#L586)
 
 ```python
 def __init__(self, settings: HRMInferenceSettings, source_module: Any, logger: logging.Logger)
@@ -986,7 +988,7 @@ def __init__(self, settings: HRMInferenceSettings, source_module: Any, logger: l
 
 #### `GaussPatchApplier.apply_if_enabled`
 
-`method` | [topogpt3/inference_hrm.py:555](../../topogpt3/inference_hrm.py#L555)
+`method` | [topogpt3/inference_hrm.py:593](../../topogpt3/inference_hrm.py#L593)
 
 ```python
 def apply_if_enabled(self) -> None
@@ -1000,7 +1002,7 @@ Patch QuaternionSpectralLayer to use the 3-multiply Gauss contract.
 
 ### `ModelAssembler`
 
-`class` | [topogpt3/inference_hrm.py:564](../../topogpt3/inference_hrm.py#L564)
+`class` | [topogpt3/inference_hrm.py:602](../../topogpt3/inference_hrm.py#L602)
 
 ```python
 class ModelAssembler
@@ -1019,7 +1021,7 @@ Instantiates the model and loads weights from safetensors.
 
 #### `ModelAssembler.__init__`
 
-`constructor` | [topogpt3/inference_hrm.py:567](../../topogpt3/inference_hrm.py#L567)
+`constructor` | [topogpt3/inference_hrm.py:605](../../topogpt3/inference_hrm.py#L605)
 
 ```python
 def __init__(self, settings: HRMInferenceSettings, source_module: Any, logger: logging.Logger)
@@ -1039,7 +1041,7 @@ def __init__(self, settings: HRMInferenceSettings, source_module: Any, logger: l
 
 #### `ModelAssembler.assemble`
 
-`method` | [topogpt3/inference_hrm.py:573](../../topogpt3/inference_hrm.py#L573)
+`method` | [topogpt3/inference_hrm.py:612](../../topogpt3/inference_hrm.py#L612)
 
 ```python
 def assemble(self, aligned_cfg: Any, paths: CheckpointPaths) -> torch.nn.Module
@@ -1064,7 +1066,7 @@ Build the TopoGPT2 graph, load weights into it, and return it in eval mode.
 
 ### `SeedSynchronizer`
 
-`class` | [topogpt3/inference_hrm.py:601](../../topogpt3/inference_hrm.py#L601)
+`class` | [topogpt3/inference_hrm.py:643](../../topogpt3/inference_hrm.py#L643)
 
 ```python
 class SeedSynchronizer
@@ -1083,7 +1085,7 @@ Applies deterministic seeds across torch, CUDA and the model package.
 
 #### `SeedSynchronizer.__init__`
 
-`constructor` | [topogpt3/inference_hrm.py:604](../../topogpt3/inference_hrm.py#L604)
+`constructor` | [topogpt3/inference_hrm.py:646](../../topogpt3/inference_hrm.py#L646)
 
 ```python
 def __init__(self, settings: HRMInferenceSettings, source_module: Any, logger: logging.Logger)
@@ -1103,7 +1105,7 @@ def __init__(self, settings: HRMInferenceSettings, source_module: Any, logger: l
 
 #### `SeedSynchronizer.apply`
 
-`method` | [topogpt3/inference_hrm.py:610](../../topogpt3/inference_hrm.py#L610)
+`method` | [topogpt3/inference_hrm.py:653](../../topogpt3/inference_hrm.py#L653)
 
 ```python
 def apply(self) -> None
@@ -1117,7 +1119,7 @@ Seed all relevant RNGs using the model package helper when available.
 
 ### `LatentChangeMetric`
 
-`class` | [topogpt3/inference_hrm.py:624](../../topogpt3/inference_hrm.py#L624)
+`class` | [topogpt3/inference_hrm.py:668](../../topogpt3/inference_hrm.py#L668)
 
 ```python
 class LatentChangeMetric
@@ -1136,7 +1138,7 @@ Computes the relative L2 distance between two latent tensors.
 
 #### `LatentChangeMetric.__init__`
 
-`constructor` | [topogpt3/inference_hrm.py:627](../../topogpt3/inference_hrm.py#L627)
+`constructor` | [topogpt3/inference_hrm.py:671](../../topogpt3/inference_hrm.py#L671)
 
 ```python
 def __init__(self, epsilon_floor: float)
@@ -1158,7 +1160,7 @@ def __init__(self, epsilon_floor: float)
 
 #### `LatentChangeMetric.relative_change`
 
-`method` | [topogpt3/inference_hrm.py:632](../../topogpt3/inference_hrm.py#L632)
+`method` | [topogpt3/inference_hrm.py:676](../../topogpt3/inference_hrm.py#L676)
 
 ```python
 def relative_change(self, current: torch.Tensor, previous: torch.Tensor) -> float
@@ -1187,7 +1189,7 @@ Return ||current - previous|| / max(||previous||, epsilon_floor).
 
 ### `ReasoningIterationStats`
 
-`class` `dataclass` | [topogpt3/inference_hrm.py:648](../../topogpt3/inference_hrm.py#L648)
+`class` `dataclass` | [topogpt3/inference_hrm.py:691](../../topogpt3/inference_hrm.py#L691)
 
 Decorators: `@dataclass`
 
@@ -1215,7 +1217,7 @@ Aggregated counters describing a single token's reasoning episode.
 
 ### `GenerationReasoningSummary`
 
-`class` `dataclass` | [topogpt3/inference_hrm.py:661](../../topogpt3/inference_hrm.py#L661)
+`class` `dataclass` | [topogpt3/inference_hrm.py:704](../../topogpt3/inference_hrm.py#L704)
 
 Decorators: `@dataclass`
 
@@ -1246,7 +1248,7 @@ Aggregated statistics over the full generation episode.
 
 #### `GenerationReasoningSummary.absorb`
 
-`method` | [topogpt3/inference_hrm.py:671](../../topogpt3/inference_hrm.py#L671)
+`method` | [topogpt3/inference_hrm.py:714](../../topogpt3/inference_hrm.py#L714)
 
 ```python
 def absorb(self, sample: ReasoningIterationStats) -> None
@@ -1268,7 +1270,7 @@ Fold a per-token sample into the running totals.
 
 ### `SparseHighLevelStateCache`
 
-`class` | [topogpt3/inference_hrm.py:684](../../topogpt3/inference_hrm.py#L684)
+`class` | [topogpt3/inference_hrm.py:727](../../topogpt3/inference_hrm.py#L727)
 
 ```python
 class SparseHighLevelStateCache
@@ -1294,7 +1296,7 @@ expensive full-stack passes are amortized across multiple emissions.
 
 #### `SparseHighLevelStateCache.__init__`
 
-`constructor` | [topogpt3/inference_hrm.py:693](../../topogpt3/inference_hrm.py#L693)
+`constructor` | [topogpt3/inference_hrm.py:736](../../topogpt3/inference_hrm.py#L736)
 
 ```python
 def __init__(self, persist_tokens: int)
@@ -1316,10 +1318,10 @@ def __init__(self, persist_tokens: int)
 
 #### `SparseHighLevelStateCache.get_or_init`
 
-`method` | [topogpt3/inference_hrm.py:700](../../topogpt3/inference_hrm.py#L700)
+`method` | [topogpt3/inference_hrm.py:743](../../topogpt3/inference_hrm.py#L743)
 
 ```python
-def get_or_init(self, reference: torch.Tensor) -> Tuple[torch.Tensor, bool]
+def get_or_init(self, reference: torch.Tensor) -> tuple[torch.Tensor, bool]
 ```
 
 Return the cached high-level state or a zeroed one when stale.
@@ -1333,7 +1335,7 @@ live cache hit (True) or a fresh zero initialization (False).
 |---|---|---|---|
 | `reference` | `torch.Tensor` |  |  |
 
-**Returns:** `Tuple[torch.Tensor, bool]`
+**Returns:** `tuple[torch.Tensor, bool]`
 
 *Called by:* [`HRMGenerationEngine.run`](#hrmgenerationengine-run)
 
@@ -1341,7 +1343,7 @@ live cache hit (True) or a fresh zero initialization (False).
 
 #### `SparseHighLevelStateCache.commit`
 
-`method` | [topogpt3/inference_hrm.py:716](../../topogpt3/inference_hrm.py#L716)
+`method` | [topogpt3/inference_hrm.py:761](../../topogpt3/inference_hrm.py#L761)
 
 ```python
 def commit(self, new_state: torch.Tensor) -> None
@@ -1361,7 +1363,7 @@ Store a fresh high-level state and increment the cache age.
 
 #### `SparseHighLevelStateCache.invalidate`
 
-`method` | [topogpt3/inference_hrm.py:721](../../topogpt3/inference_hrm.py#L721)
+`method` | [topogpt3/inference_hrm.py:766](../../topogpt3/inference_hrm.py#L766)
 
 ```python
 def invalidate(self) -> None
@@ -1375,7 +1377,7 @@ Drop any cached state and reset the age counter.
 
 ### `HierarchicalRecursiveReasoner`
 
-`class` | [topogpt3/inference_hrm.py:727](../../topogpt3/inference_hrm.py#L727)
+`class` | [topogpt3/inference_hrm.py:772](../../topogpt3/inference_hrm.py#L772)
 
 ```python
 class HierarchicalRecursiveReasoner
@@ -1432,17 +1434,17 @@ horizons to amortize thinking effort over multiple tokens.
 
 #### `HierarchicalRecursiveReasoner.__init__`
 
-`constructor` | [topogpt3/inference_hrm.py:768](../../topogpt3/inference_hrm.py#L768)
+`constructor` | [topogpt3/inference_hrm.py:813](../../topogpt3/inference_hrm.py#L813)
 
 ```python
-def __init__(self, layers: List[torch.nn.Module], final_norm: torch.nn.Module, reasoning_config: RecursiveReasoningConfig, logger: logging.Logger)
+def __init__(self, layers: list[torch.nn.Module], final_norm: torch.nn.Module, reasoning_config: RecursiveReasoningConfig, logger: logging.Logger)
 ```
 
 **Parameters**
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `layers` | `List[torch.nn.Module]` |  |  |
+| `layers` | `list[torch.nn.Module]` |  |  |
 | `final_norm` | `torch.nn.Module` |  |  |
 | `reasoning_config` | `RecursiveReasoningConfig` |  |  |
 | `logger` | `logging.Logger` |  |  |
@@ -1459,7 +1461,7 @@ def __init__(self, layers: List[torch.nn.Module], final_norm: torch.nn.Module, r
 
 #### `HierarchicalRecursiveReasoner.num_layers`
 
-`property` | [topogpt3/inference_hrm.py:789](../../topogpt3/inference_hrm.py#L789)
+`property` | [topogpt3/inference_hrm.py:837](../../topogpt3/inference_hrm.py#L837)
 
 Decorators: `@property`
 
@@ -1475,10 +1477,10 @@ Return the number of trained transformer layers.
 
 #### `HierarchicalRecursiveReasoner.reason`
 
-`method` | [topogpt3/inference_hrm.py:827](../../topogpt3/inference_hrm.py#L827)
+`method` | [topogpt3/inference_hrm.py:884](../../topogpt3/inference_hrm.py#L884)
 
 ```python
-def reason(self, z_initial: torch.Tensor, base_kvs: List[Optional[Tuple[torch.Tensor, torch.Tensor]]], cached_refinement: Optional[torch.Tensor]) -> Tuple[torch.Tensor, List[Tuple[torch.Tensor, torch.Tensor]], torch.Tensor, ReasoningIterationStats]
+def reason(self, z_initial: torch.Tensor, base_kvs: list[tuple[torch.Tensor, torch.Tensor] | None], cached_refinement: torch.Tensor | None, position_offset: int | None = None) -> tuple[torch.Tensor, list[tuple[torch.Tensor, torch.Tensor]], torch.Tensor, ReasoningIterationStats]
 ```
 
 Run hierarchical recursive thinking for a single emission step.
@@ -1488,10 +1490,11 @@ Run hierarchical recursive thinking for a single emission step.
 | Name | Type | Default | Description |
 |---|---|---|---|
 | `z_initial` | `torch.Tensor` |  | token embedding of the new position, shape [B, 1, D]. |
-| `base_kvs` | `List[Optional[Tuple[torch.Tensor, torch.Tensor]]]` |  | per-layer kv cache for all previously emitted tokens, treated as immutable during thinking iterations. |
-| `cached_refinement` | `Optional[torch.Tensor]` |  | persistent refinement displacement from prior tokens, or None to skip the warm start. |
+| `base_kvs` | `list[tuple[torch.Tensor, torch.Tensor] \| None]` |  | per-layer kv cache for all previously emitted tokens, treated as immutable during thinking iterations. |
+| `cached_refinement` | `torch.Tensor \| None` |  | persistent refinement displacement from prior tokens, or None to skip the warm start. |
+| `position_offset` | `int \| None` | `None` |  |
 
-**Returns:** `Tuple[torch.Tensor, List[Tuple[torch.Tensor, torch.Tensor]], torch.Tensor, ReasoningIterationStats]` - A tuple (z_final, committed_kvs, refinement_for_cache, stats):
+**Returns:** `tuple[torch.Tensor, list[tuple[torch.Tensor, torch.Tensor]], torch.Tensor, ReasoningIterationStats]` - A tuple (z_final, committed_kvs, refinement_for_cache, stats):
 z_final is the latent state about to enter the final norm
 and lm head; committed_kvs is the new per-layer kv cache
 including this token's K and V from the baseline pass;
@@ -1508,7 +1511,7 @@ persisted across tokens; stats holds the loop counters.
 
 ### `LogitsSampler`
 
-`class` | [topogpt3/inference_hrm.py:935](../../topogpt3/inference_hrm.py#L935)
+`class` | [topogpt3/inference_hrm.py:1010](../../topogpt3/inference_hrm.py#L1010)
 
 ```python
 class LogitsSampler
@@ -1527,7 +1530,7 @@ Applies temperature, repetition penalty, top-k filtering and multinomial draw.
 
 #### `LogitsSampler.__init__`
 
-`constructor` | [topogpt3/inference_hrm.py:938](../../topogpt3/inference_hrm.py#L938)
+`constructor` | [topogpt3/inference_hrm.py:1013](../../topogpt3/inference_hrm.py#L1013)
 
 ```python
 def __init__(self, logger: logging.Logger)
@@ -1545,7 +1548,7 @@ def __init__(self, logger: logging.Logger)
 
 #### `LogitsSampler.sample`
 
-`method` | [topogpt3/inference_hrm.py:941](../../topogpt3/inference_hrm.py#L941)
+`method` | [topogpt3/inference_hrm.py:1016](../../topogpt3/inference_hrm.py#L1016)
 
 ```python
 def sample(self, logits: torch.Tensor, token_history: torch.Tensor, temperature: float, top_k: int, repetition_penalty: float) -> torch.Tensor
@@ -1577,7 +1580,7 @@ Return a sampled token id tensor of shape [B, 1] from raw logits [B, V].
 
 ### `SamplingPolicy`
 
-`class` `dataclass` | [topogpt3/inference_hrm.py:963](../../topogpt3/inference_hrm.py#L963)
+`class` `dataclass` | [topogpt3/inference_hrm.py:1044](../../topogpt3/inference_hrm.py#L1044)
 
 Decorators: `@dataclass(frozen=True)`
 
@@ -1607,12 +1610,12 @@ Immutable sampling parameters consumed by the generation engine.
 
 #### `SamplingPolicy.from_settings`
 
-`classmethod` | [topogpt3/inference_hrm.py:973](../../topogpt3/inference_hrm.py#L973)
+`classmethod` | [topogpt3/inference_hrm.py:1054](../../topogpt3/inference_hrm.py#L1054)
 
 Decorators: `@classmethod`
 
 ```python
-def from_settings(cls, settings: HRMInferenceSettings) -> 'SamplingPolicy'
+def from_settings(cls, settings: HRMInferenceSettings) -> SamplingPolicy
 ```
 
 Construct a SamplingPolicy from inference settings.
@@ -1623,7 +1626,7 @@ Construct a SamplingPolicy from inference settings.
 |---|---|---|---|
 | `settings` | `HRMInferenceSettings` |  |  |
 
-**Returns:** `'SamplingPolicy'`
+**Returns:** `SamplingPolicy`
 
 ---
 
@@ -1631,7 +1634,7 @@ Construct a SamplingPolicy from inference settings.
 
 ### `GenerationReport`
 
-`class` `dataclass` | [topogpt3/inference_hrm.py:985](../../topogpt3/inference_hrm.py#L985)
+`class` `dataclass` | [topogpt3/inference_hrm.py:1066](../../topogpt3/inference_hrm.py#L1066)
 
 Decorators: `@dataclass(frozen=True)`
 
@@ -1662,7 +1665,7 @@ Quantitative summary of a single generation call.
 
 #### `GenerationReport.tokens_per_second`
 
-`method` | [topogpt3/inference_hrm.py:995](../../topogpt3/inference_hrm.py#L995)
+`method` | [topogpt3/inference_hrm.py:1076](../../topogpt3/inference_hrm.py#L1076)
 
 ```python
 def tokens_per_second(self, elapsed_floor: float) -> float
@@ -1684,7 +1687,7 @@ Return throughput in tokens/sec, clamped to avoid divide-by-zero.
 
 ### `HRMGenerationEngine`
 
-`class` | [topogpt3/inference_hrm.py:1000](../../topogpt3/inference_hrm.py#L1000)
+`class` | [topogpt3/inference_hrm.py:1081](../../topogpt3/inference_hrm.py#L1081)
 
 ```python
 class HRMGenerationEngine
@@ -1710,7 +1713,7 @@ latent is then projected to logits and sampled in the standard fashion.
 
 #### `HRMGenerationEngine.__init__`
 
-`constructor` | [topogpt3/inference_hrm.py:1011](../../topogpt3/inference_hrm.py#L1011)
+`constructor` | [topogpt3/inference_hrm.py:1092](../../topogpt3/inference_hrm.py#L1092)
 
 ```python
 def __init__(self, settings: HRMInferenceSettings, logger: logging.Logger)
@@ -1731,7 +1734,7 @@ def __init__(self, settings: HRMInferenceSettings, logger: logging.Logger)
 
 #### `HRMGenerationEngine.run`
 
-`method` | [topogpt3/inference_hrm.py:1048](../../topogpt3/inference_hrm.py#L1048)
+`method` | [topogpt3/inference_hrm.py:1128](../../topogpt3/inference_hrm.py#L1128)
 
 Decorators: `@torch.no_grad()`
 
@@ -1766,7 +1769,7 @@ Generate a completion for prompt and return a GenerationReport.
 
 ### `ResultRenderer`
 
-`class` | [topogpt3/inference_hrm.py:1189](../../topogpt3/inference_hrm.py#L1189)
+`class` | [topogpt3/inference_hrm.py:1289](../../topogpt3/inference_hrm.py#L1289)
 
 ```python
 class ResultRenderer
@@ -1785,7 +1788,7 @@ Prints a GenerationReport to stdout using settings-defined formatting.
 
 #### `ResultRenderer.__init__`
 
-`constructor` | [topogpt3/inference_hrm.py:1192](../../topogpt3/inference_hrm.py#L1192)
+`constructor` | [topogpt3/inference_hrm.py:1292](../../topogpt3/inference_hrm.py#L1292)
 
 ```python
 def __init__(self, settings: HRMInferenceSettings, logger: logging.Logger)
@@ -1804,7 +1807,7 @@ def __init__(self, settings: HRMInferenceSettings, logger: logging.Logger)
 
 #### `ResultRenderer.render`
 
-`method` | [topogpt3/inference_hrm.py:1196](../../topogpt3/inference_hrm.py#L1196)
+`method` | [topogpt3/inference_hrm.py:1296](../../topogpt3/inference_hrm.py#L1296)
 
 ```python
 def render(self, report: GenerationReport) -> None
@@ -1826,7 +1829,7 @@ Emit a banner with prompt, completion, throughput and reasoning stats.
 
 ### `HRMInferencePipeline`
 
-`class` | [topogpt3/inference_hrm.py:1230](../../topogpt3/inference_hrm.py#L1230)
+`class` | [topogpt3/inference_hrm.py:1336](../../topogpt3/inference_hrm.py#L1336)
 
 ```python
 class HRMInferencePipeline
@@ -1845,10 +1848,10 @@ Orchestrator wiring loader, builder, reasoner, engine and renderer.
 
 #### `HRMInferencePipeline.__init__`
 
-`constructor` | [topogpt3/inference_hrm.py:1233](../../topogpt3/inference_hrm.py#L1233)
+`constructor` | [topogpt3/inference_hrm.py:1339](../../topogpt3/inference_hrm.py#L1339)
 
 ```python
-def __init__(self, settings: HRMInferenceSettings, logger: Optional[logging.Logger] = None)
+def __init__(self, settings: HRMInferenceSettings, logger: logging.Logger | None = None)
 ```
 
 **Parameters**
@@ -1856,7 +1859,7 @@ def __init__(self, settings: HRMInferenceSettings, logger: Optional[logging.Logg
 | Name | Type | Default | Description |
 |---|---|---|---|
 | `settings` | `HRMInferenceSettings` |  |  |
-| `logger` | `Optional[logging.Logger]` | `None` |  |
+| `logger` | `logging.Logger \| None` | `None` |  |
 
 *Calls:* [`HRMInferenceSettings.validate`](#hrminferencesettings-validate), [`HRMLoggerFactory.build`](#hrmloggerfactory-build)
 
@@ -1866,7 +1869,7 @@ def __init__(self, settings: HRMInferenceSettings, logger: Optional[logging.Logg
 
 #### `HRMInferencePipeline.execute`
 
-`method` | [topogpt3/inference_hrm.py:1239](../../topogpt3/inference_hrm.py#L1239)
+`method` | [topogpt3/inference_hrm.py:1346](../../topogpt3/inference_hrm.py#L1346)
 
 ```python
 def execute(self) -> GenerationReport
@@ -1886,7 +1889,7 @@ Run the full inference pipeline end-to-end and return the report.
 
 ### `CliArgumentParser`
 
-`class` | [topogpt3/inference_hrm.py:1283](../../topogpt3/inference_hrm.py#L1283)
+`class` | [topogpt3/inference_hrm.py:1402](../../topogpt3/inference_hrm.py#L1402)
 
 ```python
 class CliArgumentParser
@@ -1905,7 +1908,7 @@ Translates command-line arguments into an HRMInferenceSettings instance.
 
 #### `CliArgumentParser.build_parser`
 
-`staticmethod` | [topogpt3/inference_hrm.py:1287](../../topogpt3/inference_hrm.py#L1287)
+`staticmethod` | [topogpt3/inference_hrm.py:1406](../../topogpt3/inference_hrm.py#L1406)
 
 Decorators: `@staticmethod`
 
@@ -1923,12 +1926,12 @@ Return the configured argparse.ArgumentParser.
 
 #### `CliArgumentParser.parse`
 
-`staticmethod` | [topogpt3/inference_hrm.py:1448](../../topogpt3/inference_hrm.py#L1448)
+`staticmethod` | [topogpt3/inference_hrm.py:1611](../../topogpt3/inference_hrm.py#L1611)
 
 Decorators: `@staticmethod`
 
 ```python
-def parse(argv: Optional[List[str]] = None) -> HRMInferenceSettings
+def parse(argv: list[str] | None = None) -> HRMInferenceSettings
 ```
 
 Parse argv (or sys.argv) and return a populated HRMInferenceSettings.
@@ -1937,7 +1940,7 @@ Parse argv (or sys.argv) and return a populated HRMInferenceSettings.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `argv` | `Optional[List[str]]` | `None` |  |
+| `argv` | `list[str] \| None` | `None` |  |
 
 **Returns:** `HRMInferenceSettings`
 
@@ -1951,10 +1954,10 @@ Parse argv (or sys.argv) and return a populated HRMInferenceSettings.
 
 ### `main`
 
-`function` | [topogpt3/inference_hrm.py:1494](../../topogpt3/inference_hrm.py#L1494)
+`function` | [topogpt3/inference_hrm.py:1657](../../topogpt3/inference_hrm.py#L1657)
 
 ```python
-def main(argv: Optional[List[str]] = None) -> int
+def main(argv: list[str] | None = None) -> int
 ```
 
 CLI entry point.
@@ -1965,7 +1968,7 @@ Returns a process exit code.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `argv` | `Optional[List[str]]` | `None` |  |
+| `argv` | `list[str] \| None` | `None` |  |
 
 **Returns:** `int`
 

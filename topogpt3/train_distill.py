@@ -4,6 +4,7 @@ Teacher: any HF causal LM (e.g. Qwen/StarCoder) or a larger TopoGPT2.
 Student: TopoGPT2 quaternion/spectral — learns to mimic teacher geometry
 in logit space while keeping its own spectral diagnostics intact.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -15,10 +16,12 @@ from torch import optim
 from torch.utils.data import DataLoader
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from safetensors.torch import load_file
+
+from topogpt3.checkpoint_meta import config_from_checkpoint
 from topogpt3.model import BPETokenizer, TopoGPT2, TopoGPT2Config
 from topogpt3.rewards import distillation_loss
 from topogpt3.trainer_utils_topo import Logger, get_lr, is_main_process, setup_seed
-from safetensors.torch import load_file
 
 
 def main():
@@ -39,7 +42,10 @@ def main():
     device = args.device
     tok = BPETokenizer()
 
-    cfg = TopoGPT2Config()
+    try:
+        cfg, _meta = config_from_checkpoint(args.checkpoint, device="cpu")
+    except (FileNotFoundError, ValueError):
+        cfg = TopoGPT2Config()
     student = TopoGPT2(cfg).to(device)
     sf = os.path.join(args.checkpoint, "model.safetensors")
     if os.path.exists(sf):
@@ -53,24 +59,32 @@ def main():
         except ImportError:
             raise SystemExit(
                 "train-distill --teacher needs 'transformers' (your env lacks it).\n"
-                "  pip install transformers   # or run without --teacher for self-distill")
+                "  pip install transformers   # or run without --teacher for self-distill"
+            )
         try:
             teacher = AutoModelForCausalLM.from_pretrained(
-                args.teacher, trust_remote_code=True,
-                torch_dtype=torch.float16 if "cuda" in device else torch.float32)
+                args.teacher,
+                trust_remote_code=True,
+                torch_dtype=torch.float16 if "cuda" in device else torch.float32,
+            )
             teacher = teacher.to(device).eval()
             Logger(f"teacher HF: {args.teacher}")
         except Exception as e:
             raise SystemExit(f"HF teacher load failed: {e}")
     else:
         import copy as _c
+
         teacher = _c.deepcopy(student).eval()
     for p in teacher.parameters():
         p.requires_grad = False
 
     from topogpt3.datasets_chat import SFTDatasetJSONL
-    loader = DataLoader(SFTDatasetJSONL(args.data, tok, args.max_len),
-                        batch_size=args.batch_size, shuffle=True)
+
+    loader = DataLoader(
+        SFTDatasetJSONL(args.data, tok, args.max_len),
+        batch_size=args.batch_size,
+        shuffle=True,
+    )
     opt = optim.AdamW(student.parameters(), lr=args.lr)
     total = args.epochs * max(1, len(loader))
     step = 0
@@ -84,13 +98,18 @@ def main():
                 if use_hf and teacher is not None:
                     # HF ids live in another vocab; map by truncation to overlap
                     t_out = teacher(input_ids=x % teacher.config.vocab_size)
-                    t_logits = t_out.logits[..., :s_logits.size(-1)]
+                    t_logits = t_out.logits[..., : s_logits.size(-1)]
                 else:
                     t_logits, _, _ = teacher(x)
             mask = (y != -100).float()
-            loss = distillation_loss(s_logits[:, :-1], t_logits[:, :-1].detach(),
-                                     mask[:, 1:], labels=y[:, 1:],
-                                     alpha=args.alpha, temp=args.temp)
+            loss = distillation_loss(
+                s_logits[:, :-1],
+                t_logits[:, :-1].detach(),
+                mask[:, 1:],
+                labels=y[:, 1:],
+                alpha=args.alpha,
+                temp=args.temp,
+            )
             loss = loss + cfg.AE_RECON_WEIGHT * 0.0 + 0.0 * aux
             lr = get_lr(step, total, args.lr)
             for pg in opt.param_groups:
@@ -103,7 +122,9 @@ def main():
                 Logger(f"ep{ep} step{step}/{total} distill_loss={loss.item():.4f}")
     if is_main_process():
         os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
-        torch.save({k: v.half().cpu() for k, v in student.state_dict().items()}, args.out)
+        torch.save(
+            {k: v.half().cpu() for k, v in student.state_dict().items()}, args.out
+        )
         Logger(f"saved distilled student -> {args.out}")
 
 

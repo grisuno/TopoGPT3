@@ -1,46 +1,48 @@
 # TopoGPT3
 
-> Static analysis knowledge base for TopoGPT3: 6 communities, 55 files, 571 imports, 3 languages, 981 symbols.
+> Static analysis knowledge base for TopoGPT3: 6 communities, 64 files, 649 imports, 3 languages, 1082 symbols.
 
 Generated offline by readmenator (zero LLM tokens). Start with the wiki index for the big picture, then the agent INDEX for file lookup.
 
 ## Wiki
 
-- [readmenator-wiki/index.md](md/readmenator-wiki/index.md): The codebase centres on model.py, init.py, main.py. Architecturally it is 5 layers, dominant utility (47 files) across 7 import-based communities. Recorded...
-- [readmenator-wiki/REPORT.md](md/readmenator-wiki/REPORT.md): Project: TopoGPT3 | 2026-10-24 | offline, deterministic
-- [readmenator-wiki/community_0_topogpt3_lora.md](md/readmenator-wiki/community_0_topogpt3_lora.md): Community 0 | 12 files | cohesion 0.49
-- [readmenator-wiki/community_1_eval.md](md/readmenator-wiki/community_1_eval.md): Community 1 | 11 files | cohesion 0.43
-- [readmenator-wiki/community_2_topogpt3_model.md](md/readmenator-wiki/community_2_topogpt3_model.md): Community 2 | 10 files | cohesion 0.40
-- [readmenator-wiki/community_3_topogpt3_sandbox.md](md/readmenator-wiki/community_3_topogpt3_sandbox.md): Community 3 | 7 files | cohesion 0.41
+- [readmenator-wiki/index.md](md/readmenator-wiki/index.md): The codebase centres on model.py, init.py, checkpointmeta.py. Architecturally it is 5 layers, dominant utility (52 files) across 7 import-based communities....
+- [readmenator-wiki/REPORT.md](md/readmenator-wiki/REPORT.md): Project: TopoGPT3 | 2026-10-25 | offline, deterministic
+- [readmenator-wiki/community_0_topogpt3_model.md](md/readmenator-wiki/community_0_topogpt3_model.md): Community 0 | 15 files | cohesion 0.45
+- [readmenator-wiki/community_1_eval.md](md/readmenator-wiki/community_1_eval.md): Community 1 | 13 files | cohesion 0.44
+- [readmenator-wiki/community_2_topogpt3_tasks.md](md/readmenator-wiki/community_2_topogpt3_tasks.md): Community 2 | 10 files | cohesion 0.51
+- [readmenator-wiki/community_3_topogpt3_inference_hrm.md](md/readmenator-wiki/community_3_topogpt3_inference_hrm.md): Community 3 | 9 files | cohesion 0.34
 - [readmenator-wiki/community_4_topogpt3_jlens.md](md/readmenator-wiki/community_4_topogpt3_jlens.md): Community 4 | 4 files | cohesion 0.45
 - [readmenator-wiki/community_5_root.md](md/readmenator-wiki/community_5_root.md): Community 5 | 3 files | cohesion 1.00
-- [readmenator-wiki/community_6_orphans.md](md/readmenator-wiki/community_6_orphans.md): Community 6 | 8 files | cohesion 0.00
+- [readmenator-wiki/community_6_orphans.md](md/readmenator-wiki/community_6_orphans.md): Community 6 | 10 files | cohesion 0.00
 - [readmenator-wiki/concepts.md](md/readmenator-wiki/concepts.md): Second-brain semantic layer: nouns map atomically to file sets (EXTRACTED); verbs aggregate structural edges (INFERRED).
 - [readmenator-wiki/queries.md](md/readmenator-wiki/queries.md): Log each answered question here so the wiki compounds. Format: question, answer, cited files.
 
 ## GraphRAG
 
-- [readmenator-graphrag/REPORTS.md](md/readmenator-graphrag/REPORTS.md): Entities: 1153 | Relationships: 3274 | Communities: 7 | Themes: 3 | Text units: 1029
+- [readmenator-graphrag/REPORTS.md](md/readmenator-graphrag/REPORTS.md): Entities: 1265 | Relationships: 3647 | Communities: 7 | Themes: 3 | Text units: 1139
 
 ## Agent Docs
 
 - [readmenator-agent/INDEX.md](md/readmenator-agent/INDEX.md)
 - [readmenator-agent/GOTCHAS.md](md/readmenator-agent/GOTCHAS.md): These files have the most connections. Changes here have high blast radius.
 - [readmenator-agent/API.md](md/readmenator-agent/API.md): runinference (function) app.py:46 def runinference(prompt, checkpointdir, checkpointname, maxnewtokens, temperature, topk, repetitionpenalty... -- Run the...
-- [readmenator-agent/API_p2.md](md/readmenator-agent/API_p2.md): Depends on: syntheticdataset.py, topogpt3/continuation.py, topogpt3/yarn.py
+- [readmenator-agent/API_p2.md](md/readmenator-agent/API_p2.md): Depends on: topogpt3/model.py
 - [readmenator-agent/ARCHITECTURE.md](md/readmenator-agent/ARCHITECTURE.md): eval/diagstatic.py -> topogpt3/init.py
 - [readmenator-agent/CONCEPTS.md](md/readmenator-agent/CONCEPTS.md): Nouns map atomically to file sets (EXTRACTED); verbs aggregate structural edges (INFERRED).
 - [readmenator-agent/KB_eval.md](md/readmenator-agent/KB_eval.md): Doc: Aggregate HumanEval result JSONL files into a summary table.
+- [readmenator-agent/KB_misc.md](md/readmenator-agent/KB_misc.md): Doc: Serve TopoGPT3 (code) + TopoExploit (red-team) as OpenAI-compatible fallback endpoints for...
 - [readmenator-agent/KB_root.md](md/readmenator-agent/KB_root.md): Doc: Drop-in entry point that demonstrates how to use the topogpt3 package.
-- [readmenator-agent/KB_tests.md](md/readmenator-agent/KB_tests.md): Doc: Advanced-training tests: LoRA/RL/chat modules preserve quaternionic identity.
+- [readmenator-agent/KB_tests.md](md/readmenator-agent/KB_tests.md): Doc: Checkpoint architecture discovery tests.
 - [readmenator-agent/KB_topogpt3.md](md/readmenator-agent/KB_topogpt3.md): Doc: TopoGPT3: complex-valued spectral language model for code.
 - [readmenator-agent/KB_topogpt3_p2.md](md/readmenator-agent/KB_topogpt3_p2.md): Doc: TopoGPT2: Quaternion-Enhanced Topological Transformer Language Model Author: Gris Iscomeback...
-- [readmenator-agent/MEMORY.md](md/readmenator-agent/MEMORY.md): Generated from 55 files at commit c3de8abbea66. Read this first, then readmenator-wiki/index.md, then readmenator . ask "<question>" for anything specific.
+- [readmenator-agent/MEMORY.md](md/readmenator-agent/MEMORY.md): Generated from 64 files at commit aab73bf4e510. Read this first, then readmenator-wiki/index.md, then readmenator . ask "<question>" for anything specific.
 - [readmenator-agent/SECURITY.md](md/readmenator-agent/SECURITY.md)
 - [readmenator-agent/SYMBOLS.md](md/readmenator-agent/SYMBOLS.md)
 - [readmenator-agent/SYMBOLS_p2.md](md/readmenator-agent/SYMBOLS_p2.md)
+- [readmenator-agent/SYMBOLS_p3.md](md/readmenator-agent/SYMBOLS_p3.md)
 - [readmenator-agent/recipes/add-function.md](md/readmenator-agent/recipes/add-function.md): Find the target file by purpose: grep -in '<topic>' readmenator-agent/INDEX.md
-- [readmenator-agent/recipes/change-impact.md](md/readmenator-agent/recipes/change-impact.md): Riskiest file: topogpt3/continuation.py (29 dependents)
+- [readmenator-agent/recipes/change-impact.md](md/readmenator-agent/recipes/change-impact.md): Riskiest file: syntheticdataset.py (35 dependents)
 - [readmenator-agent/recipes/fix-cycle.md](md/readmenator-agent/recipes/fix-cycle.md): Read cycles: grep -A5 'Dependency Cycles' readmenator-agent/GOTCHAS.md
 - [readmenator-agent/recipes/fix-security.md](md/readmenator-agent/recipes/fix-security.md): Read findings: grep -n '<file>' readmenator-agent/SECURITY.md
 - [readmenator-agent/recipes/reduce-complexity.md](md/readmenator-agent/recipes/reduce-complexity.md): Target hotspot: topogpt3/model.py
@@ -50,10 +52,11 @@ Generated offline by readmenator (zero LLM tokens). Start with the wiki index fo
 - [KNOWLEDGE_BASE.md](md/KNOWLEDGE_BASE.md): Start here: Statistics Dashboard for scope, God Nodes for blast radius, Architecture Reference for per-file API. Agents: prefer readmenator-agent/INDEX.md +...
 - [README.md](md/README.md): A 24.5M parameter complex-valued autoregressive language model for code, instrumented with spectral and geometric diagnostics over training dynamics.
 - [SECURITY.md](md/SECURITY.md): Use this section to tell people about which versions of your project are
-- [readmenator-diagrams/eval.md](md/readmenator-diagrams/eval.md): eval groups 11 files (py) around loadhumaneval, buildprompt, extractcandidate, runonetest, runonetestsandboxed. Streaming + governance for autoregressive...
-- [readmenator-diagrams/overview.md](md/readmenator-diagrams/overview.md): Static architecture map of 55 files (c, py, sh) in 6 components: topogpt3: lora, eval, topogpt3: model, topogpt3: sandbox, topogpt3: jlens, root. Structure is...
-- [readmenator-diagrams/topogpt3_model.md](md/readmenator-diagrams/topogpt3_model.md): topogpt3: model groups 10 files (py) around TopoGPT2Config, postinit, setuplogger, setseed, QuaternionOps. Diagnostico estatico de un checkpoint TopoGPT3...
-- [readmenator-diagrams/topogpt3_sandbox.md](md/readmenator-diagrams/topogpt3_sandbox.md): topogpt3: sandbox groups 7 files (py) around YaRNConfig, yarnscaleinvfreq, applyyarntorope, preprocessingchat, postprocessingchat. Sandbox for executing...
+- [readmenator-diagrams/eval.md](md/readmenator-diagrams/eval.md): eval groups 13 files (py) around YaRNConfig, yarnscaleinvfreq, applyyarntorope, SandboxConfig, namesimported. Streaming + governance for autoregressive...
+- [readmenator-diagrams/overview.md](md/readmenator-diagrams/overview.md): Static architecture map of 64 files (c, py, sh) in 6 components: topogpt3: model, eval, topogpt3: tasks, topogpt3: inferencehrm, topogpt3: jlens, root....
+- [readmenator-diagrams/topogpt3_inference_hrm.md](md/readmenator-diagrams/topogpt3_inference_hrm.md): topogpt3: inferencehrm groups 9 files (py) around readstate, probecheckpoint, configfromcheckpoint, statesummary, configdict. Checkpoint architecture discovery...
+- [readmenator-diagrams/topogpt3_model.md](md/readmenator-diagrams/topogpt3_model.md): topogpt3: model groups 15 files (py) around TopoGPT2Config, postinit, setuplogger, setseed, QuaternionOps. Diagnostico estatico de un checkpoint TopoGPT3...
+- [readmenator-diagrams/topogpt3_tasks.md](md/readmenator-diagrams/topogpt3_tasks.md): topogpt3: tasks groups 10 files (py) around preprocessingchat, postprocessingchat, fmttooldefs, toolcallstext, applychattemplate. Generic task eval: JSONL...
 
 ## Optional
 

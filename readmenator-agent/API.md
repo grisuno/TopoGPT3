@@ -66,19 +66,19 @@ Depends on: `eval/governor.py`, `topogpt3/__init__.py`
 - `test_cancel` (function) `eval/governor_smoke.py:118` `def test_cancel()`
 
 ## eval/harness.py
-Depends on: `eval/samplers.py`, `eval/sandbox.py`, `topogpt3/__init__.py`
+Depends on: `eval/samplers.py`, `eval/sandbox.py`, `topogpt3/__init__.py`, `topogpt3/checkpoint_meta.py`
 Imported by: `eval/integration_smoke.py`, `eval/noise_sweep.py`, `eval/temp_sweep.py`
-- `load_humaneval` (function) `eval/harness.py:59` `def load_humaneval(cache_dir)`
-- `build_prompt` (function) `eval/harness.py:75` `def build_prompt(problem)` -- Return the exact prompt text fed to the model.
-- `extract_candidate` (function) `eval/harness.py:100` `def extract_candidate(prompt, completion)` -- Combine prompt + completion into a single Python source string.
-- `run_one_test` (function) `eval/harness.py:150` `def run_one_test(problem, candidate_src, timeout)` -- Execute the candidate against the hidden test.
-- `run_one_test_sandboxed` (function) `eval/harness.py:172` `def run_one_test_sandboxed(problem, candidate_src, timeout, sandbox_cfg)` -- Sandboxed variant of `run_one_test`.
-- `make_sampler` (function) `eval/harness.py:195` `def make_sampler(mode, settings_kwargs)` -- Backwards-compatible shim.
-- `completion_for_problem` (function) `eval/harness.py:204` `def completion_for_problem(sampler, prompt)` -- Run a single completion and return (raw_output_text, metrics_dict).
-- `ModelLoader.__init__` (method) `eval/harness.py:220` `def __init__(self, ckpt_dir, ckpt_name, device)`
-- `ModelLoader.generate` (method) `eval/harness.py:246` `def generate(self, prompt, max_new_tokens, temperature, top_k, repetition_penalty)`
-- `evaluate_problem` (function) `eval/harness.py:272` `def evaluate_problem(problem, loader, args, sample_idx)`
-- `main` (function) `eval/harness.py:315` `def main()`
+- `load_humaneval` (function) `eval/harness.py:54` `def load_humaneval(cache_dir)`
+- `build_prompt` (function) `eval/harness.py:72` `def build_prompt(problem)` -- Return the exact prompt text fed to the model.
+- `extract_candidate` (function) `eval/harness.py:97` `def extract_candidate(prompt, completion)` -- Combine prompt + completion into a single Python source string.
+- `run_one_test` (function) `eval/harness.py:154` `def run_one_test(problem, candidate_src, timeout)` -- Execute the candidate against the hidden test.
+- `run_one_test_sandboxed` (function) `eval/harness.py:178` `def run_one_test_sandboxed(problem, candidate_src, timeout, sandbox_cfg)` -- Sandboxed variant of `run_one_test`.
+- `make_sampler` (function) `eval/harness.py:205` `def make_sampler(mode, settings_kwargs)` -- Backwards-compatible shim.
+- `completion_for_problem` (function) `eval/harness.py:215` `def completion_for_problem(sampler, prompt)` -- Run a single completion and return (raw_output_text, metrics_dict).
+- `ModelLoader.__init__` (method) `eval/harness.py:232` `def __init__(self, ckpt_dir, ckpt_name, device)`
+- `ModelLoader.generate` (method) `eval/harness.py:257` `def generate(self, prompt, max_new_tokens, temperature, top_k, repetition_penalty)`
+- `evaluate_problem` (function) `eval/harness.py:290` `def evaluate_problem(problem, loader, args, sample_idx)`
+- `main` (function) `eval/harness.py:343` `def main()`
 
 ## eval/integration_smoke.py
 Depends on: `eval/harness.py`
@@ -136,6 +136,23 @@ Depends on: `topogpt3/__init__.py`
 - `run_standard` (function) `eval/smoke.py:17` `def run_standard()`
 - `run_hrm` (function) `eval/smoke.py:36` `def run_hrm()`
 
+## eval/tasks.py
+Depends on: `topogpt3/chat.py`, `topogpt3/checkpoint_meta.py`, `topogpt3/fallback.py`, `topogpt3/model.py`
+Imported by: `tests/test_eval_tasks.py`
+- `verify_tool_call` (function) `eval/tasks.py:50` `def verify_tool_call(case, completion)`
+- `verify_json` (function) `eval/tasks.py:78` `def verify_json(case, completion)`
+- `verify_regex` (function) `eval/tasks.py:90` `def verify_regex(case, completion)`
+- `verify_exact` (function) `eval/tasks.py:97` `def verify_exact(case, completion)`
+- `verify_contains` (function) `eval/tasks.py:105` `def verify_contains(case, completion)`
+- `verify_python_ast` (function) `eval/tasks.py:114` `def verify_python_ast(case, completion)`
+- `load_cases` (function) `eval/tasks.py:133` `def load_cases(path)`
+- `evaluate_case` (function) `eval/tasks.py:145` `def evaluate_case(case, generate_fn)`
+- `evaluate_cases` (function) `eval/tasks.py:174` `def evaluate_cases(cases, generate_fn, limit)`
+- `summary` (function) `eval/tasks.py:187` `def summary(results)`
+- `build_generate_fn` (function) `eval/tasks.py:197` `def build_generate_fn(ckpt_dir, ckpt_name, device, max_new_tokens)`
+- `generate` (function) `eval/tasks.py:221` `def generate(prompt, profile_name)`
+- `main` (function) `eval/tasks.py:251` `def main()`
+
 ## eval/temp_sweep.py
 Depends on: `eval/harness.py`, `eval/noise_sweep.py`
 - `generate_one` (function) `eval/temp_sweep.py:39` `def generate_one(model, tok, prompt, max_new_tokens, temperature, top_k, device, seed_offset)`
@@ -150,6 +167,9 @@ Depends on: `topogpt3.c`
 - `run_standard_inference` (function) `gradio_app.py:59` `def run_standard_inference(prompt, max_new_tokens, temperature, top_k, repetition_penalty, auto_continue)` -- Run standard autoregressive inference.
 - `run_hrm_inference` (function) `gradio_app.py:95` `def run_hrm_inference(prompt, max_new_tokens, temperature, top_k, repetition_penalty, high_level_iters...` -- Run hierarchical recursive reasoning inference.
 - `build_ui` (function) `gradio_app.py:144` `def build_ui()` -- Construct the Gradio Blocks interface.
+
+## scripts/serve_fallback.sh
+- `start_one` (function) `scripts/serve_fallback.sh:24`
 
 ## synthetic_dataset.py
 Imported by: `topogpt3/model.py`
@@ -280,33 +300,44 @@ Depends on: `topogpt3/api_server.py`, `topogpt3/convert.py`, `topogpt3/export_ch
 - `main` (function) `topogpt3/__main__.py:6` `def main()` -- TopoGPT3 entry point.
 
 ## topogpt3/api_server.py
-Depends on: `topogpt3/chat.py`, `topogpt3/continuation.py`, `topogpt3/model.py`, `topogpt3/structured_output.py`
+Depends on: `topogpt3/chat.py`, `topogpt3/checkpoint_meta.py`, `topogpt3/continuation.py`, `topogpt3/fallback.py`, `topogpt3/model.py`, `topogpt3/structured_output.py`
 Imported by: `tests/test_structured_output.py`, `topogpt3/__main__.py`
-- `AuthState.validate` (method) `topogpt3/api_server.py:153` `def validate(self, raw)`
-- `TokenBucket.consume` (method) `topogpt3/api_server.py:213` `def consume(self, n)`
-- `RateLimiter.__init__` (method) `topogpt3/api_server.py:225` `def __init__(self, user_rps, admin_rps, capacity)`
-- `RateLimiter.allow` (method) `topogpt3/api_server.py:238` `def allow(self, key, role)`
-- `IpBanner.__init__` (method) `topogpt3/api_server.py:256` `def __init__(self, max_failures, window)`
-- `IpBanner.record_failure` (method) `topogpt3/api_server.py:262` `def record_failure(self, ip)`
-- `IpBanner.is_banned` (method) `topogpt3/api_server.py:270` `def is_banned(self, ip)`
-- `ServerModel.complete` (method) `topogpt3/api_server.py:443` `def complete(self, prompt)`
-- `ServerModel.stream_complete` (method) `topogpt3/api_server.py:497` `def stream_complete(self, prompt)`
-- `load_model` (function) `topogpt3/api_server.py:650` `def load_model(checkpoint, device)`
-- `lifespan` (function) `topogpt3/api_server.py:671` `def lifespan(app)`
-- `health` (function) `topogpt3/api_server.py:800` `def health(request)`
-- `list_models` (function) `topogpt3/api_server.py:807` `def list_models(request)`
-- `completions` (function) `topogpt3/api_server.py:824` `def completions(req, request)`
-- `chat_completions` (function) `topogpt3/api_server.py:884` `def chat_completions(req, request)`
-- `main` (function) `topogpt3/api_server.py:1097` `def main()`
+- `AuthState.validate` (method) `topogpt3/api_server.py:164` `def validate(self, raw)`
+- `TokenBucket.consume` (method) `topogpt3/api_server.py:227` `def consume(self, n)`
+- `RateLimiter.__init__` (method) `topogpt3/api_server.py:239` `def __init__(self, user_rps, admin_rps, capacity)`
+- `RateLimiter.allow` (method) `topogpt3/api_server.py:252` `def allow(self, key, role)`
+- `IpBanner.__init__` (method) `topogpt3/api_server.py:270` `def __init__(self, max_failures, window)`
+- `IpBanner.record_failure` (method) `topogpt3/api_server.py:278` `def record_failure(self, ip)`
+- `IpBanner.is_banned` (method) `topogpt3/api_server.py:290` `def is_banned(self, ip)`
+- `ServerModel.complete_candidates` (method) `topogpt3/api_server.py:516` `def complete_candidates(self, prompt)`
+- `ServerModel.complete` (method) `topogpt3/api_server.py:572` `def complete(self, prompt)`
+- `ServerModel.stream_complete` (method) `topogpt3/api_server.py:601` `def stream_complete(self, prompt)`
+- `load_model` (function) `topogpt3/api_server.py:771` `def load_model(checkpoint, device)`
+- `lifespan` (function) `topogpt3/api_server.py:806` `def lifespan(app)`
+- `health` (function) `topogpt3/api_server.py:946` `def health(request)`
+- `list_models` (function) `topogpt3/api_server.py:953` `def list_models(request)`
+- `completions` (function) `topogpt3/api_server.py:1004` `def completions(req, request)`
+- `chat_completions` (function) `topogpt3/api_server.py:1109` `def chat_completions(req, request)`
+- `emit` (function) `topogpt3/api_server.py:1449` `def emit(delta, finish)`
+- `main` (function) `topogpt3/api_server.py:1546` `def main()`
 
 ## topogpt3/chat.py
-Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/api_server.py`, `topogpt3/eval_toolcall.py`, `topogpt3/tools_agent.py`, `topogpt3/train_agent.py`
+Imported by: `eval/tasks.py`, `tests/test_eval_tasks.py`, `tests/test_fallback.py`, `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/api_server.py`, `topogpt3/eval_toolcall.py`, `topogpt3/fallback.py`, `topogpt3/rewards.py`, `topogpt3/tools_agent.py`, `topogpt3/train_agent.py`
 - `pre_processing_chat` (function) `topogpt3/chat.py:43` `def pre_processing_chat(conversations, add_system_ratio)` -- Randomly prepend a system prompt (skip when tools present).
 - `post_processing_chat` (function) `topogpt3/chat.py:54` `def post_processing_chat(prompt, empty_think_ratio)`
-- `apply_chat_template` (function) `topogpt3/chat.py:71` `def apply_chat_template(messages, tools, add_generation_prompt, open_thinking)` -- Render messages with tool definitions, thinking and tool-call blocks.
-- `parse_tool_calls` (function) `topogpt3/chat.py:116` `def parse_tool_calls(text)`
-- `parse_thinking` (function) `topogpt3/chat.py:126` `def parse_thinking(text)`
-- `split_reasoning_content` (function) `topogpt3/chat.py:134` `def split_reasoning_content(text)` -- Split generated text into reasoning_content / content / tool_calls (API).
+- `apply_chat_template` (function) `topogpt3/chat.py:112` `def apply_chat_template(messages, tools, add_generation_prompt, open_thinking)` -- Render messages with tool definitions, thinking and tool-call blocks.
+- `parse_tool_calls` (function) `topogpt3/chat.py:160` `def parse_tool_calls(text)`
+- `parse_thinking` (function) `topogpt3/chat.py:170` `def parse_thinking(text)`
+- `split_reasoning_content` (function) `topogpt3/chat.py:178` `def split_reasoning_content(text)` -- Split generated text into reasoning_content / content / tool_calls (API).
+
+## topogpt3/checkpoint_meta.py
+Depends on: `topogpt3/model.py`
+Imported by: `eval/harness.py`, `eval/tasks.py`, `tests/test_checkpoint_meta.py`, `topogpt3/api_server.py`, `topogpt3/inference.py`, `topogpt3/inference_hrm.py`, `topogpt3/tokenizer_tools.py`, `topogpt3/train_agent.py`, `topogpt3/train_distill.py`, `topogpt3/train_dpo.py`, `topogpt3/train_grpo.py`, `topogpt3/train_lora.py`, `topogpt3/train_ppo.py`
+- `read_state` (function) `topogpt3/checkpoint_meta.py:24` `def read_state(checkpoint_dir)`
+- `probe_checkpoint` (function) `topogpt3/checkpoint_meta.py:35` `def probe_checkpoint(checkpoint_dir)` -- Infer scale, dimensions and KV heads from ``state.json`` + weights.
+- `config_from_checkpoint` (function) `topogpt3/checkpoint_meta.py:81` `def config_from_checkpoint(checkpoint_dir, device, scale)` -- Build a ``TopoGPT2Config`` that matches the checkpoint on disk.
+- `state_summary` (function) `topogpt3/checkpoint_meta.py:120` `def state_summary(checkpoint_dir)` -- Small JSON-friendly summary for logs and /v1/models metadata.
+- `config_dict` (function) `topogpt3/checkpoint_meta.py:129` `def config_dict(cfg)`
 
 ## topogpt3/continuation.py
 Imported by: `topogpt3/api_server.py`, `topogpt3/inference_hrm.py`, `topogpt3/model.py`
@@ -322,106 +353,121 @@ Imported by: `topogpt3/__main__.py`
 - `main` (function) `topogpt3/convert.py:49` `def main()`
 
 ## topogpt3/eval_toolcall.py
-Depends on: `topogpt3/chat.py`, `topogpt3/tools_agent.py`
+Depends on: `topogpt3/chat.py`, `topogpt3/fallback.py`, `topogpt3/tools_agent.py`
 Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`
-- `run_case` (function) `topogpt3/eval_toolcall.py:19` `def run_case(generate_fn, prompt, expect_tool)`
-- `evaluate` (function) `topogpt3/eval_toolcall.py:35` `def evaluate(generate_fn)`
+- `run_case` (function) `topogpt3/eval_toolcall.py:36` `def run_case(generate_fn, prompt, expect_tool, expect_args)`
+- `evaluate` (function) `topogpt3/eval_toolcall.py:91` `def evaluate(generate_fn)`
 
 ## topogpt3/export_chat.py
 Depends on: `topogpt3/model.py`, `topogpt3/train.py`
 Imported by: `topogpt3/__main__.py`
 - `main` (function) `topogpt3/export_chat.py:81` `def main()`
 
+## topogpt3/fallback.py
+Depends on: `topogpt3/chat.py`
+Imported by: `eval/tasks.py`, `tests/test_eval_tasks.py`, `tests/test_fallback.py`, `topogpt3/api_server.py`, `topogpt3/eval_toolcall.py`, `topogpt3/rewards.py`, `topogpt3/tools_agent.py`
+- `Profile.tool_names` (method) `topogpt3/fallback.py:125` `def tool_names(self)`
+- `resolve_profile` (function) `topogpt3/fallback.py:221` `def resolve_profile(model)`
+- `models_payload` (function) `topogpt3/fallback.py:227` `def models_payload(default_checkpoint)`
+- `validate_tool_call` (function) `topogpt3/fallback.py:256` `def validate_tool_call(call, allowed)`
+- `score_candidate` (function) `topogpt3/fallback.py:325` `def score_candidate(text, profile, prompt, allowed_tools)` -- Deterministic, dependency-free candidate score (higher is better).
+- `select_best` (function) `topogpt3/fallback.py:404` `def select_best(candidates, profile, prompt, allowed_tools)`
+- `tool_calls_payload` (function) `topogpt3/fallback.py:418` `def tool_calls_payload(text)` -- Convert parsed calls into OpenAI ``tool_calls`` response objects.
+- `split_response` (function) `topogpt3/fallback.py:435` `def split_response(text)`
+- `rank_candidates` (function) `topogpt3/fallback.py:441` `def rank_candidates(candidates, profile, prompt, allowed_tools)` -- Score and sort candidates (best first) preserving original indices.
+- `synthesize_tool_call` (function) `topogpt3/fallback.py:456` `def synthesize_tool_call(profile, prompt)` -- Deterministic last-resort call for require_tool profiles.
+
 ## topogpt3/inference.py
+Depends on: `topogpt3/checkpoint_meta.py`
 Imported by: `topogpt3/__init__.py`, `topogpt3/__main__.py`
-- `InferenceSettings.scale_presets` (method) `topogpt3/inference.py:103` `def scale_presets()` -- Return the architecture preset table indexed by scale name.
-- `InferenceSettings.preset` (method) `topogpt3/inference.py:116` `def preset(self)` -- Return the resolved preset for the configured model scale.
-- `InferenceSettings.validate` (method) `topogpt3/inference.py:126` `def validate(self)` -- Raise ValueError if any setting falls outside its safety bounds.
-- `InferenceLoggerFactory.build` (method) `topogpt3/inference.py:162` `def build(settings)` -- Return a configured Logger with a single deduplicated stdout handler.
-- `SecurePathResolver.resolve_under` (method) `topogpt3/inference.py:182` `def resolve_under(root)` -- Join `parts` under `root` and return the canonical resolved path.
-- `SecurePathResolver.require_existing_file` (method) `topogpt3/inference.py:198` `def require_existing_file(path, expected_suffix)` -- Validate `path` points to an existing regular file with the expected suffix.
-- `SourceModuleLoader.__init__` (method) `topogpt3/inference.py:215` `def __init__(self, settings, logger)`
-- `SourceModuleLoader.load` (method) `topogpt3/inference.py:219` `def load(self)` -- Return the topogpt3.train module which re-exports model symbols.
-- `CheckpointPaths.__init__` (method) `topogpt3/inference.py:231` `def __init__(self, settings)`
-- `CheckpointPaths.slot_dir` (method) `topogpt3/inference.py:239` `def slot_dir(self)` -- Directory holding the active checkpoint slot.
-- `CheckpointPaths.model_file` (method) `topogpt3/inference.py:243` `def model_file(self)` -- Resolved path to the safetensors weights file inside the slot.
-- `CheckpointPaths.state_file` (method) `topogpt3/inference.py:249` `def state_file(self)` -- Resolved path to the JSON training-state file inside the slot.
-- `CheckpointPaths.assert_ready` (method) `topogpt3/inference.py:255` `def assert_ready(self)` -- Verify weights exist and the on-disk size lies within safety bounds.
-- `WeightShapeProbe.__init__` (method) `topogpt3/inference.py:277` `def __init__(self, settings, logger)`
-- `WeightShapeProbe.detect_n_kv_heads` (method) `topogpt3/inference.py:281` `def detect_n_kv_heads(self, weights_path, d_model, n_heads)` -- Recover N_KV_HEADS used at training by inspecting the k_proj shape.
-- `TopoGPT2ConfigAligner.__init__` (method) `topogpt3/inference.py:321` `def __init__(self, settings, source_module, logger)`
-- `TopoGPT2ConfigAligner.build` (method) `topogpt3/inference.py:327` `def build(self, n_kv_heads, vocab_size)` -- Return a TopoGPT2Config dataclass ready to instantiate the model.
-- `TokenizerFactory.__init__` (method) `topogpt3/inference.py:352` `def __init__(self, settings, source_module)`
-- `TokenizerFactory.build` (method) `topogpt3/inference.py:356` `def build(self)` -- Return an instance of BPETokenizer bound to the configured encoding.
-- `GaussPatchApplier.__init__` (method) `topogpt3/inference.py:365` `def __init__(self, settings, source_module, logger)`
-- `GaussPatchApplier.apply_if_enabled` (method) `topogpt3/inference.py:371` `def apply_if_enabled(self)` -- Patch QuaternionSpectralLayer to use the 3-multiply Gauss contract.
-- `ModelAssembler.__init__` (method) `topogpt3/inference.py:383` `def __init__(self, settings, source_module, logger)`
-- `ModelAssembler.assemble` (method) `topogpt3/inference.py:389` `def assemble(self, aligned_cfg, paths)` -- Build the TopoGPT2 graph, load weights into it, and return it in eval mode.
-- `SeedSynchronizer.__init__` (method) `topogpt3/inference.py:420` `def __init__(self, settings, source_module, logger)`
-- `SeedSynchronizer.apply` (method) `topogpt3/inference.py:426` `def apply(self)` -- Seed all relevant RNGs using the model package helper when available.
-- `SamplingPolicy.from_settings` (method) `topogpt3/inference.py:450` `def from_settings(cls, settings)` -- Construct a SamplingPolicy from inference settings.
-- `GenerationReport.tokens_per_second` (method) `topogpt3/inference.py:470` `def tokens_per_second(self, elapsed_floor)` -- Return throughput in tokens/sec, clamped to avoid divide-by-zero.
-- `GenerationEngine.__init__` (method) `topogpt3/inference.py:478` `def __init__(self, settings, logger)`
-- `GenerationEngine.run` (method) `topogpt3/inference.py:483` `def run(self, model, tokenizer, prompt, policy)` -- Generate a completion for `prompt` and return a GenerationReport.
-- `ResultRenderer.__init__` (method) `topogpt3/inference.py:536` `def __init__(self, settings, logger)`
-- `ResultRenderer.render` (method) `topogpt3/inference.py:540` `def render(self, report)` -- Emit a banner with prompt and completion, plus a throughput log line.
-- `InferencePipeline.__init__` (method) `topogpt3/inference.py:565` `def __init__(self, settings, logger)`
-- `InferencePipeline.execute` (method) `topogpt3/inference.py:571` `def execute(self)` -- Run the full inference pipeline end-to-end and return the report.
-- `CliArgumentParser.build_parser` (method) `topogpt3/inference.py:619` `def build_parser()` -- Return the configured argparse.ArgumentParser.
-- `CliArgumentParser.parse` (method) `topogpt3/inference.py:698` `def parse(argv)` -- Parse `argv` (or sys.argv) and return a populated InferenceSettings.
-- `main` (function) `topogpt3/inference.py:721` `def main(argv)` -- CLI entry point.
+- `InferenceSettings.scale_presets` (method) `topogpt3/inference.py:105` `def scale_presets()` -- Return the architecture preset table indexed by scale name.
+- `InferenceSettings.preset` (method) `topogpt3/inference.py:120` `def preset(self)` -- Return the resolved preset for the configured model scale.
+- `InferenceSettings.validate` (method) `topogpt3/inference.py:130` `def validate(self)` -- Raise ValueError if any setting falls outside its safety bounds.
+- `InferenceLoggerFactory.build` (method) `topogpt3/inference.py:167` `def build(settings)` -- Return a configured Logger with a single deduplicated stdout handler.
+- `SecurePathResolver.resolve_under` (method) `topogpt3/inference.py:189` `def resolve_under(root)` -- Join `parts` under `root` and return the canonical resolved path.
+- `SecurePathResolver.require_existing_file` (method) `topogpt3/inference.py:205` `def require_existing_file(path, expected_suffix)` -- Validate `path` points to an existing regular file with the expected suffix.
+- `SourceModuleLoader.__init__` (method) `topogpt3/inference.py:221` `def __init__(self, settings, logger)`
+- `SourceModuleLoader.load` (method) `topogpt3/inference.py:225` `def load(self)` -- Return the topogpt3.train module which re-exports model symbols.
+- `CheckpointPaths.__init__` (method) `topogpt3/inference.py:239` `def __init__(self, settings)`
+- `CheckpointPaths.slot_dir` (method) `topogpt3/inference.py:248` `def slot_dir(self)` -- Directory holding the active checkpoint slot.
+- `CheckpointPaths.model_file` (method) `topogpt3/inference.py:252` `def model_file(self)` -- Resolved path to the safetensors weights file inside the slot.
+- `CheckpointPaths.state_file` (method) `topogpt3/inference.py:259` `def state_file(self)` -- Resolved path to the JSON training-state file inside the slot.
+- `CheckpointPaths.assert_ready` (method) `topogpt3/inference.py:266` `def assert_ready(self)` -- Verify weights exist and the on-disk size lies within safety bounds.
+- `WeightShapeProbe.__init__` (method) `topogpt3/inference.py:287` `def __init__(self, settings, logger)`
+- `WeightShapeProbe.detect_n_kv_heads` (method) `topogpt3/inference.py:291` `def detect_n_kv_heads(self, weights_path, d_model, n_heads)` -- Recover N_KV_HEADS used at training by inspecting the k_proj shape.
+- `TopoGPT2ConfigAligner.__init__` (method) `topogpt3/inference.py:334` `def __init__(self, settings, source_module, logger)`
+- `TopoGPT2ConfigAligner.build` (method) `topogpt3/inference.py:341` `def build(self, n_kv_heads, vocab_size)` -- Return a TopoGPT2Config dataclass ready to instantiate the model.
+- `TokenizerFactory.__init__` (method) `topogpt3/inference.py:393` `def __init__(self, settings, source_module)`
+- `TokenizerFactory.build` (method) `topogpt3/inference.py:397` `def build(self)` -- Return an instance of BPETokenizer bound to the configured encoding.
+- `GaussPatchApplier.__init__` (method) `topogpt3/inference.py:406` `def __init__(self, settings, source_module, logger)`
+- `GaussPatchApplier.apply_if_enabled` (method) `topogpt3/inference.py:413` `def apply_if_enabled(self)` -- Patch QuaternionSpectralLayer to use the 3-multiply Gauss contract.
+- `ModelAssembler.__init__` (method) `topogpt3/inference.py:425` `def __init__(self, settings, source_module, logger)`
+- `ModelAssembler.assemble` (method) `topogpt3/inference.py:432` `def assemble(self, aligned_cfg, paths)` -- Build the TopoGPT2 graph, load weights into it, and return it in eval mode.
+- `SeedSynchronizer.__init__` (method) `topogpt3/inference.py:464` `def __init__(self, settings, source_module, logger)`
+- `SeedSynchronizer.apply` (method) `topogpt3/inference.py:471` `def apply(self)` -- Seed all relevant RNGs using the model package helper when available.
+- `SamplingPolicy.from_settings` (method) `topogpt3/inference.py:496` `def from_settings(cls, settings)` -- Construct a SamplingPolicy from inference settings.
+- `GenerationReport.tokens_per_second` (method) `topogpt3/inference.py:516` `def tokens_per_second(self, elapsed_floor)` -- Return throughput in tokens/sec, clamped to avoid divide-by-zero.
+- `GenerationEngine.__init__` (method) `topogpt3/inference.py:524` `def __init__(self, settings, logger)`
+- `GenerationEngine.run` (method) `topogpt3/inference.py:529` `def run(self, model, tokenizer, prompt, policy)` -- Generate a completion for `prompt` and return a GenerationReport.
+- `ResultRenderer.__init__` (method) `topogpt3/inference.py:589` `def __init__(self, settings, logger)`
+- `ResultRenderer.render` (method) `topogpt3/inference.py:593` `def render(self, report)` -- Emit a banner with prompt and completion, plus a throughput log line.
+- `InferencePipeline.__init__` (method) `topogpt3/inference.py:615` `def __init__(self, settings, logger)`
+- `InferencePipeline.execute` (method) `topogpt3/inference.py:622` `def execute(self)` -- Run the full inference pipeline end-to-end and return the report.
+- `CliArgumentParser.build_parser` (method) `topogpt3/inference.py:682` `def build_parser()` -- Return the configured argparse.ArgumentParser.
+- `CliArgumentParser.parse` (method) `topogpt3/inference.py:791` `def parse(argv)` -- Parse `argv` (or sys.argv) and return a populated InferenceSettings.
+- `main` (function) `topogpt3/inference.py:814` `def main(argv)` -- CLI entry point.
 
 ## topogpt3/inference_hrm.py
-Depends on: `topogpt3/continuation.py`
+Depends on: `topogpt3/checkpoint_meta.py`, `topogpt3/continuation.py`
 Imported by: `topogpt3/__init__.py`, `topogpt3/__main__.py`
-- `HRMInferenceSettings.scale_presets` (method) `topogpt3/inference_hrm.py:221` `def scale_presets()` -- Return the architecture preset table indexed by scale name.
+- `HRMInferenceSettings.scale_presets` (method) `topogpt3/inference_hrm.py:223` `def scale_presets()` -- Return the architecture preset table indexed by scale name.
 - `HRMInferenceSettings.preset` (method) `topogpt3/inference_hrm.py:234` `def preset(self)` -- Return the resolved preset for the configured model scale.
 - `HRMInferenceSettings.validate` (method) `topogpt3/inference_hrm.py:244` `def validate(self)` -- Raise ValueError if any setting falls outside its safety bounds.
 - `HRMLoggerFactory.build` (method) `topogpt3/inference_hrm.py:347` `def build(settings)` -- Return a configured Logger with a single deduplicated stdout handler.
-- `SecurePathResolver.resolve_under` (method) `topogpt3/inference_hrm.py:367` `def resolve_under(root)` -- Join parts under root and return the canonical resolved path.
-- `SecurePathResolver.require_existing_file` (method) `topogpt3/inference_hrm.py:383` `def require_existing_file(path, expected_suffix)` -- Validate path points to an existing regular file with the expected suffix.
-- `SourceModuleLoader.__init__` (method) `topogpt3/inference_hrm.py:400` `def __init__(self, settings, logger)`
-- `SourceModuleLoader.load` (method) `topogpt3/inference_hrm.py:404` `def load(self)` -- Return the topogpt3.train module which re-exports model symbols.
-- `CheckpointPaths.__init__` (method) `topogpt3/inference_hrm.py:416` `def __init__(self, settings)`
-- `CheckpointPaths.slot_dir` (method) `topogpt3/inference_hrm.py:424` `def slot_dir(self)` -- Directory holding the active checkpoint slot.
-- `CheckpointPaths.model_file` (method) `topogpt3/inference_hrm.py:428` `def model_file(self)` -- Resolved path to the safetensors weights file inside the slot.
-- `CheckpointPaths.state_file` (method) `topogpt3/inference_hrm.py:434` `def state_file(self)` -- Resolved path to the JSON training-state file inside the slot.
-- `CheckpointPaths.assert_ready` (method) `topogpt3/inference_hrm.py:440` `def assert_ready(self)` -- Verify weights exist and the on-disk size lies within safety bounds.
-- `WeightShapeProbe.__init__` (method) `topogpt3/inference_hrm.py:462` `def __init__(self, settings, logger)`
-- `WeightShapeProbe.detect_n_kv_heads` (method) `topogpt3/inference_hrm.py:466` `def detect_n_kv_heads(self, weights_path, d_model, n_heads)` -- Recover N_KV_HEADS used at training by inspecting the k_proj shape.
-- `TopoGPT2ConfigAligner.__init__` (method) `topogpt3/inference_hrm.py:505` `def __init__(self, settings, source_module, logger)`
-- `TopoGPT2ConfigAligner.build` (method) `topogpt3/inference_hrm.py:511` `def build(self, n_kv_heads, vocab_size)` -- Return a TopoGPT2Config dataclass ready to instantiate the model.
-- `TokenizerFactory.__init__` (method) `topogpt3/inference_hrm.py:536` `def __init__(self, settings, source_module)`
-- `TokenizerFactory.build` (method) `topogpt3/inference_hrm.py:540` `def build(self)` -- Return an instance of BPETokenizer bound to the configured encoding.
-- `GaussPatchApplier.__init__` (method) `topogpt3/inference_hrm.py:549` `def __init__(self, settings, source_module, logger)`
-- `GaussPatchApplier.apply_if_enabled` (method) `topogpt3/inference_hrm.py:555` `def apply_if_enabled(self)` -- Patch QuaternionSpectralLayer to use the 3-multiply Gauss contract.
-- `ModelAssembler.__init__` (method) `topogpt3/inference_hrm.py:567` `def __init__(self, settings, source_module, logger)`
-- `ModelAssembler.assemble` (method) `topogpt3/inference_hrm.py:573` `def assemble(self, aligned_cfg, paths)` -- Build the TopoGPT2 graph, load weights into it, and return it in eval mode.
-- `SeedSynchronizer.__init__` (method) `topogpt3/inference_hrm.py:604` `def __init__(self, settings, source_module, logger)`
-- `SeedSynchronizer.apply` (method) `topogpt3/inference_hrm.py:610` `def apply(self)` -- Seed all relevant RNGs using the model package helper when available.
-- `LatentChangeMetric.__init__` (method) `topogpt3/inference_hrm.py:627` `def __init__(self, epsilon_floor)`
-- `LatentChangeMetric.relative_change` (method) `topogpt3/inference_hrm.py:632` `def relative_change(self, current, previous)` -- Return ||current - previous|| / max(||previous||, epsilon_floor).
-- `GenerationReasoningSummary.absorb` (method) `topogpt3/inference_hrm.py:671` `def absorb(self, sample)` -- Fold a per-token sample into the running totals.
-- `SparseHighLevelStateCache.__init__` (method) `topogpt3/inference_hrm.py:693` `def __init__(self, persist_tokens)`
-- `SparseHighLevelStateCache.get_or_init` (method) `topogpt3/inference_hrm.py:700` `def get_or_init(self, reference)` -- Return the cached high-level state or a zeroed one when stale.
-- `SparseHighLevelStateCache.commit` (method) `topogpt3/inference_hrm.py:716` `def commit(self, new_state)` -- Store a fresh high-level state and increment the cache age.
-- `SparseHighLevelStateCache.invalidate` (method) `topogpt3/inference_hrm.py:721` `def invalidate(self)` -- Drop any cached state and reset the age counter.
-- `HierarchicalRecursiveReasoner.__init__` (method) `topogpt3/inference_hrm.py:768` `def __init__(self, layers, final_norm, reasoning_config, logger)`
-- `HierarchicalRecursiveReasoner.num_layers` (method) `topogpt3/inference_hrm.py:789` `def num_layers(self)` -- Return the number of trained transformer layers.
-- `HierarchicalRecursiveReasoner.reason` (method) `topogpt3/inference_hrm.py:827` `def reason(self, z_initial, base_kvs, cached_refinement)` -- Run hierarchical recursive thinking for a single emission step.
-- `LogitsSampler.__init__` (method) `topogpt3/inference_hrm.py:938` `def __init__(self, logger)`
-- `LogitsSampler.sample` (method) `topogpt3/inference_hrm.py:941` `def sample(self, logits, token_history, temperature, top_k, repetition_penalty)` -- Return a sampled token id tensor of shape [B, 1] from raw logits [B, V].
-- `SamplingPolicy.from_settings` (method) `topogpt3/inference_hrm.py:973` `def from_settings(cls, settings)` -- Construct a SamplingPolicy from inference settings.
-- `GenerationReport.tokens_per_second` (method) `topogpt3/inference_hrm.py:995` `def tokens_per_second(self, elapsed_floor)` -- Return throughput in tokens/sec, clamped to avoid divide-by-zero.
-- `HRMGenerationEngine.__init__` (method) `topogpt3/inference_hrm.py:1011` `def __init__(self, settings, logger)`
-- `HRMGenerationEngine.run` (method) `topogpt3/inference_hrm.py:1048` `def run(self, model, tokenizer, prompt, policy)` -- Generate a completion for prompt and return a GenerationReport.
-- `ResultRenderer.__init__` (method) `topogpt3/inference_hrm.py:1192` `def __init__(self, settings, logger)`
-- `ResultRenderer.render` (method) `topogpt3/inference_hrm.py:1196` `def render(self, report)` -- Emit a banner with prompt, completion, throughput and reasoning stats.
-- `HRMInferencePipeline.__init__` (method) `topogpt3/inference_hrm.py:1233` `def __init__(self, settings, logger)`
-- `HRMInferencePipeline.execute` (method) `topogpt3/inference_hrm.py:1239` `def execute(self)` -- Run the full inference pipeline end-to-end and return the report.
-- `CliArgumentParser.build_parser` (method) `topogpt3/inference_hrm.py:1287` `def build_parser()` -- Return the configured argparse.ArgumentParser.
-- `CliArgumentParser.parse` (method) `topogpt3/inference_hrm.py:1448` `def parse(argv)` -- Parse argv (or sys.argv) and return a populated HRMInferenceSettings.
-- `main` (function) `topogpt3/inference_hrm.py:1494` `def main(argv)` -- CLI entry point.
+- `SecurePathResolver.resolve_under` (method) `topogpt3/inference_hrm.py:369` `def resolve_under(root)` -- Join parts under root and return the canonical resolved path.
+- `SecurePathResolver.require_existing_file` (method) `topogpt3/inference_hrm.py:385` `def require_existing_file(path, expected_suffix)` -- Validate path points to an existing regular file with the expected suffix.
+- `SourceModuleLoader.__init__` (method) `topogpt3/inference_hrm.py:401` `def __init__(self, settings, logger)`
+- `SourceModuleLoader.load` (method) `topogpt3/inference_hrm.py:405` `def load(self)` -- Return the topogpt3.train module which re-exports model symbols.
+- `CheckpointPaths.__init__` (method) `topogpt3/inference_hrm.py:419` `def __init__(self, settings)`
+- `CheckpointPaths.slot_dir` (method) `topogpt3/inference_hrm.py:428` `def slot_dir(self)` -- Directory holding the active checkpoint slot.
+- `CheckpointPaths.model_file` (method) `topogpt3/inference_hrm.py:432` `def model_file(self)` -- Resolved path to the safetensors weights file inside the slot.
+- `CheckpointPaths.state_file` (method) `topogpt3/inference_hrm.py:439` `def state_file(self)` -- Resolved path to the JSON training-state file inside the slot.
+- `CheckpointPaths.assert_ready` (method) `topogpt3/inference_hrm.py:446` `def assert_ready(self)` -- Verify weights exist and the on-disk size lies within safety bounds.
+- `WeightShapeProbe.__init__` (method) `topogpt3/inference_hrm.py:467` `def __init__(self, settings, logger)`
+- `WeightShapeProbe.detect_n_kv_heads` (method) `topogpt3/inference_hrm.py:471` `def detect_n_kv_heads(self, weights_path, d_model, n_heads)` -- Recover N_KV_HEADS used at training by inspecting the k_proj shape.
+- `TopoGPT2ConfigAligner.__init__` (method) `topogpt3/inference_hrm.py:514` `def __init__(self, settings, source_module, logger)`
+- `TopoGPT2ConfigAligner.build` (method) `topogpt3/inference_hrm.py:521` `def build(self, n_kv_heads, vocab_size)` -- Return a TopoGPT2Config dataclass ready to instantiate the model.
+- `TokenizerFactory.__init__` (method) `topogpt3/inference_hrm.py:573` `def __init__(self, settings, source_module)`
+- `TokenizerFactory.build` (method) `topogpt3/inference_hrm.py:577` `def build(self)` -- Return an instance of BPETokenizer bound to the configured encoding.
+- `GaussPatchApplier.__init__` (method) `topogpt3/inference_hrm.py:586` `def __init__(self, settings, source_module, logger)`
+- `GaussPatchApplier.apply_if_enabled` (method) `topogpt3/inference_hrm.py:593` `def apply_if_enabled(self)` -- Patch QuaternionSpectralLayer to use the 3-multiply Gauss contract.
+- `ModelAssembler.__init__` (method) `topogpt3/inference_hrm.py:605` `def __init__(self, settings, source_module, logger)`
+- `ModelAssembler.assemble` (method) `topogpt3/inference_hrm.py:612` `def assemble(self, aligned_cfg, paths)` -- Build the TopoGPT2 graph, load weights into it, and return it in eval mode.
+- `SeedSynchronizer.__init__` (method) `topogpt3/inference_hrm.py:646` `def __init__(self, settings, source_module, logger)`
+- `SeedSynchronizer.apply` (method) `topogpt3/inference_hrm.py:653` `def apply(self)` -- Seed all relevant RNGs using the model package helper when available.
+- `LatentChangeMetric.__init__` (method) `topogpt3/inference_hrm.py:671` `def __init__(self, epsilon_floor)`
+- `LatentChangeMetric.relative_change` (method) `topogpt3/inference_hrm.py:676` `def relative_change(self, current, previous)` -- Return ||current - previous|| / max(||previous||, epsilon_floor).
+- `GenerationReasoningSummary.absorb` (method) `topogpt3/inference_hrm.py:714` `def absorb(self, sample)` -- Fold a per-token sample into the running totals.
+- `SparseHighLevelStateCache.__init__` (method) `topogpt3/inference_hrm.py:736` `def __init__(self, persist_tokens)`
+- `SparseHighLevelStateCache.get_or_init` (method) `topogpt3/inference_hrm.py:743` `def get_or_init(self, reference)` -- Return the cached high-level state or a zeroed one when stale.
+- `SparseHighLevelStateCache.commit` (method) `topogpt3/inference_hrm.py:761` `def commit(self, new_state)` -- Store a fresh high-level state and increment the cache age.
+- `SparseHighLevelStateCache.invalidate` (method) `topogpt3/inference_hrm.py:766` `def invalidate(self)` -- Drop any cached state and reset the age counter.
+- `HierarchicalRecursiveReasoner.__init__` (method) `topogpt3/inference_hrm.py:813` `def __init__(self, layers, final_norm, reasoning_config, logger)`
+- `HierarchicalRecursiveReasoner.num_layers` (method) `topogpt3/inference_hrm.py:837` `def num_layers(self)` -- Return the number of trained transformer layers.
+- `HierarchicalRecursiveReasoner.reason` (method) `topogpt3/inference_hrm.py:884` `def reason(self, z_initial, base_kvs, cached_refinement, position_offset)` -- Run hierarchical recursive thinking for a single emission step.
+- `LogitsSampler.__init__` (method) `topogpt3/inference_hrm.py:1013` `def __init__(self, logger)`
+- `LogitsSampler.sample` (method) `topogpt3/inference_hrm.py:1016` `def sample(self, logits, token_history, temperature, top_k, repetition_penalty)` -- Return a sampled token id tensor of shape [B, 1] from raw logits [B, V].
+- `SamplingPolicy.from_settings` (method) `topogpt3/inference_hrm.py:1054` `def from_settings(cls, settings)` -- Construct a SamplingPolicy from inference settings.
+- `GenerationReport.tokens_per_second` (method) `topogpt3/inference_hrm.py:1076` `def tokens_per_second(self, elapsed_floor)` -- Return throughput in tokens/sec, clamped to avoid divide-by-zero.
+- `HRMGenerationEngine.__init__` (method) `topogpt3/inference_hrm.py:1092` `def __init__(self, settings, logger)`
+- `HRMGenerationEngine.run` (method) `topogpt3/inference_hrm.py:1128` `def run(self, model, tokenizer, prompt, policy)` -- Generate a completion for prompt and return a GenerationReport.
+- `ResultRenderer.__init__` (method) `topogpt3/inference_hrm.py:1292` `def __init__(self, settings, logger)`
+- `ResultRenderer.render` (method) `topogpt3/inference_hrm.py:1296` `def render(self, report)` -- Emit a banner with prompt, completion, throughput and reasoning stats.
+- `HRMInferencePipeline.__init__` (method) `topogpt3/inference_hrm.py:1339` `def __init__(self, settings, logger)`
+- `HRMInferencePipeline.execute` (method) `topogpt3/inference_hrm.py:1346` `def execute(self)` -- Run the full inference pipeline end-to-end and return the report.
+- `CliArgumentParser.build_parser` (method) `topogpt3/inference_hrm.py:1406` `def build_parser()` -- Return the configured argparse.ArgumentParser.
+- `CliArgumentParser.parse` (method) `topogpt3/inference_hrm.py:1611` `def parse(argv)` -- Parse argv (or sys.argv) and return a populated HRMInferenceSettings.
+- `main` (function) `topogpt3/inference_hrm.py:1657` `def main(argv)` -- CLI entry point.
 
 ## topogpt3/jlens.py
 Depends on: `topogpt3/lens_model.py`
@@ -442,45 +488,6 @@ Imported by: `tests/test_jlens.py`, `tests/test_lens_model.py`, `topogpt3/__init
 - `select` (function) `topogpt3/jlens.py:646` `def select(layer)`
 - `compute_slice` (function) `topogpt3/jlens.py:705` `def compute_slice(model, lens, prompt)` -- Compute a position x layer slice of top-K token predictions.
 - `text_slice` (function) `topogpt3/jlens.py:789` `def text_slice(slice_data, tokenizer, n_cols)` -- Render a SliceData as a readable text table showing decoded words.
-
-## topogpt3/lens_model.py
-Depends on: `topogpt3/model.py`
-Imported by: `tests/test_jlens.py`, `tests/test_lens_model.py`, `topogpt3/__init__.py`, `topogpt3/__main__.py`, `topogpt3/jlens.py`
-- `LensModel.encode` (method) `topogpt3/lens_model.py:40` `def encode(self, text)` -- Tokenize ``text`` to ``input_ids`` of shape ``[1, seq_len]`` on the model's input device.
-- `LensModel.forward` (method) `topogpt3/lens_model.py:45` `def forward(self, input_ids)` -- Run the residual stack on ``input_ids`` (no LM head).
-- `LensModel.unembed` (method) `topogpt3/lens_model.py:52` `def unembed(self, residual)` -- Map a residual-stream tensor ``[..., d_model]`` to logits ``[..., vocab_size]`` (final norm + LM head).
-- `TopoGPT3LensConfig.from_topogpt2_config` (method) `topogpt3/lens_model.py:84` `def from_topogpt2_config(cls, cfg)` -- Construct a lens config from a TopoGPT2Config dataclass.
-- `TopoGPT3LensConfig.probe_checkpoint` (method) `topogpt3/lens_model.py:104` `def probe_checkpoint(cls, checkpoint_dir)` -- Probe a checkpoint directory and infer lens config from state.json.
-- `_TopoGPT3ResidualForward.__init__` (method) `topogpt3/lens_model.py:150` `def __init__(self, model)`
-- `_TopoGPT3ResidualForward.forward` (method) `topogpt3/lens_model.py:154` `def forward(self, input_ids)`
-- `TopoGPT3LensModel.__init__` (method) `topogpt3/lens_model.py:172` `def __init__(self, model, tokenizer)`
-- `TopoGPT3LensModel.n_layers` (method) `topogpt3/lens_model.py:184` `def n_layers(self)`
-- `TopoGPT3LensModel.d_model` (method) `topogpt3/lens_model.py:188` `def d_model(self)`
-- `TopoGPT3LensModel.layers` (method) `topogpt3/lens_model.py:192` `def layers(self)`
-- `TopoGPT3LensModel.tokenizer` (method) `topogpt3/lens_model.py:196` `def tokenizer(self)`
-- `TopoGPT3LensModel.tokenizer` (method) `topogpt3/lens_model.py:200` `def tokenizer(self, tok)`
-- `TopoGPT3LensModel.input_device` (method) `topogpt3/lens_model.py:204` `def input_device(self)`
-- `TopoGPT3LensModel.input_device` (method) `topogpt3/lens_model.py:210` `def input_device(self, device)`
-- `TopoGPT3LensModel.encode` (method) `topogpt3/lens_model.py:213` `def encode(self, text)` -- Tokenize text to input_ids of shape ``[1, seq_len]``.
-- `TopoGPT3LensModel.forward` (method) `topogpt3/lens_model.py:228` `def forward(self, input_ids)` -- Run the residual stack on ``input_ids``.
-- `TopoGPT3LensModel.unembed` (method) `topogpt3/lens_model.py:237` `def unembed(self, residual)` -- Map residual ``[..., d_model]`` to logits ``[..., vocab_size]``.
-- `TopoGPT3LensModel.from_checkpoint` (method) `topogpt3/lens_model.py:246` `def from_checkpoint(cls, checkpoint_dir)` -- Build a TopoGPT3LensModel from a checkpoint directory.
-- `TinyDecoder.__init__` (method) `topogpt3/lens_model.py:315` `def __init__(self, n_layers, d_model, vocab_size, seed)`
-- `TinyDecoder.forward` (method) `topogpt3/lens_model.py:344` `def forward(self, token_ids, past_kvs)`
-- `_ResidualBlock.__init__` (method) `topogpt3/lens_model.py:360` `def __init__(self, d_model)`
-- `_ResidualBlock.forward` (method) `topogpt3/lens_model.py:366` `def forward(self, x, past_kv)`
-
-## topogpt3/lora.py
-Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/convert.py`, `topogpt3/train_lora.py`
-- `LoRA.__init__` (method) `topogpt3/lora.py:17` `def __init__(self, in_features, out_features, rank)`
-- `LoRA.forward` (method) `topogpt3/lora.py:25` `def forward(self, x)`
-- `lora_targets` (function) `topogpt3/lora.py:34` `def lora_targets(model, include_mlp)` -- Yield (name, nn.Linear) candidates.
-- `apply_lora` (function) `topogpt3/lora.py:54` `def apply_lora(model, rank, include_mlp)` -- Monkey-patch target linears with additive LoRA.
-- `lora_parameters` (function) `topogpt3/lora.py:73` `def lora_parameters(model)`
-- `freeze_non_lora` (function) `topogpt3/lora.py:80` `def freeze_non_lora(model)`
-- `save_lora` (function) `topogpt3/lora.py:88` `def save_lora(model, path)`
-- `load_lora` (function) `topogpt3/lora.py:99` `def load_lora(model, path, device)`
-- `merge_lora` (function) `topogpt3/lora.py:110` `def merge_lora(model, lora_path, save_path)` -- Merge LoRA deltas into base weights and save (fp16, no .lora. keys).
 
 
 Next: [API_p2.md](API_p2.md)

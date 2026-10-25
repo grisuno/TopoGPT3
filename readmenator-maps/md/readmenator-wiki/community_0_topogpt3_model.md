@@ -1,10 +1,10 @@
 # topogpt3: model
 
-*Community 2 | 10 files | cohesion 0.40*
+*Community 0 | 15 files | cohesion 0.45*
 
 ## Definition
 
-This community groups 10 file(s) rooted at `topogpt3` with dominant language py (cohesion 0.40). Central symbols: `ApiKey`, `AuthState`, `BPETokenizer`, `BlockTokenDataset`, `ChatCompletionRequest`, `CheckpointManager`, `CheckpointPaths`, `CheckpointStore`. Core file: `topogpt3/model.py` (188 symbols). Documented purpose: Diagnostico estatico de un checkpoint TopoGPT3 congelado.  Calcula sobre los pesos espectrales congelados (sin reentrenar):  kappa_F   = sigma_max / sigma_min  .
+This community groups 15 file(s) rooted at `topogpt3` with dominant language py (cohesion 0.45). Central symbols: `BPETokenizer`, `BlockTokenDataset`, `CheckpointManager`, `CheckpointStore`, `CodeCurriculumLoader`, `CurriculumDataset`, `CurriculumTrainer`, `EfficiencyMetrics`. Core file: `topogpt3/model.py` (188 symbols). Documented purpose: Diagnostico estatico de un checkpoint TopoGPT3 congelado.  Calcula sobre los pesos espectrales congelados (sin reentrenar):  kappa_F   = sigma_max / sigma_min  .
 
 ## Files
 
@@ -12,14 +12,19 @@ This community groups 10 file(s) rooted at `topogpt3` with dominant language py 
 |------|----------|-------|---------|-----|
 | `eval/diag_static.py` | py | utility | 5 | yes |
 | `synthetic_dataset.py` | py | data_access | 35 | yes |
-| `tests/test_structured_output.py` | py | testing | 26 | yes |
-| `topogpt3/api_server.py` | py | presentation | 50 | yes |
-| `topogpt3/continuation.py` | py | utility | 5 | yes |
+| `topogpt3/__main__.py` | py | utility | 1 | no |
+| `topogpt3/convert.py` | py | utility | 3 | yes |
 | `topogpt3/export_chat.py` | py | utility | 5 | yes |
-| `topogpt3/inference_hrm.py` | py | utility | 76 | yes |
+| `topogpt3/lora.py` | py | utility | 12 | yes |
 | `topogpt3/model.py` | py | business_logic | 188 | yes |
-| `topogpt3/structured_output.py` | py | utility | 18 | yes |
+| `topogpt3/rollout.py` | py | utility | 10 | yes |
 | `topogpt3/train.py` | py | utility | 62 | yes |
+| `topogpt3/train_distill.py` | py | utility | 1 | yes |
+| `topogpt3/train_dpo.py` | py | utility | 2 | yes |
+| `topogpt3/train_grpo.py` | py | utility | 2 | yes |
+| `topogpt3/train_lora.py` | py | utility | 2 | yes |
+| `topogpt3/train_ppo.py` | py | utility | 4 | yes |
+| `topogpt3/trainer_utils_topo.py` | py | utility | 10 | yes |
 
 ## Key Symbols
 
@@ -56,33 +61,26 @@ This community groups 10 file(s) rooted at `topogpt3` with dominant language py 
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 18
-- Cross-boundary resolved imports (EXTRACTED): 25
+- Internal resolved imports (EXTRACTED): 29
+- Cross-boundary resolved imports (EXTRACTED): 38
 
 ## Connections
 
-- [EXTRACTED] depends_on community 2 <-> 1 (strength 0.9): Extracted import edge crosses communities: eval/diag_static.py imports topogpt3/__init__.py.
-- [EXTRACTED] depends_on community 3 <-> 2 (strength 0.9): Extracted import edge crosses communities: tests/test_heritage.py imports topogpt3/model.py.
-- [EXTRACTED] depends_on community 4 <-> 2 (strength 0.9): Extracted import edge crosses communities: tests/test_lens_model.py imports topogpt3/model.py.
-- [EXTRACTED] depends_on community 0 <-> 2 (strength 0.9): Extracted import edge crosses communities: topogpt3/__main__.py imports topogpt3/api_server.py.
-- [INFERRED] bridges community 1 <-> 2 (strength 0.5): Inferred cross-community bridge: eval/governor.py reaches topogpt3/structured_output.py in 5 hops.
-- [INFERRED] bridges community 1 <-> 2 (strength 0.5): Inferred cross-community bridge: eval/integration_smoke.py reaches topogpt3/structured_output.py in 5 hops.
-- [INFERRED] bridges community 3 <-> 2 (strength 0.5): Inferred cross-community bridge: eval/sandbox_smoke.py reaches synthetic_dataset.py in 5 hops.
-- [INFERRED] shares_context community 2 <-> 5 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 2 (topogpt3: model) and community 5 (root).
-- [INFERRED] shares_context community 2 <-> 6 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 2 (topogpt3: model) and community 6 (orphans).
+- [EXTRACTED] depends_on community 0 <-> 1 (strength 0.9): Extracted import edge crosses communities: eval/diag_static.py imports topogpt3/__init__.py.
+- [EXTRACTED] depends_on community 2 <-> 0 (strength 0.9): Extracted import edge crosses communities: eval/tasks.py imports topogpt3/model.py.
+- [EXTRACTED] depends_on community 4 <-> 0 (strength 0.9): Extracted import edge crosses communities: tests/test_lens_model.py imports topogpt3/model.py.
+- [EXTRACTED] depends_on community 3 <-> 0 (strength 0.9): Extracted import edge crosses communities: tests/test_structured_output.py imports topogpt3/model.py.
+- [INFERRED] bridges community 1 <-> 0 (strength 0.5): Inferred cross-community bridge: eval/sandbox_smoke.py reaches synthetic_dataset.py in 5 hops.
+- [INFERRED] shares_context community 0 <-> 5 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 0 (topogpt3: model) and community 5 (root).
+- [INFERRED] shares_context community 0 <-> 6 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 0 (topogpt3: model) and community 6 (orphans).
 
 ## Risks
 
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/model.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/lora.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/trainer_utils_topo.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/rollout.py` via `eval` (2 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/train.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/inference_hrm.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `synthetic_dataset.py` via `eval` (3 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/continuation.py` via `eval` (3 hops)
-- [layer strict] `tests/test_structured_output.py` (testing) -> `topogpt3/api_server.py` (presentation)
-- [layer strict] `tests/test_structured_output.py` (testing) -> `topogpt3/api_server.py` (presentation)
-- [layer strict] `tests/test_structured_output.py` (testing) -> `topogpt3/api_server.py` (presentation)
-- [layer strict] `tests/test_structured_output.py` (testing) -> `topogpt3/api_server.py` (presentation)
-- [layer strict] `tests/test_structured_output.py` (testing) -> `topogpt3/api_server.py` (presentation)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/model.py` via `eval` (2 hops)
 - [dataflow UNCHECKED_ALLOC] `topogpt3/export_chat.py:105` `main` `sft`: Result of allocator stored in `sft` is never checked against NULL.
 - [dataflow UNCHECKED_ALLOC] `topogpt3/export_chat.py:106` `main` `rla`: Result of allocator stored in `rla` is never checked against NULL.
 - [dataflow UNCHECKED_ALLOC] `topogpt3/export_chat.py:107` `main` `dpo`: Result of allocator stored in `dpo` is never checked against NULL.
@@ -90,18 +88,24 @@ This community groups 10 file(s) rooted at `topogpt3` with dominant language py 
 
 ## Open Questions
 
+- Why do 1 file(s) lack file-level docs (e.g. `topogpt3/__main__.py`)? What purpose do they serve?
 - What would break if the most connected file in topogpt3: model changed?
-- Should topogpt3: model be split, given cohesion 0.40?
+- Should topogpt3: model be split, given cohesion 0.45?
 
 ## Sources
 
 - `eval/diag_static.py`
 - `synthetic_dataset.py`
-- `tests/test_structured_output.py`
-- `topogpt3/api_server.py`
-- `topogpt3/continuation.py`
+- `topogpt3/__main__.py`
+- `topogpt3/convert.py`
 - `topogpt3/export_chat.py`
-- `topogpt3/inference_hrm.py`
+- `topogpt3/lora.py`
 - `topogpt3/model.py`
-- `topogpt3/structured_output.py`
+- `topogpt3/rollout.py`
 - `topogpt3/train.py`
+- `topogpt3/train_distill.py`
+- `topogpt3/train_dpo.py`
+- `topogpt3/train_grpo.py`
+- `topogpt3/train_lora.py`
+- `topogpt3/train_ppo.py`
+- `topogpt3/trainer_utils_topo.py`

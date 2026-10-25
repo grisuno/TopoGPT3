@@ -25,77 +25,80 @@ Mejoras sobre topogpt.py:
 - Presets de escala: micro, small, medium, gpt2.
 """
 
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.utils.checkpoint import checkpoint as grad_ckpt
-from safetensors.torch import save_file as st_save, load_file as st_load
-import numpy as np
+import argparse
+import hashlib
+import json
+import logging
 import math
 import os
 import sys
 import time
-from pathlib import Path
-import json
-import hashlib
-import logging
 import warnings
-import argparse
-from datetime import datetime
-from typing import Dict, Tuple, Optional, List, Any, Union
-from dataclasses import dataclass, asdict
 from collections import deque
+from dataclasses import asdict, dataclass
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Optional
 
-warnings.filterwarnings('ignore')
+import numpy as np
+import torch
+import torch.nn.functional as F
+from safetensors.torch import load_file as st_load
+from safetensors.torch import save_file as st_save
+from torch import nn
+from torch.utils.checkpoint import checkpoint as grad_ckpt
+
+warnings.filterwarnings("ignore")
 
 # ============================================================================
 # CONFIGURACIÓN
 # ============================================================================
+
 
 @dataclass
 class TopoGPT2Config:
     """Configuración completa para TopoGPT2."""
 
     # --- Dispositivo ---
-    DEVICE: str = 'cuda' if torch.cuda.is_available() else 'cpu'
+    DEVICE: str = "cuda" if torch.cuda.is_available() else "cpu"
     RANDOM_SEED: int = 42
     USE_AMP: bool = True
 
     # --- Escala del modelo: 'micro' | 'small' | 'medium' | 'gpt2' | 'custom' ---
-    SCALE: str = 'small'
+    SCALE: str = "small"
 
     # --- Vocabulario (GPT-2 BPE via tiktoken) ---
     VOCAB_SIZE: int = 50257
     MAX_SEQ_LEN: int = 512
 
     # --- Arquitectura (sobrescritos por SCALE salvo SCALE='custom') ---
-    D_MODEL: int = 256   # debe ser divisible por 4 (cuaterniones) y N_HEADS
+    D_MODEL: int = 256  # debe ser divisible por 4 (cuaterniones) y N_HEADS
     N_HEADS: int = 8
     N_KV_HEADS: int = 0  # GQA: cabezas K/V (0 = N_HEADS//4, -1 = MHA completo)
     N_LAYERS: int = 6
     DROPOUT: float = 0.1
 
     # --- MoE (Mixture of Experts) ---
-    MOE_ENABLED: bool = True          # activar MoE en cada capa
-    N_EXPERTS: int = 4                # expertos SwiGLU por capa
-    MOE_TOP_K: int = 2                # expertos activos por token (sparse)
-    MOE_AUX_LOSS_WEIGHT: float = 0.01 # load-balancing loss
+    MOE_ENABLED: bool = True  # activar MoE en cada capa
+    N_EXPERTS: int = 4  # expertos SwiGLU por capa
+    MOE_TOP_K: int = 2  # expertos activos por token (sparse)
+    MOE_AUX_LOSS_WEIGHT: float = 0.01  # load-balancing loss
 
     # --- Topología del toro (spec usuario: 8 nodos = 4 ang × 2 rad) ---
-    TORUS_GRID_SIZE: int = 8       # Grid para SpectralLayer (8×8 FFT2)
-    TORUS_RADIAL_BINS: int = 2     # 2 niveles radiales
-    TORUS_ANGULAR_BINS: int = 4    # 4 ángulos (= 4 nodos por anillo)
+    TORUS_GRID_SIZE: int = 8  # Grid para SpectralLayer (8×8 FFT2)
+    TORUS_RADIAL_BINS: int = 2  # 2 niveles radiales
+    TORUS_ANGULAR_BINS: int = 4  # 4 ángulos (= 4 nodos por anillo)
     # Total nodos en el grafo toro: 2 × 4 = 8
 
     # --- Espectral / Autoencoder ---
-    SPECTRAL_LATENT_RATIO: float = 0.5   # latent_dim = D_MODEL * ratio
+    SPECTRAL_LATENT_RATIO: float = 0.5  # latent_dim = D_MODEL * ratio
     SPECTRAL_KERNEL_INIT_SCALE: float = 0.02
     NUM_SPECTRAL_LAYERS: int = 2
-    AE_RECON_WEIGHT: float = 0.01        # peso de la pérdida de reconstrucción
+    AE_RECON_WEIGHT: float = 0.01  # peso de la pérdida de reconstrucción
 
     # --- Training ---
-    BATCH_SIZE: int = 4                  # reduced to fit 6GB VRAM
-    GRAD_ACCUM_STEPS: int = 8            # effective batch = 32
+    BATCH_SIZE: int = 4  # reduced to fit 6GB VRAM
+    GRAD_ACCUM_STEPS: int = 8  # effective batch = 32
     LEARNING_RATE: float = 3e-4
     WEIGHT_DECAY: float = 0.1
     EPOCHS: int = 10
@@ -105,75 +108,135 @@ class TopoGPT2Config:
 
     # --- Curriculum Learning ---
     CURRICULUM_ENABLED: bool = True
-    CURRICULUM_SHORT_LINES: int = 50     # tier 1: short files
-    CURRICULUM_MED_LINES: int = 300      # tier 2: medium files
+    CURRICULUM_SHORT_LINES: int = 50  # tier 1: short files
+    CURRICULUM_MED_LINES: int = 300  # tier 2: medium files
 
     # --- Sliding Window Attention ---
-    ATTN_WINDOW: int = 0                # 0 = full attention; N = sliding window of N tokens
+    ATTN_WINDOW: int = 0  # 0 = full attention; N = sliding window of N tokens
 
     # --- Latent Memory Tokens (context compression) ---
-    N_MEMORY_TOKENS: int = 0            # number of learnable memory tokens for context compression
-    MEMORY_SEGMENT_LEN: int = 0         # segment length for memory-token processing (0 = disabled)
+    N_MEMORY_TOKENS: int = (
+        0  # number of learnable memory tokens for context compression
+    )
+    MEMORY_SEGMENT_LEN: int = (
+        0  # segment length for memory-token processing (0 = disabled)
+    )
 
     # --- Progressive Sequence Length ---
-    PROGRESSIVE_SEQ: bool = True        # warm up with shorter sequences
-    PROGRESSIVE_SEQ_STEPS: Tuple[int, int, int] = (128, 256, 512)  # len per phase
-    PROGRESSIVE_SEQ_EPOCHS: Tuple[int, int, int] = (3, 3, 4)        # epochs per phase
+    PROGRESSIVE_SEQ: bool = True  # warm up with shorter sequences
+    PROGRESSIVE_SEQ_STEPS: tuple[int, int, int] = (128, 256, 512)  # len per phase
+    PROGRESSIVE_SEQ_EPOCHS: tuple[int, int, int] = (3, 3, 4)  # epochs per phase
 
     # --- Text Quality Filters ---
-    FILTER_MAX_LINE_LEN: int = 500       # files with lines >500 chars are suspicious
-    FILTER_ENTROPY_MIN: float = 3.5      # below this = repetitive / auto-generated
-    FILTER_ENTROPY_MAX: float = 6.5      # above this = binary / encrypted
-    FILTER_SPECIAL_TOKEN_RATIO_MAX: float = 0.25  # max fraction of whitespace-only tokens
-    FILTER_ENABLE_DEDUP: bool = True     # skip files with identical content hash
+    FILTER_MAX_LINE_LEN: int = 500  # files with lines >500 chars are suspicious
+    FILTER_ENTROPY_MIN: float = 3.5  # below this = repetitive / auto-generated
+    FILTER_ENTROPY_MAX: float = 6.5  # above this = binary / encrypted
+    FILTER_SPECIAL_TOKEN_RATIO_MAX: float = (
+        0.25  # max fraction of whitespace-only tokens
+    )
+    FILTER_ENABLE_DEDUP: bool = True  # skip files with identical content hash
 
     # --- Quantization for inference (6GB VRAM) ---
-    QUANTIZE_EMBEDDINGS: bool = True     # int8 on embed + lm_head
-    QUANTIZE_FFN: bool = False          # int4 on FFN weights (experimental)
+    QUANTIZE_EMBEDDINGS: bool = True  # int8 on embed + lm_head
+    QUANTIZE_FFN: bool = False  # int4 on FFN weights (experimental)
     QUANT_EMBED_BITS: int = 8
 
     # --- Speculative Decoding ---
     SPEC_DECODE_ENABLED: bool = False
-    SPEC_DECODE_DRAFT_SCALE: str = 'micro'  # draft model scale (4x smaller)
-    SPEC_DECODE_K: int = 5              # draft tokens per speculation step
+    SPEC_DECODE_DRAFT_SCALE: str = "micro"  # draft model scale (4x smaller)
+    SPEC_DECODE_K: int = 5  # draft tokens per speculation step
 
     # --- Corpus ---
-    CORPUS: str = 'directory'            # 'directory' | 'file'
-    CORPUS_ROOT: str = './src'
-    CORPUS_FILE: str = ''                # Path if CORPUS='file'
-    CORPUS_MIN_FILE_CHARS: int = 30      # minimum chars to include a file
-    DATA_DIR: str = 'data_topogpt2'
+    CORPUS: str = "directory"  # 'directory' | 'file'
+    CORPUS_ROOT: str = "./src"
+    CORPUS_FILE: str = ""  # Path if CORPUS='file'
+    CORPUS_MIN_FILE_CHARS: int = 30  # minimum chars to include a file
+    DATA_DIR: str = "data_topogpt2"
     MAX_TRAIN_TOKENS: int = 500_000_000  # max tokens per epoch (0 = unlimited)
 
     # --- Checkpoints ---
-    CHECKPOINT_DIR: str = 'checkpoints_topogpt2'
+    CHECKPOINT_DIR: str = "checkpoints_topogpt2"
     CHECKPOINT_INTERVAL_MINUTES: int = 10
     MAX_CHECKPOINTS: int = 5
 
     # --- Logging ---
     LOG_INTERVAL_STEPS: int = 100
     EVAL_INTERVAL_STEPS: int = 500
-    LOG_LEVEL: str = 'INFO'
+    LOG_LEVEL: str = "INFO"
 
     # --- Temperatura termodinámica (heredada) ---
     T_INIT: float = 1.0
 
     def __post_init__(self):
         presets = {
-            'micro':  dict(D_MODEL=64,  N_HEADS=4,  N_LAYERS=2,  MAX_SEQ_LEN=256,  ATTN_WINDOW=64, N_MEMORY_TOKENS=16, MEMORY_SEGMENT_LEN=64),
-            'small':  dict(D_MODEL=256, N_HEADS=8,  N_LAYERS=6,  MAX_SEQ_LEN=512,  ATTN_WINDOW=128, N_MEMORY_TOKENS=32, MEMORY_SEGMENT_LEN=128),
-            'medium': dict(D_MODEL=512, N_HEADS=8,  N_LAYERS=12, MAX_SEQ_LEN=1024, ATTN_WINDOW=256, N_MEMORY_TOKENS=64, MEMORY_SEGMENT_LEN=256),
-            'gpt2':   dict(D_MODEL=768, N_HEADS=12, N_LAYERS=12, MAX_SEQ_LEN=2048, ATTN_WINDOW=256, N_MEMORY_TOKENS=64, MEMORY_SEGMENT_LEN=256),
+            "micro": dict(
+                D_MODEL=64,
+                N_HEADS=4,
+                N_LAYERS=2,
+                MAX_SEQ_LEN=256,
+                ATTN_WINDOW=64,
+                N_MEMORY_TOKENS=16,
+                MEMORY_SEGMENT_LEN=64,
+            ),
+            "small": dict(
+                D_MODEL=256,
+                N_HEADS=8,
+                N_LAYERS=6,
+                MAX_SEQ_LEN=512,
+                ATTN_WINDOW=128,
+                N_MEMORY_TOKENS=32,
+                MEMORY_SEGMENT_LEN=128,
+            ),
+            "medium": dict(
+                D_MODEL=512,
+                N_HEADS=8,
+                N_LAYERS=12,
+                MAX_SEQ_LEN=1024,
+                ATTN_WINDOW=256,
+                N_MEMORY_TOKENS=64,
+                MEMORY_SEGMENT_LEN=256,
+            ),
+            "large": dict(
+                D_MODEL=512,
+                N_HEADS=8,
+                N_LAYERS=13,
+                MAX_SEQ_LEN=1024,
+                ATTN_WINDOW=256,
+                N_MEMORY_TOKENS=64,
+                MEMORY_SEGMENT_LEN=256,
+            ),
+            "xlarge": dict(
+                D_MODEL=576,
+                N_HEADS=8,
+                N_LAYERS=14,
+                MAX_SEQ_LEN=1024,
+                ATTN_WINDOW=256,
+                N_MEMORY_TOKENS=64,
+                MEMORY_SEGMENT_LEN=256,
+            ),
+            "gpt2": dict(
+                D_MODEL=768,
+                N_HEADS=12,
+                N_LAYERS=12,
+                MAX_SEQ_LEN=2048,
+                ATTN_WINDOW=256,
+                N_MEMORY_TOKENS=64,
+                MEMORY_SEGMENT_LEN=256,
+            ),
         }
         if self.SCALE in presets:
             for k, v in presets[self.SCALE].items():
                 setattr(self, k, v)
 
         assert self.D_MODEL % 4 == 0, "D_MODEL debe ser divisible por 4 (cuaterniones)"
-        assert self.D_MODEL % self.N_HEADS == 0, "D_MODEL debe ser divisible por N_HEADS"
+        assert self.D_MODEL % self.N_HEADS == 0, (
+            "D_MODEL debe ser divisible por N_HEADS"
+        )
         self.D_QUAT = self.D_MODEL // 4
         self.D_HEAD = self.D_MODEL // self.N_HEADS
-        self.SPECTRAL_LATENT_DIM = max(16, int(self.D_MODEL * self.SPECTRAL_LATENT_RATIO))
+        self.SPECTRAL_LATENT_DIM = max(
+            16, int(self.D_MODEL * self.SPECTRAL_LATENT_RATIO)
+        )
         self.N_TORUS_NODES = self.TORUS_RADIAL_BINS * self.TORUS_ANGULAR_BINS
         # GQA: resolver N_KV_HEADS
         if self.N_KV_HEADS == 0:
@@ -183,18 +246,21 @@ class TopoGPT2Config:
                 kv -= 1
             self.N_KV_HEADS = kv
         elif self.N_KV_HEADS == -1:
-            self.N_KV_HEADS = self.N_HEADS   # MHA estándar
-        assert self.N_HEADS % self.N_KV_HEADS == 0, \
+            self.N_KV_HEADS = self.N_HEADS  # MHA estándar
+        assert self.N_HEADS % self.N_KV_HEADS == 0, (
             "N_HEADS debe ser divisible por N_KV_HEADS"
+        )
         self.GQA_GROUPS = self.N_HEADS // self.N_KV_HEADS
 
 
-def setup_logger(name: str, level: str = 'INFO') -> logging.Logger:
+def setup_logger(name: str, level: str = "INFO") -> logging.Logger:
     logger = logging.getLogger(name)
     logger.setLevel(getattr(logging, level.upper(), logging.INFO))
     if not logger.handlers:
         h = logging.StreamHandler()
-        h.setFormatter(logging.Formatter('%(asctime)s %(name)s %(levelname)s %(message)s'))
+        h.setFormatter(
+            logging.Formatter("%(asctime)s %(name)s %(levelname)s %(message)s")
+        )
         logger.addHandler(h)
     return logger
 
@@ -202,7 +268,7 @@ def setup_logger(name: str, level: str = 'INFO') -> logging.Logger:
 def set_seed(seed: int, device: str):
     torch.manual_seed(seed)
     np.random.seed(seed)
-    if 'cuda' in device and torch.cuda.is_available():
+    if "cuda" in device and torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
         torch.backends.cudnn.deterministic = True
 
@@ -210,6 +276,7 @@ def set_seed(seed: int, device: str):
 # ============================================================================
 # ÁLGEBRA DE CUATERNIONES
 # ============================================================================
+
 
 class QuaternionOps:
     """
@@ -223,12 +290,15 @@ class QuaternionOps:
         """Producto de Hamilton q1 ⊗ q2. Ambos [..., 4]."""
         w1, x1, y1, z1 = q1[..., 0], q1[..., 1], q1[..., 2], q1[..., 3]
         w2, x2, y2, z2 = q2[..., 0], q2[..., 1], q2[..., 2], q2[..., 3]
-        return torch.stack([
-            w1*w2 - x1*x2 - y1*y2 - z1*z2,
-            w1*x2 + x1*w2 + y1*z2 - z1*y2,
-            w1*y2 - x1*z2 + y1*w2 + z1*x2,
-            w1*z2 + x1*y2 - y1*x2 + z1*w2,
-        ], dim=-1)
+        return torch.stack(
+            [
+                w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2,
+                w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2,
+                w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2,
+                w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2,
+            ],
+            dim=-1,
+        )
 
     @staticmethod
     def normalize(q: torch.Tensor, eps: float = 1e-8) -> torch.Tensor:
@@ -246,7 +316,8 @@ class QuaternionOps:
         v_q = torch.cat([zero, v], dim=-1)  # pure quaternion
         q_c = QuaternionOps.conjugate(q)
         rotated = QuaternionOps.hamilton_product(
-            QuaternionOps.hamilton_product(q, v_q), q_c)
+            QuaternionOps.hamilton_product(q, v_q), q_c
+        )
         return rotated[..., 1:]
 
 
@@ -281,7 +352,12 @@ class QuaternionLinear(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """x: [..., in_features] → [..., out_features]"""
         d = self.in_q
-        xw, xx, xy, xz = x[..., :d], x[..., d:2*d], x[..., 2*d:3*d], x[..., 3*d:]
+        xw, xx, xy, xz = (
+            x[..., :d],
+            x[..., d : 2 * d],
+            x[..., 2 * d : 3 * d],
+            x[..., 3 * d :],
+        )
         # Producto de Hamilton: W * x
         ow = self.Ww(xw) - self.Wx(xx) - self.Wy(xy) - self.Wz(xz)
         ox = self.Ww(xx) + self.Wx(xw) + self.Wy(xz) - self.Wz(xy)
@@ -294,6 +370,7 @@ class QuaternionLinear(nn.Module):
 # ============================================================================
 # CAPA ESPECTRAL CON CUATERNIONES
 # ============================================================================
+
 
 class QuaternionSpectralLayer(nn.Module):
     """
@@ -315,8 +392,9 @@ class QuaternionSpectralLayer(nn.Module):
     Cada Wc es un kernel complejo (partes real e imaginaria independientes).
     """
 
-    def __init__(self, in_q: int, out_q: int, grid_h: int, grid_w: int,
-                 init_scale: float = 0.02):
+    def __init__(
+        self, in_q: int, out_q: int, grid_h: int, grid_w: int, init_scale: float = 0.02
+    ):
         super().__init__()
         self.in_q = in_q
         self.out_q = out_q
@@ -328,18 +406,22 @@ class QuaternionSpectralLayer(nn.Module):
         freq_w = grid_w // 2 + 1
 
         # Kernel complejo para cada componente cuaternión (w, x, y, z)
-        for c in ('w', 'x', 'y', 'z'):
-            self.register_parameter(f'kr_{c}',
-                nn.Parameter(torch.randn(in_q, out_q, freq_h, freq_w) * init_scale))
-            self.register_parameter(f'ki_{c}',
-                nn.Parameter(torch.randn(in_q, out_q, freq_h, freq_w) * init_scale))
+        for c in ("w", "x", "y", "z"):
+            self.register_parameter(
+                f"kr_{c}",
+                nn.Parameter(torch.randn(in_q, out_q, freq_h, freq_w) * init_scale),
+            )
+            self.register_parameter(
+                f"ki_{c}",
+                nn.Parameter(torch.randn(in_q, out_q, freq_h, freq_w) * init_scale),
+            )
 
     def _kernel(self, c: str) -> torch.Tensor:
-        return torch.complex(getattr(self, f'kr_{c}'), getattr(self, f'ki_{c}'))
+        return torch.complex(getattr(self, f"kr_{c}"), getattr(self, f"ki_{c}"))
 
     def _contract(self, W: torch.Tensor, X: torch.Tensor) -> torch.Tensor:
         """Suma sobre canales in_q: Y[b,o,h,w] = Σ_i W[i,o,h,w]·X[b,i,h,w]"""
-        return torch.einsum('iohw,bihw->bohw', W, X)
+        return torch.einsum("iohw,bihw->bohw", W, X)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -347,7 +429,7 @@ class QuaternionSpectralLayer(nn.Module):
         → [B, 4*out_q, H, W]
         """
         q = self.in_q
-        xw, xx, xy, xz = x[:, :q], x[:, q:2*q], x[:, 2*q:3*q], x[:, 3*q:]
+        xw, xx, xy, xz = x[:, :q], x[:, q : 2 * q], x[:, 2 * q : 3 * q], x[:, 3 * q :]
 
         # FFT2 por componente cuaternión → dominio de frecuencia
         Xw = torch.fft.rfft2(xw, s=(self.grid_h, self.grid_w))
@@ -355,19 +437,24 @@ class QuaternionSpectralLayer(nn.Module):
         Xy = torch.fft.rfft2(xy, s=(self.grid_h, self.grid_w))
         Xz = torch.fft.rfft2(xz, s=(self.grid_h, self.grid_w))
 
-        Ww, Wx, Wy, Wz = self._kernel('w'), self._kernel('x'), self._kernel('y'), self._kernel('z')
+        Ww, Wx, Wy, Wz = (
+            self._kernel("w"),
+            self._kernel("x"),
+            self._kernel("y"),
+            self._kernel("z"),
+        )
 
         # Precomputar 16 contracciones (componente de kernel × componente de señal)
         C = {}
-        for wc, W in (('w', Ww), ('x', Wx), ('y', Wy), ('z', Wz)):
-            for xc, X in (('w', Xw), ('x', Xx), ('y', Xy), ('z', Xz)):
+        for wc, W in (("w", Ww), ("x", Wx), ("y", Wy), ("z", Wz)):
+            for xc, X in (("w", Xw), ("x", Xx), ("y", Xy), ("z", Xz)):
                 C[(wc, xc)] = self._contract(W, X)
 
         # Producto de Hamilton en dominio de frecuencia
-        Pw = C[('w','w')] - C[('x','x')] - C[('y','y')] - C[('z','z')]
-        Px = C[('w','x')] + C[('x','w')] + C[('y','z')] - C[('z','y')]
-        Py = C[('w','y')] - C[('x','z')] + C[('y','w')] + C[('z','x')]
-        Pz = C[('w','z')] + C[('x','y')] - C[('y','x')] + C[('z','w')]
+        Pw = C[("w", "w")] - C[("x", "x")] - C[("y", "y")] - C[("z", "z")]
+        Px = C[("w", "x")] + C[("x", "w")] + C[("y", "z")] - C[("z", "y")]
+        Py = C[("w", "y")] - C[("x", "z")] + C[("y", "w")] + C[("z", "x")]
+        Pz = C[("w", "z")] + C[("x", "y")] - C[("y", "x")] + C[("z", "w")]
 
         # IFFT2 y recombinar
         ow = torch.fft.irfft2(Pw, s=(self.grid_h, self.grid_w))
@@ -381,6 +468,7 @@ class QuaternionSpectralLayer(nn.Module):
 # ============================================================================
 # SPECTRAL AUTOENCODER
 # ============================================================================
+
 
 class SpectralAutoencoder(nn.Module):
     """
@@ -419,15 +507,19 @@ class SpectralAutoencoder(nn.Module):
 
         # --- Spectral 2D sobre el grid del toro: in/out_q = d_q, grid = r×a ---
         # Los 'out_q' en la segunda capa son iguales para reconstruir
-        self.torus_spectral = nn.ModuleList([
-            QuaternionSpectralLayer(d_q, d_q, r, a, init_scale=init_s)
-            for _ in range(config.NUM_SPECTRAL_LAYERS)
-        ])
+        self.torus_spectral = nn.ModuleList(
+            [
+                QuaternionSpectralLayer(d_q, d_q, r, a, init_scale=init_s)
+                for _ in range(config.NUM_SPECTRAL_LAYERS)
+            ]
+        )
 
         self.act = nn.GELU()
         self.d_model = d
 
-    def _filter1d(self, x: torch.Tensor, kr: torch.Tensor, ki: torch.Tensor) -> torch.Tensor:
+    def _filter1d(
+        self, x: torch.Tensor, kr: torch.Tensor, ki: torch.Tensor
+    ) -> torch.Tensor:
         """Filtro espectral 1D: x[..., D] → filtrado[..., D]"""
         X = torch.fft.rfft(x, dim=-1)
         K = torch.complex(kr, ki)
@@ -443,7 +535,7 @@ class SpectralAutoencoder(nn.Module):
         x = self.dec_proj(z)
         return self._filter1d(x, self.dec_kr, self.dec_ki)
 
-    def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
+    def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """Devuelve (latent, recon_loss)"""
         z = self.encode(x)
         recon = self.decode(z)
@@ -464,6 +556,7 @@ class SpectralAutoencoder(nn.Module):
 # ============================================================================
 # QUATERNION TORUS BRAIN (reemplaza MLP, VECTORIZADO)
 # ============================================================================
+
 
 class QuaternionTorusBrain(nn.Module):
     """
@@ -488,9 +581,9 @@ class QuaternionTorusBrain(nn.Module):
         self.d_model = d_model
         self.d_lat = config.SPECTRAL_LATENT_DIM
         self.d_q = d_model // 4
-        self.n_radial = config.TORUS_RADIAL_BINS    # 2
+        self.n_radial = config.TORUS_RADIAL_BINS  # 2
         self.n_angular = config.TORUS_ANGULAR_BINS  # 4
-        self.n_nodes = config.N_TORUS_NODES         # 8
+        self.n_nodes = config.N_TORUS_NODES  # 8
         self.config = config
 
         # Autoencoder espectral
@@ -540,24 +633,34 @@ class QuaternionTorusBrain(nn.Module):
                 n = r * A + a
                 # Angular izquierda (tipo 0)
                 neighbor = r * A + (a - 1) % A
-                edges_i.append(n); edges_j.append(neighbor); edge_type.append(0)
+                edges_i.append(n)
+                edges_j.append(neighbor)
+                edge_type.append(0)
                 # Angular derecha (tipo 1)
                 neighbor = r * A + (a + 1) % A
-                edges_i.append(n); edges_j.append(neighbor); edge_type.append(1)
+                edges_i.append(n)
+                edges_j.append(neighbor)
+                edge_type.append(1)
                 # Radial hacia centro (tipo 2) - si existe
                 if r > 0:
                     neighbor = (r - 1) * A + a
-                    edges_i.append(n); edges_j.append(neighbor); edge_type.append(2)
+                    edges_i.append(n)
+                    edges_j.append(neighbor)
+                    edge_type.append(2)
                 # Radial hacia fuera (tipo 3) - si existe
                 if r < R - 1:
                     neighbor = (r + 1) * A + a
-                    edges_i.append(n); edges_j.append(neighbor); edge_type.append(3)
+                    edges_i.append(n)
+                    edges_j.append(neighbor)
+                    edge_type.append(3)
 
-        self.register_buffer('edges_i', torch.tensor(edges_i, dtype=torch.long))
-        self.register_buffer('edges_j', torch.tensor(edges_j, dtype=torch.long))
-        self.register_buffer('edge_type', torch.tensor(edge_type, dtype=torch.long))
+        self.register_buffer("edges_i", torch.tensor(edges_i, dtype=torch.long))
+        self.register_buffer("edges_j", torch.tensor(edges_j, dtype=torch.long))
+        self.register_buffer("edge_type", torch.tensor(edge_type, dtype=torch.long))
 
-    def _torus_soft_assign(self, phi1: torch.Tensor, phi2: torch.Tensor) -> torch.Tensor:
+    def _torus_soft_assign(
+        self, phi1: torch.Tensor, phi2: torch.Tensor
+    ) -> torch.Tensor:
         """
         Asignación blanda de tokens a los 8 nodos del toro via distancia circular.
 
@@ -569,13 +672,21 @@ class QuaternionTorusBrain(nn.Module):
         device = phi1.device
 
         # Posiciones de los nodos en el toro
-        ang_pos = torch.linspace(-math.pi, math.pi, self.n_angular + 1, device=device)[:-1]
-        rad_pos = torch.linspace(-math.pi, math.pi, self.n_radial + 1, device=device)[:-1]
+        ang_pos = torch.linspace(-math.pi, math.pi, self.n_angular + 1, device=device)[
+            :-1
+        ]
+        rad_pos = torch.linspace(-math.pi, math.pi, self.n_radial + 1, device=device)[
+            :-1
+        ]
 
         # Distancias circulares (usando sin para periodicidad suave)
         # d_ang[BS, N_ANGULAR], d_rad[BS, N_RADIAL]
-        d_ang = torch.sin((phi1.unsqueeze(1) - ang_pos.unsqueeze(0)) / 2).pow(2)  # [BS, A]
-        d_rad = torch.sin((phi2.unsqueeze(1) - rad_pos.unsqueeze(0)) / 2).pow(2)  # [BS, R]
+        d_ang = torch.sin((phi1.unsqueeze(1) - ang_pos.unsqueeze(0)) / 2).pow(
+            2
+        )  # [BS, A]
+        d_rad = torch.sin((phi2.unsqueeze(1) - rad_pos.unsqueeze(0)) / 2).pow(
+            2
+        )  # [BS, R]
 
         # Distancia en el toro para cada nodo [r, a]:  d[r, a] = d_rad[r] + d_ang[a]
         # Resultado: [BS, R, A] → flatten a [BS, N_NODES]
@@ -600,12 +711,12 @@ class QuaternionTorusBrain(nn.Module):
         eq = QuaternionOps.normalize(self.edge_quat)
 
         # Recoger features de nodos fuente para TODAS las aristas: [BS, n_edges, D]
-        src_feat = node_feat[:, self.edges_j, :]   # index [n_edges] → [BS, n_edges, D]
+        src_feat = node_feat[:, self.edges_j, :]  # index [n_edges] → [BS, n_edges, D]
 
         # Cuaternión de cada arista: [n_edges, 4] → [1, n_edges, 1, 4] para broadcasting
-        edge_q = eq[self.edge_type]                # [n_edges, 4]
+        edge_q = eq[self.edge_type]  # [n_edges, 4]
         edge_q = edge_q.unsqueeze(0).unsqueeze(2)  # [1, n_edges, 1, 4]
-        edge_q = edge_q.expand(BS, -1, d_q, -1)   # [BS, n_edges, D_QUAT, 4]
+        edge_q = edge_q.expand(BS, -1, d_q, -1)  # [BS, n_edges, D_QUAT, 4]
 
         # Reshapear fuentes: [BS, n_edges, D] → [BS, n_edges, D_QUAT, 4]
         src_q = src_feat.view(BS, n_edges, d_q, 4)
@@ -621,7 +732,7 @@ class QuaternionTorusBrain(nn.Module):
 
         return self.node_net(node_feat + agg)
 
-    def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
+    def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """
         x: [B, S, D_MODEL]
         → output: [B, S, D_MODEL], recon_loss: scalar
@@ -636,9 +747,9 @@ class QuaternionTorusBrain(nn.Module):
         z, recon_loss = self.spectral_ae(x_flat)  # z: [BS, D_LAT]
 
         # 3. Proyección al toro
-        coords = self.torus_proj(x_flat)          # [BS, 4]
-        phi1 = math.pi * torch.tanh(coords[:, 0]) # ángulo angular ∈ [-π, π]
-        phi2 = math.pi * torch.tanh(coords[:, 1]) # ángulo radial ∈ [-π, π]
+        coords = self.torus_proj(x_flat)  # [BS, 4]
+        phi1 = math.pi * torch.tanh(coords[:, 0])  # ángulo angular ∈ [-π, π]
+        phi2 = math.pi * torch.tanh(coords[:, 1])  # ángulo radial ∈ [-π, π]
 
         # 4. Asignación blanda a 8 nodos
         attn_w = self._torus_soft_assign(phi1, phi2)  # [BS, N_NODES]
@@ -646,19 +757,21 @@ class QuaternionTorusBrain(nn.Module):
         # 5. Construir grid de nodos: weighted combination de embeddings de nodo + input
         #    node_feat[bs, n, :] = attn_w[bs,n] * node_embed[n] + x_flat[bs] * attn_w[bs,n]
         nodes = (
-            attn_w.unsqueeze(-1) * self.node_embed.unsqueeze(0)   # [BS, N, D]
-            + attn_w.unsqueeze(-1) * x_flat.unsqueeze(1)          # broadcasting [BS, N, D]
+            attn_w.unsqueeze(-1) * self.node_embed.unsqueeze(0)  # [BS, N, D]
+            + attn_w.unsqueeze(-1) * x_flat.unsqueeze(1)  # broadcasting [BS, N, D]
         )  # [BS, N_NODES, D_MODEL]
 
         # 6. QuaternionSpectralLayer 2D sobre el grid del toro
         #    Reshape: [BS, N_NODES, D_MODEL] → [BS, 4*D_QUAT, RADIAL, ANGULAR]
         grid = nodes.view(B * S, self.n_radial, self.n_angular, D)
-        grid = grid.permute(0, 3, 1, 2)           # [BS, D_MODEL, RADIAL, ANGULAR]
+        grid = grid.permute(0, 3, 1, 2)  # [BS, D_MODEL, RADIAL, ANGULAR]
         # Reorganizar en 4 canales cuaterniones
         d_q = self.d_q
         grid_q = grid.view(B * S, 4, d_q, self.n_radial, self.n_angular)
         # [BS, 4, D_QUAT, RADIAL, ANGULAR] → [BS, 4*D_QUAT, RADIAL, ANGULAR]
-        grid_q = grid_q.permute(0, 1, 2, 3, 4).reshape(B * S, 4 * d_q, self.n_radial, self.n_angular)
+        grid_q = grid_q.permute(0, 1, 2, 3, 4).reshape(
+            B * S, 4 * d_q, self.n_radial, self.n_angular
+        )
         grid_spec = self.spectral_ae.process_torus_grid(grid_q)  # [BS, 4*D_QUAT, R, A]
 
         # Volver a [BS, N_NODES, D_MODEL]
@@ -682,6 +795,7 @@ class QuaternionTorusBrain(nn.Module):
 # ROTARY POSITION EMBEDDINGS (RoPE)
 # ============================================================================
 
+
 class RotaryEmbedding(nn.Module):
     """
     Rotary Position Embeddings (RoPE) - Su et al., 2021.
@@ -694,21 +808,28 @@ class RotaryEmbedding(nn.Module):
     errores de shape al cargar checkpoints previos.
     """
 
-    def __init__(self, d_head: int, max_seq_len: int = 2048, base: int = 10000,
-                 yarn_factor: float = 1.0, yarn_orig_max: int = 2048):
+    def __init__(
+        self,
+        d_head: int,
+        max_seq_len: int = 2048,
+        base: int = 10000,
+        yarn_factor: float = 1.0,
+        yarn_orig_max: int = 2048,
+    ):
         super().__init__()
         inv_freq = 1.0 / (base ** (torch.arange(0, d_head, 2).float() / d_head))
         if yarn_factor > 1.0:
             # YaRN NTK-by-parts ramp (identity-safe:
             # only rescales rotary frequencies, never spectral/quaternion layers)
             import math as _math
+
             dim = torch.arange(0, d_head, 2).float()
             lo = d_head * _math.log(yarn_orig_max / 1.0) / _math.log(float(base))
             hi = d_head * _math.log(yarn_orig_max / 32.0) / _math.log(float(base))
             lo, hi = min(lo, hi), max(lo, hi)
             ramp = ((dim - lo) / max(hi - lo, 1e-6)).clamp(0.0, 1.0)
             inv_freq = inv_freq * (1.0 - ramp + ramp / yarn_factor)
-        self.register_buffer('inv_freq', inv_freq)
+        self.register_buffer("inv_freq", inv_freq)
         self.yarn_factor = yarn_factor
         self.yarn_orig_max = yarn_orig_max
         self._build_cache(max_seq_len)
@@ -716,8 +837,10 @@ class RotaryEmbedding(nn.Module):
     def enable_yarn(self, factor: float = 16.0, orig_max: int = 2048) -> None:
         """Enable YaRN extrapolation post-hoc (rebuilds cache in place)."""
         from .yarn import YaRNConfig, apply_yarn_to_rope
-        apply_yarn_to_rope(self, YaRNConfig(factor=factor, orig_max=orig_max,
-                                           enabled=True))
+
+        apply_yarn_to_rope(
+            self, YaRNConfig(factor=factor, orig_max=orig_max, enabled=True)
+        )
         self.yarn_factor = factor
         self.yarn_orig_max = orig_max
 
@@ -726,15 +849,16 @@ class RotaryEmbedding(nn.Module):
         t = torch.arange(seq_len, device=device).float()
         freqs = torch.outer(t, self.inv_freq)
         emb = torch.cat([freqs, freqs], dim=-1)
-        self.register_buffer('_cos_cache', emb.cos(), persistent=False)
-        self.register_buffer('_sin_cache', emb.sin(), persistent=False)
+        self.register_buffer("_cos_cache", emb.cos(), persistent=False)
+        self.register_buffer("_sin_cache", emb.sin(), persistent=False)
 
     def _rotate_half(self, x: torch.Tensor) -> torch.Tensor:
-        x1, x2 = x[..., :x.shape[-1]//2], x[..., x.shape[-1]//2:]
+        x1, x2 = x[..., : x.shape[-1] // 2], x[..., x.shape[-1] // 2 :]
         return torch.cat([-x2, x1], dim=-1)
 
-    def forward(self, q: torch.Tensor, k: torch.Tensor,
-                seq_len: int, offset: int = 0) -> Tuple[torch.Tensor, torch.Tensor]:
+    def forward(
+        self, q: torch.Tensor, k: torch.Tensor, seq_len: int, offset: int = 0
+    ) -> tuple[torch.Tensor, torch.Tensor]:
         """
         q, k: [B, n_heads, S_q/S_k, d_head]
         offset: posicion inicial (para KV cache: longitud del cache existente)
@@ -744,10 +868,10 @@ class RotaryEmbedding(nn.Module):
         if needed > self._cos_cache.shape[0]:
             self._build_cache(needed * 2)
         sq, sk = q.shape[2], k.shape[2]
-        cos_q = self._cos_cache[offset:offset + sq].unsqueeze(0).unsqueeze(0)
-        sin_q = self._sin_cache[offset:offset + sq].unsqueeze(0).unsqueeze(0)
-        cos_k = self._cos_cache[offset:offset + sk].unsqueeze(0).unsqueeze(0)
-        sin_k = self._sin_cache[offset:offset + sk].unsqueeze(0).unsqueeze(0)
+        cos_q = self._cos_cache[offset : offset + sq].unsqueeze(0).unsqueeze(0)
+        sin_q = self._sin_cache[offset : offset + sq].unsqueeze(0).unsqueeze(0)
+        cos_k = self._cos_cache[offset : offset + sk].unsqueeze(0).unsqueeze(0)
+        sin_k = self._sin_cache[offset : offset + sk].unsqueeze(0).unsqueeze(0)
         q_rot = q * cos_q + self._rotate_half(q) * sin_q
         k_rot = k * cos_k + self._rotate_half(k) * sin_k
         return q_rot, k_rot
@@ -756,6 +880,7 @@ class RotaryEmbedding(nn.Module):
 # ============================================================================
 # MULTI-HEAD ATTENTION CON FLASH ATTENTION + ROPE
 # ============================================================================
+
 
 class RMSNorm(nn.Module):
     """Root Mean Square Layer Normalization (sin bias). Más estable que LayerNorm."""
@@ -774,6 +899,7 @@ class RMSNorm(nn.Module):
 # SWIGLU (activacion de modelos frontier: LLaMA, Qwen, etc.)
 # ============================================================================
 
+
 class SwiGLU(nn.Module):
     """
     SwiGLU: SiLU(gate(x)) * up(x) -> down
@@ -781,18 +907,17 @@ class SwiGLU(nn.Module):
     Dimension interna: 8/3 * d_model (convención LLaMA, redondeada a múltiplo de 4).
     """
 
-    def __init__(self, d_model: int, expansion: float = 8 / 3,
-                 dropout: float = 0.0):
+    def __init__(self, d_model: int, expansion: float = 8 / 3, dropout: float = 0.0):
         super().__init__()
         inner = max(4, int(d_model * expansion))
         inner = (inner + 3) // 4 * 4  # redondear a múltiplo de 4
         self.gate_proj = nn.Linear(d_model, inner, bias=False)
-        self.up_proj   = nn.Linear(d_model, inner, bias=False)
+        self.up_proj = nn.Linear(d_model, inner, bias=False)
         self.down_proj = nn.Linear(inner, d_model, bias=False)
         self.drop = nn.Dropout(dropout) if dropout > 0 else nn.Identity()
         # Inicialización estilo GPT
         nn.init.normal_(self.gate_proj.weight, std=0.02)
-        nn.init.normal_(self.up_proj.weight,   std=0.02)
+        nn.init.normal_(self.up_proj.weight, std=0.02)
         nn.init.normal_(self.down_proj.weight, std=0.02)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -802,6 +927,7 @@ class SwiGLU(nn.Module):
 # ============================================================================
 # MoE: Mixture of Experts topologico
 # ============================================================================
+
 
 class TopoMoEBrain(nn.Module):
     """
@@ -818,7 +944,7 @@ class TopoMoEBrain(nn.Module):
     Sin MoE (MOE_ENABLED=False): se comporta como QuaternionTorusBrain puro.
     """
 
-    def __init__(self, d_model: int, config: 'TopoGPT2Config'):
+    def __init__(self, d_model: int, config: "TopoGPT2Config"):
         super().__init__()
         self.d_model = d_model
         self.moe_enabled = config.MOE_ENABLED
@@ -831,15 +957,17 @@ class TopoMoEBrain(nn.Module):
 
         if self.moe_enabled:
             # N_EXPERTS expertos SwiGLU ligeros (dimension reducida para eficiencia)
-            self.experts = nn.ModuleList([
-                SwiGLU(d_model, expansion=4/3, dropout=config.DROPOUT)
-                for _ in range(self.n_experts)
-            ])
+            self.experts = nn.ModuleList(
+                [
+                    SwiGLU(d_model, expansion=4 / 3, dropout=config.DROPOUT)
+                    for _ in range(self.n_experts)
+                ]
+            )
             # Router: produce logits por experto para cada token
             self.router = nn.Linear(d_model, self.n_experts, bias=False)
             nn.init.normal_(self.router.weight, std=0.02)
 
-    def _route(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
+    def _route(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """
         x: [N, D] donde N = B*S (tokens aplanados)
         Retorna:
@@ -850,38 +978,44 @@ class TopoMoEBrain(nn.Module):
         compatibilidad total con torch.utils.checkpoint.
         """
         N, D = x.shape
-        router_logits = self.router(x)                    # [N, n_experts]
-        router_probs  = F.softmax(router_logits, dim=-1)  # [N, n_experts]
+        router_logits = self.router(x)  # [N, n_experts]
+        router_probs = F.softmax(router_logits, dim=-1)  # [N, n_experts]
         # Top-K seleccion
         top_k_probs, top_k_idx = torch.topk(router_probs, self.top_k, dim=-1)
         # Renormalizar pesos dentro de los top-K
-        top_k_probs = top_k_probs / top_k_probs.sum(dim=-1, keepdim=True).clamp(min=1e-9)
+        top_k_probs = top_k_probs / top_k_probs.sum(dim=-1, keepdim=True).clamp(
+            min=1e-9
+        )
         # Dispatch vectorizado: agrupar tokens por experto asignado
-        flat_idx = top_k_idx.reshape(-1)                             # [N*top_k]
-        flat_weights = top_k_probs.reshape(-1)                       # [N*top_k]
+        flat_idx = top_k_idx.reshape(-1)  # [N*top_k]
+        flat_weights = top_k_probs.reshape(-1)  # [N*top_k]
         token_indices = torch.arange(N, device=x.device, dtype=torch.long)
-        token_indices = token_indices.unsqueeze(1).expand(-1, self.top_k).reshape(-1)  # [N*top_k]
+        token_indices = (
+            token_indices.unsqueeze(1).expand(-1, self.top_k).reshape(-1)
+        )  # [N*top_k]
         expert_out = torch.zeros_like(x)
 
         # Se elimina la verificacion con .item() porque fuerza una sincronizacion
         # CPU-GPU que rompe el recomputado de gradient checkpointing.
         # scatter_add_ maneja tensores vacios de forma segura y eficiente.
         for e in range(self.n_experts):
-            expert_mask = (flat_idx == e)                             # [N*top_k] boolean
-            src_token_idx = token_indices[expert_mask]                # [count] indices en N
-            w = flat_weights[expert_mask].unsqueeze(-1).to(x.dtype)   # [count, 1]
-            out_e = self.experts[e](x[src_token_idx])                # [count, D]
+            expert_mask = flat_idx == e  # [N*top_k] boolean
+            src_token_idx = token_indices[expert_mask]  # [count] indices en N
+            w = flat_weights[expert_mask].unsqueeze(-1).to(x.dtype)  # [count, 1]
+            out_e = self.experts[e](x[src_token_idx])  # [count, D]
             contrib = w * out_e
-            expert_out.scatter_add_(0, src_token_idx.unsqueeze(1).expand_as(contrib), contrib)
+            expert_out.scatter_add_(
+                0, src_token_idx.unsqueeze(1).expand_as(contrib), contrib
+            )
 
         # Load-balancing loss (Switch Transformer style)
-        token_frac    = router_probs.mean(dim=0)                    # [n_experts]
-        one_hot       = F.one_hot(top_k_idx, self.n_experts).float()# [N, top_k, n_experts]
-        dispatch_frac = one_hot.mean(dim=(0, 1))                    # [n_experts]
+        token_frac = router_probs.mean(dim=0)  # [n_experts]
+        one_hot = F.one_hot(top_k_idx, self.n_experts).float()  # [N, top_k, n_experts]
+        dispatch_frac = one_hot.mean(dim=(0, 1))  # [n_experts]
         aux_loss = self.n_experts * (token_frac * dispatch_frac).sum()
         return expert_out, aux_loss
 
-    def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
+    def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """
         x: [B, S, D]
         → output: [B, S, D], aux_loss: escalar
@@ -918,13 +1052,13 @@ class MultiHeadAttention(nn.Module):
     - Temperatura termodinámica aprendible
     """
 
-    def __init__(self, d_model: int, n_heads: int, config: 'TopoGPT2Config'):
+    def __init__(self, d_model: int, n_heads: int, config: "TopoGPT2Config"):
         super().__init__()
-        self.d_model  = d_model
-        self.n_heads  = n_heads
-        self.n_kv     = config.N_KV_HEADS   # cabezas K/V (GQA)
-        self.n_groups = config.GQA_GROUPS    # n_heads // n_kv
-        self.d_head   = d_model // n_heads
+        self.d_model = d_model
+        self.n_heads = n_heads
+        self.n_kv = config.N_KV_HEADS  # cabezas K/V (GQA)
+        self.n_groups = config.GQA_GROUPS  # n_heads // n_kv
+        self.d_head = d_model // n_heads
         self.window_size = config.ATTN_WINDOW  # 0 = full attention
 
         # Q con n_heads completo; K/V con n_kv (GQA)
@@ -937,9 +1071,13 @@ class MultiHeadAttention(nn.Module):
         self.temperature = nn.Parameter(torch.tensor(config.T_INIT))
         self.dropout_p = config.DROPOUT if config.DROPOUT > 0 else 0.0
 
-    def forward(self, x: torch.Tensor, is_causal: bool = True,
-                past_kv: Optional[Tuple[torch.Tensor, torch.Tensor]] = None
-                ) -> Tuple[torch.Tensor, Tuple[torch.Tensor, torch.Tensor]]:
+    def forward(
+        self,
+        x: torch.Tensor,
+        is_causal: bool = True,
+        past_kv: tuple[torch.Tensor, torch.Tensor] | None = None,
+        position_offset: int | None = None,
+    ) -> tuple[torch.Tensor, tuple[torch.Tensor, torch.Tensor]]:
         """
         Args:
             x:        [B, S, D]
@@ -952,12 +1090,15 @@ class MultiHeadAttention(nn.Module):
         B, S, D = x.shape
 
         Q = self.q_proj(x).view(B, S, self.n_heads, self.d_head).transpose(1, 2)
-        K = self.k_proj(x).view(B, S, self.n_kv,    self.d_head).transpose(1, 2)
-        V = self.v_proj(x).view(B, S, self.n_kv,    self.d_head).transpose(1, 2)
+        K = self.k_proj(x).view(B, S, self.n_kv, self.d_head).transpose(1, 2)
+        V = self.v_proj(x).view(B, S, self.n_kv, self.d_head).transpose(1, 2)
 
-        # RoPE con offset: si hay cache, Q y K_new se posicionan a partir de past_len
+        # RoPE con offset absoluto. La cache del sliding-window se trunca, asi
+        # que past_len deja de ser la posicion real; el caller debe pasar
+        # position_offset con la longitud absoluta generada.
         past_len = past_kv[0].shape[2] if past_kv is not None else 0
-        Q, K = self.rope(Q, K, seq_len=S, offset=past_len)
+        offset = past_len if position_offset is None else int(position_offset)
+        Q, K = self.rope(Q, K, seq_len=S, offset=offset)
 
         # Concatenar K/V con cache (despues de aplicar RoPE al nuevo K)
         if past_kv is not None:
@@ -965,7 +1106,7 @@ class MultiHeadAttention(nn.Module):
             V = torch.cat([past_kv[1], V], dim=2)
 
         attn_mask = None
-        use_causal = (is_causal and past_kv is None)
+        use_causal = is_causal and past_kv is None
 
         if self.window_size > 0:
             if past_kv is None:
@@ -980,8 +1121,8 @@ class MultiHeadAttention(nn.Module):
                     use_causal = False
             else:
                 if K.shape[2] > self.window_size:
-                    K = K[:, :, -self.window_size:, :]
-                    V = V[:, :, -self.window_size:, :]
+                    K = K[:, :, -self.window_size :, :]
+                    V = V[:, :, -self.window_size :, :]
                 use_causal = False
 
         kv_cache = (K, V)
@@ -989,19 +1130,26 @@ class MultiHeadAttention(nn.Module):
 
         # GQA: expandir K/V al numero de cabezas de Q via repeat_interleave
         if self.n_groups > 1:
-            K_full = K_full.repeat_interleave(self.n_groups, dim=1)  # [B, n_heads, S_k, d]
-            V_exp  = V.repeat_interleave(self.n_groups, dim=1)
+            K_full = K_full.repeat_interleave(
+                self.n_groups, dim=1
+            )  # [B, n_heads, S_k, d]
+            V_exp = V.repeat_interleave(self.n_groups, dim=1)
         else:
             V_exp = V
 
-        scale = (self.d_head ** -0.5) / self.temperature.abs().clamp(min=1e-6)
+        # Learnable temperature: multiplicar Q conserva el gradiente
+        # (scale=...item() lo desconectaba del grafo).
+        inv_temp = 1.0 / self.temperature.abs().clamp(min=1e-6)
+        Q = Q * inv_temp
 
         out = F.scaled_dot_product_attention(
-            Q, K_full, V_exp,
+            Q,
+            K_full,
+            V_exp,
             attn_mask=attn_mask,
             dropout_p=self.dropout_p if self.training else 0.0,
             is_causal=use_causal,
-            scale=scale.item(),
+            scale=self.d_head**-0.5,
         )  # [B, n_heads, S, d_head]
 
         out = out.transpose(1, 2).contiguous().view(B, S, D)
@@ -1012,6 +1160,7 @@ class MultiHeadAttention(nn.Module):
 # CAPA TRANSFORMER TOPOLÓGICA
 # ============================================================================
 
+
 class TopoGPT2Layer(nn.Module):
     """
     Capa del transformer con TopoMoEBrain (TopoBrain + MoE SwiGLU experts).
@@ -1021,7 +1170,7 @@ class TopoGPT2Layer(nn.Module):
         x = x + TopoMoEBrain(RMSNorm(x))
     """
 
-    def __init__(self, d_model: int, n_heads: int, config: 'TopoGPT2Config'):
+    def __init__(self, d_model: int, n_heads: int, config: "TopoGPT2Config"):
         super().__init__()
         self.norm1 = RMSNorm(d_model)
         self.norm2 = RMSNorm(d_model)
@@ -1030,34 +1179,45 @@ class TopoGPT2Layer(nn.Module):
         self.dropout = nn.Dropout(config.DROPOUT)
         self.use_ckpt = config.GRADIENT_CHECKPOINTING
 
-    def _forward_impl(self, x: torch.Tensor,
-                      past_kv: Optional[Tuple] = None
-                      ) -> Tuple[torch.Tensor, torch.Tensor, Tuple]:
-        attn_out, kv_cache = self.attn(self.norm1(x), past_kv=past_kv)
+    def _forward_impl(
+        self,
+        x: torch.Tensor,
+        past_kv: tuple | None = None,
+        position_offset: int | None = None,
+    ) -> tuple[torch.Tensor, torch.Tensor, tuple]:
+        attn_out, kv_cache = self.attn(
+            self.norm1(x), past_kv=past_kv, position_offset=position_offset
+        )
         x = x + self.dropout(attn_out)
         brain_out, aux_loss = self.topo_brain(self.norm2(x))
         x = x + self.dropout(brain_out)
         return x, aux_loss, kv_cache
 
-    def forward(self, x: torch.Tensor,
-                past_kv: Optional[Tuple] = None
-                ) -> Tuple[torch.Tensor, torch.Tensor, Tuple]:
+    def forward(
+        self,
+        x: torch.Tensor,
+        past_kv: tuple | None = None,
+        position_offset: int | None = None,
+    ) -> tuple[torch.Tensor, torch.Tensor, tuple]:
         """
         Retorna (x_out, aux_loss, kv_cache).
         Con gradient checkpointing en training (solo cuando no hay KV cache).
         """
         if self.use_ckpt and self.training and past_kv is None:
+
             def ckpt_fn(x_in):
                 out, al, kvc = self._forward_impl(x_in, past_kv=None)
                 return out, al
+
             out, al = grad_ckpt(ckpt_fn, x, use_reentrant=False)
-            return out, al, None   # kv_cache no disponible con ckpt (solo entrenamiento)
-        return self._forward_impl(x, past_kv=past_kv)
+            return out, al, None  # kv_cache no disponible con ckpt (solo entrenamiento)
+        return self._forward_impl(x, past_kv=past_kv, position_offset=position_offset)
 
 
 # ============================================================================
 # MODELO COMPLETO
 # ============================================================================
+
 
 class TopoGPT2(nn.Module):
     """
@@ -1077,17 +1237,19 @@ class TopoGPT2(nn.Module):
         self.token_embed = nn.Embedding(config.VOCAB_SIZE, config.D_MODEL)
         nn.init.normal_(self.token_embed.weight, std=0.02)
 
-        self.layers = nn.ModuleList([
-            TopoGPT2Layer(config.D_MODEL, config.N_HEADS, config)
-            for _ in range(config.N_LAYERS)
-        ])
+        self.layers = nn.ModuleList(
+            [
+                TopoGPT2Layer(config.D_MODEL, config.N_HEADS, config)
+                for _ in range(config.N_LAYERS)
+            ]
+        )
         self.final_norm = RMSNorm(config.D_MODEL)
         self.lm_head = nn.Linear(config.D_MODEL, config.VOCAB_SIZE, bias=False)
 
         # Weight tying (GPT-2 style): embedding y cabeza de lenguaje comparten pesos
         self.lm_head.weight = self.token_embed.weight
 
-        self.memory_tokens: Optional[nn.Parameter] = None
+        self.memory_tokens: nn.Parameter | None = None
         if config.N_MEMORY_TOKENS > 0:
             self.memory_tokens = nn.Parameter(
                 torch.randn(1, config.N_MEMORY_TOKENS, config.D_MODEL) * 0.02
@@ -1102,9 +1264,12 @@ class TopoGPT2(nn.Module):
                 if module.bias is not None:
                     nn.init.zeros_(module.bias)
 
-    def forward(self, token_ids: torch.Tensor,
-                past_kvs: Optional[List[Optional[Tuple]]] = None
-                ) -> Tuple[torch.Tensor, torch.Tensor, List[Tuple]]:
+    def forward(
+        self,
+        token_ids: torch.Tensor,
+        past_kvs: list[tuple | None] | None = None,
+        position_offset: int = 0,
+    ) -> tuple[torch.Tensor, torch.Tensor, list[tuple]]:
         """
         token_ids: [B, S]  (enteros)
         past_kvs:  lista de (K, V) por capa, o None para entrenamiento
@@ -1113,11 +1278,11 @@ class TopoGPT2(nn.Module):
         x = self.token_embed(token_ids)  # [B, S, D_MODEL]
 
         total_aux = torch.tensor(0.0, device=x.device)
-        new_kvs: List[Tuple] = []
+        new_kvs: list[tuple] = []
 
         for i, layer in enumerate(self.layers):
             pkv = past_kvs[i] if past_kvs is not None else None
-            x, al, kvc = layer(x, past_kv=pkv)
+            x, al, kvc = layer(x, past_kv=pkv, position_offset=position_offset)
             total_aux = total_aux + al
             new_kvs.append(kvc)
 
@@ -1127,7 +1292,7 @@ class TopoGPT2(nn.Module):
 
     def forward_with_memory(
         self, token_ids: torch.Tensor
-    ) -> Tuple[torch.Tensor, torch.Tensor]:
+    ) -> tuple[torch.Tensor, torch.Tensor]:
         """Process long sequences with latent memory-token context compression.
 
         Splits `token_ids` [B, S] into segments of size MEMORY_SEGMENT_LEN.
@@ -1175,15 +1340,20 @@ class TopoGPT2(nn.Module):
         aux_loss = total_aux / len(self.layers)
         return logits, aux_loss
 
-    def count_params(self) -> Dict[str, int]:
+    def count_params(self) -> dict[str, int]:
         total = sum(p.numel() for p in self.parameters())
         trainable = sum(p.numel() for p in self.parameters() if p.requires_grad)
-        return {'total': total, 'trainable': trainable}
+        return {"total": total, "trainable": trainable}
 
     @torch.no_grad()
-    def generate(self, token_ids: torch.Tensor, max_new_tokens: int = 200,
-                 temperature: float = 0.8, top_k: int = 50,
-                 repetition_penalty: float = 1.0) -> torch.Tensor:
+    def generate(
+        self,
+        token_ids: torch.Tensor,
+        max_new_tokens: int = 200,
+        temperature: float = 0.8,
+        top_k: int = 50,
+        repetition_penalty: float = 1.0,
+    ) -> torch.Tensor:
         """
         Autoregressive generation with KV cache and top-k sampling.
 
@@ -1200,8 +1370,9 @@ class TopoGPT2(nn.Module):
         self.eval()
         cfg = self.config
 
-        ctx = token_ids[:, -cfg.MAX_SEQ_LEN:]
-        logits, _, past_kvs = self(ctx)
+        ctx = token_ids[:, -cfg.MAX_SEQ_LEN :]
+        logits, _, past_kvs = self(ctx, position_offset=0)
+        position = ctx.shape[1]
         logits = logits[:, -1, :] / max(temperature, 1e-8)
         if repetition_penalty != 1.0:
             mask = torch.zeros_like(logits, dtype=torch.bool)
@@ -1209,12 +1380,15 @@ class TopoGPT2(nn.Module):
             logits = torch.where(mask, logits / repetition_penalty, logits)
         if top_k > 0:
             v, _ = torch.topk(logits, min(top_k, logits.size(-1)))
-            logits[logits < v[:, -1:]] = float('-inf')
+            logits[logits < v[:, -1:]] = float("-inf")
         next_tok = torch.multinomial(F.softmax(logits, dim=-1), 1)
         token_ids = torch.cat([token_ids, next_tok], dim=1)
 
         for _ in range(max_new_tokens - 1):
-            logits, _, past_kvs = self(next_tok, past_kvs=past_kvs)
+            logits, _, past_kvs = self(
+                next_tok, past_kvs=past_kvs, position_offset=position
+            )
+            position += 1
             logits = logits[:, -1, :] / max(temperature, 1e-8)
             if repetition_penalty != 1.0:
                 mask = torch.zeros_like(logits, dtype=torch.bool)
@@ -1222,7 +1396,7 @@ class TopoGPT2(nn.Module):
                 logits = torch.where(mask, logits / repetition_penalty, logits)
             if top_k > 0:
                 v, _ = torch.topk(logits, min(top_k, logits.size(-1)))
-                logits[logits < v[:, -1:]] = float('-inf')
+                logits[logits < v[:, -1:]] = float("-inf")
             next_tok = torch.multinomial(F.softmax(logits, dim=-1), 1)
             token_ids = torch.cat([token_ids, next_tok], dim=1)
 
@@ -1232,30 +1406,46 @@ class TopoGPT2(nn.Module):
         return token_ids
 
     @torch.no_grad()
-    def generate_with_continuation(self, token_ids: torch.Tensor,
-                                   tokenizer: Any, max_new_tokens: int = 200,
-                                   temperature: float = 0.8, top_k: int = 50,
-                                   repetition_penalty: float = 1.0,
-                                   max_continuations: int = 3,
-                                   tail_lines: int = 2) -> torch.Tensor:
+    def generate_with_continuation(
+        self,
+        token_ids: torch.Tensor,
+        tokenizer: Any,
+        max_new_tokens: int = 200,
+        temperature: float = 0.8,
+        top_k: int = 50,
+        repetition_penalty: float = 1.0,
+        max_continuations: int = 3,
+        tail_lines: int = 2,
+    ) -> torch.Tensor:
         full_ids = token_ids.clone()
         continuations = 0
 
         while continuations <= max_continuations:
-            n_new = max_new_tokens - (full_ids.shape[1] - token_ids.shape[1]) if continuations > 0 else max_new_tokens
+            n_new = (
+                max_new_tokens - (full_ids.shape[1] - token_ids.shape[1])
+                if continuations > 0
+                else max_new_tokens
+            )
             if n_new <= 0:
                 break
 
-            out = self.generate(full_ids, max_new_tokens=n_new,
-                                temperature=temperature, top_k=top_k,
-                                repetition_penalty=repetition_penalty)
+            out = self.generate(
+                full_ids,
+                max_new_tokens=n_new,
+                temperature=temperature,
+                top_k=top_k,
+                repetition_penalty=repetition_penalty,
+            )
             full_ids = out
 
             out_text = tokenizer.decode(out[0].tolist())
             prompt_text = tokenizer.decode(token_ids[0].tolist())
-            generated = out_text[len(prompt_text):]
+            generated = out_text[len(prompt_text) :]
 
-            from .continuation import is_response_complete, extract_tail_for_continuation
+            from .continuation import (
+                extract_tail_for_continuation,
+                is_response_complete,
+            )
 
             if is_response_complete(generated):
                 break
@@ -1266,8 +1456,9 @@ class TopoGPT2(nn.Module):
 
             continuations += 1
             full_text = prompt_text + tail
-            full_ids = torch.tensor([tokenizer.encode(full_text)],
-                                    dtype=torch.long, device=full_ids.device)
+            full_ids = torch.tensor(
+                [tokenizer.encode(full_text)], dtype=torch.long, device=full_ids.device
+            )
 
         return full_ids
 
@@ -1276,21 +1467,23 @@ class TopoGPT2(nn.Module):
 # TOKENIZADOR
 # ============================================================================
 
+
 class BPETokenizer:
     """Wrapper alrededor de tiktoken (GPT-2 compatible)."""
 
-    def __init__(self, encoding: str = 'gpt2'):
+    def __init__(self, encoding: str = "gpt2"):
         try:
             import tiktoken
+
             self.enc = tiktoken.get_encoding(encoding)
             self.vocab_size = self.enc.n_vocab
         except ImportError:
             raise ImportError("Instala tiktoken: pip install tiktoken")
 
-    def encode(self, text: str) -> List[int]:
-        return self.enc.encode(text, allowed_special={'<|endoftext|>'})
+    def encode(self, text: str) -> list[int]:
+        return self.enc.encode(text, allowed_special={"<|endoftext|>"})
 
-    def decode(self, tokens: List[int]) -> str:
+    def decode(self, tokens: list[int]) -> str:
         return self.enc.decode(tokens)
 
     def eot_token(self) -> int:
@@ -1302,103 +1495,411 @@ class BPETokenizer:
 # ============================================================================
 
 _TEXT_EXTENSIONS: set = {
-    '.py', '.c', '.h', '.cpp', '.cc', '.cxx', '.hpp', '.hxx',
-    '.go', '.rs', '.js', '.ts', '.tsx', '.jsx', '.mjs', '.mts',
-    '.md', '.txt', '.json', '.jsonl', '.jsonc',
-    '.yaml', '.yml', '.toml', '.xml', '.svg',
-    '.html', '.htm', '.css', '.scss', '.sass', '.less',
-    '.sh', '.bash', '.zsh', '.fish', '.ash', '.ksh',
-    '.asm', '.s', '.S', '.h',
-    '.tex', '.cls', '.sty',
-    '.r', '.R', '.rb', '.erb', '.rake',
-    '.java', '.kt', '.kts', '.scala', '.groovy', '.gradle',
-    '.swift', '.cs', '.fs', '.fsx', '.vb',
-    '.lua', '.vim', '.el', '.clj', '.cljs', '.cljc', '.edn',
-    '.ex', '.exs', '.erl', '.hrl', '.gleam',
-    '.hs', '.purs', '.Agda', '.Idris',
-    '.sql', '.pl', '.pm', '.t', '.prolog',
-    '.ini', '.cfg', '.conf', '.inf', '.reg',
-    '.env', '.editorconfig', '.gitignore', '.gitattributes',
-    '.dockerfile', 'dockerfile', 'makefile', 'makefile', 'gnumakefile',
-    '.cmake', '.cmake.in', '.mk', '.bazel', '.bzl', '.build',
-    '.proto', '.graphql', '.gql', '.thrift',
-    '.ps1', '.psm1', '.psd1', '.pssc',
-    '.过户', '.汉',  # rare but valid UTF-8 filenames
+    ".py",
+    ".c",
+    ".h",
+    ".cpp",
+    ".cc",
+    ".cxx",
+    ".hpp",
+    ".hxx",
+    ".go",
+    ".rs",
+    ".js",
+    ".ts",
+    ".tsx",
+    ".jsx",
+    ".mjs",
+    ".mts",
+    ".md",
+    ".txt",
+    ".json",
+    ".jsonl",
+    ".jsonc",
+    ".yaml",
+    ".yml",
+    ".toml",
+    ".xml",
+    ".svg",
+    ".html",
+    ".htm",
+    ".css",
+    ".scss",
+    ".sass",
+    ".less",
+    ".sh",
+    ".bash",
+    ".zsh",
+    ".fish",
+    ".ash",
+    ".ksh",
+    ".asm",
+    ".s",
+    ".S",
+    ".tex",
+    ".cls",
+    ".sty",
+    ".r",
+    ".R",
+    ".rb",
+    ".erb",
+    ".rake",
+    ".java",
+    ".kt",
+    ".kts",
+    ".scala",
+    ".groovy",
+    ".gradle",
+    ".swift",
+    ".cs",
+    ".fs",
+    ".fsx",
+    ".vb",
+    ".lua",
+    ".vim",
+    ".el",
+    ".clj",
+    ".cljs",
+    ".cljc",
+    ".edn",
+    ".ex",
+    ".exs",
+    ".erl",
+    ".hrl",
+    ".gleam",
+    ".hs",
+    ".purs",
+    ".Agda",
+    ".Idris",
+    ".sql",
+    ".pl",
+    ".pm",
+    ".t",
+    ".prolog",
+    ".ini",
+    ".cfg",
+    ".conf",
+    ".inf",
+    ".reg",
+    ".env",
+    ".editorconfig",
+    ".gitignore",
+    ".gitattributes",
+    ".dockerfile",
+    "dockerfile",
+    "makefile",
+    "gnumakefile",
+    ".cmake",
+    ".cmake.in",
+    ".mk",
+    ".bazel",
+    ".bzl",
+    ".build",
+    ".proto",
+    ".graphql",
+    ".gql",
+    ".thrift",
+    ".ps1",
+    ".psm1",
+    ".psd1",
+    ".pssc",
+    ".过户",
+    ".汉",  # rare but valid UTF-8 filenames
 }
 
 _NO_EXT_NAMES: set = {
-    'makefile', 'gnumakefile', 'cmakelists.txt', 'makefile.in',
-    'dockerfile', 'containerfile', 'jenkinsfile', 'vagrantfile',
-    'procfile', 'ruff.toml', 'pylintrc', 'flake8', 'mypy.ini',
-    'setup.cfg', 'tox.ini', 'pytest.ini', '.coveragerc',
-    'requirements.txt', 'requirements-dev.txt', 'pyproject.toml',
-    'package.json', 'package-lock.json', 'tsconfig.json', 'jsconfig.json',
-    'browserslist', '.babelrc', '.eslintrc', '.prettierrc',
-    'vite.config', 'rollup.config', 'webpack.config', 'next.config',
-    'nuxt.config', 'svelte.config', 'tailwind.config', 'postcss.config',
-    'gradle.properties', 'build.gradle', 'settings.gradle',
-    'cargo.toml', 'cargo.lock', 'rustfmt.toml', 'clippy.toml',
-    'go.mod', 'go.sum', 'go.work',
-    'build.gradle.kts', 'settings.gradle.kts',
-    'composercjson', 'composer.lock',
-    'gemfile', 'gemfile.lock', 'rakefile', 'rakefile.rb',
-    'dockerignore', 'editorconfig', 'gitignore', 'gitattributes',
-    'pre-commit', 'shell.nix', 'default.nix', 'flake.nix',
-    'hosts', 'resolv.conf', 'nginx.conf', 'apache2.conf',
-    'run', 'env', 'configure', 'install', 'build', 'clean',
+    "makefile",
+    "gnumakefile",
+    "cmakelists.txt",
+    "makefile.in",
+    "dockerfile",
+    "containerfile",
+    "jenkinsfile",
+    "vagrantfile",
+    "procfile",
+    "ruff.toml",
+    "pylintrc",
+    "flake8",
+    "mypy.ini",
+    "setup.cfg",
+    "tox.ini",
+    "pytest.ini",
+    ".coveragerc",
+    "requirements.txt",
+    "requirements-dev.txt",
+    "pyproject.toml",
+    "package.json",
+    "package-lock.json",
+    "tsconfig.json",
+    "jsconfig.json",
+    "browserslist",
+    ".babelrc",
+    ".eslintrc",
+    ".prettierrc",
+    "vite.config",
+    "rollup.config",
+    "webpack.config",
+    "next.config",
+    "nuxt.config",
+    "svelte.config",
+    "tailwind.config",
+    "postcss.config",
+    "gradle.properties",
+    "build.gradle",
+    "settings.gradle",
+    "cargo.toml",
+    "cargo.lock",
+    "rustfmt.toml",
+    "clippy.toml",
+    "go.mod",
+    "go.sum",
+    "go.work",
+    "build.gradle.kts",
+    "settings.gradle.kts",
+    "composercjson",
+    "composer.lock",
+    "gemfile",
+    "gemfile.lock",
+    "rakefile",
+    "rakefile.rb",
+    "dockerignore",
+    "editorconfig",
+    "gitignore",
+    "gitattributes",
+    "pre-commit",
+    "shell.nix",
+    "default.nix",
+    "flake.nix",
+    "hosts",
+    "resolv.conf",
+    "nginx.conf",
+    "apache2.conf",
+    "run",
+    "env",
+    "configure",
+    "install",
+    "build",
+    "clean",
 }
 
 _SKIP_SUFFIXES: set = {
-    '.o', '.obj', '.so', '.dll', '.dylib', '.exe', '.elf', '.ko',
-    '.bin', '.dat', '.pt', '.pth', '.ckpt', '.safetensors',
-    '.zip', '.tar', '.gz', '.tar.gz', '.tgz', '.bz2', '.xz', '.7z',
-    '.mp4', '.avi', '.mkv', '.mov', '.webm', '.mp3', '.wav', '.flac',
-    '.png', '.jpg', '.jpeg', '.gif', '.bmp', '.svg', '.ico',
-    '.ttf', '.woff', '.woff2', '.eot', '.otf',
-    '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx',
-    '.db', '.sqlite', '.sqlite3', '.db3',
-    '.pem', '.key', '.ccache', '.jks', '.keystore', '.p12', '.pfx',
-    '.pyc', '.pyo', '.class', '.jar', '.war',
-    '.iso', '.img', '.qcow2', '.vmdk', '.ova',
-    '.py.bak', '.py.old', '.py.orig',
-    '.min.js', '.min.css', '.bundle.js',
-    '.lock', '.lock.json',  # package lock files are data, not code
+    ".o",
+    ".obj",
+    ".so",
+    ".dll",
+    ".dylib",
+    ".exe",
+    ".elf",
+    ".ko",
+    ".bin",
+    ".dat",
+    ".pt",
+    ".pth",
+    ".ckpt",
+    ".safetensors",
+    ".zip",
+    ".tar",
+    ".gz",
+    ".tar.gz",
+    ".tgz",
+    ".bz2",
+    ".xz",
+    ".7z",
+    ".mp4",
+    ".avi",
+    ".mkv",
+    ".mov",
+    ".webm",
+    ".mp3",
+    ".wav",
+    ".flac",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".bmp",
+    ".svg",
+    ".ico",
+    ".ttf",
+    ".woff",
+    ".woff2",
+    ".eot",
+    ".otf",
+    ".pdf",
+    ".doc",
+    ".docx",
+    ".xls",
+    ".xlsx",
+    ".ppt",
+    ".pptx",
+    ".db",
+    ".sqlite",
+    ".sqlite3",
+    ".db3",
+    ".pem",
+    ".key",
+    ".ccache",
+    ".jks",
+    ".keystore",
+    ".p12",
+    ".pfx",
+    ".pyc",
+    ".pyo",
+    ".class",
+    ".jar",
+    ".war",
+    ".iso",
+    ".img",
+    ".qcow2",
+    ".vmdk",
+    ".ova",
+    ".py.bak",
+    ".py.old",
+    ".py.orig",
+    ".min.js",
+    ".min.css",
+    ".bundle.js",
+    ".lock",
+    ".lock.json",  # package lock files are data, not code
 }
 
 _SKIP_DIRS: set = {
-    '.git', '.svn', '.hg', '.bzr', 'node_modules', '__pycache__',
-    '.venv', 'venv', 'env', '.env', '.conda',
-    'build', 'dist', '.next', 'out', '.nuxt', '.svelte-kit',
-    '.obsidian', '.trash', '.cache', '.tmp',
-    'target', '.rustup', '.cargo', '.cargo/registry',
-    '.mypy_cache', '.pytest_cache', '.ruff_cache',
-    '.phpunit', '.parrot', 'lombok', '.gradle',
-    'pb_data', '.qtcreator', '.idea', '.vscode',
-    '.android', 'gradle/wrapper', '.gradle',
-    'site-packages', 'node_modules', 'bower_components',
-    '__pypackages__', '.pip-cache', '.npm', '.yarn',
-    '.cache/pip', '.cache/modernizr',
+    ".git",
+    ".svn",
+    ".hg",
+    ".bzr",
+    "node_modules",
+    "__pycache__",
+    ".venv",
+    "venv",
+    "env",
+    ".env",
+    ".conda",
+    "build",
+    "dist",
+    ".next",
+    "out",
+    ".nuxt",
+    ".svelte-kit",
+    ".obsidian",
+    ".trash",
+    ".cache",
+    ".tmp",
+    "target",
+    ".rustup",
+    ".cargo",
+    ".cargo/registry",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".phpunit",
+    ".parrot",
+    "lombok",
+    ".gradle",
+    "pb_data",
+    ".qtcreator",
+    ".idea",
+    ".vscode",
+    ".android",
+    "gradle/wrapper",
+    "site-packages",
+    "bower_components",
+    "__pypackages__",
+    ".pip-cache",
+    ".npm",
+    ".yarn",
+    ".cache/pip",
+    ".cache/modernizr",
 }
 
 _SKIP_DIRS: set = {
-    '.git', 'node_modules', '__pycache__', '.venv', 'venv',
-    'build', 'dist', '.obsidian', '.mypy_cache', '.pytest_cache',
-    '.ruff_cache', 'target', '.next', 'out', '.qtcreator',
-    'pb_data',
+    ".git",
+    "node_modules",
+    "__pycache__",
+    ".venv",
+    "venv",
+    "build",
+    "dist",
+    ".obsidian",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    "target",
+    ".next",
+    "out",
+    ".qtcreator",
+    "pb_data",
 }
 
 _SKIP_SUFFIXES: set = {
-    '.o', '.obj', '.so', '.dll', '.dylib', '.exe', '.elf', '.ko',
-    '.bin', '.dat', '.pt', '.pth', '.ckpt', '.safetensors',
-    '.zip', '.tar', '.gz', '.tar.gz', '.tgz', '.bz2', '.xz', '.7z',
-    '.mp4', '.avi', '.mkv', '.mov', '.webm', '.mp3', '.wav', '.flac',
-    '.png', '.jpg', '.jpeg', '.gif', '.bmp', '.svg', '.ico',
-    '.ttf', '.woff', '.woff2', '.eot', '.otf',
-    '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx',
-    '.db', '.sqlite', '.sqlite3', '.db3',
-    '.pem', '.key', '.ccache', '.jks', '.keystore',
-    '.pyc', '.pyo', '.class', '.jar', '.war',
-    '.iso', '.img', '.qcow2', '.vmdk', '.ova', '.safetensors',
+    ".o",
+    ".obj",
+    ".so",
+    ".dll",
+    ".dylib",
+    ".exe",
+    ".elf",
+    ".ko",
+    ".bin",
+    ".dat",
+    ".pt",
+    ".pth",
+    ".ckpt",
+    ".safetensors",
+    ".zip",
+    ".tar",
+    ".gz",
+    ".tar.gz",
+    ".tgz",
+    ".bz2",
+    ".xz",
+    ".7z",
+    ".mp4",
+    ".avi",
+    ".mkv",
+    ".mov",
+    ".webm",
+    ".mp3",
+    ".wav",
+    ".flac",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".bmp",
+    ".svg",
+    ".ico",
+    ".ttf",
+    ".woff",
+    ".woff2",
+    ".eot",
+    ".otf",
+    ".pdf",
+    ".doc",
+    ".docx",
+    ".xls",
+    ".xlsx",
+    ".ppt",
+    ".pptx",
+    ".db",
+    ".sqlite",
+    ".sqlite3",
+    ".db3",
+    ".pem",
+    ".key",
+    ".ccache",
+    ".jks",
+    ".keystore",
+    ".pyc",
+    ".pyo",
+    ".class",
+    ".jar",
+    ".war",
+    ".iso",
+    ".img",
+    ".qcow2",
+    ".vmdk",
+    ".ova",
 }
 
 
@@ -1410,18 +1911,18 @@ class FileManifest:
         self.cache_dir = cache_dir
         self.logger = logger
         os.makedirs(cache_dir, exist_ok=True)
-        self.cache_path = os.path.join(cache_dir, 'file_manifest.json')
+        self.cache_path = os.path.join(cache_dir, "file_manifest.json")
 
-    def scan(self, force: bool = False) -> List[str]:
+    def scan(self, force: bool = False) -> list[str]:
         """Walk directory tree collecting text file paths. Cached to disk."""
         if not force and os.path.exists(self.cache_path):
             self.logger.info(f"Loading file manifest from cache: {self.cache_path}")
             try:
-                with open(self.cache_path, 'r', encoding='utf-8') as f:
+                with open(self.cache_path, "r", encoding="utf-8") as f:
                     paths = json.load(f)
                 self.logger.info(f"Manifest: {len(paths)} files (cached)")
                 return paths
-            except (json.JSONDecodeError, IOError):
+            except (OSError, json.JSONDecodeError):
                 self.logger.warning("Corrupted manifest cache, rescanning...")
 
         self.logger.info(f"Scanning directory tree: {self.root}")
@@ -1430,13 +1931,14 @@ class FileManifest:
         count_skipped = 0
         try:
             base = Path(self.root).resolve()
-            for entry in base.rglob('*'):
+            for entry in base.rglob("*"):
                 count_total += 1
                 if count_total % 50_000 == 0:
                     self.logger.info(
                         f"  Scan progress: {count_total:,} entries visited, "
                         f"{len(paths):,} text files found, "
-                        f"{count_skipped:,} skipped")
+                        f"{count_skipped:,} skipped"
+                    )
 
                 if not entry.is_file():
                     continue
@@ -1451,10 +1953,10 @@ class FileManifest:
                 if suffix in _TEXT_EXTENSIONS:
                     paths.append(str(entry))
                     continue
-                if suffix == '' and entry.name.lower() in _NO_EXT_NAMES:
+                if suffix == "" and entry.name.lower() in _NO_EXT_NAMES:
                     paths.append(str(entry))
                     continue
-                if suffix == '':
+                if suffix == "":
                     count_skipped += 1
                     continue
                 count_skipped += 1
@@ -1463,8 +1965,9 @@ class FileManifest:
 
         self.logger.info(
             f"Scan complete: {count_total:,} total entries, "
-            f"{len(paths):,} text files, {count_skipped:,} skipped")
-        with open(self.cache_path, 'w', encoding='utf-8') as f:
+            f"{len(paths):,} text files, {count_skipped:,} skipped"
+        )
+        with open(self.cache_path, "w", encoding="utf-8") as f:
             json.dump(paths, f)
         return paths
 
@@ -1484,9 +1987,14 @@ class MemmapTokenizer:
         self.logger = logger
         os.makedirs(cache_dir, exist_ok=True)
 
-    def tokenize(self, file_paths: List[str], tokenizer: 'BPETokenizer',
-                 cache_key: str, max_tokens: int,
-                 min_chars: int = 20) -> np.ndarray:
+    def tokenize(
+        self,
+        file_paths: list[str],
+        tokenizer: "BPETokenizer",
+        cache_key: str,
+        max_tokens: int,
+        min_chars: int = 20,
+    ) -> np.ndarray:
         """Tokenize all files and return a memory-mapped numpy array.
 
         Args:
@@ -1500,27 +2008,28 @@ class MemmapTokenizer:
             np.ndarray backed by a memmap on disk. Only accessed pages
             are loaded into RAM by the OS virtual memory system.
         """
-        cache_path = os.path.join(self.cache_dir, f'tokens_{cache_key}.bin')
-        meta_path = os.path.join(self.cache_dir, f'tokens_{cache_key}.json')
+        cache_path = os.path.join(self.cache_dir, f"tokens_{cache_key}.bin")
+        meta_path = os.path.join(self.cache_dir, f"tokens_{cache_key}.json")
 
         if os.path.exists(cache_path) and os.path.exists(meta_path):
-            with open(meta_path, 'r') as f:
+            with open(meta_path, "r") as f:
                 meta = json.load(f)
-            n = meta['num_tokens']
+            n = meta["num_tokens"]
             self.logger.info(f"Loading cached tokens: {n:,} tokens ({cache_key})")
-            return np.memmap(cache_path, dtype=np.int64, mode='r', shape=(n,))
+            return np.memmap(cache_path, dtype=np.int64, mode="r", shape=(n,))
 
         self.logger.info(
-            f"Tokenizing {len(file_paths):,} files (max {max_tokens:,} tokens)...")
+            f"Tokenizing {len(file_paths):,} files (max {max_tokens:,} tokens)..."
+        )
 
         batch = []
         total = 0
         processed = 0
 
-        with open(cache_path, 'wb') as f:
+        with open(cache_path, "wb") as f:
             for path in file_paths:
                 try:
-                    with open(path, 'r', encoding='utf-8', errors='replace') as fh:
+                    with open(path, "r", encoding="utf-8", errors="replace") as fh:
                         text = fh.read()
                 except (OSError, UnicodeError):
                     continue
@@ -1538,7 +2047,8 @@ class MemmapTokenizer:
 
                 if total >= max_tokens > 0:
                     self.logger.info(
-                        f"Reached max_tokens ({max_tokens:,}) after {processed} files")
+                        f"Reached max_tokens ({max_tokens:,}) after {processed} files"
+                    )
                     break
 
             if batch:
@@ -1546,16 +2056,20 @@ class MemmapTokenizer:
                 f.write(arr.tobytes())
 
         total = os.path.getsize(cache_path) // 8
-        with open(meta_path, 'w') as f:
-            json.dump({
-                'num_tokens': total,
-                'cache_key': cache_key,
-                'files_processed': processed,
-            }, f)
+        with open(meta_path, "w") as f:
+            json.dump(
+                {
+                    "num_tokens": total,
+                    "cache_key": cache_key,
+                    "files_processed": processed,
+                },
+                f,
+            )
 
         self.logger.info(
-            f"Tokenized {total:,} tokens from {processed} files, cached: {cache_path}")
-        return np.memmap(cache_path, dtype=np.int64, mode='r', shape=(total,))
+            f"Tokenized {total:,} tokens from {processed} files, cached: {cache_path}"
+        )
+        return np.memmap(cache_path, dtype=np.int64, mode="r", shape=(total,))
 
 
 class MappedTokenDataset(torch.utils.data.Dataset):
@@ -1575,14 +2089,14 @@ class MappedTokenDataset(torch.utils.data.Dataset):
     def __len__(self) -> int:
         return self.n_seqs
 
-    def __getitem__(self, idx: int) -> Tuple[torch.Tensor, torch.Tensor]:
+    def __getitem__(self, idx: int) -> tuple[torch.Tensor, torch.Tensor]:
         start = idx * self.seq_len
         x = torch.as_tensor(
-            self.tokens[start:start + self.seq_len].copy(),
+            self.tokens[start : start + self.seq_len].copy(),
             dtype=torch.long,
         )
         y = torch.as_tensor(
-            self.tokens[start + 1:start + self.seq_len + 1].copy(),
+            self.tokens[start + 1 : start + self.seq_len + 1].copy(),
             dtype=torch.long,
         )
         return x, y
@@ -1592,16 +2106,22 @@ class MappedTokenDataset(torch.utils.data.Dataset):
 # TEXT QUALITY FILTER
 # ============================================================================
 
+
 class TextFilter:
     """Filters low-quality files from the corpus based on multiple heuristics."""
 
-    def __init__(self, config: 'TopoGPT2Config', logger: logging.Logger):
+    def __init__(self, config: "TopoGPT2Config", logger: logging.Logger):
         self.cfg = config
         self.logger = logger
         self._seen_hashes: set = set()
         self._stats = {
-            'total': 0, 'entropy_low': 0, 'entropy_high': 0,
-            'line_too_long': 0, 'special_token_high': 0, 'dup': 0, 'passed': 0,
+            "total": 0,
+            "entropy_low": 0,
+            "entropy_high": 0,
+            "line_too_long": 0,
+            "special_token_high": 0,
+            "dup": 0,
+            "passed": 0,
         }
 
     def _compute_entropy(self, text: str) -> float:
@@ -1609,6 +2129,7 @@ class TextFilter:
         if not text:
             return 0.0
         import collections
+
         freq = collections.Counter(text)
         total = len(text)
         entropy = 0.0
@@ -1620,12 +2141,12 @@ class TextFilter:
 
     def _has_long_lines(self, text: str, threshold: int) -> bool:
         """Return True if any line exceeds threshold characters."""
-        for line in text.split('\n'):
+        for line in text.split("\n"):
             if len(line) > threshold:
                 return True
         return False
 
-    def _special_token_ratio(self, text: str, tokenizer: 'BPETokenizer') -> float:
+    def _special_token_ratio(self, text: str, tokenizer: "BPETokenizer") -> float:
         """Fraction of tokens that are pure whitespace or indentation-only."""
         try:
             tokens = tokenizer.encode(text)
@@ -1634,19 +2155,20 @@ class TextFilter:
         if not tokens:
             return 1.0
         whitespace_toks = sum(
-            1 for t in tokens
-            if tokenizer.enc.decode([t]).strip() == ''
+            1 for t in tokens if tokenizer.enc.decode([t]).strip() == ""
         )
         return whitespace_toks / len(tokens)
 
     def _content_hash(self, text: str) -> str:
-        return hashlib.sha256(text.encode('utf-8', errors='replace')).hexdigest()[:16]
+        return hashlib.sha256(text.encode("utf-8", errors="replace")).hexdigest()[:16]
 
-    def filter_file(self, path: str, tokenizer: Optional['BPETokenizer'] = None) -> Optional[str]:
+    def filter_file(
+        self, path: str, tokenizer: Optional["BPETokenizer"] = None
+    ) -> str | None:
         """Read and evaluate a file. Returns text if passed, None if filtered."""
-        self._stats['total'] += 1
+        self._stats["total"] += 1
         try:
-            with open(path, 'r', encoding='utf-8', errors='replace') as f:
+            with open(path, "r", encoding="utf-8", errors="replace") as f:
                 text = f.read()
         except (OSError, UnicodeError):
             return None
@@ -1656,45 +2178,47 @@ class TextFilter:
 
         entropy = self._compute_entropy(text)
         if entropy < self.cfg.FILTER_ENTROPY_MIN:
-            self._stats['entropy_low'] += 1
+            self._stats["entropy_low"] += 1
             return None
         if entropy > self.cfg.FILTER_ENTROPY_MAX:
-            self._stats['entropy_high'] += 1
+            self._stats["entropy_high"] += 1
             return None
 
         if self._has_long_lines(text, self.cfg.FILTER_MAX_LINE_LEN):
-            self._stats['line_too_long'] += 1
+            self._stats["line_too_long"] += 1
             return None
 
         if tokenizer is not None and self.cfg.FILTER_SPECIAL_TOKEN_RATIO_MAX < 1.0:
             ratio = self._special_token_ratio(text, tokenizer)
             if ratio > self.cfg.FILTER_SPECIAL_TOKEN_RATIO_MAX:
-                self._stats['special_token_high'] += 1
+                self._stats["special_token_high"] += 1
                 return None
 
         if self.cfg.FILTER_ENABLE_DEDUP:
             h = self._content_hash(text)
             if h in self._seen_hashes:
-                self._stats['dup'] += 1
+                self._stats["dup"] += 1
                 return None
             self._seen_hashes.add(h)
 
-        self._stats['passed'] += 1
+        self._stats["passed"] += 1
         return text
 
-    def report(self) -> Dict[str, int]:
+    def report(self) -> dict[str, int]:
         s = self._stats
         self.logger.info(
             f"TextFilter: total={s['total']} passed={s['passed']} "
             f"entropy_low={s['entropy_low']} entropy_high={s['entropy_high']} "
             f"long_line={s['line_too_long']} special_tok={s['special_token_high']} "
-            f"dedup={s['dup']}")
+            f"dedup={s['dup']}"
+        )
         return dict(self._stats)
 
 
 # ============================================================================
 # CURRICULUM DATASET
 # ============================================================================
+
 
 class CurriculumDataset(torch.utils.data.Dataset):
     """Tiered dataset that exposes short/medium/all files based on line count.
@@ -1703,21 +2227,24 @@ class CurriculumDataset(torch.utils.data.Dataset):
     only samples from the active tier, avoiding dataset duplication.
     """
 
-    def __init__(self, tokens: np.ndarray, seq_len: int,
-                 file_tiers: Dict[int, List[int]],
-                 active_tier: int = 0,
-                 logger: Optional[logging.Logger] = None):
+    def __init__(
+        self,
+        tokens: np.ndarray,
+        seq_len: int,
+        file_tiers: dict[int, list[int]],
+        active_tier: int = 0,
+        logger: logging.Logger | None = None,
+    ):
         self.base = MappedTokenDataset(tokens, seq_len)
         self.file_tiers = file_tiers
         self.active_tier = active_tier
-        self.logger = logger or setup_logger('CurriculumDS')
+        self.logger = logger or setup_logger("CurriculumDS")
         self._update_len()
 
     def _update_len(self):
         tier_files = self.file_tiers.get(self.active_tier, [])
         self.n_seqs = len(tier_files) if tier_files else 0
-        self.logger.info(
-            f"Curriculum tier {self.active_tier}: {self.n_seqs} sequences")
+        self.logger.info(f"Curriculum tier {self.active_tier}: {self.n_seqs} sequences")
 
     def set_tier(self, tier: int):
         self.active_tier = tier
@@ -1726,7 +2253,7 @@ class CurriculumDataset(torch.utils.data.Dataset):
     def __len__(self) -> int:
         return self.n_seqs
 
-    def __getitem__(self, idx: int) -> Tuple[torch.Tensor, torch.Tensor]:
+    def __getitem__(self, idx: int) -> tuple[torch.Tensor, torch.Tensor]:
         return self.base[idx]
 
 
@@ -1734,16 +2261,17 @@ class CurriculumDataset(torch.utils.data.Dataset):
 # CURRICULUM BUILDERS
 # ============================================================================
 
-def build_file_tiers(paths: List[str], short: int, med: int) -> Dict[int, List[int]]:
+
+def build_file_tiers(paths: list[str], short: int, med: int) -> dict[int, list[int]]:
     """Classify file paths into complexity tiers by line count.
 
     Returns dict: tier -> list of file indices in that tier.
     Tier 0 = short (<=short lines), tier 1 = medium, tier 2 = all.
     """
-    tiers: Dict[int, list] = {0: [], 1: [], 2: []}
+    tiers: dict[int, list] = {0: [], 1: [], 2: []}
     for i, path in enumerate(paths):
         try:
-            with open(path, 'r', encoding='utf-8', errors='replace') as f:
+            with open(path, "r", encoding="utf-8", errors="replace") as f:
                 n_lines = sum(1 for _ in f)
         except OSError:
             n_lines = 0
@@ -1760,6 +2288,7 @@ def build_file_tiers(paths: List[str], short: int, med: int) -> Dict[int, List[i
 # PROGRESSIVE SEQUENCE LENGTH TRAINER
 # ============================================================================
 
+
 class ProgressiveSeqLenTrainer:
     """Trainer that dynamically adjusts MAX_SEQ_LEN across training phases.
 
@@ -1771,63 +2300,88 @@ class ProgressiveSeqLenTrainer:
     Each phase rebuilds the DataLoader with the new sequence length.
     """
 
-    def __init__(self, base_trainer: 'TopoGPT2Trainer'):
+    def __init__(self, base_trainer: "TopoGPT2Trainer"):
         self.trainer = base_trainer
         self.cfg = base_trainer.config
         self.logger = base_trainer.logger
         self.phase = 0
 
-    def _build_dataloader(self, dataset: MappedTokenDataset, seq_len: int,
-                          batch_size: int, is_train: bool) -> torch.utils.data.DataLoader:
+    def _build_dataloader(
+        self, dataset: MappedTokenDataset, seq_len: int, batch_size: int, is_train: bool
+    ) -> torch.utils.data.DataLoader:
         ds = MappedTokenDataset(dataset.tokens, seq_len)
         n_cpu = max(1, os.cpu_count() // 2)
-        pin = 'cuda' in self.cfg.DEVICE
+        pin = "cuda" in self.cfg.DEVICE
         return torch.utils.data.DataLoader(
-            ds, batch_size=batch_size, shuffle=is_train,
-            num_workers=n_cpu, pin_memory=pin, drop_last=is_train,
+            ds,
+            batch_size=batch_size,
+            shuffle=is_train,
+            num_workers=n_cpu,
+            pin_memory=pin,
+            drop_last=is_train,
         )
 
-    def run(self, train_paths: List[str], val_paths: List[str],
-            tokenizer: 'BPETokenizer',
-            file_tiers: Optional[Dict[int, List[int]]] = None,
-            phases: Optional[Tuple[Tuple[int, int], ...]] = None) -> Dict:
+    def run(
+        self,
+        train_paths: list[str],
+        val_paths: list[str],
+        tokenizer: "BPETokenizer",
+        file_tiers: dict[int, list[int]] | None = None,
+        phases: tuple[tuple[int, int], ...] | None = None,
+    ) -> dict:
         """Run training with progressive sequence length across phases."""
         if phases is None:
-            phases = tuple(zip(
-                self.cfg.PROGRESSIVE_SEQ_STEPS,
-                self.cfg.PROGRESSIVE_SEQ_EPOCHS,
-            ))
+            phases = tuple(
+                zip(
+                    self.cfg.PROGRESSIVE_SEQ_STEPS,
+                    self.cfg.PROGRESSIVE_SEQ_EPOCHS,
+                )
+            )
 
         self.logger.info(
-            f"ProgressiveSeqLen: {len(phases)} phases, "
-            f"{self.cfg.EPOCHS} total epochs")
+            f"ProgressiveSeqLen: {len(phases)} phases, {self.cfg.EPOCHS} total epochs"
+        )
 
         for phase_idx, (seq_len, n_epochs) in enumerate(phases):
             self.logger.info(
-                f"[Phase {phase_idx}] seq_len={seq_len}, epochs={n_epochs}")
+                f"[Phase {phase_idx}] seq_len={seq_len}, epochs={n_epochs}"
+            )
 
             self.cfg.MAX_SEQ_LEN = seq_len
 
-            train_ds = MappedTokenDataset(
-                self.trainer._tokens_cache['train'], seq_len)
+            train_ds = MappedTokenDataset(self.trainer._tokens_cache["train"], seq_len)
             val_ds = MappedTokenDataset(
-                self.trainer._tokens_cache.get('val', self.trainer._tokens_cache['train']),
-                seq_len)
+                self.trainer._tokens_cache.get(
+                    "val", self.trainer._tokens_cache["train"]
+                ),
+                seq_len,
+            )
 
             n_cpu = max(1, os.cpu_count() // 2)
-            pin = 'cuda' in self.cfg.DEVICE
+            pin = "cuda" in self.cfg.DEVICE
             train_dl = torch.utils.data.DataLoader(
-                train_ds, batch_size=self.cfg.BATCH_SIZE, shuffle=True,
-                num_workers=n_cpu, pin_memory=pin, drop_last=True)
+                train_ds,
+                batch_size=self.cfg.BATCH_SIZE,
+                shuffle=True,
+                num_workers=n_cpu,
+                pin_memory=pin,
+                drop_last=True,
+            )
             val_dl = torch.utils.data.DataLoader(
-                val_ds, batch_size=self.cfg.BATCH_SIZE * 2, shuffle=False,
-                num_workers=max(1, n_cpu // 2), pin_memory=pin, drop_last=True)
+                val_ds,
+                batch_size=self.cfg.BATCH_SIZE * 2,
+                shuffle=False,
+                num_workers=max(1, n_cpu // 2),
+                pin_memory=pin,
+                drop_last=True,
+            )
 
             prev_epochs = self.trainer.completed_epochs
             self.trainer.train(train_dl, val_dl)
             self.logger.info(
                 f"[Phase {phase_idx}] done. Epochs completed: "
-                f"{prev_epochs} -> {self.trainer.completed_epochs}")
+                f"{prev_epochs} -> {self.trainer.completed_epochs}"
+            )
 
         return self.trainer.history
 
@@ -1835,6 +2389,7 @@ class ProgressiveSeqLenTrainer:
 # ============================================================================
 # SPECULATIVE DECODING
 # ============================================================================
+
 
 class SpeculativeDecoder:
     """Speculative decoding with a small draft model.
@@ -1845,12 +2400,13 @@ class SpeculativeDecoder:
     trigger a fallback to the target model sampling.
     """
 
-    def __init__(self, target_model: 'TopoGPT2', config: 'TopoGPT2Config',
-                 logger: logging.Logger):
+    def __init__(
+        self, target_model: "TopoGPT2", config: "TopoGPT2Config", logger: logging.Logger
+    ):
         self.target = target_model
         self.cfg = config
         self.logger = logger
-        self.draft: Optional[TopoGPT2] = None
+        self.draft: TopoGPT2 | None = None
         self._build_draft()
 
     def _build_draft(self):
@@ -1864,14 +2420,18 @@ class SpeculativeDecoder:
         self.draft.eval()
         self.logger.info(
             f"SpeculativeDecoder: draft scale={self.cfg.SPEC_DECODE_DRAFT_SCALE}, "
-            f"params={self.draft.count_params()['total']:,}")
+            f"params={self.draft.count_params()['total']:,}"
+        )
 
     @torch.no_grad()
-    def generate(self, token_ids: torch.Tensor,
-                max_new_tokens: int = 200,
-                temperature: float = 0.8,
-                top_k: int = 50,
-                repetition_penalty: float = 1.0) -> torch.Tensor:
+    def generate(
+        self,
+        token_ids: torch.Tensor,
+        max_new_tokens: int = 200,
+        temperature: float = 0.8,
+        top_k: int = 50,
+        repetition_penalty: float = 1.0,
+    ) -> torch.Tensor:
         """Autoregressive generation via speculative decoding.
 
         Each round: draft generates K tokens, target verifies all K in
@@ -1882,7 +2442,7 @@ class SpeculativeDecoder:
         self.draft.eval()
         cfg = self.cfg
 
-        ctx = token_ids[:, -cfg.MAX_SEQ_LEN:]
+        ctx = token_ids[:, -cfg.MAX_SEQ_LEN :]
         logits, _, past_kvs = self.target(ctx)
         logits = logits[:, -1, :] / max(temperature, 1e-8)
         if repetition_penalty != 1.0:
@@ -1891,7 +2451,7 @@ class SpeculativeDecoder:
             logits = torch.where(mask, logits / repetition_penalty, logits)
         if top_k > 0:
             v, _ = torch.topk(logits, min(top_k, logits.size(-1)))
-            logits[logits < v[:, -1:]] = float('-inf')
+            logits[logits < v[:, -1:]] = float("-inf")
         next_tok = torch.multinomial(F.softmax(logits, dim=-1), 1)
         token_ids = torch.cat([token_ids, next_tok], dim=1)
 
@@ -1904,29 +2464,32 @@ class SpeculativeDecoder:
             draft_ctx = token_ids
             if draft_past_kvs is not None:
                 draft_logits, _, draft_past_kvs = self.draft(
-                    token_ids[:, -self.draft.config.MAX_SEQ_LEN:],
-                    past_kvs=draft_past_kvs)
+                    token_ids[:, -self.draft.config.MAX_SEQ_LEN :],
+                    past_kvs=draft_past_kvs,
+                )
             else:
                 draft_logits, _, draft_past_kvs = self.draft(draft_ctx)
             draft_tok = torch.multinomial(
-                F.softmax(draft_logits[:, -1, :] / max(temperature, 1e-8), dim=-1), k)
+                F.softmax(draft_logits[:, -1, :] / max(temperature, 1e-8), dim=-1), k
+            )
 
             accepted = []
             for t in range(k):
-                d_tok = draft_tok[:, t:t+1]
-                target_logits, _, past_kvs = self.target(
-                    d_tok, past_kvs=past_kvs)
+                d_tok = draft_tok[:, t : t + 1]
+                target_logits, _, past_kvs = self.target(d_tok, past_kvs=past_kvs)
                 t_logits = target_logits[:, -1, :] / max(temperature, 1e-8)
                 if repetition_penalty != 1.0:
                     mask = torch.zeros_like(t_logits, dtype=torch.bool)
                     mask.scatter_(1, token_ids, True)
-                    t_logits = torch.where(mask, t_logits / repetition_penalty, t_logits)
+                    t_logits = torch.where(
+                        mask, t_logits / repetition_penalty, t_logits
+                    )
                 prob = F.softmax(t_logits, dim=-1)
                 if top_k > 0:
                     v, _ = torch.topk(t_logits, min(top_k, t_logits.size(-1)))
                     mask_k = t_logits < v[:, -1:]
                     logits_topk = t_logits.clone()
-                    logits_topk[mask_k] = float('-inf')
+                    logits_topk[mask_k] = float("-inf")
                     prob = F.softmax(logits_topk, dim=-1)
                 target_tok = torch.multinomial(prob, 1)
                 if target_tok.item() == d_tok.item():
@@ -1938,8 +2501,8 @@ class SpeculativeDecoder:
                     break
             else:
                 for t in range(k):
-                    token_ids = torch.cat([token_ids, draft_tok[:, t:t+1]], dim=1)
-                generated.extend([draft_tok[:, t:t+1].item() for t in range(k)])
+                    token_ids = torch.cat([token_ids, draft_tok[:, t : t + 1]], dim=1)
+                generated.extend([draft_tok[:, t : t + 1].item() for t in range(k)])
 
             if (token_ids[:, -1:] == 50256).all():
                 break
@@ -1951,6 +2514,7 @@ class SpeculativeDecoder:
 # QUANTIZED EMBEDDING FOR INFERENCE
 # ============================================================================
 
+
 class QuantizedEmbedding(nn.Module):
     """Wrapper around nn.Embedding that applies dynamic quantization.
 
@@ -1958,7 +2522,7 @@ class QuantizedEmbedding(nn.Module):
     Supports both embed (int8) and FFN (int4) quantization modes.
     """
 
-    def __init__(self, embed: nn.Embedding, mode: str = 'int8'):
+    def __init__(self, embed: nn.Embedding, mode: str = "int8"):
         super().__init__()
         self.num_embeddings = embed.num_embeddings
         self.embedding_dim = embed.embedding_dim
@@ -1968,7 +2532,7 @@ class QuantizedEmbedding(nn.Module):
         self.scale_grad_by_freq = embed.scale_grad_by_freq
         self.sparse = embed.sparse
 
-        if mode == 'int8':
+        if mode == "int8":
             self.weight = torch.quantize_per_channel(
                 embed.weight.data.to(torch.float32),  # fp32 for quantize_per_channel
                 scales=torch.ones(embed.weight.shape[0]),
@@ -1976,7 +2540,7 @@ class QuantizedEmbedding(nn.Module):
                 axis=0,
                 dtype=torch.qint8,
             )
-        elif mode == 'int4':
+        elif mode == "int4":
             self.weight = torch.quantize_per_channel(
                 embed.weight.data.to(torch.float32),
                 scales=torch.ones(embed.weight.shape[0]),
@@ -1991,23 +2555,23 @@ class QuantizedEmbedding(nn.Module):
         return torch.embedding(self.weight, indices, padding_idx=self.padding_idx)
 
 
-def apply_quantization(model: 'TopoGPT2', config: 'TopoGPT2Config') -> 'TopoGPT2':
+def apply_quantization(model: "TopoGPT2", config: "TopoGPT2Config") -> "TopoGPT2":
     """Quantize embedding and lm_head layers for reduced VRAM usage."""
     if not config.QUANTIZE_EMBEDDINGS:
         return model
 
-    logger = setup_logger('Quantize')
+    logger = setup_logger("Quantize")
     device = config.DEVICE
 
     embed = model.token_embed
-    quantized_embed = QuantizedEmbedding(embed, mode='int8')
+    quantized_embed = QuantizedEmbedding(embed, mode="int8")
     model.token_embed = quantized_embed
     model.lm_head = nn.Linear(
-        model.lm_head.in_features, model.lm_head.out_features, bias=False)
+        model.lm_head.in_features, model.lm_head.out_features, bias=False
+    )
     model.lm_head.weight = quantized_embed.weight
 
-    logger.info(
-        f"Quantized embeddings to int8: shape={quantized_embed.weight.shape}")
+    logger.info(f"Quantized embeddings to int8: shape={quantized_embed.weight.shape}")
 
     if config.QUANTIZE_FFN:
         logger.warning("FFN int4 quantization is experimental; skipping.")
@@ -2018,6 +2582,7 @@ def apply_quantization(model: 'TopoGPT2', config: 'TopoGPT2Config') -> 'TopoGPT2
 # ============================================================================
 # CURRICULUM TRAINER WRAPPER
 # ============================================================================
+
 
 class CurriculumTrainer:
     """Extends TopoGPT2Trainer with curriculum + progressive seq len support.
@@ -2031,8 +2596,8 @@ class CurriculumTrainer:
         self._base = TopoGPT2Trainer(model, config, tokenizer)
         self.cfg = config
         self.logger = self._base.logger
-        self._tokens_cache: Dict[str, np.ndarray] = {}
-        self._curriculum_ds: Optional[CurriculumDataset] = None
+        self._tokens_cache: dict[str, np.ndarray] = {}
+        self._curriculum_ds: CurriculumDataset | None = None
 
     def cache_tokens(self, key: str, tokens: np.ndarray):
         self._tokens_cache[key] = tokens
@@ -2088,7 +2653,7 @@ class CurriculumTrainer:
     def resume(self) -> bool:
         return self._base.resume()
 
-    def _current_state(self) -> Dict:
+    def _current_state(self) -> dict:
         return self._base._current_state()
 
     def _cosine_lr(self, *args, **kwargs):
@@ -2103,10 +2668,14 @@ class CurriculumTrainer:
     def _sample_text(self, *args, **kwargs):
         self._base._sample_text(*args, **kwargs)
 
-    def _progressive_train(self, train_paths: List[str], val_paths: List[str],
-                          tokenizer: 'BPETokenizer',
-                          phases: Tuple[Tuple[int, int], ...],
-                          memtok: 'MemmapTokenizer') -> Dict:
+    def _progressive_train(
+        self,
+        train_paths: list[str],
+        val_paths: list[str],
+        tokenizer: "BPETokenizer",
+        phases: tuple[tuple[int, int], ...],
+        memtok: "MemmapTokenizer",
+    ) -> dict:
         """Training loop with progressive sequence length across phases."""
         cfg = self.cfg
         device = cfg.DEVICE
@@ -2115,61 +2684,84 @@ class CurriculumTrainer:
         for phase_idx, (seq_len, n_epochs) in enumerate(phases):
             logger.info(
                 f"[ProgressiveSeqLen Phase {phase_idx}] "
-                f"seq_len={seq_len}, epochs={n_epochs}")
+                f"seq_len={seq_len}, epochs={n_epochs}"
+            )
 
             cfg.MAX_SEQ_LEN = seq_len
 
-            train_ds = MappedTokenDataset(
-                self._tokens_cache['train'], seq_len)
+            train_ds = MappedTokenDataset(self._tokens_cache["train"], seq_len)
             val_ds = MappedTokenDataset(
-                self._tokens_cache.get('val', self._tokens_cache['train']),
-                seq_len)
+                self._tokens_cache.get("val", self._tokens_cache["train"]), seq_len
+            )
 
             n_cpu = max(1, os.cpu_count() // 2)
-            pin = 'cuda' in device
+            pin = "cuda" in device
             train_dl = torch.utils.data.DataLoader(
-                train_ds, batch_size=cfg.BATCH_SIZE, shuffle=True,
-                num_workers=n_cpu, pin_memory=pin, drop_last=True)
+                train_ds,
+                batch_size=cfg.BATCH_SIZE,
+                shuffle=True,
+                num_workers=n_cpu,
+                pin_memory=pin,
+                drop_last=True,
+            )
             val_dl = torch.utils.data.DataLoader(
-                val_ds, batch_size=cfg.BATCH_SIZE * 2, shuffle=False,
-                num_workers=max(1, n_cpu // 2), pin_memory=pin, drop_last=True)
+                val_ds,
+                batch_size=cfg.BATCH_SIZE * 2,
+                shuffle=False,
+                num_workers=max(1, n_cpu // 2),
+                pin_memory=pin,
+                drop_last=True,
+            )
 
             prev_completed = self.completed_epochs
             self._base.train(train_dl, val_dl)
             logger.info(
                 f"[Phase {phase_idx}] done. "
-                f"Epochs: {prev_completed} -> {self.completed_epochs}")
+                f"Epochs: {prev_completed} -> {self.completed_epochs}"
+            )
 
         return self.history
 
     def train(self, train_dl, val_dl):
         return self._base.train(train_dl, val_dl)
 
-    def run_curriculum(self, train_paths: List[str], val_paths: List[str],
-                       tokenizer: 'BPETokenizer',
-                       phases: Optional[Tuple[Tuple[int, int], ...]] = None):
+    def run_curriculum(
+        self,
+        train_paths: list[str],
+        val_paths: list[str],
+        tokenizer: "BPETokenizer",
+        phases: tuple[tuple[int, int], ...] | None = None,
+    ):
         """Top-level entry point: curriculum + progressive seq len."""
         if phases is None:
-            phases = tuple(zip(
-                self.cfg.PROGRESSIVE_SEQ_STEPS,
-                self.cfg.PROGRESSIVE_SEQ_EPOCHS,
-            ))
+            phases = tuple(
+                zip(
+                    self.cfg.PROGRESSIVE_SEQ_STEPS,
+                    self.cfg.PROGRESSIVE_SEQ_EPOCHS,
+                )
+            )
         return self._progressive_train(
-            train_paths, val_paths, tokenizer, phases,
-            MemmapTokenizer(self.cfg.DATA_DIR, self.logger))
+            train_paths,
+            val_paths,
+            tokenizer,
+            phases,
+            MemmapTokenizer(self.cfg.DATA_DIR, self.logger),
+        )
 
 
-def _tokenize_text_to_memmap(text: str, tokenizer: 'BPETokenizer',
-                              path: str, max_tokens: int) -> np.ndarray:
+def _tokenize_text_to_memmap(
+    text: str, tokenizer: "BPETokenizer", path: str, max_tokens: int
+) -> np.ndarray:
     """Tokenize a single text string and write tokens to disk as raw int64."""
     tokens = np.array(tokenizer.encode(text)[:max_tokens], dtype=np.int64)
     tokens.tofile(path)
-    return np.memmap(path, dtype=np.int64, mode='r', shape=(len(tokens),))
+    return np.memmap(path, dtype=np.int64, mode="r", shape=(len(tokens),))
 
 
 # ============================================================================
 # CHECKPOINT MANAGER (safetensors + JSON + optimizer.pt)
 # ============================================================================
+
 
 class CheckpointManager:
     """
@@ -2193,8 +2785,8 @@ class CheckpointManager:
     agrega nuevas entradas a train_loss[], val_loss[], etc.
     """
 
-    LATEST = 'latest'
-    BEST = 'best'
+    LATEST = "latest"
+    BEST = "best"
 
     def __init__(self, config: TopoGPT2Config, logger: logging.Logger):
         self.root = config.CHECKPOINT_DIR
@@ -2202,21 +2794,21 @@ class CheckpointManager:
         self.interval_min = config.CHECKPOINT_INTERVAL_MINUTES
         self.logger = logger
         self._last_save_time = time.time()
-        self._snapshot_dirs: List[str] = []
+        self._snapshot_dirs: list[str] = []
         for sub in (self.LATEST, self.BEST):
             os.makedirs(os.path.join(self.root, sub), exist_ok=True)
 
-    def patch_config_for_resume(self, cfg: 'TopoGPT2Config') -> None:
+    def patch_config_for_resume(self, cfg: "TopoGPT2Config") -> None:
         """
         Lee el checkpoint 'latest' y ajusta cfg.N_KV_HEADS / cfg.GQA_GROUPS
         para que coincidan con la arquitectura guardada.
         Necesario cuando el codigo cambio GQA despues de guardar el checkpoint.
         """
-        model_path = os.path.join(self.root, self.LATEST, 'model.safetensors')
+        model_path = os.path.join(self.root, self.LATEST, "model.safetensors")
         if not os.path.exists(model_path):
             return
-        sd = st_load(model_path, device='cpu')
-        key = 'layers.0.attn.k_proj.weight'
+        sd = st_load(model_path, device="cpu")
+        key = "layers.0.attn.k_proj.weight"
         if key in sd:
             ckpt_kv_dim = sd[key].shape[0]
             d_head = cfg.D_MODEL // cfg.N_HEADS
@@ -2235,8 +2827,8 @@ class CheckpointManager:
     # Persistencia de pesos: safetensors (sin pickle, sin ejecucion de codigo)
     # ------------------------------------------------------------------
 
-    def _save_model(self, model: 'TopoGPT2', directory: str) -> None:
-        path = os.path.join(directory, 'model.safetensors')
+    def _save_model(self, model: "TopoGPT2", directory: str) -> None:
+        path = os.path.join(directory, "model.safetensors")
         # El weight-tying hace que lm_head.weight y token_embed.weight sean el
         # mismo tensor en memoria. safetensors rechaza tensores compartidos,
         # por lo que excluimos lm_head.weight al guardar; al cargar el modelo
@@ -2244,32 +2836,34 @@ class CheckpointManager:
         sd = {
             k: v.contiguous().cpu()
             for k, v in model.state_dict().items()
-            if k != 'lm_head.weight'
+            if k != "lm_head.weight"
         }
         st_save(sd, path)
 
-    def _load_model(self, model: 'TopoGPT2', directory: str) -> None:
-        path = os.path.join(directory, 'model.safetensors')
+    def _load_model(self, model: "TopoGPT2", directory: str) -> None:
+        path = os.path.join(directory, "model.safetensors")
         sd = st_load(path, device=model.config.DEVICE)
         # strict=False porque lm_head.weight no esta en el archivo
         # (se reconstruye via weight-tying con token_embed.weight)
         missing, unexpected = model.load_state_dict(sd, strict=False)
         # lm_head.weight se reconstruye via weight-tying, ignorar siempre
-        unexpected_real = [k for k in unexpected if k != 'lm_head.weight']
-        missing_real    = [k for k in missing    if k != 'lm_head.weight']
+        unexpected_real = [k for k in unexpected if k != "lm_head.weight"]
+        missing_real = [k for k in missing if k != "lm_head.weight"]
         if unexpected_real:
             # Claves del checkpoint que ya no existen en el modelo (modulos eliminados).
             # Con strict=False esos pesos simplemente no se cargan; solo advertimos.
-            modules = sorted({k.split('.')[2] if k.count('.') >= 2 else k
-                               for k in unexpected_real})
+            modules = sorted(
+                {k.split(".")[2] if k.count(".") >= 2 else k for k in unexpected_real}
+            )
             self.logger.warning(
                 f"Checkpoint tiene {len(unexpected_real)} claves no presentes en el "
                 f"modelo actual (modulos eliminados: {modules}). Se ignoran."
             )
         if missing_real:
             # Claves del modelo que no estaban en el checkpoint (modulos nuevos).
-            modules = sorted({k.split('.')[2] if k.count('.') >= 2 else k
-                               for k in missing_real})
+            modules = sorted(
+                {k.split(".")[2] if k.count(".") >= 2 else k for k in missing_real}
+            )
             self.logger.warning(
                 f"Modelo tiene {len(missing_real)} claves sin checkpoint "
                 f"(modulos nuevos: {modules}). Se inicializan aleatoriamente."
@@ -2280,10 +2874,10 @@ class CheckpointManager:
     # ------------------------------------------------------------------
 
     def _save_optimizer(self, optimizer, directory: str) -> None:
-        torch.save(optimizer.state_dict(), os.path.join(directory, 'optimizer.pt'))
+        torch.save(optimizer.state_dict(), os.path.join(directory, "optimizer.pt"))
 
     def _load_optimizer(self, optimizer, directory: str, device: str) -> None:
-        path = os.path.join(directory, 'optimizer.pt')
+        path = os.path.join(directory, "optimizer.pt")
         sd = torch.load(path, map_location=device, weights_only=True)
         optimizer.load_state_dict(sd)
 
@@ -2291,16 +2885,16 @@ class CheckpointManager:
     # Metadatos en JSON (legible por humanos, sin ejecucion de codigo)
     # ------------------------------------------------------------------
 
-    def _save_state(self, state: Dict, directory: str) -> None:
-        path = os.path.join(directory, 'state.json')
-        with open(path, 'w', encoding='utf-8') as f:
+    def _save_state(self, state: dict, directory: str) -> None:
+        path = os.path.join(directory, "state.json")
+        with open(path, "w", encoding="utf-8") as f:
             json.dump(state, f, indent=2)
 
-    def _load_state(self, directory: str) -> Dict:
-        path = os.path.join(directory, 'state.json')
+    def _load_state(self, directory: str) -> dict:
+        path = os.path.join(directory, "state.json")
         if not os.path.exists(path):
             return {}
-        with open(path, 'r', encoding='utf-8') as f:
+        with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
 
     # ------------------------------------------------------------------
@@ -2310,8 +2904,9 @@ class CheckpointManager:
     def should_save(self) -> bool:
         return (time.time() - self._last_save_time) / 60 >= self.interval_min
 
-    def save(self, model: 'TopoGPT2', optimizer,
-             state: Dict, is_best: bool = False) -> str:
+    def save(
+        self, model: "TopoGPT2", optimizer, state: dict, is_best: bool = False
+    ) -> str:
         """
         Guarda checkpoint completo.
 
@@ -2335,8 +2930,8 @@ class CheckpointManager:
             )
 
         # Snapshot periodico con rotacion
-        step = state.get('global_step', 0)
-        snap_dir = os.path.join(self.root, f'step_{step:07d}')
+        step = state.get("global_step", 0)
+        snap_dir = os.path.join(self.root, f"step_{step:07d}")
         os.makedirs(snap_dir, exist_ok=True)
         self._save_model(model, snap_dir)
         self._save_optimizer(optimizer, snap_dir)
@@ -2347,27 +2942,29 @@ class CheckpointManager:
         while len(self._snapshot_dirs) > self.max_snapshots:
             old = self._snapshot_dirs.pop(0)
             import shutil
+
             if os.path.isdir(old):
                 shutil.rmtree(old, ignore_errors=True)
 
         self._last_save_time = time.time()
-        self.logger.info(f"Checkpoint guardado: epoch={state.get('completed_epochs')}, "
-                         f"step={step}")
+        self.logger.info(
+            f"Checkpoint guardado: epoch={state.get('completed_epochs')}, step={step}"
+        )
         return snap_dir
 
-    def load_latest(self, model: 'TopoGPT2', optimizer) -> Dict:
+    def load_latest(self, model: "TopoGPT2", optimizer) -> dict:
         """
         Carga el ultimo checkpoint guardado.
         Devuelve el state dict (vacio si no hay checkpoint).
         """
         latest_dir = os.path.join(self.root, self.LATEST)
-        model_path = os.path.join(latest_dir, 'model.safetensors')
+        model_path = os.path.join(latest_dir, "model.safetensors")
         if not os.path.exists(model_path):
             self.logger.info("No se encontro checkpoint previo, iniciando desde cero.")
             return {}
 
         self._load_model(model, latest_dir)
-        opt_path = os.path.join(latest_dir, 'optimizer.pt')
+        opt_path = os.path.join(latest_dir, "optimizer.pt")
         if os.path.exists(opt_path):
             try:
                 self._load_optimizer(optimizer, latest_dir, model.config.DEVICE)
@@ -2382,27 +2979,28 @@ class CheckpointManager:
         )
         return state
 
-    def load_best(self, model: 'TopoGPT2') -> Dict:
+    def load_best(self, model: "TopoGPT2") -> dict:
         """Carga el mejor modelo guardado (solo pesos, sin optimizador)."""
         best_dir = os.path.join(self.root, self.BEST)
-        model_path = os.path.join(best_dir, 'model.safetensors')
+        model_path = os.path.join(best_dir, "model.safetensors")
         if not os.path.exists(model_path):
             self.logger.warning("No hay checkpoint 'best' disponible.")
             return {}
         self._load_model(model, best_dir)
         state = self._load_state(best_dir)
-        self.logger.info(f"Mejor modelo cargado: val_loss={state.get('best_val_loss', '?'):.4f}")
+        self.logger.info(
+            f"Mejor modelo cargado: val_loss={state.get('best_val_loss', '?'):.4f}"
+        )
         return state
 
     def has_checkpoint(self) -> bool:
-        return os.path.exists(
-            os.path.join(self.root, self.LATEST, 'model.safetensors')
-        )
+        return os.path.exists(os.path.join(self.root, self.LATEST, "model.safetensors"))
 
 
 # ============================================================================
 # ENTRENADOR ACUMULATIVO
 # ============================================================================
+
 
 class TopoGPT2Trainer:
     """
@@ -2416,12 +3014,16 @@ class TopoGPT2Trainer:
     - Mixed Precision (AMP) + acumulacion de gradientes
     """
 
-    def __init__(self, model: 'TopoGPT2', config: TopoGPT2Config,
-                 tokenizer: Optional['BPETokenizer'] = None):
+    def __init__(
+        self,
+        model: "TopoGPT2",
+        config: TopoGPT2Config,
+        tokenizer: Optional["BPETokenizer"] = None,
+    ):
         self.model = model.to(config.DEVICE)
         self.config = config
-        self.tokenizer = tokenizer        # para generacion de muestra por epoch
-        self.logger = setup_logger('Trainer', config.LOG_LEVEL)
+        self.tokenizer = tokenizer  # para generacion de muestra por epoch
+        self.logger = setup_logger("Trainer", config.LOG_LEVEL)
         self.ckpt_mgr = CheckpointManager(config, self.logger)
 
         self.optimizer = torch.optim.AdamW(
@@ -2433,19 +3035,29 @@ class TopoGPT2Trainer:
 
         dev = config.DEVICE
         self.scaler = torch.amp.GradScaler(
-            dev.split(':')[0],
-            enabled=config.USE_AMP and 'cuda' in dev,
+            dev.split(":")[0],
+            enabled=config.USE_AMP and "cuda" in dev,
         )
-        self.amp_dtype = torch.float16 if 'cuda' in dev else torch.bfloat16
+        self.amp_dtype = torch.float16 if "cuda" in dev else torch.bfloat16
 
         # Estado de entrenamiento (se carga desde checkpoint si se hace --resume)
         self.completed_epochs: int = 0
         self.global_step: int = 0
-        self.best_val_loss: float = float('inf')
-        self.history: Dict[str, List] = {
-            'train_loss': [], 'val_loss': [], 'perplexity': [], 'recon_loss': [],
-            'delta': [], 'alpha': [], 't_eff': [], 'kappa': [],
-            'berry_phase': [], 'winding_number': [], 'lc': [], 'sp': [], 'phase': [],
+        self.best_val_loss: float = float("inf")
+        self.history: dict[str, list] = {
+            "train_loss": [],
+            "val_loss": [],
+            "perplexity": [],
+            "recon_loss": [],
+            "delta": [],
+            "alpha": [],
+            "t_eff": [],
+            "kappa": [],
+            "berry_phase": [],
+            "winding_number": [],
+            "lc": [],
+            "sp": [],
+            "phase": [],
         }
 
         # Metricas mecanisticas (Book.md)
@@ -2465,26 +3077,26 @@ class TopoGPT2Trainer:
         if not state:
             return False
 
-        self.completed_epochs = state.get('completed_epochs', 0)
-        self.global_step = state.get('global_step', 0)
-        self.best_val_loss = state.get('best_val_loss', float('inf'))
+        self.completed_epochs = state.get("completed_epochs", 0)
+        self.global_step = state.get("global_step", 0)
+        self.best_val_loss = state.get("best_val_loss", float("inf"))
 
         # Restaurar historial acumulado (incluye metricas mecanisticas)
-        prev_hist = state.get('history', {})
+        prev_hist = state.get("history", {})
         for key in self.history:
             self.history[key] = prev_hist.get(key, [])
 
         return True
 
-    def _current_state(self) -> Dict:
+    def _current_state(self) -> dict:
         """Construye el dict de estado para persistir en state.json."""
         return {
-            'completed_epochs': self.completed_epochs,
-            'global_step': self.global_step,
-            'best_val_loss': self.best_val_loss,
-            'history': self.history,
-            'config': asdict(self.config),
-            'saved_at': datetime.now().isoformat(),
+            "completed_epochs": self.completed_epochs,
+            "global_step": self.global_step,
+            "best_val_loss": self.best_val_loss,
+            "history": self.history,
+            "config": asdict(self.config),
+            "saved_at": datetime.now().isoformat(),
         }
 
     def _cosine_lr(self, step_in_session: int, total_steps_session: int) -> float:
@@ -2497,10 +3109,11 @@ class TopoGPT2Trainer:
 
     def _set_lr(self, lr: float) -> None:
         for pg in self.optimizer.param_groups:
-            pg['lr'] = lr
+            pg["lr"] = lr
 
-    def train(self, train_dl: torch.utils.data.DataLoader,
-              val_dl: torch.utils.data.DataLoader) -> Dict[str, List[float]]:
+    def train(
+        self, train_dl: torch.utils.data.DataLoader, val_dl: torch.utils.data.DataLoader
+    ) -> dict[str, list[float]]:
         """
         Entrena cfg.EPOCHS epocas adicionales a partir de completed_epochs.
         El historial se acumula sobre sesiones previas.
@@ -2509,19 +3122,27 @@ class TopoGPT2Trainer:
         device = cfg.DEVICE
         epochs_this_session = cfg.EPOCHS
         steps_per_epoch = len(train_dl)
-        total_steps_session = steps_per_epoch * epochs_this_session // cfg.GRAD_ACCUM_STEPS
+        total_steps_session = (
+            steps_per_epoch * epochs_this_session // cfg.GRAD_ACCUM_STEPS
+        )
         step_in_session = 0
 
         self.logger.info("=" * 70)
         self.logger.info("TopoGPT2 - Entrenamiento acumulativo")
         p = self.model.count_params()
         self.logger.info(f"Parametros: {p['total']:,}")
-        self.logger.info(f"Device: {device} | AMP: {cfg.USE_AMP} | "
-                         f"GradCkpt: {cfg.GRADIENT_CHECKPOINTING}")
-        self.logger.info(f"Escala: {cfg.SCALE} | D_MODEL: {cfg.D_MODEL} | "
-                         f"Capas: {cfg.N_LAYERS} | SEQ_LEN: {cfg.MAX_SEQ_LEN}")
-        self.logger.info(f"Toro: {cfg.TORUS_RADIAL_BINS}x{cfg.TORUS_ANGULAR_BINS} "
-                         f"= {cfg.N_TORUS_NODES} nodos")
+        self.logger.info(
+            f"Device: {device} | AMP: {cfg.USE_AMP} | "
+            f"GradCkpt: {cfg.GRADIENT_CHECKPOINTING}"
+        )
+        self.logger.info(
+            f"Escala: {cfg.SCALE} | D_MODEL: {cfg.D_MODEL} | "
+            f"Capas: {cfg.N_LAYERS} | SEQ_LEN: {cfg.MAX_SEQ_LEN}"
+        )
+        self.logger.info(
+            f"Toro: {cfg.TORUS_RADIAL_BINS}x{cfg.TORUS_ANGULAR_BINS} "
+            f"= {cfg.N_TORUS_NODES} nodos"
+        )
         self.logger.info(f"Epocas previas completadas: {self.completed_epochs}")
         self.logger.info(f"Epocas a entrenar ahora: {epochs_this_session}")
         self.logger.info(f"Mejor val_loss hasta ahora: {self.best_val_loss:.4f}")
@@ -2543,15 +3164,19 @@ class TopoGPT2Trainer:
                 lr = self._cosine_lr(step_in_session, total_steps_session)
                 self._set_lr(lr)
 
-                with torch.amp.autocast(device_type=device.split(':')[0],
-                                        dtype=self.amp_dtype,
-                                        enabled=cfg.USE_AMP):
+                with torch.amp.autocast(
+                    device_type=device.split(":")[0],
+                    dtype=self.amp_dtype,
+                    enabled=cfg.USE_AMP,
+                ):
                     logits, recon_loss, _ = self.model(batch_x)
                     lm_loss = F.cross_entropy(
                         logits.view(-1, cfg.VOCAB_SIZE),
                         batch_y.view(-1),
                     )
-                    loss = (lm_loss + cfg.AE_RECON_WEIGHT * recon_loss) / cfg.GRAD_ACCUM_STEPS
+                    loss = (
+                        lm_loss + cfg.AE_RECON_WEIGHT * recon_loss
+                    ) / cfg.GRAD_ACCUM_STEPS
 
                 self.scaler.scale(loss).backward()
                 self.mets.update_grad_buffer(self.model)
@@ -2560,7 +3185,8 @@ class TopoGPT2Trainer:
                 if n_batches % cfg.GRAD_ACCUM_STEPS == 0:
                     self.scaler.unscale_(self.optimizer)
                     torch.nn.utils.clip_grad_norm_(
-                        self.model.parameters(), cfg.GRADIENT_CLIP_NORM)
+                        self.model.parameters(), cfg.GRADIENT_CLIP_NORM
+                    )
                     self.scaler.step(self.optimizer)
                     self.scaler.update()
                     self.optimizer.zero_grad()
@@ -2573,16 +3199,18 @@ class TopoGPT2Trainer:
                 if n_batches % cfg.LOG_INTERVAL_STEPS == 0:
                     self.logger.info(
                         f"Epoch {epoch_abs} | batch {n_batches}/{steps_per_epoch} | "
-                        f"lm_loss={epoch_lm_loss/n_batches:.4f} | "
-                        f"recon={epoch_recon/n_batches:.4f} | "
+                        f"lm_loss={epoch_lm_loss / n_batches:.4f} | "
+                        f"recon={epoch_recon / n_batches:.4f} | "
                         f"lr={lr:.2e}"
                     )
 
                 # Checkpoint periodico intra-epoch
                 if self.ckpt_mgr.should_save():
                     self.ckpt_mgr.save(
-                        self.model, self.optimizer,
-                        self._current_state(), is_best=False,
+                        self.model,
+                        self.optimizer,
+                        self._current_state(),
+                        is_best=False,
                     )
 
             # -- Fin de epoch --
@@ -2592,24 +3220,26 @@ class TopoGPT2Trainer:
 
             # Metricas mecanisticas (Book.md)
             m = self.mets.compute_all(
-                self.model, lr=self._cosine_lr(step_in_session, total_steps_session),
-                dataloader=val_dl, compute_kappa=False,
+                self.model,
+                lr=self._cosine_lr(step_in_session, total_steps_session),
+                dataloader=val_dl,
+                compute_kappa=False,
             )
 
             self.completed_epochs += 1
-            self.history['train_loss'].append(avg_lm)
-            self.history['val_loss'].append(val_loss)
-            self.history['perplexity'].append(ppl)
-            self.history['recon_loss'].append(avg_recon)
-            self.history['delta'].append(m.get('delta', 0.0))
-            self.history['alpha'].append(m.get('alpha', 0.0))
-            self.history['t_eff'].append(m.get('t_eff', 0.0))
-            self.history['kappa'].append(m.get('kappa', 0.0))
-            self.history['berry_phase'].append(m.get('berry_phase', 0.0))
-            self.history['winding_number'].append(m.get('winding_number', 0))
-            self.history['lc'].append(m.get('lc', 0.0))
-            self.history['sp'].append(m.get('sp', 0.0))
-            self.history['phase'].append(m.get('phase', 'unknown'))
+            self.history["train_loss"].append(avg_lm)
+            self.history["val_loss"].append(val_loss)
+            self.history["perplexity"].append(ppl)
+            self.history["recon_loss"].append(avg_recon)
+            self.history["delta"].append(m.get("delta", 0.0))
+            self.history["alpha"].append(m.get("alpha", 0.0))
+            self.history["t_eff"].append(m.get("t_eff", 0.0))
+            self.history["kappa"].append(m.get("kappa", 0.0))
+            self.history["berry_phase"].append(m.get("berry_phase", 0.0))
+            self.history["winding_number"].append(m.get("winding_number", 0))
+            self.history["lc"].append(m.get("lc", 0.0))
+            self.history["sp"].append(m.get("sp", 0.0))
+            self.history["phase"].append(m.get("phase", "unknown"))
 
             is_best = val_loss < self.best_val_loss
             if is_best:
@@ -2625,8 +3255,10 @@ class TopoGPT2Trainer:
 
             # Checkpoint al final de cada epoch
             self.ckpt_mgr.save(
-                self.model, self.optimizer,
-                self._current_state(), is_best=is_best,
+                self.model,
+                self.optimizer,
+                self._current_state(),
+                is_best=is_best,
             )
 
             # Muestra de texto (calidad cualitativa)
@@ -2635,8 +3267,14 @@ class TopoGPT2Trainer:
         return self.history
 
     @torch.no_grad()
-    def _sample_text(self, tokenizer=None, prompts: Optional[List[str]] = None,
-                     max_new: int = 80, temperature: float = 0.8, top_k: int = 40) -> None:
+    def _sample_text(
+        self,
+        tokenizer=None,
+        prompts: list[str] | None = None,
+        max_new: int = 80,
+        temperature: float = 0.8,
+        top_k: int = 40,
+    ) -> None:
         """
         Genera una muestra de texto al final de cada epoch para monitorear
         la calidad cualitativa del modelo (detecta degeneracion, repeticion, etc.).
@@ -2657,17 +3295,17 @@ class TopoGPT2Trainer:
             ids = tokenizer.encode(prompt)
             ids_t = torch.tensor([ids], dtype=torch.long, device=device)
             gen = self.model.generate(
-                ids_t, max_new_tokens=max_new,
-                temperature=temperature, top_k=top_k)
+                ids_t, max_new_tokens=max_new, temperature=temperature, top_k=top_k
+            )
             text = tokenizer.decode(gen[0].tolist())
             # Mostrar solo los primeros 200 chars para no saturar el log
-            preview = text.replace('\n', ' ')[:200]
+            preview = text.replace("\n", " ")[:200]
             self.logger.info(f"  [{prompt!r}] -> {preview!r}")
         self.logger.info("-" * 60)
         self.model.train()
 
     @torch.no_grad()
-    def evaluate(self, dataloader) -> Tuple[float, float]:
+    def evaluate(self, dataloader) -> tuple[float, float]:
         self.model.eval()
         total_loss, n = 0.0, 0
         device = self.config.DEVICE
@@ -2675,12 +3313,15 @@ class TopoGPT2Trainer:
         for batch_x, batch_y in dataloader:
             batch_x = batch_x.to(device, non_blocking=True)
             batch_y = batch_y.to(device, non_blocking=True)
-            with torch.amp.autocast(device_type=device.split(':')[0],
-                                    dtype=self.amp_dtype,
-                                    enabled=self.config.USE_AMP):
+            with torch.amp.autocast(
+                device_type=device.split(":")[0],
+                dtype=self.amp_dtype,
+                enabled=self.config.USE_AMP,
+            ):
                 logits, _, _ = self.model(batch_x)
                 loss = F.cross_entropy(
-                    logits.view(-1, self.config.VOCAB_SIZE), batch_y.view(-1))
+                    logits.view(-1, self.config.VOCAB_SIZE), batch_y.view(-1)
+                )
             total_loss += loss.item()
             n += 1
 
@@ -2696,6 +3337,7 @@ class TopoGPT2Trainer:
 # Clasificacion de fases: cold_glass, functional_glass,
 #                         topological_insulator, discrete_crystal
 # ============================================================================
+
 
 class MechanisticMetrics:
     """
@@ -2717,10 +3359,11 @@ class MechanisticMetrics:
     sp:         superposicion = correlacion promedio inter-fila de pesos.
     """
 
-    def __init__(self, config: 'TopoGPT2Config'):
+    def __init__(self, config: "TopoGPT2Config"):
         self.config = config
         self.grad_buffer: deque = deque(maxlen=50)
         self.max_grad_sample = 500
+
     # ------------------------------------------------------------------
     # Metricas individuales
     # ------------------------------------------------------------------
@@ -2757,7 +3400,7 @@ class MechanisticMetrics:
                 flat = grad_cpu.flatten()
                 if flat.numel() > self.max_grad_sample:
                     step = max(1, flat.numel() // self.max_grad_sample)
-                    flat = flat[::step][:self.max_grad_sample]
+                    flat = flat[::step][: self.max_grad_sample]
                 parts.append(flat)
 
         if parts:
@@ -2766,13 +3409,12 @@ class MechanisticMetrics:
     def compute_t_eff(self, lr: float) -> float:
         """T_eff = lr/2 * Var(gradiente). Temperatura termodinamica efectiva."""
         if len(self.grad_buffer) < 2:
-            return float('inf')
-        G = torch.stack(list(self.grad_buffer))   # [N, D]
+            return float("inf")
+        G = torch.stack(list(self.grad_buffer))  # [N, D]
         var = G.pow(2).mean() - G.mean(0).pow(2).mean()
         return float(lr * var.clamp(min=0).item() / 2.0)
 
-    def compute_kappa(self, model: nn.Module, dataloader,
-                      n_batches: int = 5) -> float:
+    def compute_kappa(self, model: nn.Module, dataloader, n_batches: int = 5) -> float:
         """
         κ = λ_max / λ_min de la covarianza del gradiente.
         Parámetro de orden para cristalización (κ≈1 = cristal).
@@ -2789,10 +3431,11 @@ class MechanisticMetrics:
             model.zero_grad()
             try:
                 with torch.no_grad():
-                    pass # Placeholder para mantener estructura
+                    pass  # Placeholder para mantener estructura
                 logits, _, _ = model(bx)
                 loss = F.cross_entropy(
-                    logits.view(-1, self.config.VOCAB_SIZE), by.view(-1))
+                    logits.view(-1, self.config.VOCAB_SIZE), by.view(-1)
+                )
                 loss.backward()
 
                 parts = []
@@ -2808,13 +3451,13 @@ class MechanisticMetrics:
                 # Si el cálculo de kappa falla (ej. OOM o kernel crash),
                 # retorna inf para marcar inestabilidad sin abortar
                 model.zero_grad()
-                return float('inf')
+                return float("inf")
             finally:
                 model.zero_grad()
 
         model.train()
         if len(grad_samples) < 2:
-            return float('inf')
+            return float("inf")
         G = torch.stack(grad_samples)
         try:
             if G.size(0) < G.size(1):
@@ -2824,10 +3467,10 @@ class MechanisticMetrics:
                 eigs = torch.linalg.eigvalsh(torch.cov(G.t())).real
             eigs = eigs[eigs > 1e-10]
             if len(eigs) < 2:
-                return float('inf')
+                return float("inf")
             return float(eigs.max() / eigs.min())
         except Exception:
-            return float('inf')
+            return float("inf")
 
     def compute_berry_phase(self, model: nn.Module) -> float:
         """
@@ -2837,7 +3480,7 @@ class MechanisticMetrics:
         """
         phases = []
         for name, p in model.named_parameters():
-            if 'ki_' in name and p.numel() > 0:
+            if "ki_" in name and p.numel() > 0:
                 flat = p.detach().flatten().float()
                 phases.append(torch.atan2(flat, flat.abs() + 1e-10).sum().item())
         return sum(phases) if phases else 0.0
@@ -2846,8 +3489,8 @@ class MechanisticMetrics:
         """Complejidad local: 1 - similitud coseno promedio entre filas de pesos."""
         vals = []
         for name, p in model.named_parameters():
-            if 'weight' in name and p.dim() >= 2 and p.size(0) >= 4:
-                w = p.detach()[:min(p.size(0), 64), :min(p.size(1), 64)].float()
+            if "weight" in name and p.dim() >= 2 and p.size(0) >= 4:
+                w = p.detach()[: min(p.size(0), 64), : min(p.size(1), 64)].float()
                 norms = w.norm(dim=1, keepdim=True).clamp(min=1e-8)
                 w = w / norms
                 sim = (w @ w.t()).abs()
@@ -2860,8 +3503,8 @@ class MechanisticMetrics:
         """Superposicion: correlacion inter-fila promedio (entrelazamiento de features)."""
         vals = []
         for name, p in model.named_parameters():
-            if 'weight' in name and p.dim() >= 2 and p.size(0) >= 4:
-                w = p.detach()[:min(p.size(0), 64)].float()
+            if "weight" in name and p.dim() >= 2 and p.size(0) >= 4:
+                w = p.detach()[: min(p.size(0), 64)].float()
                 w = w.reshape(w.size(0), -1)
                 try:
                     corr = torch.corrcoef(w).nan_to_num(0.0).abs()
@@ -2872,8 +3515,7 @@ class MechanisticMetrics:
                     pass
         return float(np.mean(vals)) if vals else 0.0
 
-    def classify_phase(self, delta: float, kappa: float,
-                        berry: float) -> str:
+    def classify_phase(self, delta: float, kappa: float, berry: float) -> str:
         """
         Clasificacion de fase segun Book.md:
 
@@ -2884,15 +3526,16 @@ class MechanisticMetrics:
         """
         winding = round(berry / (2 * math.pi))
         if delta < 0.05 and kappa < 1.5:
-            return 'discrete_crystal'
+            return "discrete_crystal"
         if abs(berry) > math.pi / 2 and abs(winding) >= 1:
-            return 'topological_insulator'
+            return "topological_insulator"
         if kappa > 100 and delta > 0.3:
-            return 'cold_glass'
-        return 'functional_glass'
+            return "cold_glass"
+        return "functional_glass"
 
-    def compute_all(self, model: nn.Module, lr: float,
-                    dataloader=None, compute_kappa: bool = False) -> Dict[str, Any]:
+    def compute_all(
+        self, model: nn.Module, lr: float, dataloader=None, compute_kappa: bool = False
+    ) -> dict[str, Any]:
         """
         Calcula todas las metricas.
         compute_kappa=True hace pasadas backward adicionales (caro, usar cada N epochs).
@@ -2907,18 +3550,24 @@ class MechanisticMetrics:
         kappa = (
             self.compute_kappa(model, dataloader)
             if compute_kappa and dataloader is not None
-            else float('inf')
+            else float("inf")
         )
         phase = self.classify_phase(delta, kappa, berry)
         return {
-            'delta': delta, 'alpha': alpha, 't_eff': t_eff, 'kappa': kappa,
-            'berry_phase': berry, 'winding_number': winding,
-            'lc': lc, 'sp': sp, 'phase': phase,
+            "delta": delta,
+            "alpha": alpha,
+            "t_eff": t_eff,
+            "kappa": kappa,
+            "berry_phase": berry,
+            "winding_number": winding,
+            "lc": lc,
+            "sp": sp,
+            "phase": phase,
         }
 
-    def format_log(self, m: Dict[str, Any]) -> str:
-        inf = float('inf')
-        kappa = m.get('kappa', 0.0)
+    def format_log(self, m: dict[str, Any]) -> str:
+        inf = float("inf")
+        kappa = m.get("kappa", 0.0)
         kappa_str = f"{kappa:.2f}" if kappa < inf else "inf"
         return (
             f"delta={m.get('delta', 0.0):.4f} alpha={m.get('alpha', 0.0):.2f} "
@@ -2933,6 +3582,7 @@ class MechanisticMetrics:
 # ============================================================================
 # FASE 0: Optimizacion del ratio de kernels espectrales (GOE-GUE)
 # ============================================================================
+
 
 class Phase0_KernelOptimizer:
     """
@@ -2952,11 +3602,13 @@ class Phase0_KernelOptimizer:
 
     RATIOS_TO_TEST = [0.05, 0.10, 0.18, 0.30, 0.50]  # del config original
 
-    def __init__(self, config: 'TopoGPT2Config', logger: logging.Logger):
+    def __init__(self, config: "TopoGPT2Config", logger: logging.Logger):
         self.config = config
         self.logger = logger
 
-    def _measure_ratio(self, ratio: float, sample_batch: Tuple[torch.Tensor, torch.Tensor]) -> float:
+    def _measure_ratio(
+        self, ratio: float, sample_batch: tuple[torch.Tensor, torch.Tensor]
+    ) -> float:
         """
         Mide la coherencia espectral para un ratio dado.
         Retorna: varianza del gradiente (menor = mas coherente = mejor).
@@ -2980,7 +3632,7 @@ class Phase0_KernelOptimizer:
             if p.grad is not None:
                 grads.append(p.grad.detach().flatten()[:200].float())
         if not grads:
-            return float('inf')
+            return float("inf")
         G = torch.cat(grads)
         # Menor varianza = gradientes mas isotropos = mejor coherencia
         return float(G.var().item())
@@ -3001,13 +3653,16 @@ class Phase0_KernelOptimizer:
             self.logger.info(f"  ratio={ratio:.2f} -> grad_var={score:.4e}")
 
         best_ratio = min(results, key=results.get)
-        self.logger.info(f"Fase 0: mejor ratio = {best_ratio} (grad_var={results[best_ratio]:.4e})")
+        self.logger.info(
+            f"Fase 0: mejor ratio = {best_ratio} (grad_var={results[best_ratio]:.4e})"
+        )
         return best_ratio
 
 
 # ============================================================================
 # FASE 1: Prospecting de batch size
 # ============================================================================
+
 
 class Phase1_BatchProspector:
     """
@@ -3025,25 +3680,29 @@ class Phase1_BatchProspector:
     Tiempo tipico: < 2 minutos para 3 candidatos × 30 pasos.
     """
 
-    def __init__(self, config: 'TopoGPT2Config', logger: logging.Logger):
+    def __init__(self, config: "TopoGPT2Config", logger: logging.Logger):
         self.config = config
         self.logger = logger
 
-    def prospect(self, candidates: List[int], train_dataset,
-                 prospect_steps: int = 30) -> int:
+    def prospect(
+        self, candidates: list[int], train_dataset, prospect_steps: int = 30
+    ) -> int:
         """Retorna el mejor batch size segun delta y T_eff."""
         self.logger.info(
             f"Fase 1: prospecting batch sizes {candidates} "
-            f"({prospect_steps} pasos cada uno)...")
+            f"({prospect_steps} pasos cada uno)..."
+        )
         device = self.config.DEVICE
         results = {}
 
         for bs in candidates:
             dl = torch.utils.data.DataLoader(
-                train_dataset, batch_size=bs, shuffle=True, drop_last=True)
+                train_dataset, batch_size=bs, shuffle=True, drop_last=True
+            )
             model = TopoGPT2(self.config).to(device)
             optimizer = torch.optim.AdamW(
-                model.parameters(), lr=self.config.LEARNING_RATE)
+                model.parameters(), lr=self.config.LEARNING_RATE
+            )
             metrics = MechanisticMetrics(self.config)
 
             model.train()
@@ -3055,9 +3714,12 @@ class Phase1_BatchProspector:
                 bx, by = bx.to(device), by.to(device)
                 optimizer.zero_grad()
                 logits, rl, _ = model(bx)
-                loss = (F.cross_entropy(logits.view(-1, self.config.VOCAB_SIZE),
-                                        by.view(-1))
-                        + self.config.AE_RECON_WEIGHT * rl)
+                loss = (
+                    F.cross_entropy(
+                        logits.view(-1, self.config.VOCAB_SIZE), by.view(-1)
+                    )
+                    + self.config.AE_RECON_WEIGHT * rl
+                )
                 loss.backward()
                 metrics.update_grad_buffer(model)
                 torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -3068,21 +3730,21 @@ class Phase1_BatchProspector:
             delta_velocity = (delta_end - delta_start) / max(prospect_steps, 1)
 
             results[bs] = {
-                'delta_end': delta_end,
-                'delta_velocity': delta_velocity,
-                't_eff': t_eff,
+                "delta_end": delta_end,
+                "delta_velocity": delta_velocity,
+                "t_eff": t_eff,
             }
             self.logger.info(
                 f"  bs={bs:4d}: delta={delta_end:.4f} "
-                f"d_vel={delta_velocity:.2e} T_eff={t_eff:.2e}")
+                f"d_vel={delta_velocity:.2e} T_eff={t_eff:.2e}"
+            )
 
             del model, optimizer
 
         # Criterio: batch size con velocidad de delta mas negativa
         # (enfriamiento mas rapido). Desempate: T_eff mas bajo.
         best_bs = min(
-            results,
-            key=lambda b: (results[b]['delta_velocity'], results[b]['t_eff'])
+            results, key=lambda b: (results[b]["delta_velocity"], results[b]["t_eff"])
         )
         self.logger.info(f"Fase 1: mejor batch size = {best_bs}")
         return best_bs
@@ -3091,6 +3753,7 @@ class Phase1_BatchProspector:
 # ============================================================================
 # FASE 2: Mineria de semillas (seed mining)
 # ============================================================================
+
 
 class Phase2_SeedMiner:
     """
@@ -3108,27 +3771,33 @@ class Phase2_SeedMiner:
     Tiempo tipico: < 3 minutos para 5 semillas × 50 pasos.
     """
 
-    def __init__(self, config: 'TopoGPT2Config', logger: logging.Logger):
+    def __init__(self, config: "TopoGPT2Config", logger: logging.Logger):
         self.config = config
         self.logger = logger
 
-    def mine(self, seed_start: int, n_seeds: int, train_dataset,
-             prospect_steps: int = 50) -> int:
+    def mine(
+        self, seed_start: int, n_seeds: int, train_dataset, prospect_steps: int = 50
+    ) -> int:
         """Retorna la semilla con la mejor trayectoria de delta."""
         self.logger.info(
             f"Fase 2: minando {n_seeds} semillas desde seed={seed_start} "
-            f"({prospect_steps} pasos cada una)...")
+            f"({prospect_steps} pasos cada una)..."
+        )
         device = self.config.DEVICE
         dl = torch.utils.data.DataLoader(
-            train_dataset, batch_size=self.config.BATCH_SIZE,
-            shuffle=True, drop_last=True)
+            train_dataset,
+            batch_size=self.config.BATCH_SIZE,
+            shuffle=True,
+            drop_last=True,
+        )
         results = {}
 
         for s in range(seed_start, seed_start + n_seeds):
             set_seed(s, device)
             model = TopoGPT2(self.config).to(device)
             optimizer = torch.optim.AdamW(
-                model.parameters(), lr=self.config.LEARNING_RATE)
+                model.parameters(), lr=self.config.LEARNING_RATE
+            )
             mets = MechanisticMetrics(self.config)
 
             delta_start = mets.compute_delta(model)
@@ -3140,9 +3809,12 @@ class Phase2_SeedMiner:
                 bx, by = bx.to(device), by.to(device)
                 optimizer.zero_grad()
                 logits, rl, _ = model(bx)
-                loss = (F.cross_entropy(logits.view(-1, self.config.VOCAB_SIZE),
-                                        by.view(-1))
-                        + self.config.AE_RECON_WEIGHT * rl)
+                loss = (
+                    F.cross_entropy(
+                        logits.view(-1, self.config.VOCAB_SIZE), by.view(-1)
+                    )
+                    + self.config.AE_RECON_WEIGHT * rl
+                )
                 loss.backward()
                 mets.update_grad_buffer(model)
                 torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -3154,18 +3826,23 @@ class Phase2_SeedMiner:
             is_cooling = delta_vel < 0
 
             results[s] = {
-                'delta_end': delta_end, 'delta_velocity': delta_vel,
-                't_eff': t_eff, 'is_cooling': is_cooling,
+                "delta_end": delta_end,
+                "delta_velocity": delta_vel,
+                "t_eff": t_eff,
+                "is_cooling": is_cooling,
             }
             self.logger.info(
                 f"  seed={s:4d}: delta={delta_end:.4f} "
-                f"d_vel={delta_vel:.2e} cooling={is_cooling}")
+                f"d_vel={delta_vel:.2e} cooling={is_cooling}"
+            )
             del model, optimizer
 
         # Ordenar: cooling primero, luego delta_velocity mas negativo
-        cooling_seeds = {s: v for s, v in results.items() if v['is_cooling']}
+        cooling_seeds = {s: v for s, v in results.items() if v["is_cooling"]}
         pool = cooling_seeds if cooling_seeds else results
-        best_seed = min(pool, key=lambda s: (pool[s]['delta_velocity'], pool[s]['delta_end']))
+        best_seed = min(
+            pool, key=lambda s: (pool[s]["delta_velocity"], pool[s]["delta_end"])
+        )
         self.logger.info(f"Fase 2: mejor semilla = {best_seed}")
         return best_seed
 
@@ -3173,6 +3850,7 @@ class Phase2_SeedMiner:
 # ============================================================================
 # FASE 4: Refinamiento por Recocido Simulado (Simulated Annealing)
 # ============================================================================
+
 
 class Phase4_AnnealingRefiner:
     """
@@ -3194,16 +3872,20 @@ class Phase4_AnnealingRefiner:
     Tiempo: proporcional a refine_epochs (user-controlled).
     """
 
-    def __init__(self, trainer: 'TopoGPT2Trainer',
-                 t0: float = 0.5, cooling_rate: float = 0.95,
-                 stagnation_patience: int = 5):
+    def __init__(
+        self,
+        trainer: "TopoGPT2Trainer",
+        t0: float = 0.5,
+        cooling_rate: float = 0.95,
+        stagnation_patience: int = 5,
+    ):
         self.trainer = trainer
         self.t0 = t0
         self.cooling_rate = cooling_rate
         self.stagnation_patience = stagnation_patience
         self.logger = trainer.logger
 
-    def refine(self, train_dl, val_dl, refine_epochs: int) -> Dict:
+    def refine(self, train_dl, val_dl, refine_epochs: int) -> dict:
         """
         Ejecuta refine_epochs epocas de recocido simulado.
         Retorna el historial de refinamiento.
@@ -3219,12 +3901,13 @@ class Phase4_AnnealingRefiner:
         best_state = {k: v.clone() for k, v in model.state_dict().items()}
         prev_val_loss = best_val_loss
         stagnation_count = 0
-        refine_history: List[Dict] = []
+        refine_history: list[dict] = []
 
         self.logger.info("=" * 70)
         self.logger.info(f"Fase 4: recocido simulado ({refine_epochs} epocas)")
-        self.logger.info(f"  T0={self.t0} cooling={self.cooling_rate} "
-                         f"best_val={best_val_loss:.4f}")
+        self.logger.info(
+            f"  T0={self.t0} cooling={self.cooling_rate} best_val={best_val_loss:.4f}"
+        )
         self.logger.info("=" * 70)
 
         for epoch_idx in range(1, refine_epochs + 1):
@@ -3240,9 +3923,10 @@ class Phase4_AnnealingRefiner:
             for step, (bx, by) in enumerate(train_dl):
                 bx, by = bx.to(device), by.to(device)
                 with torch.amp.autocast(
-                        device_type=device.split(':')[0],
-                        dtype=self.trainer.amp_dtype,
-                        enabled=cfg.USE_AMP):
+                    device_type=device.split(":")[0],
+                    dtype=self.trainer.amp_dtype,
+                    enabled=cfg.USE_AMP,
+                ):
                     logits, rl, _ = model(bx)
                     loss = (
                         F.cross_entropy(logits.view(-1, cfg.VOCAB_SIZE), by.view(-1))
@@ -3252,7 +3936,9 @@ class Phase4_AnnealingRefiner:
                 metrics.update_grad_buffer(model)
                 if (step + 1) % cfg.GRAD_ACCUM_STEPS == 0:
                     self.trainer.scaler.unscale_(optimizer)
-                    torch.nn.utils.clip_grad_norm_(model.parameters(), cfg.GRADIENT_CLIP_NORM)
+                    torch.nn.utils.clip_grad_norm_(
+                        model.parameters(), cfg.GRADIENT_CLIP_NORM
+                    )
                     self.trainer.scaler.step(optimizer)
                     self.trainer.scaler.update()
                     optimizer.zero_grad()
@@ -3269,7 +3955,7 @@ class Phase4_AnnealingRefiner:
                 accept = True
             else:
                 prob = math.exp(-delta_loss / max(T, 1e-12))
-                accept = (torch.rand(1).item() < prob)
+                accept = torch.rand(1).item() < prob
 
             if accept:
                 prev_val_loss = val_loss
@@ -3283,7 +3969,8 @@ class Phase4_AnnealingRefiner:
                 model.load_state_dict(prev_state)
                 stagnation_count += 1
                 self.logger.info(
-                    f"  [Annealing] Epoch rechazada (Δloss={delta_loss:.4f}, T={T:.4f})")
+                    f"  [Annealing] Epoch rechazada (Δloss={delta_loss:.4f}, T={T:.4f})"
+                )
 
             # Estancamiento: perturbacion termica
             if stagnation_count >= self.stagnation_patience:
@@ -3299,15 +3986,19 @@ class Phase4_AnnealingRefiner:
 
             # Actualizar estado del trainer
             self.trainer.completed_epochs += 1
-            self.trainer.history['train_loss'].append(ep_loss / max(n, 1))
-            self.trainer.history['val_loss'].append(val_loss)
-            self.trainer.history['perplexity'].append(ppl)
-            self.trainer.history['recon_loss'].append(0.0)
+            self.trainer.history["train_loss"].append(ep_loss / max(n, 1))
+            self.trainer.history["val_loss"].append(val_loss)
+            self.trainer.history["perplexity"].append(ppl)
+            self.trainer.history["recon_loss"].append(0.0)
 
             rec = {
-                'epoch': epoch_abs, 'val_loss': val_loss, 'ppl': ppl,
-                'delta': delta, 't_eff': t_eff, 'T_anneal': T,
-                'accepted': accept,
+                "epoch": epoch_abs,
+                "val_loss": val_loss,
+                "ppl": ppl,
+                "delta": delta,
+                "t_eff": t_eff,
+                "T_anneal": T,
+                "accepted": accept,
             }
             refine_history.append(rec)
 
@@ -3319,21 +4010,22 @@ class Phase4_AnnealingRefiner:
 
             # Checkpoint
             self.trainer.ckpt_mgr.save(
-                model, optimizer,
+                model,
+                optimizer,
                 self.trainer._current_state(),
                 is_best=(val_loss < best_val_loss + 1e-8),
             )
 
         # Restaurar mejor modelo encontrado
         model.load_state_dict(best_state)
-        self.logger.info(
-            f"Fase 4 completa. Mejor val_loss = {best_val_loss:.4f}")
-        return {'refine_history': refine_history, 'best_val_loss': best_val_loss}
+        self.logger.info(f"Fase 4 completa. Mejor val_loss = {best_val_loss:.4f}")
+        return {"refine_history": refine_history, "best_val_loss": best_val_loss}
 
 
 # ============================================================================
 # PIPELINE V2: Curriculum + Progressive Sequence Length
 # ============================================================================
+
 
 class TopoPhasePipelineV2:
     """Pipeline with curriculum learning and progressive sequence length.
@@ -3346,11 +4038,16 @@ class TopoPhasePipelineV2:
     - Tokens cached in memory for fast DataLoader rebuilding per phase
     """
 
-    def __init__(self, config: 'TopoGPT2Config',
-                 train_tokens: np.ndarray, val_tokens: np.ndarray,
-                 tokenizer: 'BPETokenizer', logger: logging.Logger,
-                 curriculum_tiers: Optional[Dict[int, List[int]]] = None,
-                 progressive_seq: bool = True):
+    def __init__(
+        self,
+        config: "TopoGPT2Config",
+        train_tokens: np.ndarray,
+        val_tokens: np.ndarray,
+        tokenizer: "BPETokenizer",
+        logger: logging.Logger,
+        curriculum_tiers: dict[int, list[int]] | None = None,
+        progressive_seq: bool = True,
+    ):
         self.config = config
         self.train_tokens = train_tokens
         self.val_tokens = val_tokens
@@ -3359,48 +4056,65 @@ class TopoPhasePipelineV2:
         self.curriculum_tiers = curriculum_tiers
         self.progressive_seq = progressive_seq
 
-    def _build_dataloader(self, tokens: np.ndarray, seq_len: int,
-                           batch_size: int, shuffle: bool,
-                           tag: str = '') -> torch.utils.data.DataLoader:
+    def _build_dataloader(
+        self,
+        tokens: np.ndarray,
+        seq_len: int,
+        batch_size: int,
+        shuffle: bool,
+        tag: str = "",
+    ) -> torch.utils.data.DataLoader:
         n_cpu = max(1, os.cpu_count() // 2)
-        pin = 'cuda' in self.config.DEVICE
+        pin = "cuda" in self.config.DEVICE
         ds = MappedTokenDataset(tokens, seq_len)
         dl = torch.utils.data.DataLoader(
-            ds, batch_size=batch_size, shuffle=shuffle,
-            num_workers=n_cpu, pin_memory=pin, drop_last=shuffle)
+            ds,
+            batch_size=batch_size,
+            shuffle=shuffle,
+            num_workers=n_cpu,
+            pin_memory=pin,
+            drop_last=shuffle,
+        )
         self.logger.info(
             f"[{tag}] seq_len={seq_len} -> {len(ds):,} sequences, "
-            f"bs={batch_size}, steps={len(dl)}")
+            f"bs={batch_size}, steps={len(dl)}"
+        )
         return dl
 
-    def _build_phases(self) -> Tuple[Tuple[int, int], ...]:
+    def _build_phases(self) -> tuple[tuple[int, int], ...]:
         if self.progressive_seq:
-            return tuple(zip(
-                self.config.PROGRESSIVE_SEQ_STEPS,
-                self.config.PROGRESSIVE_SEQ_EPOCHS,
-            ))
+            return tuple(
+                zip(
+                    self.config.PROGRESSIVE_SEQ_STEPS,
+                    self.config.PROGRESSIVE_SEQ_EPOCHS,
+                )
+            )
         seq = self.config.MAX_SEQ_LEN
         return ((seq, self.config.EPOCHS),)
 
-    def run(self, run_prospect: bool = False,
-            refine_epochs: int = 0,
-            resume: bool = False,
-            prospect_steps: int = 50,
-            probe_seeds: int = 3,
-            seed_start: int = 1) -> 'CurriculumTrainer':
+    def run(
+        self,
+        run_prospect: bool = False,
+        refine_epochs: int = 0,
+        resume: bool = False,
+        prospect_steps: int = 50,
+        probe_seeds: int = 3,
+        seed_start: int = 1,
+    ) -> "CurriculumTrainer":
         cfg = self.config
         logger = self.logger
 
         if run_prospect:
             logger.info(
-                "Prospecting disabled in V2 pipeline (use standard pipeline for that).")
+                "Prospecting disabled in V2 pipeline (use standard pipeline for that)."
+            )
 
         set_seed(cfg.RANDOM_SEED, cfg.DEVICE)
 
         model = TopoGPT2(cfg)
         trainer = CurriculumTrainer(model, cfg, tokenizer=self.tokenizer)
-        trainer.cache_tokens('train', self.train_tokens)
-        trainer.cache_tokens('val', self.val_tokens)
+        trainer.cache_tokens("train", self.train_tokens)
+        trainer.cache_tokens("val", self.val_tokens)
 
         if resume:
             loaded = trainer.resume()
@@ -3410,11 +4124,11 @@ class TopoPhasePipelineV2:
         phases = self._build_phases()
         logger.info(
             f"ProgressiveSeqLen={self.progressive_seq} phases={len(phases)} "
-            f"curriculum={self.curriculum_tiers is not None}")
+            f"curriculum={self.curriculum_tiers is not None}"
+        )
 
         for phase_idx, (seq_len, n_epochs) in enumerate(phases):
-            logger.info(
-                f"[Phase {phase_idx}] seq_len={seq_len}, epochs={n_epochs}")
+            logger.info(f"[Phase {phase_idx}] seq_len={seq_len}, epochs={n_epochs}")
             cfg.MAX_SEQ_LEN = seq_len
 
             if self.curriculum_tiers is not None:
@@ -3431,13 +4145,16 @@ class TopoPhasePipelineV2:
                 phase_tier = min(phase_idx, 2)
                 logger.info(
                     f"[Phase {phase_idx}] Curriculum tier {phase_tier} "
-                    f"({tier_file_counts.get(phase_tier,0):,} files), "
-                    f"range: {tier_map[phase_tier]}")
+                    f"({tier_file_counts.get(phase_tier, 0):,} files), "
+                    f"range: {tier_map[phase_tier]}"
+                )
 
             train_dl = self._build_dataloader(
-                self.train_tokens, seq_len, cfg.BATCH_SIZE, True, 'train')
+                self.train_tokens, seq_len, cfg.BATCH_SIZE, True, "train"
+            )
             val_dl = self._build_dataloader(
-                self.val_tokens, seq_len, cfg.BATCH_SIZE * 2, False, 'val')
+                self.val_tokens, seq_len, cfg.BATCH_SIZE * 2, False, "val"
+            )
 
             prev_completed = trainer.completed_epochs
 
@@ -3451,7 +4168,8 @@ class TopoPhasePipelineV2:
 
             logger.info(
                 f"[Phase {phase_idx}] done. Epochs: {prev_completed} -> "
-                f"{trainer.completed_epochs}")
+                f"{trainer.completed_epochs}"
+            )
 
         if refine_epochs > 0:
             refiner = Phase4_AnnealingRefiner(trainer._base)
@@ -3463,6 +4181,7 @@ class TopoPhasePipelineV2:
 # ============================================================================
 # PIPELINE COMPLETO (5 FASES)
 # ============================================================================
+
 
 class TopoPhasePipeline:
     """
@@ -3484,10 +4203,14 @@ class TopoPhasePipeline:
       Sin flags: solo fase 3 (comportamiento original, identico a antes)
     """
 
-    def __init__(self, config: 'TopoGPT2Config',
-                 train_dataset, val_dataset,
-                 tokenizer: 'BPETokenizer',
-                 logger: logging.Logger):
+    def __init__(
+        self,
+        config: "TopoGPT2Config",
+        train_dataset,
+        val_dataset,
+        tokenizer: "BPETokenizer",
+        logger: logging.Logger,
+    ):
         self.config = config
         self.train_dataset = train_dataset
         self.val_dataset = val_dataset
@@ -3497,21 +4220,34 @@ class TopoPhasePipeline:
     def _make_dataloaders(self, batch_size: int = 0):
         bs = batch_size or self.config.BATCH_SIZE
         n_cpu = min(4, os.cpu_count() or 1)
-        pin = 'cuda' in self.config.DEVICE
+        pin = "cuda" in self.config.DEVICE
         train_dl = torch.utils.data.DataLoader(
-            self.train_dataset, batch_size=bs, shuffle=True,
-            num_workers=n_cpu, pin_memory=pin, drop_last=True)
+            self.train_dataset,
+            batch_size=bs,
+            shuffle=True,
+            num_workers=n_cpu,
+            pin_memory=pin,
+            drop_last=True,
+        )
         val_dl = torch.utils.data.DataLoader(
-            self.val_dataset, batch_size=bs * 2, shuffle=False,
-            num_workers=max(1, n_cpu // 2), pin_memory=pin, drop_last=True)
+            self.val_dataset,
+            batch_size=bs * 2,
+            shuffle=False,
+            num_workers=max(1, n_cpu // 2),
+            pin_memory=pin,
+            drop_last=True,
+        )
         return train_dl, val_dl
 
-    def run(self, run_prospect: bool = False,
-            refine_epochs: int = 0,
-            resume: bool = False,
-            prospect_steps: int = 50,
-            probe_seeds: int = 3,
-            seed_start: int = 1) -> 'TopoGPT2Trainer':
+    def run(
+        self,
+        run_prospect: bool = False,
+        refine_epochs: int = 0,
+        resume: bool = False,
+        prospect_steps: int = 50,
+        probe_seeds: int = 3,
+        seed_start: int = 1,
+    ) -> "TopoGPT2Trainer":
         """
         Ejecuta el pipeline completo.
         Retorna el trainer con el modelo entrenado.
@@ -3541,13 +4277,16 @@ class TopoPhasePipeline:
         # ---- Fase 2: seed mining ----
         if run_prospect:
             p2 = Phase2_SeedMiner(cfg, self.logger)
-            best_seed = p2.mine(seed_start, probe_seeds,
-                                self.train_dataset, prospect_steps)
+            best_seed = p2.mine(
+                seed_start, probe_seeds, self.train_dataset, prospect_steps
+            )
             cfg.RANDOM_SEED = best_seed
             set_seed(best_seed, cfg.DEVICE)
-            self.logger.info(f"Fases 0-2 completas. "
-                             f"ratio={cfg.SPECTRAL_KERNEL_INIT_SCALE} "
-                             f"bs={cfg.BATCH_SIZE} seed={best_seed}")
+            self.logger.info(
+                f"Fases 0-2 completas. "
+                f"ratio={cfg.SPECTRAL_KERNEL_INIT_SCALE} "
+                f"bs={cfg.BATCH_SIZE} seed={best_seed}"
+            )
         else:
             set_seed(cfg.RANDOM_SEED, cfg.DEVICE)
 
@@ -3569,7 +4308,8 @@ class TopoPhasePipeline:
         elif trainer.ckpt_mgr.has_checkpoint():
             self.logger.info(
                 f"AVISO: existe checkpoint en '{cfg.CHECKPOINT_DIR}/latest/'. "
-                "Usa --resume para continuarlo.")
+                "Usa --resume para continuarlo."
+            )
 
         # Entrenamiento con metricas mecanisticas integradas
         trainer.train(train_dl, val_dl)
@@ -3586,68 +4326,162 @@ class TopoPhasePipeline:
 # FUNCIÓN PRINCIPAL
 # ============================================================================
 
+
 def main():
-    parser = argparse.ArgumentParser(description='TopoGPT2 - Topological Quaternion LM')
-    parser.add_argument('--scale', default='small',
-                        choices=['micro', 'small', 'medium', 'gpt2'],
-                        help='Escala del modelo')
-    parser.add_argument('--corpus', default='directory',
-                        choices=['directory', 'file'],
-                        help='Corpus mode: directory walks tree, file reads single file')
-    parser.add_argument('--corpus-root', default='/home/grisun0/src_note',
-                        help='Root directory for --corpus=directory')
-    parser.add_argument('--corpus-file', default='', help='Text file path if --corpus=file')
-    parser.add_argument('--corpus-min-chars', type=int, default=30,
-                        help='Minimum chars per file for --corpus=directory')
-    parser.add_argument('--max-train-tokens', type=int, default=0,
-                        help='Max tokens to tokenize (0 = use config default: 500M)')
-    parser.add_argument('--epochs', type=int, default=5)
-    parser.add_argument('--batch-size', type=int, default=4)
-    parser.add_argument('--seq-len', type=int, default=0,
-                        help='Longitud de secuencia (0 = usar preset de escala)')
-    parser.add_argument('--lr', type=float, default=3e-4)
-    parser.add_argument('--device', default='cuda' if torch.cuda.is_available() else 'cpu')
-    parser.add_argument('--no-grad-ckpt', action='store_true',
-                        help='Desactivar gradient checkpointing (mas rapido, mas VRAM)')
-    parser.add_argument('--generate', action='store_true', help='Generar texto tras entrenar')
-    parser.add_argument('--prompt', default='Once upon a time', help='Prompt para generacion')
-    parser.add_argument('--resume', action='store_true', help='Reanudar desde checkpoint')
+    parser = argparse.ArgumentParser(description="TopoGPT2 - Topological Quaternion LM")
+    parser.add_argument(
+        "--scale",
+        default="small",
+        choices=["micro", "small", "medium", "gpt2"],
+        help="Escala del modelo",
+    )
+    parser.add_argument(
+        "--corpus",
+        default="directory",
+        choices=["directory", "file"],
+        help="Corpus mode: directory walks tree, file reads single file",
+    )
+    parser.add_argument(
+        "--corpus-root",
+        default="/home/grisun0/src_note",
+        help="Root directory for --corpus=directory",
+    )
+    parser.add_argument(
+        "--corpus-file", default="", help="Text file path if --corpus=file"
+    )
+    parser.add_argument(
+        "--corpus-min-chars",
+        type=int,
+        default=30,
+        help="Minimum chars per file for --corpus=directory",
+    )
+    parser.add_argument(
+        "--max-train-tokens",
+        type=int,
+        default=0,
+        help="Max tokens to tokenize (0 = use config default: 500M)",
+    )
+    parser.add_argument("--epochs", type=int, default=5)
+    parser.add_argument("--batch-size", type=int, default=4)
+    parser.add_argument(
+        "--seq-len",
+        type=int,
+        default=0,
+        help="Longitud de secuencia (0 = usar preset de escala)",
+    )
+    parser.add_argument("--lr", type=float, default=3e-4)
+    parser.add_argument(
+        "--device", default="cuda" if torch.cuda.is_available() else "cpu"
+    )
+    parser.add_argument(
+        "--no-grad-ckpt",
+        action="store_true",
+        help="Desactivar gradient checkpointing (mas rapido, mas VRAM)",
+    )
+    parser.add_argument(
+        "--generate", action="store_true", help="Generar texto tras entrenar"
+    )
+    parser.add_argument(
+        "--prompt", default="Once upon a time", help="Prompt para generacion"
+    )
+    parser.add_argument(
+        "--resume", action="store_true", help="Reanudar desde checkpoint"
+    )
     # Fases del pipeline (main.py)
-    parser.add_argument('--prospect', action='store_true',
-                        help='Activar fases 0-2: optimizar kernel ratio, batch size y seed '
-                             'antes del entrenamiento principal (rapido, ~5-10 min)')
-    parser.add_argument('--prospect-steps', type=int, default=50,
-                        help='Pasos por candidato en las fases de prospecting (default: 50)')
-    parser.add_argument('--probe-seeds', type=int, default=3,
-                        help='Numero de semillas a evaluar en fase 2 (default: 3)')
-    parser.add_argument('--seed-start', type=int, default=1,
-                        help='Primera semilla a probar en fase 2 (default: 1)')
-    parser.add_argument('--refine-epochs', type=int, default=0,
-                        help='Epocas de recocido simulado (fase 4) tras el entrenamiento '
-                             'principal (default: 0 = desactivado)')
-    parser.add_argument('--progressive-seq-len', action='store_true',
-                        help='Enable progressive sequence length warmup (128->256->512)')
-    parser.add_argument('--curriculum', action='store_true',
-                        help='Enable curriculum learning (short->medium->all files)')
-    parser.add_argument('--spec-decode', action='store_true',
-                        help='Enable speculative decoding for faster inference')
-    parser.add_argument('--generate-synthetic', action='store_true',
-                        help='Generate synthetic dataset instead of training')
-    parser.add_argument('--synth-provider', type=str, default='groq',
-                        choices=['groq', 'openrouter', 'ollama'],
-                        help='LLM provider for synthetic data generation')
-    parser.add_argument('--synth-model', type=str, default='granite4.1:3b',
-                        help='Model for synthetic data generation')
-    parser.add_argument('--synth-output', type=str, default='data/synthetic_dataset.jsonl',
-                        help='Output path for synthetic dataset JSONL')
-    parser.add_argument('--synth-manifest', type=str, default='data/synthetic_manifest.json',
-                        help='Manifest path for synthetic dataset (resumable)')
-    parser.add_argument('--synth-workers', type=int, default=4,
-                        help='Parallel workers for synthetic generation')
-    parser.add_argument('--synth-api-key', type=str, default='',
-                        help='API key for LLM (or set GROQ_API_KEY env var)')
-    parser.add_argument('--synth-max-files', type=int, default=0,
-                        help='Max files to generate from (0 = all)')
+    parser.add_argument(
+        "--prospect",
+        action="store_true",
+        help="Activar fases 0-2: optimizar kernel ratio, batch size y seed "
+        "antes del entrenamiento principal (rapido, ~5-10 min)",
+    )
+    parser.add_argument(
+        "--prospect-steps",
+        type=int,
+        default=50,
+        help="Pasos por candidato en las fases de prospecting (default: 50)",
+    )
+    parser.add_argument(
+        "--probe-seeds",
+        type=int,
+        default=3,
+        help="Numero de semillas a evaluar en fase 2 (default: 3)",
+    )
+    parser.add_argument(
+        "--seed-start",
+        type=int,
+        default=1,
+        help="Primera semilla a probar en fase 2 (default: 1)",
+    )
+    parser.add_argument(
+        "--refine-epochs",
+        type=int,
+        default=0,
+        help="Epocas de recocido simulado (fase 4) tras el entrenamiento "
+        "principal (default: 0 = desactivado)",
+    )
+    parser.add_argument(
+        "--progressive-seq-len",
+        action="store_true",
+        help="Enable progressive sequence length warmup (128->256->512)",
+    )
+    parser.add_argument(
+        "--curriculum",
+        action="store_true",
+        help="Enable curriculum learning (short->medium->all files)",
+    )
+    parser.add_argument(
+        "--spec-decode",
+        action="store_true",
+        help="Enable speculative decoding for faster inference",
+    )
+    parser.add_argument(
+        "--generate-synthetic",
+        action="store_true",
+        help="Generate synthetic dataset instead of training",
+    )
+    parser.add_argument(
+        "--synth-provider",
+        type=str,
+        default="groq",
+        choices=["groq", "openrouter", "ollama"],
+        help="LLM provider for synthetic data generation",
+    )
+    parser.add_argument(
+        "--synth-model",
+        type=str,
+        default="granite4.1:3b",
+        help="Model for synthetic data generation",
+    )
+    parser.add_argument(
+        "--synth-output",
+        type=str,
+        default="data/synthetic_dataset.jsonl",
+        help="Output path for synthetic dataset JSONL",
+    )
+    parser.add_argument(
+        "--synth-manifest",
+        type=str,
+        default="data/synthetic_manifest.json",
+        help="Manifest path for synthetic dataset (resumable)",
+    )
+    parser.add_argument(
+        "--synth-workers",
+        type=int,
+        default=4,
+        help="Parallel workers for synthetic generation",
+    )
+    parser.add_argument(
+        "--synth-api-key",
+        type=str,
+        default="",
+        help="API key for LLM (or set GROQ_API_KEY env var)",
+    )
+    parser.add_argument(
+        "--synth-max-files",
+        type=int,
+        default=0,
+        help="Max files to generate from (0 = all)",
+    )
     args = parser.parse_args()
 
     config = TopoGPT2Config(
@@ -3667,30 +4501,34 @@ def main():
     if args.max_train_tokens > 0:
         config.MAX_TRAIN_TOKENS = args.max_train_tokens
 
-    logger = setup_logger('TopoGPT2.main', config.LOG_LEVEL)
+    logger = setup_logger("TopoGPT2.main", config.LOG_LEVEL)
 
     # Tokenizador
     logger.info("Cargando tokenizador GPT-2 (tiktoken)...")
-    tokenizer = BPETokenizer('gpt2')
+    tokenizer = BPETokenizer("gpt2")
     config.VOCAB_SIZE = tokenizer.vocab_size
 
     # Corpus
-    if config.CORPUS == 'file':
+    if config.CORPUS == "file":
         if not config.CORPUS_FILE or not os.path.exists(config.CORPUS_FILE):
             logger.error(f"File not found: {config.CORPUS_FILE}")
             sys.exit(1)
-        with open(config.CORPUS_FILE, 'r', encoding='utf-8', errors='replace') as f:
+        with open(config.CORPUS_FILE, "r", encoding="utf-8", errors="replace") as f:
             full_text = f.read()
         train_split = int(len(full_text) * 0.95)
         train_tokens = _tokenize_text_to_memmap(
-            full_text[:train_split], tokenizer,
-            os.path.join(config.DATA_DIR, 'tokens_train.bin'),
-            config.MAX_TRAIN_TOKENS)
+            full_text[:train_split],
+            tokenizer,
+            os.path.join(config.DATA_DIR, "tokens_train.bin"),
+            config.MAX_TRAIN_TOKENS,
+        )
         val_tokens = _tokenize_text_to_memmap(
-            full_text[train_split:], tokenizer,
-            os.path.join(config.DATA_DIR, 'tokens_val.bin'),
-            config.MAX_TRAIN_TOKENS // 10)
-    elif config.CORPUS == 'directory':
+            full_text[train_split:],
+            tokenizer,
+            os.path.join(config.DATA_DIR, "tokens_val.bin"),
+            config.MAX_TRAIN_TOKENS // 10,
+        )
+    elif config.CORPUS == "directory":
         manifest = FileManifest(config.CORPUS_ROOT, config.DATA_DIR, logger)
         all_paths = manifest.scan()
         if not all_paths:
@@ -3715,20 +4553,20 @@ def main():
         split = int(len(filtered_paths) * 0.95)
         train_paths = filtered_paths[:split]
         val_paths = filtered_paths[split:]
-        logger.info(
-            f"Train files: {len(train_paths):,}  Val files: {len(val_paths):,}")
+        logger.info(f"Train files: {len(train_paths):,}  Val files: {len(val_paths):,}")
 
         memtok = MemmapTokenizer(config.DATA_DIR, logger)
         train_max = config.MAX_TRAIN_TOKENS
         val_max = config.MAX_TRAIN_TOKENS // 10 if train_max > 0 else 10_000_000
         train_tokens = memtok.tokenize(
-            train_paths, tokenizer, 'train',
-            train_max, config.CORPUS_MIN_FILE_CHARS)
+            train_paths, tokenizer, "train", train_max, config.CORPUS_MIN_FILE_CHARS
+        )
         val_tokens = memtok.tokenize(
-            val_paths, tokenizer, 'val',
-            val_max, config.CORPUS_MIN_FILE_CHARS)
+            val_paths, tokenizer, "val", val_max, config.CORPUS_MIN_FILE_CHARS
+        )
         logger.info(
-            f"Train tokens: {len(train_tokens):,}  Val tokens: {len(val_tokens):,}")
+            f"Train tokens: {len(train_tokens):,}  Val tokens: {len(val_tokens):,}"
+        )
 
         curriculum_tiers = None
         if args.curriculum and config.CURRICULUM_ENABLED:
@@ -3739,9 +4577,10 @@ def main():
                 config.CURRICULUM_MED_LINES,
             )
             logger.info(
-                f"Tier 0 (short): {len(curriculum_tiers.get(0,[])):,} files, "
-                f"Tier 1 (med): {len(curriculum_tiers.get(1,[])):,} files, "
-                f"Tier 2 (all): {len(curriculum_tiers.get(2,[])):,} files")
+                f"Tier 0 (short): {len(curriculum_tiers.get(0, [])):,} files, "
+                f"Tier 1 (med): {len(curriculum_tiers.get(1, [])):,} files, "
+                f"Tier 2 (all): {len(curriculum_tiers.get(2, [])):,} files"
+            )
     else:
         logger.error(f"Unknown corpus mode: {config.CORPUS}")
         sys.exit(1)
@@ -3754,13 +4593,13 @@ def main():
         import synthetic_dataset as synth_mod
 
         api_key = args.synth_api_key or os.environ.get(
-            "GROQ_API_KEY", os.environ.get("OPENROUTER_API_KEY", ""))
+            "GROQ_API_KEY", os.environ.get("OPENROUTER_API_KEY", "")
+        )
         if not api_key:
             logger.error("No API key. Set GROQ_API_KEY or OPENROUTER_API_KEY env var.")
             sys.exit(1)
 
-        backend = synth_mod.build_backend(
-            args.synth_provider, args.synth_model)
+        backend = synth_mod.build_backend(args.synth_provider, args.synth_model)
         logger.info(f"Synthetic backend: {backend.name()}")
 
         gen = synth_mod.SyntheticDatasetGenerator(
@@ -3770,26 +4609,31 @@ def main():
             logger=logger,
             max_workers=args.synth_workers,
         )
-        max_files = args.synth_max_files if args.synth_max_files > 0 else len(synth_paths)
-        logger.info(f"Processing up to {max_files:,} files with {args.synth_workers} workers...")
+        max_files = (
+            args.synth_max_files if args.synth_max_files > 0 else len(synth_paths)
+        )
+        logger.info(
+            f"Processing up to {max_files:,} files with {args.synth_workers} workers..."
+        )
 
         for i in range(0, min(len(synth_paths), max_files), 100):
-            batch = synth_paths[i:i+100]
+            batch = synth_paths[i : i + 100]
             results = gen.process_batch(batch)
             logger.info(
-                f"Batch {i//100+1}: processed={results['processed']} "
-                f"skipped={results['skipped']} failed={results['failed']}")
+                f"Batch {i // 100 + 1}: processed={results['processed']} "
+                f"skipped={results['skipped']} failed={results['failed']}"
+            )
 
         stats = gen.finish()
         logger.info(
             f"Synthetic generation complete: {stats['total_samples']:,} samples "
-            f"written to {stats['output_path']}")
+            f"written to {stats['output_path']}"
+        )
         sys.exit(0)
 
     train_ds = MappedTokenDataset(train_tokens, config.MAX_SEQ_LEN)
     val_ds = MappedTokenDataset(val_tokens, config.MAX_SEQ_LEN)
-    logger.info(
-        f"Train sequences: {len(train_ds):,}  Val sequences: {len(val_ds):,}")
+    logger.info(f"Train sequences: {len(train_ds):,}  Val sequences: {len(val_ds):,}")
 
     # Pipeline de 5 fases
     pipeline = TopoPhasePipeline(config, train_ds, val_ds, tokenizer, logger)
@@ -3799,7 +4643,11 @@ def main():
 
     if use_progressive or use_curriculum:
         pipeline = TopoPhasePipelineV2(
-            config, train_tokens, val_tokens, tokenizer, logger,
+            config,
+            train_tokens,
+            val_tokens,
+            tokenizer,
+            logger,
             curriculum_tiers=curriculum_tiers if use_curriculum else None,
             progressive_seq=use_progressive,
         )
@@ -3822,10 +4670,10 @@ def main():
         )
 
     # Historial final en results/ para inspeccion rapida
-    results_dir = 'results_topogpt2'
+    results_dir = "results_topogpt2"
     os.makedirs(results_dir, exist_ok=True)
-    hist_path = os.path.join(results_dir, 'history.json')
-    with open(hist_path, 'w', encoding='utf-8') as f:
+    hist_path = os.path.join(results_dir, "history.json")
+    with open(hist_path, "w", encoding="utf-8") as f:
         json.dump(trainer._current_state(), f, indent=2)
     logger.info(f"Estado completo guardado: {hist_path}")
 
@@ -3835,9 +4683,11 @@ def main():
         trainer.model.eval()
         prompt_tokens = tokenizer.encode(args.prompt)
         ids = torch.tensor([prompt_tokens], dtype=torch.long, device=config.DEVICE)
-        gen_ids = trainer.model.generate(ids, max_new_tokens=200, temperature=0.8, top_k=50)
+        gen_ids = trainer.model.generate(
+            ids, max_new_tokens=200, temperature=0.8, top_k=50
+        )
         logger.info(f"Generado:\n{tokenizer.decode(gen_ids[0].tolist())}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

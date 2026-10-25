@@ -18,6 +18,7 @@ Solid arrows stay in this module, dashed arrows leave it.
 flowchart LR
     n_topogpt3_train_lora_py__main(["main"])
     n_topogpt3_train_lora_py__load_base(["load_base"])
+    n_topogpt3_checkpoint_meta_py__config_from_checkpoint["checkpoint_meta.config_from_checkpoint"]
     n_topogpt3_model_py__TopoGPT2___init__["model.TopoGPT2.__init__"]
     n_topogpt3_model_py__TopoGPT2Config["model.TopoGPT2Config"]
     n_topogpt3_trainer_utils_topo_py__Logger["trainer_utils_topo.Logger"]
@@ -31,6 +32,7 @@ flowchart LR
     n_topogpt3_trainer_utils_topo_py__is_main_process["trainer_utils_topo.is_main_process"]
     n_topogpt3_trainer_utils_topo_py__setup_seed["trainer_utils_topo.setup_seed"]
     n_topogpt3_train_lora_py__main --> n_topogpt3_train_lora_py__load_base
+    n_topogpt3_train_lora_py__load_base -.-> n_topogpt3_checkpoint_meta_py__config_from_checkpoint
     n_topogpt3_train_lora_py__load_base -.-> n_topogpt3_model_py__TopoGPT2___init__
     n_topogpt3_train_lora_py__load_base -.-> n_topogpt3_model_py__TopoGPT2Config
     n_topogpt3_train_lora_py__load_base -.-> n_topogpt3_trainer_utils_topo_py__Logger
@@ -52,7 +54,7 @@ flowchart LR
 
 ### `load_base`
 
-`function` | [topogpt3/train_lora.py:25](../../topogpt3/train_lora.py#L25)
+`function` | [topogpt3/train_lora.py:32](../../topogpt3/train_lora.py#L32)
 
 ```python
 def load_base(checkpoint: str, device: str)
@@ -65,7 +67,7 @@ def load_base(checkpoint: str, device: str)
 | `checkpoint` | `str` |  |  |
 | `device` | `str` |  |  |
 
-*Calls:* [`TopoGPT2.__init__`](topogpt3.model.py.md#topogpt2-__init__), [`TopoGPT2Config`](topogpt3.model.py.md#topogpt2config), [`Logger`](topogpt3.trainer_utils_topo.py.md#logger)
+*Calls:* [`config_from_checkpoint`](topogpt3.checkpoint_meta.py.md#config_from_checkpoint), [`TopoGPT2.__init__`](topogpt3.model.py.md#topogpt2-__init__), [`TopoGPT2Config`](topogpt3.model.py.md#topogpt2config), [`Logger`](topogpt3.trainer_utils_topo.py.md#logger)
 
 *Called by:* [`main`](#main)
 
@@ -75,7 +77,7 @@ def load_base(checkpoint: str, device: str)
 
 ### `main`
 
-`function` | [topogpt3/train_lora.py:36](../../topogpt3/train_lora.py#L36)
+`function` | [topogpt3/train_lora.py:46](../../topogpt3/train_lora.py#L46)
 
 ```python
 def main()

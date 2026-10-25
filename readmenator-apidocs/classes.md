@@ -67,6 +67,7 @@ Project types nested under the project types they derive from. External bases ar
 - [`Phase2_SeedMiner`](modules/topogpt3.model.py.md#phase2_seedminer) class in `topogpt3.model`
 - [`Phase4_AnnealingRefiner`](modules/topogpt3.model.py.md#phase4_annealingrefiner) class in `topogpt3.model`
 - [`ProcessedManifest`](modules/synthetic_dataset.py.md#processedmanifest) class in `synthetic_dataset`
+- [`Profile`](modules/topogpt3.fallback.py.md#profile) class in `topogpt3.fallback`
 - [`ProgressiveSeqLenTrainer`](modules/topogpt3.model.py.md#progressiveseqlentrainer) class in `topogpt3.model`
 - [`QuantizedEmbedding`](modules/topogpt3.model.py.md#quantizedembedding) class in `topogpt3.model`(nn.Module)
 - [`QuaternionLinear`](modules/topogpt3.model.py.md#quaternionlinear) class in `topogpt3.model`(nn.Module)

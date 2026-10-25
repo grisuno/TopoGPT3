@@ -13,15 +13,17 @@ an orchestrator. All paths, sampling parameters, safety bounds and string
 identifiers live inside InferenceSettings so that business logic contains no
 magic numbers or hardcoded constants.
 """
+
 from __future__ import annotations
 
 import argparse
 import logging
 import sys
 import time
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Optional
+from typing import Any
 
 import torch
 from safetensors import safe_open
@@ -46,7 +48,7 @@ class InferenceSettings:
     extending this class; no other module should embed literals.
     """
 
-    model_scale: str = "small"
+    model_scale: str = "auto"
     device: str = field(
         default_factory=lambda: "cuda" if torch.cuda.is_available() else "cpu"
     )
@@ -94,7 +96,7 @@ class InferenceSettings:
     min_top_k: int = 0
     min_repetition_penalty: float = 0.5
     max_repetition_penalty: float = 5.0
-    max_checkpoint_bytes: int = 50 * (1024 ** 3)
+    max_checkpoint_bytes: int = 50 * (1024**3)
     min_checkpoint_bytes: int = 1024
 
     runtime_module_alias: str = "topogpt3_inference_runtime"
@@ -103,14 +105,16 @@ class InferenceSettings:
     def scale_presets() -> Mapping[str, ScalePreset]:
         """Return the architecture preset table indexed by scale name."""
         return {
-            "micro":  ScalePreset(d_model=64,  n_heads=4,  n_layers=2,
-                                  max_seq_len=256),
-            "small":  ScalePreset(d_model=256, n_heads=8,  n_layers=6,
-                                  max_seq_len=512),
-            "medium": ScalePreset(d_model=512, n_heads=8,  n_layers=12,
-                                  max_seq_len=1024),
-            "gpt2":   ScalePreset(d_model=768, n_heads=12, n_layers=12,
-                                  max_seq_len=2048),
+            "micro": ScalePreset(d_model=64, n_heads=4, n_layers=2, max_seq_len=256),
+            "small": ScalePreset(d_model=256, n_heads=8, n_layers=6, max_seq_len=512),
+            "medium": ScalePreset(
+                d_model=512, n_heads=8, n_layers=12, max_seq_len=1024
+            ),
+            "large": ScalePreset(d_model=512, n_heads=8, n_layers=13, max_seq_len=1024),
+            "xlarge": ScalePreset(
+                d_model=576, n_heads=8, n_layers=14, max_seq_len=1024
+            ),
+            "gpt2": ScalePreset(d_model=768, n_heads=12, n_layers=12, max_seq_len=2048),
         }
 
     def preset(self) -> ScalePreset:
@@ -125,24 +129,25 @@ class InferenceSettings:
 
     def validate(self) -> None:
         """Raise ValueError if any setting falls outside its safety bounds."""
-        if not (self.min_max_new_tokens
-                <= self.max_new_tokens <= self.max_max_new_tokens):
+        if not (
+            self.min_max_new_tokens <= self.max_new_tokens <= self.max_max_new_tokens
+        ):
             raise ValueError(
                 f"max_new_tokens={self.max_new_tokens} outside "
                 f"[{self.min_max_new_tokens}, {self.max_max_new_tokens}]"
             )
-        if not (self.min_temperature
-                <= self.temperature <= self.max_temperature):
+        if not (self.min_temperature <= self.temperature <= self.max_temperature):
             raise ValueError(
                 f"temperature={self.temperature} outside "
                 f"[{self.min_temperature}, {self.max_temperature}]"
             )
         if self.top_k < self.min_top_k:
-            raise ValueError(
-                f"top_k={self.top_k} must be >= {self.min_top_k}"
-            )
-        if not (self.min_repetition_penalty
-                <= self.repetition_penalty <= self.max_repetition_penalty):
+            raise ValueError(f"top_k={self.top_k} must be >= {self.min_top_k}")
+        if not (
+            self.min_repetition_penalty
+            <= self.repetition_penalty
+            <= self.max_repetition_penalty
+        ):
             raise ValueError(
                 f"repetition_penalty={self.repetition_penalty} outside "
                 f"[{self.min_repetition_penalty}, "
@@ -166,10 +171,12 @@ class InferenceLoggerFactory:
         logger.setLevel(level)
         if not logger.handlers:
             handler = logging.StreamHandler(sys.stdout)
-            handler.setFormatter(logging.Formatter(
-                fmt=settings.log_format,
-                datefmt=settings.log_date_format,
-            ))
+            handler.setFormatter(
+                logging.Formatter(
+                    fmt=settings.log_format,
+                    datefmt=settings.log_date_format,
+                )
+            )
             logger.addHandler(handler)
         logger.propagate = False
         return logger
@@ -195,8 +202,7 @@ class SecurePathResolver:
         return candidate
 
     @staticmethod
-    def require_existing_file(path: Path,
-                              expected_suffix: Optional[str] = None) -> Path:
+    def require_existing_file(path: Path, expected_suffix: str | None = None) -> Path:
         """Validate `path` points to an existing regular file with the expected suffix."""
         if not path.exists():
             raise FileNotFoundError(f"Required file not found: {path}")
@@ -219,8 +225,10 @@ class SourceModuleLoader:
     def load(self) -> Any:
         """Return the topogpt3.train module which re-exports model symbols."""
         from . import train as runtime_module
+
         self._logger.info(
-            "Loaded TopoGPT3 runtime module: %s", runtime_module.__name__,
+            "Loaded TopoGPT3 runtime module: %s",
+            runtime_module.__name__,
         )
         return runtime_module
 
@@ -232,7 +240,8 @@ class CheckpointPaths:
         self._settings = settings
         self._root = Path(settings.checkpoint_dir).resolve()
         self._slot = SecurePathResolver.resolve_under(
-            self._root, settings.checkpoint_name,
+            self._root,
+            settings.checkpoint_name,
         )
 
     @property
@@ -243,26 +252,27 @@ class CheckpointPaths:
     def model_file(self) -> Path:
         """Resolved path to the safetensors weights file inside the slot."""
         return SecurePathResolver.resolve_under(
-            self._slot, self._settings.model_filename,
+            self._slot,
+            self._settings.model_filename,
         )
 
     def state_file(self) -> Path:
         """Resolved path to the JSON training-state file inside the slot."""
         return SecurePathResolver.resolve_under(
-            self._slot, self._settings.state_filename,
+            self._slot,
+            self._settings.state_filename,
         )
 
     def assert_ready(self) -> None:
         """Verify weights exist and the on-disk size lies within safety bounds."""
         weights = self.model_file()
         SecurePathResolver.require_existing_file(
-            weights, expected_suffix=Path(self._settings.model_filename).suffix,
+            weights,
+            expected_suffix=Path(self._settings.model_filename).suffix,
         )
         size_bytes = weights.stat().st_size
         if size_bytes < self._settings.min_checkpoint_bytes:
-            raise ValueError(
-                f"Checkpoint too small ({size_bytes} bytes): {weights}"
-            )
+            raise ValueError(f"Checkpoint too small ({size_bytes} bytes): {weights}")
         if size_bytes > self._settings.max_checkpoint_bytes:
             raise ValueError(
                 f"Checkpoint exceeds allowed size "
@@ -278,8 +288,9 @@ class WeightShapeProbe:
         self._settings = settings
         self._logger = logger
 
-    def detect_n_kv_heads(self, weights_path: Path,
-                          d_model: int, n_heads: int) -> Optional[int]:
+    def detect_n_kv_heads(
+        self, weights_path: Path, d_model: int, n_heads: int
+    ) -> int | None:
         """Recover N_KV_HEADS used at training by inspecting the k_proj shape.
 
         Returns None when the probe key is absent, signalling the caller to
@@ -310,7 +321,9 @@ class WeightShapeProbe:
         n_kv = k_dim // d_head
         self._logger.info(
             "Detected N_KV_HEADS=%d (k_dim=%d, d_head=%d).",
-            n_kv, k_dim, d_head,
+            n_kv,
+            k_dim,
+            d_head,
         )
         return n_kv
 
@@ -318,16 +331,38 @@ class WeightShapeProbe:
 class TopoGPT2ConfigAligner:
     """Builds a TopoGPT2Config matching the loaded checkpoint and tokenizer."""
 
-    def __init__(self, settings: InferenceSettings, source_module: Any,
-                 logger: logging.Logger):
+    def __init__(
+        self, settings: InferenceSettings, source_module: Any, logger: logging.Logger
+    ):
         self._settings = settings
         self._source = source_module
         self._logger = logger
 
-    def build(self, n_kv_heads: Optional[int], vocab_size: int) -> Any:
+    def build(self, n_kv_heads: int | None, vocab_size: int) -> Any:
         """Return a TopoGPT2Config dataclass ready to instantiate the model."""
-        cfg_cls = getattr(self._source, "TopoGPT2Config")
-        kwargs: Dict[str, Any] = {
+        if self._settings.model_scale == "auto":
+            from .checkpoint_meta import config_from_checkpoint
+
+            checkpoint = (
+                Path(self._settings.checkpoint_dir) / self._settings.checkpoint_name
+            )
+            cfg, _meta = config_from_checkpoint(
+                str(checkpoint), device=self._settings.device
+            )
+            cfg.VOCAB_SIZE = vocab_size
+            self._logger.info(
+                "Auto-aligned TopoGPT2Config: scale=%s d_model=%d layers=%d "
+                "n_kv_heads=%d vocab=%d max_seq=%d",
+                cfg.SCALE,
+                cfg.D_MODEL,
+                cfg.N_LAYERS,
+                cfg.N_KV_HEADS,
+                cfg.VOCAB_SIZE,
+                cfg.MAX_SEQ_LEN,
+            )
+            return cfg
+        cfg_cls = self._source.TopoGPT2Config
+        kwargs: dict[str, Any] = {
             "SCALE": self._settings.model_scale,
             "DEVICE": self._settings.device,
             "RANDOM_SEED": self._settings.seed,
@@ -340,8 +375,14 @@ class TopoGPT2ConfigAligner:
         self._logger.info(
             "Aligned TopoGPT2Config: scale=%s d_model=%d n_heads=%d "
             "n_layers=%d n_kv_heads=%d vocab=%d max_seq=%d device=%s",
-            cfg.SCALE, cfg.D_MODEL, cfg.N_HEADS, cfg.N_LAYERS,
-            cfg.N_KV_HEADS, cfg.VOCAB_SIZE, cfg.MAX_SEQ_LEN, cfg.DEVICE,
+            cfg.SCALE,
+            cfg.D_MODEL,
+            cfg.N_HEADS,
+            cfg.N_LAYERS,
+            cfg.N_KV_HEADS,
+            cfg.VOCAB_SIZE,
+            cfg.MAX_SEQ_LEN,
+            cfg.DEVICE,
         )
         return cfg
 
@@ -355,15 +396,16 @@ class TokenizerFactory:
 
     def build(self) -> Any:
         """Return an instance of BPETokenizer bound to the configured encoding."""
-        tokenizer_cls = getattr(self._source, "BPETokenizer")
+        tokenizer_cls = self._source.BPETokenizer
         return tokenizer_cls(self._settings.tokenizer_encoding)
 
 
 class GaussPatchApplier:
     """Applies the idempotent Gauss complex-multiply patch when enabled."""
 
-    def __init__(self, settings: InferenceSettings, source_module: Any,
-                 logger: logging.Logger):
+    def __init__(
+        self, settings: InferenceSettings, source_module: Any, logger: logging.Logger
+    ):
         self._settings = settings
         self._source = source_module
         self._logger = logger
@@ -373,23 +415,23 @@ class GaussPatchApplier:
         if not self._settings.apply_gauss_patch_at_load:
             self._logger.info("Gauss complex-multiply patch disabled by settings.")
             return
-        patch_fn = getattr(self._source, "apply_gauss_patch")
+        patch_fn = self._source.apply_gauss_patch
         patch_fn(self._logger)
 
 
 class ModelAssembler:
     """Instantiates the model and loads weights from safetensors."""
 
-    def __init__(self, settings: InferenceSettings, source_module: Any,
-                 logger: logging.Logger):
+    def __init__(
+        self, settings: InferenceSettings, source_module: Any, logger: logging.Logger
+    ):
         self._settings = settings
         self._source = source_module
         self._logger = logger
 
-    def assemble(self, aligned_cfg: Any,
-                 paths: CheckpointPaths) -> torch.nn.Module:
+    def assemble(self, aligned_cfg: Any, paths: CheckpointPaths) -> torch.nn.Module:
         """Build the TopoGPT2 graph, load weights into it, and return it in eval mode."""
-        model_cls = getattr(self._source, "TopoGPT2")
+        model_cls = self._source.TopoGPT2
         model = model_cls(aligned_cfg)
         model.to(aligned_cfg.DEVICE)
         model.eval()
@@ -397,14 +439,16 @@ class ModelAssembler:
         params = model.count_params()
         self._logger.info(
             "Model parameters: total=%s trainable=%s",
-            f"{params['total']:,}", f"{params['trainable']:,}",
+            f"{params['total']:,}",
+            f"{params['trainable']:,}",
         )
 
         weights_path = paths.model_file()
         self._logger.info("Loading weights from %s", weights_path)
         state_dict = load_file(str(weights_path), device=aligned_cfg.DEVICE)
         missing, unexpected = model.load_state_dict(
-            state_dict, strict=self._settings.strict_state_dict,
+            state_dict,
+            strict=self._settings.strict_state_dict,
         )
         if missing:
             self._logger.info("Missing keys (likely tied weights): %s", missing)
@@ -417,8 +461,9 @@ class ModelAssembler:
 class SeedSynchronizer:
     """Applies deterministic seeds across torch, CUDA and the model package."""
 
-    def __init__(self, settings: InferenceSettings, source_module: Any,
-                 logger: logging.Logger):
+    def __init__(
+        self, settings: InferenceSettings, source_module: Any, logger: logging.Logger
+    ):
         self._settings = settings
         self._source = source_module
         self._logger = logger
@@ -433,7 +478,8 @@ class SeedSynchronizer:
             set_seed_fn(self._settings.seed, self._settings.device)
         self._logger.info(
             "Seed synchronized (seed=%d device=%s).",
-            self._settings.seed, self._settings.device,
+            self._settings.seed,
+            self._settings.device,
         )
 
 
@@ -447,7 +493,7 @@ class SamplingPolicy:
     repetition_penalty: float
 
     @classmethod
-    def from_settings(cls, settings: InferenceSettings) -> "SamplingPolicy":
+    def from_settings(cls, settings: InferenceSettings) -> SamplingPolicy:
         """Construct a SamplingPolicy from inference settings."""
         return cls(
             max_new_tokens=settings.max_new_tokens,
@@ -480,8 +526,13 @@ class GenerationEngine:
         self._logger = logger
 
     @torch.no_grad()
-    def run(self, model: torch.nn.Module, tokenizer: Any, prompt: str,
-            policy: SamplingPolicy) -> GenerationReport:
+    def run(
+        self,
+        model: torch.nn.Module,
+        tokenizer: Any,
+        prompt: str,
+        policy: SamplingPolicy,
+    ) -> GenerationReport:
         """Generate a completion for `prompt` and return a GenerationReport."""
         prompt_ids = tokenizer.encode(prompt)
         if len(prompt_ids) == 0:
@@ -491,10 +542,12 @@ class GenerationEngine:
         input_ids = torch.tensor([prompt_ids], dtype=torch.long, device=device)
 
         self._logger.info(
-            "Sampling: temp=%.3f top_k=%d rep_pen=%.3f "
-            "max_new=%d prompt_tokens=%d",
-            policy.temperature, policy.top_k, policy.repetition_penalty,
-            policy.max_new_tokens, len(prompt_ids),
+            "Sampling: temp=%.3f top_k=%d rep_pen=%.3f max_new=%d prompt_tokens=%d",
+            policy.temperature,
+            policy.top_k,
+            policy.repetition_penalty,
+            policy.max_new_tokens,
+            len(prompt_ids),
         )
 
         start = time.time()
@@ -541,14 +594,11 @@ class ResultRenderer:
         """Emit a banner with prompt and completion, plus a throughput log line."""
         s = self._settings
         sep = s.result_separator_char * s.result_separator_width
-        completion = (
-            report.output[len(report.prompt):]
-            if report.output.startswith(report.prompt)
-            else report.output
-        )
+        completion = report.output.removeprefix(report.prompt)
         self._logger.info(
             "Generated %d new tokens in %.2fs (%.1f tok/s)",
-            report.new_tokens, report.elapsed_seconds,
+            report.new_tokens,
+            report.elapsed_seconds,
             report.tokens_per_second(s.elapsed_floor_seconds),
         )
         out = sys.stdout
@@ -562,8 +612,9 @@ class ResultRenderer:
 class InferencePipeline:
     """Orchestrator wiring loader, builder, engine and renderer."""
 
-    def __init__(self, settings: InferenceSettings,
-                 logger: Optional[logging.Logger] = None):
+    def __init__(
+        self, settings: InferenceSettings, logger: logging.Logger | None = None
+    ):
         settings.validate()
         self._settings = settings
         self._logger = logger or InferenceLoggerFactory.build(settings)
@@ -571,15 +622,20 @@ class InferencePipeline:
     def execute(self) -> GenerationReport:
         """Run the full inference pipeline end-to-end and return the report."""
         source_module = SourceModuleLoader(
-            self._settings, self._logger,
+            self._settings,
+            self._logger,
         ).load()
 
         SeedSynchronizer(
-            self._settings, source_module, self._logger,
+            self._settings,
+            source_module,
+            self._logger,
         ).apply()
 
         GaussPatchApplier(
-            self._settings, source_module, self._logger,
+            self._settings,
+            source_module,
+            self._logger,
         ).apply_if_enabled()
 
         paths = CheckpointPaths(self._settings)
@@ -587,7 +643,8 @@ class InferencePipeline:
 
         preset = self._settings.preset()
         n_kv = WeightShapeProbe(
-            self._settings, self._logger,
+            self._settings,
+            self._logger,
         ).detect_n_kv_heads(
             paths.model_file(),
             d_model=preset.d_model,
@@ -596,16 +653,22 @@ class InferencePipeline:
 
         tokenizer = TokenizerFactory(self._settings, source_module).build()
         aligned_cfg = TopoGPT2ConfigAligner(
-            self._settings, source_module, self._logger,
+            self._settings,
+            source_module,
+            self._logger,
         ).build(n_kv_heads=n_kv, vocab_size=tokenizer.vocab_size)
 
         model = ModelAssembler(
-            self._settings, source_module, self._logger,
+            self._settings,
+            source_module,
+            self._logger,
         ).assemble(aligned_cfg, paths)
 
         engine = GenerationEngine(self._settings, self._logger)
         report = engine.run(
-            model, tokenizer, self._settings.prompt,
+            model,
+            tokenizer,
+            self._settings.prompt,
             SamplingPolicy.from_settings(self._settings),
         )
         ResultRenderer(self._settings, self._logger).render(report)
@@ -626,76 +689,106 @@ class CliArgumentParser:
             ),
         )
         parser.add_argument(
-            "--prompt", type=str, default=defaults.prompt,
+            "--prompt",
+            type=str,
+            default=defaults.prompt,
             help="Code prefix to complete.",
         )
         parser.add_argument(
-            "--scale", type=str, default=defaults.model_scale,
-            choices=sorted(InferenceSettings.scale_presets().keys()),
+            "--scale",
+            type=str,
+            default=defaults.model_scale,
+            choices=["auto"] + sorted(InferenceSettings.scale_presets().keys()),
             help="Model scale preset.",
         )
         parser.add_argument(
-            "--max-new", type=int, default=defaults.max_new_tokens,
+            "--max-new",
+            type=int,
+            default=defaults.max_new_tokens,
             help="Maximum number of new tokens to generate.",
         )
         parser.add_argument(
-            "--temp", type=float, default=defaults.temperature,
+            "--temp",
+            type=float,
+            default=defaults.temperature,
             help="Sampling temperature (lower means more deterministic).",
         )
         parser.add_argument(
-            "--top-k", type=int, default=defaults.top_k,
+            "--top-k",
+            type=int,
+            default=defaults.top_k,
             help="Top-k filtering (0 disables it).",
         )
         parser.add_argument(
-            "--rep-penalty", type=float, default=defaults.repetition_penalty,
+            "--rep-penalty",
+            type=float,
+            default=defaults.repetition_penalty,
             help="Repetition penalty (values above 1 reduce repeats).",
         )
         parser.add_argument(
-            "--device", type=str, default=defaults.device,
+            "--device",
+            type=str,
+            default=defaults.device,
             help="Compute device, e.g. cuda, cpu, cuda:0.",
         )
         parser.add_argument(
-            "--ckpt-dir", type=str, default=defaults.checkpoint_dir,
+            "--ckpt-dir",
+            type=str,
+            default=defaults.checkpoint_dir,
             help="Root directory holding TopoGPT3 checkpoints.",
         )
         parser.add_argument(
-            "--ckpt-name", type=str, default=defaults.checkpoint_name,
+            "--ckpt-name",
+            type=str,
+            default=defaults.checkpoint_name,
             help="Checkpoint slot to load (e.g. 'last').",
         )
         parser.add_argument(
-            "--source-dir", type=str, default=defaults.source_directory,
+            "--source-dir",
+            type=str,
+            default=defaults.source_directory,
             help="Directory containing train.py and model.py.",
         )
         parser.add_argument(
-            "--no-gauss", action="store_true",
+            "--no-gauss",
+            action="store_true",
             help="Disable the Gauss complex-multiply patch at load.",
         )
         parser.add_argument(
-            "--strict-load", action="store_true",
+            "--strict-load",
+            action="store_true",
             help="Require strict state_dict matching when loading weights.",
         )
         parser.add_argument(
-            "--seed", type=int, default=defaults.seed,
+            "--seed",
+            type=int,
+            default=defaults.seed,
             help="Deterministic seed for sampling reproducibility.",
         )
         parser.add_argument(
-            "--auto-continue", "-C", action="store_true",
+            "--auto-continue",
+            "-C",
+            action="store_true",
             default=defaults.auto_continue,
             help="Auto-continue truncated responses by feeding tail lines back.",
         )
         parser.add_argument(
-            "--max-continuations", type=int, default=defaults.max_continuations,
+            "--max-continuations",
+            type=int,
+            default=defaults.max_continuations,
             help="Max number of continuation rounds (requires --auto-continue).",
         )
         parser.add_argument(
-            "--log-level", type=str, default=defaults.log_level,
+            "--log-level",
+            type=str,
+            default=defaults.log_level,
             choices=["DEBUG", "INFO", "WARNING", "ERROR"],
             help="Logging verbosity.",
         )
         return parser
 
     @staticmethod
-    def parse(argv: Optional[List[str]] = None) -> InferenceSettings:
+    def parse(argv: list[str] | None = None) -> InferenceSettings:
         """Parse `argv` (or sys.argv) and return a populated InferenceSettings."""
         namespace = CliArgumentParser.build_parser().parse_args(argv)
         return InferenceSettings(
@@ -718,7 +811,7 @@ class CliArgumentParser:
         )
 
 
-def main(argv: Optional[List[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """CLI entry point. Returns a process exit code."""
     settings = CliArgumentParser.parse(argv)
     InferencePipeline(settings).execute()

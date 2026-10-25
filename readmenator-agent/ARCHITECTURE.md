@@ -11,6 +11,7 @@
 - `eval/harness.py` -> `eval/samplers.py`
 - `eval/harness.py` -> `eval/sandbox.py`
 - `eval/harness.py` -> `topogpt3/__init__.py`
+- `eval/harness.py` -> `topogpt3/checkpoint_meta.py`
 - `eval/integration_smoke.py` -> `eval/harness.py`
 - `eval/noise_sweep.py` -> `eval/harness.py`
 - `eval/noise_sweep.py` -> `topogpt3/__init__.py`
@@ -19,9 +20,19 @@
 - `eval/samplers.py` -> `topogpt3/__init__.py`
 - `eval/sandbox_smoke.py` -> `eval/sandbox.py`
 - `eval/smoke.py` -> `topogpt3/__init__.py`
+- `eval/tasks.py` -> `topogpt3/chat.py`
+- `eval/tasks.py` -> `topogpt3/checkpoint_meta.py`
+- `eval/tasks.py` -> `topogpt3/fallback.py`
+- `eval/tasks.py` -> `topogpt3/model.py`
 - `eval/temp_sweep.py` -> `eval/harness.py`
 - `eval/temp_sweep.py` -> `eval/noise_sweep.py`
 - `gradio_app.py` -> `topogpt3.c`
+- `tests/test_checkpoint_meta.py` -> `topogpt3/checkpoint_meta.py`
+- `tests/test_eval_tasks.py` -> `eval/tasks.py`
+- `tests/test_eval_tasks.py` -> `topogpt3/chat.py`
+- `tests/test_eval_tasks.py` -> `topogpt3/fallback.py`
+- `tests/test_fallback.py` -> `topogpt3/chat.py`
+- `tests/test_fallback.py` -> `topogpt3/fallback.py`
 - `tests/test_heritage.py` -> `topogpt3/chat.py`
 - `tests/test_heritage.py` -> `topogpt3/eval_toolcall.py`
 - `tests/test_heritage.py` -> `topogpt3/lora.py`
@@ -67,42 +78,59 @@
 - `topogpt3/__main__.py` -> `topogpt3/train_lora.py`
 - `topogpt3/__main__.py` -> `topogpt3/train_ppo.py`
 - `topogpt3/api_server.py` -> `topogpt3/chat.py`
+- `topogpt3/api_server.py` -> `topogpt3/checkpoint_meta.py`
 - `topogpt3/api_server.py` -> `topogpt3/continuation.py`
+- `topogpt3/api_server.py` -> `topogpt3/fallback.py`
 - `topogpt3/api_server.py` -> `topogpt3/model.py`
 - `topogpt3/api_server.py` -> `topogpt3/structured_output.py`
+- `topogpt3/checkpoint_meta.py` -> `topogpt3/model.py`
 - `topogpt3/convert.py` -> `topogpt3/lora.py`
 - `topogpt3/convert.py` -> `topogpt3/model.py`
 - `topogpt3/eval_toolcall.py` -> `topogpt3/chat.py`
+- `topogpt3/eval_toolcall.py` -> `topogpt3/fallback.py`
 - `topogpt3/eval_toolcall.py` -> `topogpt3/tools_agent.py`
 - `topogpt3/export_chat.py` -> `topogpt3/model.py`
 - `topogpt3/export_chat.py` -> `topogpt3/train.py`
+- `topogpt3/fallback.py` -> `topogpt3/chat.py`
+- `topogpt3/inference.py` -> `topogpt3/checkpoint_meta.py`
+- `topogpt3/inference_hrm.py` -> `topogpt3/checkpoint_meta.py`
 - `topogpt3/inference_hrm.py` -> `topogpt3/continuation.py`
 - `topogpt3/jlens.py` -> `topogpt3/lens_model.py`
 - `topogpt3/lens_model.py` -> `topogpt3/model.py`
 - `topogpt3/model.py` -> `synthetic_dataset.py`
 - `topogpt3/model.py` -> `topogpt3/continuation.py`
 - `topogpt3/model.py` -> `topogpt3/yarn.py`
+- `topogpt3/rewards.py` -> `topogpt3/chat.py`
+- `topogpt3/rewards.py` -> `topogpt3/fallback.py`
+- `topogpt3/tokenizer_tools.py` -> `topogpt3/checkpoint_meta.py`
 - `topogpt3/tools_agent.py` -> `eval/sandbox.py`
 - `topogpt3/tools_agent.py` -> `topogpt3/chat.py`
+- `topogpt3/tools_agent.py` -> `topogpt3/fallback.py`
 - `topogpt3/train.py` -> `topogpt3/model.py`
 - `topogpt3/train_agent.py` -> `topogpt3/chat.py`
+- `topogpt3/train_agent.py` -> `topogpt3/checkpoint_meta.py`
 - `topogpt3/train_agent.py` -> `topogpt3/model.py`
 - `topogpt3/train_agent.py` -> `topogpt3/rewards.py`
 - `topogpt3/train_agent.py` -> `topogpt3/tools_agent.py`
 - `topogpt3/train_agent.py` -> `topogpt3/trainer_utils_topo.py`
+- `topogpt3/train_distill.py` -> `topogpt3/checkpoint_meta.py`
 - `topogpt3/train_distill.py` -> `topogpt3/model.py`
 - `topogpt3/train_distill.py` -> `topogpt3/rewards.py`
 - `topogpt3/train_distill.py` -> `topogpt3/trainer_utils_topo.py`
+- `topogpt3/train_dpo.py` -> `topogpt3/checkpoint_meta.py`
 - `topogpt3/train_dpo.py` -> `topogpt3/model.py`
 - `topogpt3/train_dpo.py` -> `topogpt3/rewards.py`
 - `topogpt3/train_dpo.py` -> `topogpt3/trainer_utils_topo.py`
+- `topogpt3/train_grpo.py` -> `topogpt3/checkpoint_meta.py`
 - `topogpt3/train_grpo.py` -> `topogpt3/model.py`
 - `topogpt3/train_grpo.py` -> `topogpt3/rewards.py`
 - `topogpt3/train_grpo.py` -> `topogpt3/rollout.py`
 - `topogpt3/train_grpo.py` -> `topogpt3/trainer_utils_topo.py`
+- `topogpt3/train_lora.py` -> `topogpt3/checkpoint_meta.py`
 - `topogpt3/train_lora.py` -> `topogpt3/lora.py`
 - `topogpt3/train_lora.py` -> `topogpt3/model.py`
 - `topogpt3/train_lora.py` -> `topogpt3/trainer_utils_topo.py`
+- `topogpt3/train_ppo.py` -> `topogpt3/checkpoint_meta.py`
 - `topogpt3/train_ppo.py` -> `topogpt3/model.py`
 - `topogpt3/train_ppo.py` -> `topogpt3/rewards.py`
 - `topogpt3/train_ppo.py` -> `topogpt3/rollout.py`
@@ -119,7 +147,7 @@
 - `eval/diag_static.py` -> __future__, argparse, json, math, pathlib, safetensors.torch, sys, time, torch, typing
 - `eval/governor.py` -> __future__, dataclasses, enum, threading, time, torch, torch.nn.functional, typing
 - `eval/governor_smoke.py` -> pathlib, safetensors, safetensors.torch, sys, threading, time, torch
-- `eval/harness.py` -> __future__, argparse, contextlib, dataclasses, datasets, io, json, os, pathlib, re, safetensors, safetensors.torch, signal, subprocess, sys, time, torch, traceback, typing
+- `eval/harness.py` -> __future__, argparse, contextlib, datasets, io, json, os, pathlib, re, safetensors.torch, time, torch, traceback
 - `eval/integration_smoke.py` -> pathlib, sys
 - `eval/noise_analysis.py` -> __future__, argparse, ast, collections, json, pathlib, re, sys, typing
 - `eval/noise_sweep.py` -> __future__, argparse, json, math, pathlib, safetensors, safetensors.torch, sys, time, torch, typing
@@ -129,9 +157,14 @@
 - `eval/sandbox.py` -> __future__, ast, dataclasses, json, os, pathlib, subprocess, sys, tempfile, textwrap, typing
 - `eval/sandbox_smoke.py` -> pathlib, sys
 - `eval/smoke.py` -> time, torch
+- `eval/tasks.py` -> __future__, argparse, ast, collections.abc, json, pathlib, re, safetensors.torch, sys, time, torch, typing
 - `eval/temp_sweep.py` -> __future__, argparse, json, math, pathlib, sys, time, torch, typing
 - `gradio_app.py` -> __future__, gradio, huggingface_hub, os, pathlib, sys, torch
 - `synthetic_dataset.py` -> argparse, concurrent.futures, dataclasses, datetime, hashlib, json, logging, numpy, os, pathlib, queue, requests, sys, tempfile, threading, tiktoken, time, torch, typing
+- `tests/test_checkpoint_meta.py` -> pytest
+- `tests/test_data_pipeline.py` -> json, topogpt3.data_pipeline
+- `tests/test_eval_tasks.py` -> json
+- `tests/test_fallback.py` -> json
 - `tests/test_heritage.py` -> os, torch
 - `tests/test_jlens.py` -> __future__, pytest, torch
 - `tests/test_lens_model.py` -> __future__, pytest, torch, types
@@ -139,21 +172,24 @@
 - `topogpt3.c` -> stdio.h, stdlib.h, string.h
 - `topogpt3/__init__.py` -> __future__
 - `topogpt3/__main__.py` -> __future__, sys
-- `topogpt3/api_server.py` -> __future__, argparse, collections, contextlib, dataclasses, fastapi, fastapi.middleware.cors, fastapi.middleware.gzip, fastapi.responses, hashlib, hmac, json, logging, os, pathlib, pydantic, re, safetensors, safetensors.torch, secrets, sys, time, torch, typing, uvicorn
+- `topogpt3/api_server.py` -> __future__, argparse, asyncio, collections, collections.abc, contextlib, dataclasses, fastapi, fastapi.middleware.cors, fastapi.middleware.gzip, fastapi.responses, hashlib, json, logging, os, pathlib, pydantic, re, safetensors.torch, secrets, sys, threading, time, torch, typing, uvicorn
 - `topogpt3/chat.py` -> __future__, json, random, re, typing
+- `topogpt3/checkpoint_meta.py` -> __future__, dataclasses, json, pathlib, safetensors, typing
 - `topogpt3/continuation.py` -> __future__, re, typing
 - `topogpt3/convert.py` -> __future__, argparse, json, os, safetensors.torch, sys, torch
-- `topogpt3/eval_toolcall.py` -> __future__
+- `topogpt3/eval_toolcall.py` -> __future__, json
 - `topogpt3/export_chat.py` -> __future__, argparse, datasets, json, logging, os, sys, typing
-- `topogpt3/inference.py` -> __future__, argparse, dataclasses, logging, pathlib, safetensors, safetensors.torch, sys, time, torch, typing
-- `topogpt3/inference_hrm.py` -> __future__, argparse, dataclasses, logging, pathlib, safetensors, safetensors.torch, sys, time, torch, torch.nn.functional, typing
+- `topogpt3/fallback.py` -> __future__, ast, collections.abc, dataclasses, json, re, typing
+- `topogpt3/inference.py` -> __future__, argparse, collections.abc, dataclasses, logging, pathlib, safetensors, safetensors.torch, sys, time, torch, typing
+- `topogpt3/inference_hrm.py` -> __future__, argparse, collections.abc, dataclasses, logging, pathlib, safetensors, safetensors.torch, sys, time, torch, torch.nn.functional, typing
 - `topogpt3/jlens.py` -> __future__, argparse, collections.abc, dataclasses, huggingface_hub, logging, math, os, time, torch, typing
 - `topogpt3/lens_model.py` -> __future__, collections.abc, dataclasses, json, pathlib, safetensors.torch, time, torch, types, typing
 - `topogpt3/lora.py` -> __future__, torch, typing
-- `topogpt3/model.py` -> argparse, collections, dataclasses, datetime, hashlib, json, logging, math, numpy, os, pathlib, safetensors.torch, shutil, sys, tiktoken, time, torch, torch.nn, torch.nn.functional, torch.utils.checkpoint, typing, warnings
-- `topogpt3/rewards.py` -> __future__, re, torch, torch.nn.functional, typing
+- `topogpt3/model.py` -> argparse, collections, dataclasses, datetime, hashlib, json, logging, math, numpy, os, pathlib, safetensors.torch, shutil, sys, tiktoken, time, torch, torch.nn.functional, torch.utils.checkpoint, typing, warnings
+- `topogpt3/rewards.py` -> __future__, ast, json, re, torch, torch.nn.functional
 - `topogpt3/rollout.py` -> __future__, abc, dataclasses, torch, torch.nn.functional, torch.nn.parallel, typing
 - `topogpt3/structured_output.py` -> __future__, dataclasses, json, threading, typing, xgrammar
+- `topogpt3/tokenizer_tools.py` -> __future__, argparse, collections.abc, json, os, pathlib, safetensors, safetensors.torch, sys, tiktoken, tokenizers, tokenizers.models, torch, typing
 - `topogpt3/tools_agent.py` -> __future__, json, math, pathlib, sys, typing
 - `topogpt3/train.py` -> __future__, argparse, collections, dataclasses, datasets, datetime, json, logging, math, numpy, os, pathlib, safetensors.torch, sys, time, torch, torch.nn, torch.nn.functional, typing
 - `topogpt3/train_agent.py` -> __future__, argparse, copy, json, os, safetensors.torch, sys, topogpt3.datasets_chat, torch, torch.nn.functional, torch.utils.data
@@ -161,6 +197,6 @@
 - `topogpt3/train_dpo.py` -> __future__, argparse, copy, os, safetensors.torch, sys, topogpt3.datasets_chat, torch, torch.utils.data
 - `topogpt3/train_grpo.py` -> __future__, argparse, copy, os, safetensors.torch, sys, topogpt3.datasets_chat, torch, torch.nn.functional, torch.optim.lr_scheduler, torch.utils.data
 - `topogpt3/train_lora.py` -> __future__, argparse, os, safetensors.torch, sys, topogpt3.datasets_chat, torch, torch.nn.parallel, torch.utils.data
-- `topogpt3/train_ppo.py` -> __future__, argparse, copy, os, safetensors.torch, sys, topogpt3.datasets_chat, torch, torch.nn, torch.nn.functional, torch.utils.data
+- `topogpt3/train_ppo.py` -> __future__, argparse, copy, os, safetensors.torch, sys, topogpt3.datasets_chat, torch, torch.nn.functional, torch.utils.data
 - `topogpt3/trainer_utils_topo.py` -> __future__, math, numpy, os, random, torch, torch.distributed, torch.nn.parallel, torch.utils.data, typing
 - `topogpt3/yarn.py` -> __future__, dataclasses, math, torch

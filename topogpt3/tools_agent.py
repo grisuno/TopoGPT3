@@ -9,7 +9,7 @@ import json
 import math
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 try:
@@ -19,6 +19,7 @@ except Exception:
     _HAS_SANDBOX = False
 
 from .chat import parse_tool_calls
+from .fallback import APT_CHAIN_TOOL, validate_tool_call
 
 TOOLS = [
     {"type": "function", "function": {
@@ -40,6 +41,7 @@ TOOLS = [
                        "properties": {"text": {"type": "string"},
                                       "target_language": {"type": "string"}},
                        "required": ["text", "target_language"]}}},
+    APT_CHAIN_TOOL,
 ]
 
 MOCK = {
@@ -49,14 +51,49 @@ MOCK = {
     "translate_text": lambda a: {"translated_text": a.get("text", "")},
 }
 
+
+def _apt_chain_preview(args: dict[str, Any]) -> dict[str, Any]:
+    """Validate an apt_chain call and return the exact command, never execute it.
+
+    Execution belongs to LazyOwn. The model-side agent only needs a safe,
+    verifiable tool response for SFT/RL traces.
+    """
+    ok, reason = validate_tool_call({"name": "apt_chain", "arguments": args})
+    if not ok:
+        return {"ok": False, "error": reason}
+    parts = ["apt_chain", str(args.get("chain", "apt_chain"))]
+    if args.get("target"):
+        parts.append(str(args["target"]))
+    if args.get("playbook"):
+        parts.extend(["--playbook", str(args["playbook"])])
+    if args.get("steps"):
+        parts.extend(["--step", str(args["steps"])])
+    if args.get("dry_run", True):
+        parts.append("--dry-run")
+    if args.get("json", True):
+        parts.append("--json")
+    if args.get("no_checkpoint"):
+        parts.append("--no-checkpoint")
+    if args.get("timeout_s"):
+        parts.extend(["--timeout", str(args["timeout_s"])])
+    for key, value in (args.get("vars") or {}).items():
+        parts.extend(["--var", f"{key}={value}"])
+    return {"ok": True, "command": " ".join(parts), "target": args.get("target")}
+
+
+MOCK["apt_chain"] = _apt_chain_preview
+
 CHECK_ARGS = {
     "run_python": lambda a: bool(a.get("code")),
     "calculate_math": lambda a: bool(a.get("expression")),
     "translate_text": lambda a: bool(a.get("text")),
+    "apt_chain": lambda a: validate_tool_call(
+        {"name": "apt_chain", "arguments": a}
+    )[0],
 }
 
 
-def execute_tool(name: str, args: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+def execute_tool(name: str, args: dict[str, Any]) -> dict[str, Any] | None:
     if name == "run_python":
         code = args.get("code", "")
         if _HAS_SANDBOX:
@@ -77,7 +114,7 @@ def execute_tool(name: str, args: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         return None
 
 
-def rollout_multiturn(generate_fn, tokenizer, messages: List[Dict[str, Any]],
+def rollout_multiturn(generate_fn, tokenizer, messages: list[dict[str, Any]],
                       tools=None, max_turns: int = 3, max_new_tokens: int = 256,
                       open_thinking: bool = False):
     """generate_fn(prompt_text)->text. Returns (full_text, tool_trace)."""

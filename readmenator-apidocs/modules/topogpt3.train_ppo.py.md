@@ -31,6 +31,7 @@ Solid arrows stay in this module, dashed arrows leave it.
 flowchart LR
     n_topogpt3_train_ppo_py__main(["main"])
     n_topogpt3_train_ppo_py__TopoCritic___init__(["TopoCritic.__init__"])
+    n_topogpt3_checkpoint_meta_py__config_from_checkpoint["checkpoint_meta.config_from_checkpoint"]
     n_topogpt3_model_py__BPETokenizer___init__["model.BPETokenizer.__init__"]
     n_topogpt3_model_py__BPETokenizer_decode["model.BPETokenizer.decode"]
     n_topogpt3_model_py__BPETokenizer_encode["model.BPETokenizer.encode"]
@@ -43,6 +44,7 @@ flowchart LR
     n_topogpt3_trainer_utils_topo_py__is_main_process["trainer_utils_topo.is_main_process"]
     n_topogpt3_trainer_utils_topo_py__setup_seed["trainer_utils_topo.setup_seed"]
     n_topogpt3_train_ppo_py__main --> n_topogpt3_train_ppo_py__TopoCritic___init__
+    n_topogpt3_train_ppo_py__main -.-> n_topogpt3_checkpoint_meta_py__config_from_checkpoint
     n_topogpt3_train_ppo_py__main -.-> n_topogpt3_model_py__BPETokenizer___init__
     n_topogpt3_train_ppo_py__main -.-> n_topogpt3_model_py__BPETokenizer_decode
     n_topogpt3_train_ppo_py__main -.-> n_topogpt3_model_py__BPETokenizer_encode
@@ -62,7 +64,7 @@ flowchart LR
 
 ### `TopoCritic`
 
-`class` | [topogpt3/train_ppo.py:29](../../topogpt3/train_ppo.py#L29)
+`class` | [topogpt3/train_ppo.py:31](../../topogpt3/train_ppo.py#L31)
 
 ```python
 class TopoCritic(nn.Module)
@@ -81,7 +83,7 @@ Bases: `nn.Module`
 
 #### `TopoCritic.__init__`
 
-`constructor` | [topogpt3/train_ppo.py:30](../../topogpt3/train_ppo.py#L30)
+`constructor` | [topogpt3/train_ppo.py:32](../../topogpt3/train_ppo.py#L32)
 
 ```python
 def __init__(self, trunk: TopoGPT2)
@@ -99,7 +101,7 @@ def __init__(self, trunk: TopoGPT2)
 
 #### `TopoCritic.forward`
 
-`method` | [topogpt3/train_ppo.py:36](../../topogpt3/train_ppo.py#L36)
+`method` | [topogpt3/train_ppo.py:38](../../topogpt3/train_ppo.py#L38)
 
 ```python
 def forward(self, ids)
@@ -119,12 +121,12 @@ def forward(self, ids)
 
 ### `main`
 
-`function` | [topogpt3/train_ppo.py:45](../../topogpt3/train_ppo.py#L45)
+`function` | [topogpt3/train_ppo.py:47](../../topogpt3/train_ppo.py#L47)
 
 ```python
 def main()
 ```
 
-*Calls:* [`BPETokenizer.__init__`](topogpt3.model.py.md#bpetokenizer-__init__), [`BPETokenizer.decode`](topogpt3.model.py.md#bpetokenizer-decode), [`BPETokenizer.encode`](topogpt3.model.py.md#bpetokenizer-encode), [`TopoGPT2.__init__`](topogpt3.model.py.md#topogpt2-__init__), [`TopoGPT2Config`](topogpt3.model.py.md#topogpt2config), [`base_rewards`](topogpt3.rewards.py.md#base_rewards), [`k3_kl`](topogpt3.rewards.py.md#k3_kl), [`create_rollout_engine`](topogpt3.rollout.py.md#create_rollout_engine), [`TopoCritic.__init__`](#topocritic-__init__), [`Logger`](topogpt3.trainer_utils_topo.py.md#logger), [`is_main_process`](topogpt3.trainer_utils_topo.py.md#is_main_process), [`setup_seed`](topogpt3.trainer_utils_topo.py.md#setup_seed)
+*Calls:* [`config_from_checkpoint`](topogpt3.checkpoint_meta.py.md#config_from_checkpoint), [`BPETokenizer.__init__`](topogpt3.model.py.md#bpetokenizer-__init__), [`BPETokenizer.decode`](topogpt3.model.py.md#bpetokenizer-decode), [`BPETokenizer.encode`](topogpt3.model.py.md#bpetokenizer-encode), [`TopoGPT2.__init__`](topogpt3.model.py.md#topogpt2-__init__), [`TopoGPT2Config`](topogpt3.model.py.md#topogpt2config), [`base_rewards`](topogpt3.rewards.py.md#base_rewards), [`k3_kl`](topogpt3.rewards.py.md#k3_kl), [`create_rollout_engine`](topogpt3.rollout.py.md#create_rollout_engine), [`TopoCritic.__init__`](#topocritic-__init__), [`Logger`](topogpt3.trainer_utils_topo.py.md#logger), [`is_main_process`](topogpt3.trainer_utils_topo.py.md#is_main_process) and 1 more
 
 ---

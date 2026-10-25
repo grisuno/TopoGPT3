@@ -1,6 +1,6 @@
 # `topogpt3.train_agent`
 
-> Source: [topogpt3/train_agent.py:1](../../topogpt3/train_agent.py#L1) | language `py` | coverage 33.3% | [API index](../index.md)
+> Source: [topogpt3/train_agent.py:1](../../topogpt3/train_agent.py#L1) | language `py` | coverage 66.7% | [API index](../index.md)
 
 Agentic RL for TopoGPT3 (multi-turn Tool-Use).
 
@@ -22,9 +22,13 @@ Solid arrows stay in this module, dashed arrows leave it.
 flowchart LR
     n_topogpt3_train_agent_py__main(["main"])
     n_topogpt3_train_agent_py__agent_reward(["agent_reward"])
+    n_topogpt3_rewards_py__execution_reward["rewards.execution_reward"]
     n_topogpt3_rewards_py__rep_penalty["rewards.rep_penalty"]
+    n_topogpt3_rewards_py__tool_call_reward["rewards.tool_call_reward"]
+    n_topogpt3_rewards_py__verifier_reward["rewards.verifier_reward"]
     n_topogpt3_chat_py__apply_chat_template["chat.apply_chat_template"]
     n_topogpt3_chat_py__parse_tool_calls["chat.parse_tool_calls"]
+    n_topogpt3_checkpoint_meta_py__config_from_checkpoint["checkpoint_meta.config_from_checkpoint"]
     n_topogpt3_model_py__BPETokenizer___init__["model.BPETokenizer.__init__"]
     n_topogpt3_model_py__BPETokenizer_decode["model.BPETokenizer.decode"]
     n_topogpt3_model_py__BPETokenizer_encode["model.BPETokenizer.encode"]
@@ -39,9 +43,13 @@ flowchart LR
     n_topogpt3_trainer_utils_topo_py__is_main_process["trainer_utils_topo.is_main_process"]
     n_topogpt3_trainer_utils_topo_py__setup_seed["trainer_utils_topo.setup_seed"]
     n_topogpt3_train_agent_py__main --> n_topogpt3_train_agent_py__agent_reward
+    n_topogpt3_train_agent_py__agent_reward -.-> n_topogpt3_rewards_py__execution_reward
     n_topogpt3_train_agent_py__agent_reward -.-> n_topogpt3_rewards_py__rep_penalty
+    n_topogpt3_train_agent_py__agent_reward -.-> n_topogpt3_rewards_py__tool_call_reward
+    n_topogpt3_train_agent_py__agent_reward -.-> n_topogpt3_rewards_py__verifier_reward
     n_topogpt3_train_agent_py__main -.-> n_topogpt3_chat_py__apply_chat_template
     n_topogpt3_train_agent_py__main -.-> n_topogpt3_chat_py__parse_tool_calls
+    n_topogpt3_train_agent_py__main -.-> n_topogpt3_checkpoint_meta_py__config_from_checkpoint
     n_topogpt3_train_agent_py__main -.-> n_topogpt3_model_py__BPETokenizer___init__
     n_topogpt3_train_agent_py__main -.-> n_topogpt3_model_py__BPETokenizer_decode
     n_topogpt3_train_agent_py__main -.-> n_topogpt3_model_py__BPETokenizer_encode
@@ -63,11 +71,13 @@ flowchart LR
 
 ### `agent_reward`
 
-`function` | [topogpt3/train_agent.py:31](../../topogpt3/train_agent.py#L31)
+`function` | [topogpt3/train_agent.py:41](../../topogpt3/train_agent.py#L41)
 
 ```python
-def agent_reward(text: str, gt: str, used_tools: bool) -> float
+def agent_reward(text: str, gt: str, used_tools: bool, tool_results: list | None = None, allowed_tools: set | None = None, require_tool: bool = False, verifier: str = 'general') -> float
 ```
+
+Format + ground-truth + valid tool calls + sandboxed execution.
 
 **Parameters**
 
@@ -76,10 +86,14 @@ def agent_reward(text: str, gt: str, used_tools: bool) -> float
 | `text` | `str` |  |  |
 | `gt` | `str` |  |  |
 | `used_tools` | `bool` |  |  |
+| `tool_results` | `list \| None` | `None` |  |
+| `allowed_tools` | `set \| None` | `None` |  |
+| `require_tool` | `bool` | `False` |  |
+| `verifier` | `str` | `'general'` |  |
 
 **Returns:** `float`
 
-*Calls:* [`rep_penalty`](topogpt3.rewards.py.md#rep_penalty)
+*Calls:* [`execution_reward`](topogpt3.rewards.py.md#execution_reward), [`rep_penalty`](topogpt3.rewards.py.md#rep_penalty), [`tool_call_reward`](topogpt3.rewards.py.md#tool_call_reward), [`verifier_reward`](topogpt3.rewards.py.md#verifier_reward)
 
 *Called by:* [`main`](#main)
 
@@ -89,12 +103,12 @@ def agent_reward(text: str, gt: str, used_tools: bool) -> float
 
 ### `main`
 
-`function` | [topogpt3/train_agent.py:43](../../topogpt3/train_agent.py#L43)
+`function` | [topogpt3/train_agent.py:67](../../topogpt3/train_agent.py#L67)
 
 ```python
 def main()
 ```
 
-*Calls:* [`apply_chat_template`](topogpt3.chat.py.md#apply_chat_template), [`parse_tool_calls`](topogpt3.chat.py.md#parse_tool_calls), [`BPETokenizer.__init__`](topogpt3.model.py.md#bpetokenizer-__init__), [`BPETokenizer.decode`](topogpt3.model.py.md#bpetokenizer-decode), [`BPETokenizer.encode`](topogpt3.model.py.md#bpetokenizer-encode), [`CurriculumTrainer.model`](topogpt3.model.py.md#curriculumtrainer-model), [`TopoGPT2.__init__`](topogpt3.model.py.md#topogpt2-__init__), [`TopoGPT2.generate`](topogpt3.model.py.md#topogpt2-generate), [`TopoGPT2Config`](topogpt3.model.py.md#topogpt2config), [`grpo_advantages`](topogpt3.rewards.py.md#grpo_advantages), [`grpo_loss`](topogpt3.rewards.py.md#grpo_loss), [`execute_tool`](topogpt3.tools_agent.py.md#execute_tool) and 4 more
+*Calls:* [`apply_chat_template`](topogpt3.chat.py.md#apply_chat_template), [`parse_tool_calls`](topogpt3.chat.py.md#parse_tool_calls), [`config_from_checkpoint`](topogpt3.checkpoint_meta.py.md#config_from_checkpoint), [`BPETokenizer.__init__`](topogpt3.model.py.md#bpetokenizer-__init__), [`BPETokenizer.decode`](topogpt3.model.py.md#bpetokenizer-decode), [`BPETokenizer.encode`](topogpt3.model.py.md#bpetokenizer-encode), [`CurriculumTrainer.model`](topogpt3.model.py.md#curriculumtrainer-model), [`TopoGPT2.__init__`](topogpt3.model.py.md#topogpt2-__init__), [`TopoGPT2.generate`](topogpt3.model.py.md#topogpt2-generate), [`TopoGPT2Config`](topogpt3.model.py.md#topogpt2config), [`grpo_advantages`](topogpt3.rewards.py.md#grpo_advantages), [`grpo_loss`](topogpt3.rewards.py.md#grpo_loss) and 5 more
 
 ---

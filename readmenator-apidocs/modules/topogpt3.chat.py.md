@@ -40,7 +40,7 @@ flowchart LR
 `function` | [topogpt3/chat.py:43](../../topogpt3/chat.py#L43)
 
 ```python
-def pre_processing_chat(conversations: List[Dict[str, Any]], add_system_ratio: float = 0.2) -> List[Dict[str, Any]]
+def pre_processing_chat(conversations: list[dict[str, Any]], add_system_ratio: float = 0.2) -> list[dict[str, Any]]
 ```
 
 Randomly prepend a system prompt (skip when tools present).
@@ -49,10 +49,10 @@ Randomly prepend a system prompt (skip when tools present).
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `conversations` | `List[Dict[str, Any]]` |  |  |
+| `conversations` | `list[dict[str, Any]]` |  |  |
 | `add_system_ratio` | `float` | `0.2` |  |
 
-**Returns:** `List[Dict[str, Any]]`
+**Returns:** `list[dict[str, Any]]`
 
 ---
 
@@ -83,10 +83,10 @@ def post_processing_chat(prompt: str, empty_think_ratio: float = 0.2) -> str
 
 ### `apply_chat_template`
 
-`function` | [topogpt3/chat.py:71](../../topogpt3/chat.py#L71)
+`function` | [topogpt3/chat.py:112](../../topogpt3/chat.py#L112)
 
 ```python
-def apply_chat_template(messages: List[Dict[str, Any]], tools: Optional[List[Dict[str, Any]]] = None, add_generation_prompt: bool = False, open_thinking: bool = False) -> str
+def apply_chat_template(messages: list[dict[str, Any]], tools: list[dict[str, Any]] | None = None, add_generation_prompt: bool = False, open_thinking: bool = False) -> str
 ```
 
 Render messages with tool definitions, thinking and tool-call blocks.
@@ -98,8 +98,8 @@ tool_calls (list or json str), open_thinking switch.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `messages` | `List[Dict[str, Any]]` |  |  |
-| `tools` | `Optional[List[Dict[str, Any]]]` | `None` |  |
+| `messages` | `list[dict[str, Any]]` |  |  |
+| `tools` | `list[dict[str, Any]] \| None` | `None` |  |
 | `add_generation_prompt` | `bool` | `False` |  |
 | `open_thinking` | `bool` | `False` |  |
 
@@ -115,10 +115,10 @@ tool_calls (list or json str), open_thinking switch.
 
 ### `parse_tool_calls`
 
-`function` | [topogpt3/chat.py:116](../../topogpt3/chat.py#L116)
+`function` | [topogpt3/chat.py:160](../../topogpt3/chat.py#L160)
 
 ```python
-def parse_tool_calls(text: str) -> List[Dict[str, Any]]
+def parse_tool_calls(text: str) -> list[dict[str, Any]]
 ```
 
 **Parameters**
@@ -127,9 +127,9 @@ def parse_tool_calls(text: str) -> List[Dict[str, Any]]
 |---|---|---|---|
 | `text` | `str` |  |  |
 
-**Returns:** `List[Dict[str, Any]]`
+**Returns:** `list[dict[str, Any]]`
 
-*Called by:* [`split_reasoning_content`](#split_reasoning_content), [`run_case`](topogpt3.eval_toolcall.py.md#run_case), [`rollout_multiturn`](topogpt3.tools_agent.py.md#rollout_multiturn), [`main`](topogpt3.train_agent.py.md#main)
+*Called by:* [`build_generate_fn`](eval.tasks.py.md#build_generate_fn), [`verify_tool_call`](eval.tasks.py.md#verify_tool_call), [`split_reasoning_content`](#split_reasoning_content), [`run_case`](topogpt3.eval_toolcall.py.md#run_case), [`score_candidate`](topogpt3.fallback.py.md#score_candidate), [`tool_calls_payload`](topogpt3.fallback.py.md#tool_calls_payload), [`tool_call_reward`](topogpt3.rewards.py.md#tool_call_reward), [`rollout_multiturn`](topogpt3.tools_agent.py.md#rollout_multiturn), [`main`](topogpt3.train_agent.py.md#main)
 
 ---
 
@@ -137,10 +137,10 @@ def parse_tool_calls(text: str) -> List[Dict[str, Any]]
 
 ### `parse_thinking`
 
-`function` | [topogpt3/chat.py:126](../../topogpt3/chat.py#L126)
+`function` | [topogpt3/chat.py:170](../../topogpt3/chat.py#L170)
 
 ```python
-def parse_thinking(text: str) -> Dict[str, str]
+def parse_thinking(text: str) -> dict[str, str]
 ```
 
 **Parameters**
@@ -149,7 +149,7 @@ def parse_thinking(text: str) -> Dict[str, str]
 |---|---|---|---|
 | `text` | `str` |  |  |
 
-**Returns:** `Dict[str, str]`
+**Returns:** `dict[str, str]`
 
 *Called by:* [`split_reasoning_content`](#split_reasoning_content)
 
@@ -159,10 +159,10 @@ def parse_thinking(text: str) -> Dict[str, str]
 
 ### `split_reasoning_content`
 
-`function` | [topogpt3/chat.py:134](../../topogpt3/chat.py#L134)
+`function` | [topogpt3/chat.py:178](../../topogpt3/chat.py#L178)
 
 ```python
-def split_reasoning_content(text: str) -> Dict[str, Any]
+def split_reasoning_content(text: str) -> dict[str, Any]
 ```
 
 Split generated text into reasoning_content / content / tool_calls (API).
@@ -173,9 +173,11 @@ Split generated text into reasoning_content / content / tool_calls (API).
 |---|---|---|---|
 | `text` | `str` |  |  |
 
-**Returns:** `Dict[str, Any]`
+**Returns:** `dict[str, Any]`
 
 *Calls:* [`parse_thinking`](#parse_thinking), [`parse_tool_calls`](#parse_tool_calls)
+
+*Called by:* [`split_response`](topogpt3.fallback.py.md#split_response)
 
 ---
 

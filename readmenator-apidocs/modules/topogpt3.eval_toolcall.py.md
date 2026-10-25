@@ -4,7 +4,8 @@
 
 Tool-call evaluation for TopoGPT3 agents.
 
-Runs TOOLS cases through a generate_fn and checks name/args parsing.
+Runs TOOLS cases through a generate_fn and checks name/args parsing,
+including apt_chain cases (LazyOwn fallback contract).
 
 ## Contents
 
@@ -21,10 +22,12 @@ flowchart LR
     n_topogpt3_eval_toolcall_py__run_case(["run_case"])
     n_topogpt3_chat_py__apply_chat_template["chat.apply_chat_template"]
     n_topogpt3_chat_py__parse_tool_calls["chat.parse_tool_calls"]
+    n_topogpt3_fallback_py__validate_tool_call["fallback.validate_tool_call"]
     n_topogpt3_tools_agent_py__execute_tool["tools_agent.execute_tool"]
     n_topogpt3_eval_toolcall_py__evaluate --> n_topogpt3_eval_toolcall_py__run_case
     n_topogpt3_eval_toolcall_py__run_case -.-> n_topogpt3_chat_py__apply_chat_template
     n_topogpt3_eval_toolcall_py__run_case -.-> n_topogpt3_chat_py__parse_tool_calls
+    n_topogpt3_eval_toolcall_py__run_case -.-> n_topogpt3_fallback_py__validate_tool_call
     n_topogpt3_eval_toolcall_py__run_case -.-> n_topogpt3_tools_agent_py__execute_tool
 ```
 
@@ -34,10 +37,10 @@ flowchart LR
 
 ### `run_case`
 
-`function` | [topogpt3/eval_toolcall.py:19](../../topogpt3/eval_toolcall.py#L19)
+`function` | [topogpt3/eval_toolcall.py:36](../../topogpt3/eval_toolcall.py#L36)
 
 ```python
-def run_case(generate_fn, prompt: str, expect_tool: str)
+def run_case(generate_fn, prompt: str, expect_tool: str, expect_args: dict | None = None)
 ```
 
 **Parameters**
@@ -47,8 +50,9 @@ def run_case(generate_fn, prompt: str, expect_tool: str)
 | `generate_fn` |  |  |  |
 | `prompt` | `str` |  |  |
 | `expect_tool` | `str` |  |  |
+| `expect_args` | `dict \| None` | `None` |  |
 
-*Calls:* [`apply_chat_template`](topogpt3.chat.py.md#apply_chat_template), [`parse_tool_calls`](topogpt3.chat.py.md#parse_tool_calls), [`execute_tool`](topogpt3.tools_agent.py.md#execute_tool)
+*Calls:* [`apply_chat_template`](topogpt3.chat.py.md#apply_chat_template), [`parse_tool_calls`](topogpt3.chat.py.md#parse_tool_calls), [`validate_tool_call`](topogpt3.fallback.py.md#validate_tool_call), [`execute_tool`](topogpt3.tools_agent.py.md#execute_tool)
 
 *Called by:* [`evaluate`](#evaluate)
 
@@ -58,7 +62,7 @@ def run_case(generate_fn, prompt: str, expect_tool: str)
 
 ### `evaluate`
 
-`function` | [topogpt3/eval_toolcall.py:35](../../topogpt3/eval_toolcall.py#L35)
+`function` | [topogpt3/eval_toolcall.py:91](../../topogpt3/eval_toolcall.py#L91)
 
 ```python
 def evaluate(generate_fn)
@@ -80,7 +84,7 @@ def evaluate(generate_fn)
 
 ### `CASES`
 
-`constant` | [topogpt3/eval_toolcall.py:11](../../topogpt3/eval_toolcall.py#L11)
+`constant` | [topogpt3/eval_toolcall.py:15](../../topogpt3/eval_toolcall.py#L15)
 
 ```python
 CASES

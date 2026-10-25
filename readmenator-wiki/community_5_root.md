@@ -54,9 +54,9 @@ This community groups 3 file(s) rooted at `root` with dominant language py (cohe
 
 ## Connections
 
-- [INFERRED] shares_context community 0 <-> 5 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 0 (topogpt3: lora) and community 5 (root).
+- [INFERRED] shares_context community 0 <-> 5 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 0 (topogpt3: model) and community 5 (root).
 - [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 1 (eval) and community 5 (root).
-- [INFERRED] shares_context community 2 <-> 5 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 2 (topogpt3: model) and community 5 (root).
+- [INFERRED] shares_context community 2 <-> 5 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 2 (topogpt3: tasks) and community 5 (root).
 
 ## Risks
 

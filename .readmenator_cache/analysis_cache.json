@@ -3,19 +3,35 @@
     "god_nodes": [
       [
         "topogpt3/model.py",
-        58.8
+        62.8
       ],
       [
         "topogpt3/__init__.py",
         42.0
       ],
       [
+        "topogpt3/checkpoint_meta.py",
+        28.5
+      ],
+      [
         "topogpt3/__main__.py",
         28.1
       ],
       [
+        "topogpt3/chat.py",
+        22.8
+      ],
+      [
         "topogpt3/api_server.py",
-        17.0
+        22.3
+      ],
+      [
+        "topogpt3/rewards.py",
+        19.2
+      ],
+      [
+        "topogpt3/fallback.py",
+        17.5
       ],
       [
         "tests/test_heritage.py",
@@ -24,96 +40,87 @@
       [
         "topogpt3.c",
         16.8
-      ],
-      [
-        "topogpt3/train.py",
-        16.2
-      ],
-      [
-        "topogpt3/trainer_utils_topo.py",
-        15.0
-      ],
-      [
-        "topogpt3/lens_model.py",
-        14.9
-      ],
-      [
-        "topogpt3/rewards.py",
-        14.9
       ]
     ],
     "communities": [
       {
         "id": 0,
-        "label": "topogpt3: lora",
+        "label": "topogpt3: model",
         "file_ids": [
-          "topogpt3/train_grpo.py",
-          "topogpt3/rewards.py",
-          "topogpt3/train_ppo.py",
-          "topogpt3/train_distill.py",
-          "topogpt3/train_dpo.py",
-          "topogpt3/rollout.py",
           "topogpt3/__main__.py",
+          "topogpt3/export_chat.py",
+          "topogpt3/train_dpo.py",
+          "synthetic_dataset.py",
+          "topogpt3/train_ppo.py",
+          "topogpt3/convert.py",
           "topogpt3/lora.py",
           "topogpt3/trainer_utils_topo.py",
-          "topogpt3/convert.py",
+          "topogpt3/train.py",
+          "topogpt3/model.py",
+          "topogpt3/train_distill.py",
+          "eval/diag_static.py",
           "topogpt3/train_lora.py",
-          "topogpt3/train_agent.py"
+          "topogpt3/rollout.py",
+          "topogpt3/train_grpo.py"
         ],
-        "cohesion": 0.4888888888888889,
-        "size": 12
+        "cohesion": 0.453125,
+        "size": 15
       },
       {
         "id": 1,
         "label": "eval",
         "file_ids": [
+          "eval/samplers.py",
+          "eval/integration_smoke.py",
           "eval/temp_sweep.py",
           "eval/repair.py",
-          "eval/samplers.py",
-          "topogpt3/inference.py",
-          "eval/governor.py",
           "eval/governor_smoke.py",
-          "topogpt3/__init__.py",
-          "eval/noise_sweep.py",
-          "eval/integration_smoke.py",
+          "eval/governor.py",
+          "topogpt3/yarn.py",
+          "eval/sandbox.py",
           "eval/harness.py",
-          "eval/smoke.py"
+          "eval/smoke.py",
+          "eval/noise_sweep.py",
+          "topogpt3/__init__.py",
+          "eval/sandbox_smoke.py"
         ],
-        "cohesion": 0.43333333333333335,
-        "size": 11
+        "cohesion": 0.4411764705882353,
+        "size": 13
       },
       {
         "id": 2,
-        "label": "topogpt3: model",
+        "label": "topogpt3: tasks",
         "file_ids": [
-          "topogpt3/model.py",
-          "synthetic_dataset.py",
-          "topogpt3/structured_output.py",
-          "tests/test_structured_output.py",
-          "topogpt3/train.py",
-          "topogpt3/inference_hrm.py",
-          "topogpt3/export_chat.py",
-          "topogpt3/api_server.py",
-          "topogpt3/continuation.py",
-          "eval/diag_static.py"
+          "tests/test_fallback.py",
+          "tests/test_eval_tasks.py",
+          "topogpt3/eval_toolcall.py",
+          "tests/test_heritage.py",
+          "topogpt3/tools_agent.py",
+          "eval/tasks.py",
+          "topogpt3/fallback.py",
+          "topogpt3/rewards.py",
+          "topogpt3/train_agent.py",
+          "topogpt3/chat.py"
         ],
-        "cohesion": 0.4,
+        "cohesion": 0.5116279069767442,
         "size": 10
       },
       {
         "id": 3,
-        "label": "topogpt3: sandbox",
+        "label": "topogpt3: inference_hrm",
         "file_ids": [
-          "eval/sandbox.py",
-          "topogpt3/eval_toolcall.py",
-          "eval/sandbox_smoke.py",
-          "topogpt3/chat.py",
-          "topogpt3/yarn.py",
-          "tests/test_heritage.py",
-          "topogpt3/tools_agent.py"
+          "topogpt3/tokenizer_tools.py",
+          "topogpt3/inference_hrm.py",
+          "topogpt3/checkpoint_meta.py",
+          "topogpt3/structured_output.py",
+          "tests/test_checkpoint_meta.py",
+          "topogpt3/continuation.py",
+          "tests/test_structured_output.py",
+          "topogpt3/inference.py",
+          "topogpt3/api_server.py"
         ],
-        "cohesion": 0.4090909090909091,
-        "size": 7
+        "cohesion": 0.3448275862068966,
+        "size": 9
       },
       {
         "id": 4,
@@ -131,9 +138,9 @@
         "id": 5,
         "label": "root",
         "file_ids": [
-          "gradio_app.py",
           "app.py",
-          "topogpt3.c"
+          "topogpt3.c",
+          "gradio_app.py"
         ],
         "cohesion": 1.0,
         "size": 3
@@ -142,7 +149,7 @@
     "surprising_connections": [
       [
         "eval/governor.py",
-        "eval/sandbox_smoke.py",
+        "tests/test_checkpoint_meta.py",
         5,
         "{1, 3}"
       ],
@@ -153,30 +160,30 @@
         "{1, 2, 3}"
       ],
       [
-        "eval/integration_smoke.py",
-        "topogpt3/structured_output.py",
+        "eval/governor.py",
+        "topogpt3/tokenizer_tools.py",
         5,
-        "{1, 2}"
+        "{1, 3}"
       ],
       [
         "eval/sandbox_smoke.py",
         "synthetic_dataset.py",
         5,
-        "{1, 2, 3}"
+        "{0, 1}"
       ],
       [
         "eval/sandbox_smoke.py",
         "tests/test_jlens.py",
         5,
-        "{1, 3, 4}"
+        "{1, 4}"
       ]
     ],
     "suggested_questions": [
-      "What does model.py depend on, and what depends on it? (20 connections)",
+      "What does model.py depend on, and what depends on it? (22 connections)",
       "What does __init__.py depend on, and what depends on it? (21 connections)",
-      "What does __main__.py depend on, and what depends on it? (14 connections)",
-      "How are the 12 files in 'topogpt3: lora' related to each other?",
-      "Why are governor.py and sandbox_smoke.py connected through 5 hops across 2 communities?"
+      "What does checkpoint_meta.py depend on, and what depends on it? (14 connections)",
+      "How are the 15 files in 'topogpt3: model' related to each other?",
+      "Why are governor.py and test_checkpoint_meta.py connected through 5 hops across 2 communities?"
     ]
   },
   "layers": {
@@ -199,10 +206,16 @@
     "eval/sandbox.py": "utility",
     "eval/sandbox_smoke.py": "utility",
     "eval/smoke.py": "utility",
+    "eval/tasks.py": "utility",
     "eval/temp_sweep.py": "utility",
     "gradio_app.py": "utility",
     "install.sh": "utility",
+    "scripts/serve_fallback.sh": "utility",
     "synthetic_dataset.py": "data_access",
+    "tests/test_checkpoint_meta.py": "testing",
+    "tests/test_data_pipeline.py": "testing",
+    "tests/test_eval_tasks.py": "testing",
+    "tests/test_fallback.py": "testing",
     "tests/test_heritage.py": "testing",
     "tests/test_jlens.py": "testing",
     "tests/test_lens_model.py": "testing",
@@ -211,10 +224,12 @@
     "topogpt3/__main__.py": "utility",
     "topogpt3/api_server.py": "presentation",
     "topogpt3/chat.py": "utility",
+    "topogpt3/checkpoint_meta.py": "utility",
     "topogpt3/continuation.py": "utility",
     "topogpt3/convert.py": "utility",
     "topogpt3/eval_toolcall.py": "utility",
     "topogpt3/export_chat.py": "utility",
+    "topogpt3/fallback.py": "utility",
     "topogpt3/inference.py": "utility",
     "topogpt3/inference_hrm.py": "utility",
     "topogpt3/jlens.py": "utility",
@@ -224,6 +239,7 @@
     "topogpt3/rewards.py": "utility",
     "topogpt3/rollout.py": "utility",
     "topogpt3/structured_output.py": "utility",
+    "topogpt3/tokenizer_tools.py": "utility",
     "topogpt3/tools_agent.py": "utility",
     "topogpt3/train.py": "utility",
     "topogpt3/train_agent.py": "utility",

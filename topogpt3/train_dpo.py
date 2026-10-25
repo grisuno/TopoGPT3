@@ -1,5 +1,6 @@
 """DPO for TopoGPT3. Policy + frozen ref share
 TopoGPT2 quaternion/spectral weights; only preference direction is learned."""
+
 from __future__ import annotations
 
 import argparse
@@ -8,21 +9,30 @@ import os
 import sys
 
 import torch
+from safetensors.torch import load_file
 from torch import optim
 from torch.utils.data import DataLoader
-from safetensors.torch import load_file
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from topogpt3.model import BPETokenizer, TopoGPT2, TopoGPT2Config
+from topogpt3.checkpoint_meta import config_from_checkpoint
 from topogpt3.datasets_chat import DPODatasetJSONL
+from topogpt3.model import BPETokenizer, TopoGPT2, TopoGPT2Config
 from topogpt3.rewards import dpo_loss_fn, logits_to_log_probs
-from topogpt3.trainer_utils_topo import (Logger, get_lr, init_distributed_mode,
-                                         is_main_process, setup_seed,
-                                         topo_checkpoint)
+from topogpt3.trainer_utils_topo import (
+    Logger,
+    get_lr,
+    init_distributed_mode,
+    is_main_process,
+    setup_seed,
+    topo_checkpoint,
+)
 
 
 def load_model(checkpoint, device):
-    cfg = TopoGPT2Config()
+    try:
+        cfg, _meta = config_from_checkpoint(checkpoint, device="cpu")
+    except (FileNotFoundError, ValueError):
+        cfg = TopoGPT2Config()
     m = TopoGPT2(cfg)
     sf = os.path.join(checkpoint, "model.safetensors")
     if os.path.exists(sf):
@@ -52,16 +62,27 @@ def main():
     for p in ref.parameters():
         p.requires_grad = False
     opt = optim.AdamW(model.parameters(), lr=args.lr)
-    loader = DataLoader(DPODatasetJSONL(args.data, tok, args.max_len),
-                        batch_size=args.batch_size, shuffle=True)
+    loader = DataLoader(
+        DPODatasetJSONL(args.data, tok, args.max_len),
+        batch_size=args.batch_size,
+        shuffle=True,
+    )
     total = args.epochs * max(1, len(loader))
     step = 0
     model.train()
     for ep in range(args.epochs):
         for b in loader:
             step += 1
-            xc, yc, mc = b["x_chosen"].to(device), b["y_chosen"].to(device), b["mask_chosen"].to(device)
-            xr, yr, mr = b["x_rejected"].to(device), b["y_rejected"].to(device), b["mask_rejected"].to(device)
+            xc, yc, mc = (
+                b["x_chosen"].to(device),
+                b["y_chosen"].to(device),
+                b["mask_chosen"].to(device),
+            )
+            xr, yr, mr = (
+                b["x_rejected"].to(device),
+                b["y_rejected"].to(device),
+                b["mask_rejected"].to(device),
+            )
             x = torch.cat([xc, xr], 0)
             y = torch.cat([yc, yr], 0)
             mask = torch.cat([mc, mr], 0)
@@ -83,8 +104,14 @@ def main():
             if step % 10 == 0:
                 Logger(f"ep{ep} step{step}/{total} dpo_loss={loss.item():.4f}")
     if is_main_process():
-        topo_checkpoint(os.path.dirname(args.out) or ".", os.path.splitext(os.path.basename(args.out))[0],
-                        model=model, optimizer=opt, epoch=args.epochs, step=step)
+        topo_checkpoint(
+            os.path.dirname(args.out) or ".",
+            os.path.splitext(os.path.basename(args.out))[0],
+            model=model,
+            optimizer=opt,
+            epoch=args.epochs,
+            step=step,
+        )
         Logger(f"saved DPO -> {args.out}")
 
 

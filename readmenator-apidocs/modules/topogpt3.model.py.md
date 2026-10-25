@@ -237,7 +237,7 @@ flowchart LR
 
 ### `TopoGPT2Config`
 
-`class` `dataclass` | [topogpt3/model.py:56](../../topogpt3/model.py#L56)
+`class` `dataclass` | [topogpt3/model.py:59](../../topogpt3/model.py#L59)
 
 Decorators: `@dataclass`
 
@@ -288,8 +288,8 @@ Configuración completa para TopoGPT2.
 | [`N_MEMORY_TOKENS`](#topogpt2config-n_memory_tokens) | `int` | `0` |  |
 | [`MEMORY_SEGMENT_LEN`](#topogpt2config-memory_segment_len) | `int` | `0` |  |
 | [`PROGRESSIVE_SEQ`](#topogpt2config-progressive_seq) | `bool` | `True` |  |
-| [`PROGRESSIVE_SEQ_STEPS`](#topogpt2config-progressive_seq_steps) | `Tuple[int, int, int]` | `(128, 256, 512)` |  |
-| [`PROGRESSIVE_SEQ_EPOCHS`](#topogpt2config-progressive_seq_epochs) | `Tuple[int, int, int]` | `(3, 3, 4)` |  |
+| [`PROGRESSIVE_SEQ_STEPS`](#topogpt2config-progressive_seq_steps) | `tuple[int, int, int]` | `(128, 256, 512)` |  |
+| [`PROGRESSIVE_SEQ_EPOCHS`](#topogpt2config-progressive_seq_epochs) | `tuple[int, int, int]` | `(3, 3, 4)` |  |
 | [`FILTER_MAX_LINE_LEN`](#topogpt2config-filter_max_line_len) | `int` | `500` |  |
 | [`FILTER_ENTROPY_MIN`](#topogpt2config-filter_entropy_min) | `float` | `3.5` |  |
 | [`FILTER_ENTROPY_MAX`](#topogpt2config-filter_entropy_max) | `float` | `6.5` |  |
@@ -321,7 +321,7 @@ Configuración completa para TopoGPT2.
 
 ### `QuaternionOps`
 
-`class` | [topogpt3/model.py:214](../../topogpt3/model.py#L214)
+`class` | [topogpt3/model.py:281](../../topogpt3/model.py#L281)
 
 ```python
 class QuaternionOps
@@ -344,7 +344,7 @@ Representación: [..., 4]  donde last dim = [w, x, y, z] q = w + x*i + y*j + z*k
 
 #### `QuaternionOps.hamilton_product`
 
-`staticmethod` | [topogpt3/model.py:222](../../topogpt3/model.py#L222)
+`staticmethod` | [topogpt3/model.py:289](../../topogpt3/model.py#L289)
 
 Decorators: `@staticmethod`
 
@@ -371,7 +371,7 @@ Ambos [..., 4].
 
 #### `QuaternionOps.normalize`
 
-`staticmethod` | [topogpt3/model.py:234](../../topogpt3/model.py#L234)
+`staticmethod` | [topogpt3/model.py:304](../../topogpt3/model.py#L304)
 
 Decorators: `@staticmethod`
 
@@ -392,7 +392,7 @@ def normalize(q: torch.Tensor, eps: float = 1e-08) -> torch.Tensor
 
 #### `QuaternionOps.conjugate`
 
-`staticmethod` | [topogpt3/model.py:238](../../topogpt3/model.py#L238)
+`staticmethod` | [topogpt3/model.py:308](../../topogpt3/model.py#L308)
 
 Decorators: `@staticmethod`
 
@@ -414,7 +414,7 @@ def conjugate(q: torch.Tensor) -> torch.Tensor
 
 #### `QuaternionOps.rotate_vector`
 
-`staticmethod` | [topogpt3/model.py:243](../../topogpt3/model.py#L243)
+`staticmethod` | [topogpt3/model.py:313](../../topogpt3/model.py#L313)
 
 Decorators: `@staticmethod`
 
@@ -441,7 +441,7 @@ Rota vector 3D v por cuaternión unitario q. v:[...,3] q:[...,4]
 
 ### `QuaternionLinear`
 
-`class` | [topogpt3/model.py:253](../../topogpt3/model.py#L253)
+`class` | [topogpt3/model.py:324](../../topogpt3/model.py#L324)
 
 ```python
 class QuaternionLinear(nn.Module)
@@ -469,7 +469,7 @@ Parámetros: 4 matrices reales de forma [out_q, in_q]
 
 #### `QuaternionLinear.__init__`
 
-`constructor` | [topogpt3/model.py:265](../../topogpt3/model.py#L265)
+`constructor` | [topogpt3/model.py:336](../../topogpt3/model.py#L336)
 
 ```python
 def __init__(self, in_features: int, out_features: int, bias: bool = True)
@@ -489,7 +489,7 @@ def __init__(self, in_features: int, out_features: int, bias: bool = True)
 
 #### `QuaternionLinear.forward`
 
-`method` | [topogpt3/model.py:281](../../topogpt3/model.py#L281)
+`method` | [topogpt3/model.py:352](../../topogpt3/model.py#L352)
 
 ```python
 def forward(self, x: torch.Tensor) -> torch.Tensor
@@ -511,7 +511,7 @@ x: [..., in_features] → [..., out_features]
 
 ### `QuaternionSpectralLayer`
 
-`class` | [topogpt3/model.py:298](../../topogpt3/model.py#L298)
+`class` | [topogpt3/model.py:375](../../topogpt3/model.py#L375)
 
 ```python
 class QuaternionSpectralLayer(nn.Module)
@@ -547,7 +547,7 @@ Cada Wc es un kernel complejo (partes real e imaginaria independientes).
 
 #### `QuaternionSpectralLayer.__init__`
 
-`constructor` | [topogpt3/model.py:318](../../topogpt3/model.py#L318)
+`constructor` | [topogpt3/model.py:395](../../topogpt3/model.py#L395)
 
 ```python
 def __init__(self, in_q: int, out_q: int, grid_h: int, grid_w: int, init_scale: float = 0.02)
@@ -569,7 +569,7 @@ def __init__(self, in_q: int, out_q: int, grid_h: int, grid_w: int, init_scale: 
 
 #### `QuaternionSpectralLayer.forward`
 
-`method` | [topogpt3/model.py:344](../../topogpt3/model.py#L344)
+`method` | [topogpt3/model.py:426](../../topogpt3/model.py#L426)
 
 ```python
 def forward(self, x: torch.Tensor) -> torch.Tensor
@@ -591,7 +591,7 @@ x: [B, 4*in_q, H, W]  (4 canales cuaterniones sobre grid espacial) → [B, 4*out
 
 ### `SpectralAutoencoder`
 
-`class` | [topogpt3/model.py:385](../../topogpt3/model.py#L385)
+`class` | [topogpt3/model.py:473](../../topogpt3/model.py#L473)
 
 ```python
 class SpectralAutoencoder(nn.Module)
@@ -623,7 +623,7 @@ Devuelve (latent, recon_loss) para regularización.
 
 #### `SpectralAutoencoder.__init__`
 
-`constructor` | [topogpt3/model.py:398](../../topogpt3/model.py#L398)
+`constructor` | [topogpt3/model.py:486](../../topogpt3/model.py#L486)
 
 ```python
 def __init__(self, config: TopoGPT2Config)
@@ -643,7 +643,7 @@ def __init__(self, config: TopoGPT2Config)
 
 #### `SpectralAutoencoder.encode`
 
-`method` | [topogpt3/model.py:436](../../topogpt3/model.py#L436)
+`method` | [topogpt3/model.py:528](../../topogpt3/model.py#L528)
 
 ```python
 def encode(self, x: torch.Tensor) -> torch.Tensor
@@ -665,7 +665,7 @@ x: [..., D_MODEL] → latent: [..., D_LAT]
 
 #### `SpectralAutoencoder.decode`
 
-`method` | [topogpt3/model.py:441](../../topogpt3/model.py#L441)
+`method` | [topogpt3/model.py:533](../../topogpt3/model.py#L533)
 
 ```python
 def decode(self, z: torch.Tensor) -> torch.Tensor
@@ -687,10 +687,10 @@ z: [..., D_LAT] → recon: [..., D_MODEL]
 
 #### `SpectralAutoencoder.forward`
 
-`method` | [topogpt3/model.py:446](../../topogpt3/model.py#L446)
+`method` | [topogpt3/model.py:538](../../topogpt3/model.py#L538)
 
 ```python
-def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]
+def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]
 ```
 
 Devuelve (latent, recon_loss)
@@ -701,7 +701,7 @@ Devuelve (latent, recon_loss)
 |---|---|---|---|
 | `x` | `torch.Tensor` |  |  |
 
-**Returns:** `Tuple[torch.Tensor, torch.Tensor]`
+**Returns:** `tuple[torch.Tensor, torch.Tensor]`
 
 *Calls:* [`SpectralAutoencoder.decode`](#spectralautoencoder-decode), [`SpectralAutoencoder.encode`](#spectralautoencoder-encode)
 
@@ -709,7 +709,7 @@ Devuelve (latent, recon_loss)
 
 #### `SpectralAutoencoder.process_torus_grid`
 
-`method` | [topogpt3/model.py:453](../../topogpt3/model.py#L453)
+`method` | [topogpt3/model.py:545](../../topogpt3/model.py#L545)
 
 ```python
 def process_torus_grid(self, grid: torch.Tensor) -> torch.Tensor
@@ -733,7 +733,7 @@ Procesa el grid del toro con QuaternionSpectralLayer. grid: [B, 4*D_QUAT, RADIAL
 
 ### `QuaternionTorusBrain`
 
-`class` | [topogpt3/model.py:468](../../topogpt3/model.py#L468)
+`class` | [topogpt3/model.py:561](../../topogpt3/model.py#L561)
 
 ```python
 class QuaternionTorusBrain(nn.Module)
@@ -767,7 +767,7 @@ Pipeline (completamente vectorizado sobre batch Y secuencia):
 
 #### `QuaternionTorusBrain.__init__`
 
-`constructor` | [topogpt3/model.py:486](../../topogpt3/model.py#L486)
+`constructor` | [topogpt3/model.py:579](../../topogpt3/model.py#L579)
 
 ```python
 def __init__(self, d_model: int, config: TopoGPT2Config)
@@ -788,10 +788,10 @@ def __init__(self, d_model: int, config: TopoGPT2Config)
 
 #### `QuaternionTorusBrain.forward`
 
-`method` | [topogpt3/model.py:624](../../topogpt3/model.py#L624)
+`method` | [topogpt3/model.py:735](../../topogpt3/model.py#L735)
 
 ```python
-def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]
+def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]
 ```
 
 x: [B, S, D_MODEL] → output: [B, S, D_MODEL], recon_loss: scalar
@@ -802,7 +802,7 @@ x: [B, S, D_MODEL] → output: [B, S, D_MODEL], recon_loss: scalar
 |---|---|---|---|
 | `x` | `torch.Tensor` |  |  |
 
-**Returns:** `Tuple[torch.Tensor, torch.Tensor]`
+**Returns:** `tuple[torch.Tensor, torch.Tensor]`
 
 *Calls:* [`SpectralAutoencoder.process_torus_grid`](#spectralautoencoder-process_torus_grid)
 
@@ -812,7 +812,7 @@ x: [B, S, D_MODEL] → output: [B, S, D_MODEL], recon_loss: scalar
 
 ### `RotaryEmbedding`
 
-`class` | [topogpt3/model.py:685](../../topogpt3/model.py#L685)
+`class` | [topogpt3/model.py:799](../../topogpt3/model.py#L799)
 
 ```python
 class RotaryEmbedding(nn.Module)
@@ -841,7 +841,7 @@ errores de shape al cargar checkpoints previos.
 
 #### `RotaryEmbedding.__init__`
 
-`constructor` | [topogpt3/model.py:697](../../topogpt3/model.py#L697)
+`constructor` | [topogpt3/model.py:811](../../topogpt3/model.py#L811)
 
 ```python
 def __init__(self, d_head: int, max_seq_len: int = 2048, base: int = 10000, yarn_factor: float = 1.0, yarn_orig_max: int = 2048)
@@ -863,7 +863,7 @@ def __init__(self, d_head: int, max_seq_len: int = 2048, base: int = 10000, yarn
 
 #### `RotaryEmbedding.enable_yarn`
 
-`method` | [topogpt3/model.py:716](../../topogpt3/model.py#L716)
+`method` | [topogpt3/model.py:837](../../topogpt3/model.py#L837)
 
 ```python
 def enable_yarn(self, factor: float = 16.0, orig_max: int = 2048) -> None
@@ -884,10 +884,10 @@ Enable YaRN extrapolation post-hoc (rebuilds cache in place).
 
 #### `RotaryEmbedding.forward`
 
-`method` | [topogpt3/model.py:736](../../topogpt3/model.py#L736)
+`method` | [topogpt3/model.py:859](../../topogpt3/model.py#L859)
 
 ```python
-def forward(self, q: torch.Tensor, k: torch.Tensor, seq_len: int, offset: int = 0) -> Tuple[torch.Tensor, torch.Tensor]
+def forward(self, q: torch.Tensor, k: torch.Tensor, seq_len: int, offset: int = 0) -> tuple[torch.Tensor, torch.Tensor]
 ```
 
 q, k: [B, n_heads, S_q/S_k, d_head] offset: posicion inicial (para KV cache: longitud del cache existente) Aplica posiciones [offset .. offset+S-1] a q y k.
@@ -901,7 +901,7 @@ q, k: [B, n_heads, S_q/S_k, d_head] offset: posicion inicial (para KV cache: lon
 | `seq_len` | `int` |  |  |
 | `offset` | `int` | `0` |  |
 
-**Returns:** `Tuple[torch.Tensor, torch.Tensor]`
+**Returns:** `tuple[torch.Tensor, torch.Tensor]`
 
 ---
 
@@ -909,7 +909,7 @@ q, k: [B, n_heads, S_q/S_k, d_head] offset: posicion inicial (para KV cache: lon
 
 ### `RMSNorm`
 
-`class` | [topogpt3/model.py:760](../../topogpt3/model.py#L760)
+`class` | [topogpt3/model.py:885](../../topogpt3/model.py#L885)
 
 ```python
 class RMSNorm(nn.Module)
@@ -932,7 +932,7 @@ Más estable que LayerNorm.
 
 #### `RMSNorm.__init__`
 
-`constructor` | [topogpt3/model.py:763](../../topogpt3/model.py#L763)
+`constructor` | [topogpt3/model.py:888](../../topogpt3/model.py#L888)
 
 ```python
 def __init__(self, d_model: int, eps: float = 1e-06)
@@ -951,7 +951,7 @@ def __init__(self, d_model: int, eps: float = 1e-06)
 
 #### `RMSNorm.forward`
 
-`method` | [topogpt3/model.py:768](../../topogpt3/model.py#L768)
+`method` | [topogpt3/model.py:893](../../topogpt3/model.py#L893)
 
 ```python
 def forward(self, x: torch.Tensor) -> torch.Tensor
@@ -971,7 +971,7 @@ def forward(self, x: torch.Tensor) -> torch.Tensor
 
 ### `SwiGLU`
 
-`class` | [topogpt3/model.py:777](../../topogpt3/model.py#L777)
+`class` | [topogpt3/model.py:903](../../topogpt3/model.py#L903)
 
 ```python
 class SwiGLU(nn.Module)
@@ -994,7 +994,7 @@ Dimension interna: 8/3 * d_model (convención LLaMA, redondeada a múltiplo de 4
 
 #### `SwiGLU.__init__`
 
-`constructor` | [topogpt3/model.py:784](../../topogpt3/model.py#L784)
+`constructor` | [topogpt3/model.py:910](../../topogpt3/model.py#L910)
 
 ```python
 def __init__(self, d_model: int, expansion: float = 8 / 3, dropout: float = 0.0)
@@ -1014,7 +1014,7 @@ def __init__(self, d_model: int, expansion: float = 8 / 3, dropout: float = 0.0)
 
 #### `SwiGLU.forward`
 
-`method` | [topogpt3/model.py:798](../../topogpt3/model.py#L798)
+`method` | [topogpt3/model.py:923](../../topogpt3/model.py#L923)
 
 ```python
 def forward(self, x: torch.Tensor) -> torch.Tensor
@@ -1034,7 +1034,7 @@ def forward(self, x: torch.Tensor) -> torch.Tensor
 
 ### `TopoMoEBrain`
 
-`class` | [topogpt3/model.py:806](../../topogpt3/model.py#L806)
+`class` | [topogpt3/model.py:932](../../topogpt3/model.py#L932)
 
 ```python
 class TopoMoEBrain(nn.Module)
@@ -1065,7 +1065,7 @@ Sin MoE (MOE_ENABLED=False): se comporta como QuaternionTorusBrain puro.
 
 #### `TopoMoEBrain.__init__`
 
-`constructor` | [topogpt3/model.py:821](../../topogpt3/model.py#L821)
+`constructor` | [topogpt3/model.py:947](../../topogpt3/model.py#L947)
 
 ```python
 def __init__(self, d_model: int, config: 'TopoGPT2Config')
@@ -1086,10 +1086,10 @@ def __init__(self, d_model: int, config: 'TopoGPT2Config')
 
 #### `TopoMoEBrain.forward`
 
-`method` | [topogpt3/model.py:884](../../topogpt3/model.py#L884)
+`method` | [topogpt3/model.py:1018](../../topogpt3/model.py#L1018)
 
 ```python
-def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]
+def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]
 ```
 
 x: [B, S, D] → output: [B, S, D], aux_loss: escalar
@@ -1100,7 +1100,7 @@ x: [B, S, D] → output: [B, S, D], aux_loss: escalar
 |---|---|---|---|
 | `x` | `torch.Tensor` |  |  |
 
-**Returns:** `Tuple[torch.Tensor, torch.Tensor]`
+**Returns:** `tuple[torch.Tensor, torch.Tensor]`
 
 ---
 
@@ -1108,7 +1108,7 @@ x: [B, S, D] → output: [B, S, D], aux_loss: escalar
 
 ### `MultiHeadAttention`
 
-`class` | [topogpt3/model.py:911](../../topogpt3/model.py#L911)
+`class` | [topogpt3/model.py:1045](../../topogpt3/model.py#L1045)
 
 ```python
 class MultiHeadAttention(nn.Module)
@@ -1129,7 +1129,7 @@ Multi-head attention con: - Flash Attention (scaled_dot_product_attention de PyT
 
 #### `MultiHeadAttention.__init__`
 
-`constructor` | [topogpt3/model.py:921](../../topogpt3/model.py#L921)
+`constructor` | [topogpt3/model.py:1055](../../topogpt3/model.py#L1055)
 
 ```python
 def __init__(self, d_model: int, n_heads: int, config: 'TopoGPT2Config')
@@ -1151,10 +1151,10 @@ def __init__(self, d_model: int, n_heads: int, config: 'TopoGPT2Config')
 
 #### `MultiHeadAttention.forward`
 
-`method` | [topogpt3/model.py:940](../../topogpt3/model.py#L940)
+`method` | [topogpt3/model.py:1074](../../topogpt3/model.py#L1074)
 
 ```python
-def forward(self, x: torch.Tensor, is_causal: bool = True, past_kv: Optional[Tuple[torch.Tensor, torch.Tensor]] = None) -> Tuple[torch.Tensor, Tuple[torch.Tensor, torch.Tensor]]
+def forward(self, x: torch.Tensor, is_causal: bool = True, past_kv: tuple[torch.Tensor, torch.Tensor] | None = None, position_offset: int | None = None) -> tuple[torch.Tensor, tuple[torch.Tensor, torch.Tensor]]
 ```
 
 **Parameters**
@@ -1163,7 +1163,8 @@ def forward(self, x: torch.Tensor, is_causal: bool = True, past_kv: Optional[Tup
 |---|---|---|---|
 | `x` | `torch.Tensor` |  | [B, S, D] |
 | `is_causal` | `bool` | `True` | usar mascara causal |
-| `past_kv` | `Optional[Tuple[torch.Tensor, torch.Tensor]]` | `None` | (K_cache, V_cache) de pasos anteriores o None |
+| `past_kv` | `tuple[torch.Tensor, torch.Tensor] \| None` | `None` | (K_cache, V_cache) de pasos anteriores o None |
+| `position_offset` | `int \| None` | `None` |  |
 
 **Returns:** `out` - [B, S, D]
 kv_cache: (K, V) completos para cachear en generate()
@@ -1174,7 +1175,7 @@ kv_cache: (K, V) completos para cachear en generate()
 
 ### `TopoGPT2Layer`
 
-`class` | [topogpt3/model.py:1015](../../topogpt3/model.py#L1015)
+`class` | [topogpt3/model.py:1164](../../topogpt3/model.py#L1164)
 
 ```python
 class TopoGPT2Layer(nn.Module)
@@ -1199,7 +1200,7 @@ Esquema pre-norm (estilo LLaMA):
 
 #### `TopoGPT2Layer.__init__`
 
-`constructor` | [topogpt3/model.py:1024](../../topogpt3/model.py#L1024)
+`constructor` | [topogpt3/model.py:1173](../../topogpt3/model.py#L1173)
 
 ```python
 def __init__(self, d_model: int, n_heads: int, config: 'TopoGPT2Config')
@@ -1221,10 +1222,10 @@ def __init__(self, d_model: int, n_heads: int, config: 'TopoGPT2Config')
 
 #### `TopoGPT2Layer.forward`
 
-`method` | [topogpt3/model.py:1042](../../topogpt3/model.py#L1042)
+`method` | [topogpt3/model.py:1196](../../topogpt3/model.py#L1196)
 
 ```python
-def forward(self, x: torch.Tensor, past_kv: Optional[Tuple] = None) -> Tuple[torch.Tensor, torch.Tensor, Tuple]
+def forward(self, x: torch.Tensor, past_kv: tuple | None = None, position_offset: int | None = None) -> tuple[torch.Tensor, torch.Tensor, tuple]
 ```
 
 Retorna (x_out, aux_loss, kv_cache).
@@ -1236,9 +1237,10 @@ Con gradient checkpointing en training (solo cuando no hay KV cache).
 | Name | Type | Default | Description |
 |---|---|---|---|
 | `x` | `torch.Tensor` |  |  |
-| `past_kv` | `Optional[Tuple]` | `None` |  |
+| `past_kv` | `tuple \| None` | `None` |  |
+| `position_offset` | `int \| None` | `None` |  |
 
-**Returns:** `Tuple[torch.Tensor, torch.Tensor, Tuple]`
+**Returns:** `tuple[torch.Tensor, torch.Tensor, tuple]`
 
 ---
 
@@ -1246,7 +1248,7 @@ Con gradient checkpointing en training (solo cuando no hay KV cache).
 
 ### `TopoGPT2`
 
-`class` | [topogpt3/model.py:1062](../../topogpt3/model.py#L1062)
+`class` | [topogpt3/model.py:1222](../../topogpt3/model.py#L1222)
 
 ```python
 class TopoGPT2(nn.Module)
@@ -1277,7 +1279,7 @@ Arquitectura:
 
 #### `TopoGPT2.__init__`
 
-`constructor` | [topogpt3/model.py:1073](../../topogpt3/model.py#L1073)
+`constructor` | [topogpt3/model.py:1233](../../topogpt3/model.py#L1233)
 
 ```python
 def __init__(self, config: TopoGPT2Config)
@@ -1291,16 +1293,16 @@ def __init__(self, config: TopoGPT2Config)
 
 *Calls:* [`RMSNorm.__init__`](#rmsnorm-__init__), [`TopoGPT2Layer.__init__`](#topogpt2layer-__init__)
 
-*Called by:* [`main`](eval.diag_static.py.md#main), [`load_model`](eval.governor_smoke.py.md#load_model), [`ModelLoader.__init__`](eval.harness.py.md#modelloader-__init__), [`load_model`](eval.noise_sweep.py.md#load_model), [`load_model`](topogpt3.api_server.py.md#load_model), [`merge_base_lora`](topogpt3.convert.py.md#merge_base_lora), [`TopoGPT3LensModel.from_checkpoint`](topogpt3.lens_model.py.md#topogpt3lensmodel-from_checkpoint), [`Phase1_BatchProspector.prospect`](#phase1_batchprospector-prospect), [`Phase2_SeedMiner.mine`](#phase2_seedminer-mine), [`TopoPhasePipeline.run`](#topophasepipeline-run), [`TopoPhasePipelineV2.run`](#topophasepipelinev2-run), [`TopoGPT3Trainer.__init__`](topogpt3.train.py.md#topogpt3trainer-__init__) and 6 more
+*Called by:* [`main`](eval.diag_static.py.md#main), [`load_model`](eval.governor_smoke.py.md#load_model), [`ModelLoader.__init__`](eval.harness.py.md#modelloader-__init__), [`load_model`](eval.noise_sweep.py.md#load_model), [`build_generate_fn`](eval.tasks.py.md#build_generate_fn), [`load_model`](topogpt3.api_server.py.md#load_model), [`merge_base_lora`](topogpt3.convert.py.md#merge_base_lora), [`TopoGPT3LensModel.from_checkpoint`](topogpt3.lens_model.py.md#topogpt3lensmodel-from_checkpoint), [`Phase1_BatchProspector.prospect`](#phase1_batchprospector-prospect), [`Phase2_SeedMiner.mine`](#phase2_seedminer-mine), [`TopoPhasePipeline.run`](#topophasepipeline-run), [`TopoPhasePipelineV2.run`](#topophasepipelinev2-run) and 7 more
 
 <a id="topogpt2-forward"></a>
 
 #### `TopoGPT2.forward`
 
-`method` | [topogpt3/model.py:1105](../../topogpt3/model.py#L1105)
+`method` | [topogpt3/model.py:1267](../../topogpt3/model.py#L1267)
 
 ```python
-def forward(self, token_ids: torch.Tensor, past_kvs: Optional[List[Optional[Tuple]]] = None) -> Tuple[torch.Tensor, torch.Tensor, List[Tuple]]
+def forward(self, token_ids: torch.Tensor, past_kvs: list[tuple | None] | None = None, position_offset: int = 0) -> tuple[torch.Tensor, torch.Tensor, list[tuple]]
 ```
 
 token_ids: [B, S]  (enteros) past_kvs:  lista de (K, V) por capa, o None para entrenamiento → logits: [B, S, VOCAB_SIZE], aux_loss: scalar, new_kvs: list[(K,V)]
@@ -1310,9 +1312,10 @@ token_ids: [B, S]  (enteros) past_kvs:  lista de (K, V) por capa, o None para en
 | Name | Type | Default | Description |
 |---|---|---|---|
 | `token_ids` | `torch.Tensor` |  |  |
-| `past_kvs` | `Optional[List[Optional[Tuple]]]` | `None` |  |
+| `past_kvs` | `list[tuple \| None] \| None` | `None` |  |
+| `position_offset` | `int` | `0` |  |
 
-**Returns:** `Tuple[torch.Tensor, torch.Tensor, List[Tuple]]`
+**Returns:** `tuple[torch.Tensor, torch.Tensor, list[tuple]]`
 
 *Called by:* [`TopoGPT2.forward_with_memory`](#topogpt2-forward_with_memory)
 
@@ -1320,10 +1323,10 @@ token_ids: [B, S]  (enteros) past_kvs:  lista de (K, V) por capa, o None para en
 
 #### `TopoGPT2.forward_with_memory`
 
-`method` | [topogpt3/model.py:1128](../../topogpt3/model.py#L1128)
+`method` | [topogpt3/model.py:1293](../../topogpt3/model.py#L1293)
 
 ```python
-def forward_with_memory(self, token_ids: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]
+def forward_with_memory(self, token_ids: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]
 ```
 
 Process long sequences with latent memory-token context compression.
@@ -1342,7 +1345,7 @@ Returns (logits [B, S, VOCAB_SIZE], aux_loss).
 |---|---|---|---|
 | `token_ids` | `torch.Tensor` |  |  |
 
-**Returns:** `Tuple[torch.Tensor, torch.Tensor]`
+**Returns:** `tuple[torch.Tensor, torch.Tensor]`
 
 *Calls:* [`TopoGPT2.forward`](#topogpt2-forward)
 
@@ -1350,19 +1353,19 @@ Returns (logits [B, S, VOCAB_SIZE], aux_loss).
 
 #### `TopoGPT2.count_params`
 
-`method` | [topogpt3/model.py:1178](../../topogpt3/model.py#L1178)
+`method` | [topogpt3/model.py:1343](../../topogpt3/model.py#L1343)
 
 ```python
-def count_params(self) -> Dict[str, int]
+def count_params(self) -> dict[str, int]
 ```
 
-**Returns:** `Dict[str, int]`
+**Returns:** `dict[str, int]`
 
 <a id="topogpt2-generate"></a>
 
 #### `TopoGPT2.generate`
 
-`method` | [topogpt3/model.py:1184](../../topogpt3/model.py#L1184)
+`method` | [topogpt3/model.py:1349](../../topogpt3/model.py#L1349)
 
 Decorators: `@torch.no_grad()`
 
@@ -1390,7 +1393,7 @@ Autoregressive generation with KV cache and top-k sampling.
 
 #### `TopoGPT2.generate_with_continuation`
 
-`method` | [topogpt3/model.py:1235](../../topogpt3/model.py#L1235)
+`method` | [topogpt3/model.py:1409](../../topogpt3/model.py#L1409)
 
 Decorators: `@torch.no_grad()`
 
@@ -1415,7 +1418,7 @@ def generate_with_continuation(self, token_ids: torch.Tensor, tokenizer: Any, ma
 
 *Calls:* [`extract_tail_for_continuation`](topogpt3.continuation.py.md#extract_tail_for_continuation), [`is_response_complete`](topogpt3.continuation.py.md#is_response_complete), [`TopoGPT2.generate`](#topogpt2-generate)
 
-*Called by:* [`ServerModel.complete`](topogpt3.api_server.py.md#servermodel-complete)
+*Called by:* [`ServerModel.complete_candidates`](topogpt3.api_server.py.md#servermodel-complete_candidates)
 
 ---
 
@@ -1423,7 +1426,7 @@ def generate_with_continuation(self, token_ids: torch.Tensor, tokenizer: Any, ma
 
 ### `BPETokenizer`
 
-`class` | [topogpt3/model.py:1279](../../topogpt3/model.py#L1279)
+`class` | [topogpt3/model.py:1471](../../topogpt3/model.py#L1471)
 
 ```python
 class BPETokenizer
@@ -1444,7 +1447,7 @@ Wrapper alrededor de tiktoken (GPT-2 compatible).
 
 #### `BPETokenizer.__init__`
 
-`constructor` | [topogpt3/model.py:1282](../../topogpt3/model.py#L1282)
+`constructor` | [topogpt3/model.py:1474](../../topogpt3/model.py#L1474)
 
 ```python
 def __init__(self, encoding: str = 'gpt2')
@@ -1460,16 +1463,16 @@ def __init__(self, encoding: str = 'gpt2')
 
 - `ImportError`: (raised in the body, not documented)
 
-*Called by:* [`load_model`](eval.governor_smoke.py.md#load_model), [`ModelLoader.__init__`](eval.harness.py.md#modelloader-__init__), [`load_model`](eval.noise_sweep.py.md#load_model), [`load_model`](topogpt3.api_server.py.md#load_model), [`main`](topogpt3.export_chat.py.md#main), [`TopoGPT3LensModel.from_checkpoint`](topogpt3.lens_model.py.md#topogpt3lensmodel-from_checkpoint), [`main`](#main), [`TopoGPT3Trainer.__init__`](topogpt3.train.py.md#topogpt3trainer-__init__), [`main`](topogpt3.train_agent.py.md#main), [`main`](topogpt3.train_distill.py.md#main), [`main`](topogpt3.train_dpo.py.md#main), [`main`](topogpt3.train_grpo.py.md#main) and 2 more
+*Called by:* [`load_model`](eval.governor_smoke.py.md#load_model), [`ModelLoader.__init__`](eval.harness.py.md#modelloader-__init__), [`load_model`](eval.noise_sweep.py.md#load_model), [`build_generate_fn`](eval.tasks.py.md#build_generate_fn), [`load_model`](topogpt3.api_server.py.md#load_model), [`main`](topogpt3.export_chat.py.md#main), [`TopoGPT3LensModel.from_checkpoint`](topogpt3.lens_model.py.md#topogpt3lensmodel-from_checkpoint), [`main`](#main), [`TopoGPT3Trainer.__init__`](topogpt3.train.py.md#topogpt3trainer-__init__), [`main`](topogpt3.train_agent.py.md#main), [`main`](topogpt3.train_distill.py.md#main), [`main`](topogpt3.train_dpo.py.md#main) and 3 more
 
 <a id="bpetokenizer-encode"></a>
 
 #### `BPETokenizer.encode`
 
-`method` | [topogpt3/model.py:1290](../../topogpt3/model.py#L1290)
+`method` | [topogpt3/model.py:1483](../../topogpt3/model.py#L1483)
 
 ```python
-def encode(self, text: str) -> List[int]
+def encode(self, text: str) -> list[int]
 ```
 
 **Parameters**
@@ -1478,35 +1481,35 @@ def encode(self, text: str) -> List[int]
 |---|---|---|---|
 | `text` | `str` |  |  |
 
-**Returns:** `List[int]`
+**Returns:** `list[int]`
 
-*Called by:* [`ModelLoader.generate`](eval.harness.py.md#modelloader-generate), [`ServerModel.complete`](topogpt3.api_server.py.md#servermodel-complete), [`ServerModel.stream_complete`](topogpt3.api_server.py.md#servermodel-stream_complete), [`MemmapTokenizer.tokenize`](#memmaptokenizer-tokenize), [`main`](#main), [`main`](topogpt3.train_agent.py.md#main), [`main`](topogpt3.train_grpo.py.md#main), [`main`](topogpt3.train_ppo.py.md#main)
+*Called by:* [`ModelLoader.generate`](eval.harness.py.md#modelloader-generate), [`ServerModel.complete_candidates`](topogpt3.api_server.py.md#servermodel-complete_candidates), [`ServerModel.stream_complete`](topogpt3.api_server.py.md#servermodel-stream_complete), [`MemmapTokenizer.tokenize`](#memmaptokenizer-tokenize), [`main`](#main), [`main`](topogpt3.train_agent.py.md#main), [`main`](topogpt3.train_grpo.py.md#main), [`main`](topogpt3.train_ppo.py.md#main)
 
 <a id="bpetokenizer-decode"></a>
 
 #### `BPETokenizer.decode`
 
-`method` | [topogpt3/model.py:1293](../../topogpt3/model.py#L1293)
+`method` | [topogpt3/model.py:1486](../../topogpt3/model.py#L1486)
 
 ```python
-def decode(self, tokens: List[int]) -> str
+def decode(self, tokens: list[int]) -> str
 ```
 
 **Parameters**
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `tokens` | `List[int]` |  |  |
+| `tokens` | `list[int]` |  |  |
 
 **Returns:** `str`
 
-*Called by:* [`ModelLoader.generate`](eval.harness.py.md#modelloader-generate), [`ServerModel.complete`](topogpt3.api_server.py.md#servermodel-complete), [`ServerModel.stream_complete`](topogpt3.api_server.py.md#servermodel-stream_complete), [`main`](#main), [`main`](topogpt3.train_agent.py.md#main), [`main`](topogpt3.train_grpo.py.md#main), [`main`](topogpt3.train_ppo.py.md#main)
+*Called by:* [`ModelLoader.generate`](eval.harness.py.md#modelloader-generate), [`ServerModel.complete_candidates`](topogpt3.api_server.py.md#servermodel-complete_candidates), [`ServerModel.stream_complete`](topogpt3.api_server.py.md#servermodel-stream_complete), [`main`](#main), [`main`](topogpt3.train_agent.py.md#main), [`main`](topogpt3.train_grpo.py.md#main), [`main`](topogpt3.train_ppo.py.md#main)
 
 <a id="bpetokenizer-eot_token"></a>
 
 #### `BPETokenizer.eot_token`
 
-`method` | [topogpt3/model.py:1296](../../topogpt3/model.py#L1296)
+`method` | [topogpt3/model.py:1489](../../topogpt3/model.py#L1489)
 
 ```python
 def eot_token(self) -> int
@@ -1520,7 +1523,7 @@ def eot_token(self) -> int
 
 ### `FileManifest`
 
-`class` | [topogpt3/model.py:1405](../../topogpt3/model.py#L1405)
+`class` | [topogpt3/model.py:1906](../../topogpt3/model.py#L1906)
 
 ```python
 class FileManifest
@@ -1539,7 +1542,7 @@ Disk-cached manifest of text files found in a directory tree.
 
 #### `FileManifest.__init__`
 
-`constructor` | [topogpt3/model.py:1408](../../topogpt3/model.py#L1408)
+`constructor` | [topogpt3/model.py:1909](../../topogpt3/model.py#L1909)
 
 ```python
 def __init__(self, root: str, cache_dir: str, logger: logging.Logger)
@@ -1559,10 +1562,10 @@ def __init__(self, root: str, cache_dir: str, logger: logging.Logger)
 
 #### `FileManifest.scan`
 
-`method` | [topogpt3/model.py:1415](../../topogpt3/model.py#L1415)
+`method` | [topogpt3/model.py:1916](../../topogpt3/model.py#L1916)
 
 ```python
-def scan(self, force: bool = False) -> List[str]
+def scan(self, force: bool = False) -> list[str]
 ```
 
 Walk directory tree collecting text file paths.
@@ -1575,7 +1578,7 @@ Cached to disk.
 |---|---|---|---|
 | `force` | `bool` | `False` |  |
 
-**Returns:** `List[str]`
+**Returns:** `list[str]`
 
 *Called by:* [`main`](#main)
 
@@ -1585,7 +1588,7 @@ Cached to disk.
 
 ### `MemmapTokenizer`
 
-`class` | [topogpt3/model.py:1472](../../topogpt3/model.py#L1472)
+`class` | [topogpt3/model.py:1975](../../topogpt3/model.py#L1975)
 
 ```python
 class MemmapTokenizer
@@ -1614,7 +1617,7 @@ accessed via numpy memmap (OS-level paging, near-zero RAM footprint).
 
 #### `MemmapTokenizer.__init__`
 
-`constructor` | [topogpt3/model.py:1482](../../topogpt3/model.py#L1482)
+`constructor` | [topogpt3/model.py:1985](../../topogpt3/model.py#L1985)
 
 ```python
 def __init__(self, cache_dir: str, logger: logging.Logger)
@@ -1633,10 +1636,10 @@ def __init__(self, cache_dir: str, logger: logging.Logger)
 
 #### `MemmapTokenizer.tokenize`
 
-`method` | [topogpt3/model.py:1487](../../topogpt3/model.py#L1487)
+`method` | [topogpt3/model.py:1990](../../topogpt3/model.py#L1990)
 
 ```python
-def tokenize(self, file_paths: List[str], tokenizer: 'BPETokenizer', cache_key: str, max_tokens: int, min_chars: int = 20) -> np.ndarray
+def tokenize(self, file_paths: list[str], tokenizer: 'BPETokenizer', cache_key: str, max_tokens: int, min_chars: int = 20) -> np.ndarray
 ```
 
 Tokenize all files and return a memory-mapped numpy array.
@@ -1645,7 +1648,7 @@ Tokenize all files and return a memory-mapped numpy array.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `file_paths` | `List[str]` |  | List of absolute file paths to tokenize. |
+| `file_paths` | `list[str]` |  | List of absolute file paths to tokenize. |
 | `tokenizer` | `'BPETokenizer'` |  | BPE tokenizer instance. |
 | `cache_key` | `str` |  | Unique key for caching tokens to disk. |
 | `max_tokens` | `int` |  | Maximum number of tokens to produce. |
@@ -1664,7 +1667,7 @@ are loaded into RAM by the OS virtual memory system.
 
 ### `MappedTokenDataset`
 
-`class` | [topogpt3/model.py:1561](../../topogpt3/model.py#L1561)
+`class` | [topogpt3/model.py:2075](../../topogpt3/model.py#L2075)
 
 ```python
 class MappedTokenDataset(torch.utils.data.Dataset)
@@ -1689,7 +1692,7 @@ which is required for DataLoader collation with worker processes.
 
 #### `MappedTokenDataset.__init__`
 
-`constructor` | [topogpt3/model.py:1570](../../topogpt3/model.py#L1570)
+`constructor` | [topogpt3/model.py:2084](../../topogpt3/model.py#L2084)
 
 ```python
 def __init__(self, tokens: np.ndarray, seq_len: int)
@@ -1710,7 +1713,7 @@ def __init__(self, tokens: np.ndarray, seq_len: int)
 
 ### `TextFilter`
 
-`class` | [topogpt3/model.py:1595](../../topogpt3/model.py#L1595)
+`class` | [topogpt3/model.py:2110](../../topogpt3/model.py#L2110)
 
 ```python
 class TextFilter
@@ -1730,7 +1733,7 @@ Filters low-quality files from the corpus based on multiple heuristics.
 
 #### `TextFilter.__init__`
 
-`constructor` | [topogpt3/model.py:1598](../../topogpt3/model.py#L1598)
+`constructor` | [topogpt3/model.py:2113](../../topogpt3/model.py#L2113)
 
 ```python
 def __init__(self, config: 'TopoGPT2Config', logger: logging.Logger)
@@ -1749,10 +1752,10 @@ def __init__(self, config: 'TopoGPT2Config', logger: logging.Logger)
 
 #### `TextFilter.filter_file`
 
-`method` | [topogpt3/model.py:1645](../../topogpt3/model.py#L1645)
+`method` | [topogpt3/model.py:2165](../../topogpt3/model.py#L2165)
 
 ```python
-def filter_file(self, path: str, tokenizer: Optional['BPETokenizer'] = None) -> Optional[str]
+def filter_file(self, path: str, tokenizer: Optional['BPETokenizer'] = None) -> str | None
 ```
 
 Read and evaluate a file.
@@ -1766,7 +1769,7 @@ Returns text if passed, None if filtered.
 | `path` | `str` |  |  |
 | `tokenizer` | `Optional['BPETokenizer']` | `None` |  |
 
-**Returns:** `Optional[str]`
+**Returns:** `str | None`
 
 *Called by:* [`main`](#main)
 
@@ -1774,13 +1777,13 @@ Returns text if passed, None if filtered.
 
 #### `TextFilter.report`
 
-`method` | [topogpt3/model.py:1685](../../topogpt3/model.py#L1685)
+`method` | [topogpt3/model.py:2207](../../topogpt3/model.py#L2207)
 
 ```python
-def report(self) -> Dict[str, int]
+def report(self) -> dict[str, int]
 ```
 
-**Returns:** `Dict[str, int]`
+**Returns:** `dict[str, int]`
 
 *Called by:* [`main`](#main)
 
@@ -1790,7 +1793,7 @@ def report(self) -> Dict[str, int]
 
 ### `CurriculumDataset`
 
-`class` | [topogpt3/model.py:1699](../../topogpt3/model.py#L1699)
+`class` | [topogpt3/model.py:2223](../../topogpt3/model.py#L2223)
 
 ```python
 class CurriculumDataset(torch.utils.data.Dataset)
@@ -1814,10 +1817,10 @@ only samples from the active tier, avoiding dataset duplication.
 
 #### `CurriculumDataset.__init__`
 
-`constructor` | [topogpt3/model.py:1706](../../topogpt3/model.py#L1706)
+`constructor` | [topogpt3/model.py:2230](../../topogpt3/model.py#L2230)
 
 ```python
-def __init__(self, tokens: np.ndarray, seq_len: int, file_tiers: Dict[int, List[int]], active_tier: int = 0, logger: Optional[logging.Logger] = None)
+def __init__(self, tokens: np.ndarray, seq_len: int, file_tiers: dict[int, list[int]], active_tier: int = 0, logger: logging.Logger | None = None)
 ```
 
 **Parameters**
@@ -1826,9 +1829,9 @@ def __init__(self, tokens: np.ndarray, seq_len: int, file_tiers: Dict[int, List[
 |---|---|---|---|
 | `tokens` | `np.ndarray` |  |  |
 | `seq_len` | `int` |  |  |
-| `file_tiers` | `Dict[int, List[int]]` |  |  |
+| `file_tiers` | `dict[int, list[int]]` |  |  |
 | `active_tier` | `int` | `0` |  |
-| `logger` | `Optional[logging.Logger]` | `None` |  |
+| `logger` | `logging.Logger \| None` | `None` |  |
 
 *Calls:* [`MappedTokenDataset.__init__`](#mappedtokendataset-__init__), [`setup_logger`](#setup_logger)
 
@@ -1836,7 +1839,7 @@ def __init__(self, tokens: np.ndarray, seq_len: int, file_tiers: Dict[int, List[
 
 #### `CurriculumDataset.set_tier`
 
-`method` | [topogpt3/model.py:1722](../../topogpt3/model.py#L1722)
+`method` | [topogpt3/model.py:2249](../../topogpt3/model.py#L2249)
 
 ```python
 def set_tier(self, tier: int)
@@ -1854,7 +1857,7 @@ def set_tier(self, tier: int)
 
 ### `ProgressiveSeqLenTrainer`
 
-`class` | [topogpt3/model.py:1763](../../topogpt3/model.py#L1763)
+`class` | [topogpt3/model.py:2292](../../topogpt3/model.py#L2292)
 
 ```python
 class ProgressiveSeqLenTrainer
@@ -1880,7 +1883,7 @@ Each phase rebuilds the DataLoader with the new sequence length.
 
 #### `ProgressiveSeqLenTrainer.__init__`
 
-`constructor` | [topogpt3/model.py:1774](../../topogpt3/model.py#L1774)
+`constructor` | [topogpt3/model.py:2303](../../topogpt3/model.py#L2303)
 
 ```python
 def __init__(self, base_trainer: 'TopoGPT2Trainer')
@@ -1896,10 +1899,10 @@ def __init__(self, base_trainer: 'TopoGPT2Trainer')
 
 #### `ProgressiveSeqLenTrainer.run`
 
-`method` | [topogpt3/model.py:1790](../../topogpt3/model.py#L1790)
+`method` | [topogpt3/model.py:2324](../../topogpt3/model.py#L2324)
 
 ```python
-def run(self, train_paths: List[str], val_paths: List[str], tokenizer: 'BPETokenizer', file_tiers: Optional[Dict[int, List[int]]] = None, phases: Optional[Tuple[Tuple[int, int], ...]] = None) -> Dict
+def run(self, train_paths: list[str], val_paths: list[str], tokenizer: 'BPETokenizer', file_tiers: dict[int, list[int]] | None = None, phases: tuple[tuple[int, int], ...] | None = None) -> dict
 ```
 
 Run training with progressive sequence length across phases.
@@ -1908,13 +1911,13 @@ Run training with progressive sequence length across phases.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `train_paths` | `List[str]` |  |  |
-| `val_paths` | `List[str]` |  |  |
+| `train_paths` | `list[str]` |  |  |
+| `val_paths` | `list[str]` |  |  |
 | `tokenizer` | `'BPETokenizer'` |  |  |
-| `file_tiers` | `Optional[Dict[int, List[int]]]` | `None` |  |
-| `phases` | `Optional[Tuple[Tuple[int, int], ...]]` | `None` |  |
+| `file_tiers` | `dict[int, list[int]] \| None` | `None` |  |
+| `phases` | `tuple[tuple[int, int], ...] \| None` | `None` |  |
 
-**Returns:** `Dict`
+**Returns:** `dict`
 
 *Calls:* [`MappedTokenDataset.__init__`](#mappedtokendataset-__init__)
 
@@ -1924,7 +1927,7 @@ Run training with progressive sequence length across phases.
 
 ### `SpeculativeDecoder`
 
-`class` | [topogpt3/model.py:1839](../../topogpt3/model.py#L1839)
+`class` | [topogpt3/model.py:2394](../../topogpt3/model.py#L2394)
 
 ```python
 class SpeculativeDecoder
@@ -1948,7 +1951,7 @@ trigger a fallback to the target model sampling.
 
 #### `SpeculativeDecoder.__init__`
 
-`constructor` | [topogpt3/model.py:1848](../../topogpt3/model.py#L1848)
+`constructor` | [topogpt3/model.py:2403](../../topogpt3/model.py#L2403)
 
 ```python
 def __init__(self, target_model: 'TopoGPT2', config: 'TopoGPT2Config', logger: logging.Logger)
@@ -1966,7 +1969,7 @@ def __init__(self, target_model: 'TopoGPT2', config: 'TopoGPT2Config', logger: l
 
 #### `SpeculativeDecoder.generate`
 
-`method` | [topogpt3/model.py:1870](../../topogpt3/model.py#L1870)
+`method` | [topogpt3/model.py:2427](../../topogpt3/model.py#L2427)
 
 Decorators: `@torch.no_grad()`
 
@@ -1998,7 +2001,7 @@ rejection from the target.
 
 ### `QuantizedEmbedding`
 
-`class` | [topogpt3/model.py:1954](../../topogpt3/model.py#L1954)
+`class` | [topogpt3/model.py:2518](../../topogpt3/model.py#L2518)
 
 ```python
 class QuantizedEmbedding(nn.Module)
@@ -2022,7 +2025,7 @@ Supports both embed (int8) and FFN (int4) quantization modes.
 
 #### `QuantizedEmbedding.__init__`
 
-`constructor` | [topogpt3/model.py:1961](../../topogpt3/model.py#L1961)
+`constructor` | [topogpt3/model.py:2525](../../topogpt3/model.py#L2525)
 
 ```python
 def __init__(self, embed: nn.Embedding, mode: str = 'int8')
@@ -2041,7 +2044,7 @@ def __init__(self, embed: nn.Embedding, mode: str = 'int8')
 
 #### `QuantizedEmbedding.forward`
 
-`method` | [topogpt3/model.py:1990](../../topogpt3/model.py#L1990)
+`method` | [topogpt3/model.py:2554](../../topogpt3/model.py#L2554)
 
 ```python
 def forward(self, indices: torch.Tensor) -> torch.Tensor
@@ -2061,7 +2064,7 @@ def forward(self, indices: torch.Tensor) -> torch.Tensor
 
 ### `CurriculumTrainer`
 
-`class` | [topogpt3/model.py:2022](../../topogpt3/model.py#L2022)
+`class` | [topogpt3/model.py:2587](../../topogpt3/model.py#L2587)
 
 ```python
 class CurriculumTrainer
@@ -2100,7 +2103,7 @@ Provides:
 
 #### `CurriculumTrainer.__init__`
 
-`constructor` | [topogpt3/model.py:2030](../../topogpt3/model.py#L2030)
+`constructor` | [topogpt3/model.py:2595](../../topogpt3/model.py#L2595)
 
 ```python
 def __init__(self, model, config, tokenizer=None)
@@ -2122,7 +2125,7 @@ def __init__(self, model, config, tokenizer=None)
 
 #### `CurriculumTrainer.cache_tokens`
 
-`method` | [topogpt3/model.py:2037](../../topogpt3/model.py#L2037)
+`method` | [topogpt3/model.py:2602](../../topogpt3/model.py#L2602)
 
 ```python
 def cache_tokens(self, key: str, tokens: np.ndarray)
@@ -2141,7 +2144,7 @@ def cache_tokens(self, key: str, tokens: np.ndarray)
 
 #### `CurriculumTrainer.model`
 
-`property` | [topogpt3/model.py:2041](../../topogpt3/model.py#L2041)
+`property` | [topogpt3/model.py:2606](../../topogpt3/model.py#L2606)
 
 Decorators: `@property`
 
@@ -2155,7 +2158,7 @@ def model(self)
 
 #### `CurriculumTrainer.optimizer`
 
-`property` | [topogpt3/model.py:2045](../../topogpt3/model.py#L2045)
+`property` | [topogpt3/model.py:2610](../../topogpt3/model.py#L2610)
 
 Decorators: `@property`
 
@@ -2167,7 +2170,7 @@ def optimizer(self)
 
 #### `CurriculumTrainer.scaler`
 
-`property` | [topogpt3/model.py:2049](../../topogpt3/model.py#L2049)
+`property` | [topogpt3/model.py:2614](../../topogpt3/model.py#L2614)
 
 Decorators: `@property`
 
@@ -2179,7 +2182,7 @@ def scaler(self)
 
 #### `CurriculumTrainer.amp_dtype`
 
-`property` | [topogpt3/model.py:2053](../../topogpt3/model.py#L2053)
+`property` | [topogpt3/model.py:2618](../../topogpt3/model.py#L2618)
 
 Decorators: `@property`
 
@@ -2191,7 +2194,7 @@ def amp_dtype(self)
 
 #### `CurriculumTrainer.completed_epochs`
 
-`property` | [topogpt3/model.py:2061](../../topogpt3/model.py#L2061)
+`property` | [topogpt3/model.py:2626](../../topogpt3/model.py#L2626)
 
 Decorators: `@completed_epochs.setter`
 
@@ -2209,7 +2212,7 @@ def completed_epochs(self, v)
 
 #### `CurriculumTrainer.completed_epochs`
 
-`property` | [topogpt3/model.py:2061](../../topogpt3/model.py#L2061)
+`property` | [topogpt3/model.py:2626](../../topogpt3/model.py#L2626)
 
 Decorators: `@completed_epochs.setter`
 
@@ -2227,7 +2230,7 @@ def completed_epochs(self, v)
 
 #### `CurriculumTrainer.global_step`
 
-`property` | [topogpt3/model.py:2069](../../topogpt3/model.py#L2069)
+`property` | [topogpt3/model.py:2634](../../topogpt3/model.py#L2634)
 
 Decorators: `@global_step.setter`
 
@@ -2245,7 +2248,7 @@ def global_step(self, v)
 
 #### `CurriculumTrainer.global_step`
 
-`property` | [topogpt3/model.py:2069](../../topogpt3/model.py#L2069)
+`property` | [topogpt3/model.py:2634](../../topogpt3/model.py#L2634)
 
 Decorators: `@global_step.setter`
 
@@ -2263,7 +2266,7 @@ def global_step(self, v)
 
 #### `CurriculumTrainer.best_val_loss`
 
-`property` | [topogpt3/model.py:2077](../../topogpt3/model.py#L2077)
+`property` | [topogpt3/model.py:2642](../../topogpt3/model.py#L2642)
 
 Decorators: `@best_val_loss.setter`
 
@@ -2281,7 +2284,7 @@ def best_val_loss(self, v)
 
 #### `CurriculumTrainer.best_val_loss`
 
-`property` | [topogpt3/model.py:2077](../../topogpt3/model.py#L2077)
+`property` | [topogpt3/model.py:2642](../../topogpt3/model.py#L2642)
 
 Decorators: `@best_val_loss.setter`
 
@@ -2299,7 +2302,7 @@ def best_val_loss(self, v)
 
 #### `CurriculumTrainer.history`
 
-`property` | [topogpt3/model.py:2081](../../topogpt3/model.py#L2081)
+`property` | [topogpt3/model.py:2646](../../topogpt3/model.py#L2646)
 
 Decorators: `@property`
 
@@ -2311,7 +2314,7 @@ def history(self)
 
 #### `CurriculumTrainer.ckpt_mgr`
 
-`property` | [topogpt3/model.py:2085](../../topogpt3/model.py#L2085)
+`property` | [topogpt3/model.py:2650](../../topogpt3/model.py#L2650)
 
 Decorators: `@property`
 
@@ -2323,7 +2326,7 @@ def ckpt_mgr(self)
 
 #### `CurriculumTrainer.resume`
 
-`method` | [topogpt3/model.py:2088](../../topogpt3/model.py#L2088)
+`method` | [topogpt3/model.py:2653](../../topogpt3/model.py#L2653)
 
 ```python
 def resume(self) -> bool
@@ -2339,7 +2342,7 @@ def resume(self) -> bool
 
 #### `CurriculumTrainer.evaluate`
 
-`method` | [topogpt3/model.py:2100](../../topogpt3/model.py#L2100)
+`method` | [topogpt3/model.py:2665](../../topogpt3/model.py#L2665)
 
 ```python
 def evaluate(self, dataloader)
@@ -2357,7 +2360,7 @@ def evaluate(self, dataloader)
 
 #### `CurriculumTrainer.train`
 
-`method` | [topogpt3/model.py:2145](../../topogpt3/model.py#L2145)
+`method` | [topogpt3/model.py:2725](../../topogpt3/model.py#L2725)
 
 ```python
 def train(self, train_dl, val_dl)
@@ -2378,10 +2381,10 @@ def train(self, train_dl, val_dl)
 
 #### `CurriculumTrainer.run_curriculum`
 
-`method` | [topogpt3/model.py:2148](../../topogpt3/model.py#L2148)
+`method` | [topogpt3/model.py:2728](../../topogpt3/model.py#L2728)
 
 ```python
-def run_curriculum(self, train_paths: List[str], val_paths: List[str], tokenizer: 'BPETokenizer', phases: Optional[Tuple[Tuple[int, int], ...]] = None)
+def run_curriculum(self, train_paths: list[str], val_paths: list[str], tokenizer: 'BPETokenizer', phases: tuple[tuple[int, int], ...] | None = None)
 ```
 
 Top-level entry point: curriculum + progressive seq len.
@@ -2390,10 +2393,10 @@ Top-level entry point: curriculum + progressive seq len.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `train_paths` | `List[str]` |  |  |
-| `val_paths` | `List[str]` |  |  |
+| `train_paths` | `list[str]` |  |  |
+| `val_paths` | `list[str]` |  |  |
 | `tokenizer` | `'BPETokenizer'` |  |  |
-| `phases` | `Optional[Tuple[Tuple[int, int], ...]]` | `None` |  |
+| `phases` | `tuple[tuple[int, int], ...] \| None` | `None` |  |
 
 *Calls:* [`MemmapTokenizer.__init__`](#memmaptokenizer-__init__)
 
@@ -2403,7 +2406,7 @@ Top-level entry point: curriculum + progressive seq len.
 
 ### `CheckpointManager`
 
-`class` | [topogpt3/model.py:2174](../../topogpt3/model.py#L2174)
+`class` | [topogpt3/model.py:2766](../../topogpt3/model.py#L2766)
 
 ```python
 class CheckpointManager
@@ -2451,7 +2454,7 @@ agrega nuevas entradas a train_loss[], val_loss[], etc.
 
 #### `CheckpointManager.__init__`
 
-`constructor` | [topogpt3/model.py:2199](../../topogpt3/model.py#L2199)
+`constructor` | [topogpt3/model.py:2791](../../topogpt3/model.py#L2791)
 
 ```python
 def __init__(self, config: TopoGPT2Config, logger: logging.Logger)
@@ -2470,7 +2473,7 @@ def __init__(self, config: TopoGPT2Config, logger: logging.Logger)
 
 #### `CheckpointManager.patch_config_for_resume`
 
-`method` | [topogpt3/model.py:2209](../../topogpt3/model.py#L2209)
+`method` | [topogpt3/model.py:2801](../../topogpt3/model.py#L2801)
 
 ```python
 def patch_config_for_resume(self, cfg: 'TopoGPT2Config') -> None
@@ -2492,7 +2495,7 @@ Necesario cuando el codigo cambio GQA despues de guardar el checkpoint.
 
 #### `CheckpointManager.should_save`
 
-`method` | [topogpt3/model.py:2310](../../topogpt3/model.py#L2310)
+`method` | [topogpt3/model.py:2904](../../topogpt3/model.py#L2904)
 
 ```python
 def should_save(self) -> bool
@@ -2506,10 +2509,10 @@ def should_save(self) -> bool
 
 #### `CheckpointManager.save`
 
-`method` | [topogpt3/model.py:2313](../../topogpt3/model.py#L2313)
+`method` | [topogpt3/model.py:2907](../../topogpt3/model.py#L2907)
 
 ```python
-def save(self, model: 'TopoGPT2', optimizer, state: Dict, is_best: bool = False) -> str
+def save(self, model: 'TopoGPT2', optimizer, state: dict, is_best: bool = False) -> str
 ```
 
 Guarda checkpoint completo.
@@ -2523,7 +2526,7 @@ best_val_loss, history, config.
 |---|---|---|---|
 | `model` | `'TopoGPT2'` |  |  |
 | `optimizer` |  |  |  |
-| `state` | `Dict` |  |  |
+| `state` | `dict` |  |  |
 | `is_best` | `bool` | `False` |  |
 
 **Returns:** `str`
@@ -2534,10 +2537,10 @@ best_val_loss, history, config.
 
 #### `CheckpointManager.load_latest`
 
-`method` | [topogpt3/model.py:2358](../../topogpt3/model.py#L2358)
+`method` | [topogpt3/model.py:2955](../../topogpt3/model.py#L2955)
 
 ```python
-def load_latest(self, model: 'TopoGPT2', optimizer) -> Dict
+def load_latest(self, model: 'TopoGPT2', optimizer) -> dict
 ```
 
 Carga el ultimo checkpoint guardado.
@@ -2551,7 +2554,7 @@ Devuelve el state dict (vacio si no hay checkpoint).
 | `model` | `'TopoGPT2'` |  |  |
 | `optimizer` |  |  |  |
 
-**Returns:** `Dict`
+**Returns:** `dict`
 
 *Called by:* [`TopoGPT2Trainer.resume`](#topogpt2trainer-resume)
 
@@ -2559,10 +2562,10 @@ Devuelve el state dict (vacio si no hay checkpoint).
 
 #### `CheckpointManager.load_best`
 
-`method` | [topogpt3/model.py:2385](../../topogpt3/model.py#L2385)
+`method` | [topogpt3/model.py:2982](../../topogpt3/model.py#L2982)
 
 ```python
-def load_best(self, model: 'TopoGPT2') -> Dict
+def load_best(self, model: 'TopoGPT2') -> dict
 ```
 
 Carga el mejor modelo guardado (solo pesos, sin optimizador).
@@ -2573,13 +2576,13 @@ Carga el mejor modelo guardado (solo pesos, sin optimizador).
 |---|---|---|---|
 | `model` | `'TopoGPT2'` |  |  |
 
-**Returns:** `Dict`
+**Returns:** `dict`
 
 <a id="checkpointmanager-has_checkpoint"></a>
 
 #### `CheckpointManager.has_checkpoint`
 
-`method` | [topogpt3/model.py:2397](../../topogpt3/model.py#L2397)
+`method` | [topogpt3/model.py:2996](../../topogpt3/model.py#L2996)
 
 ```python
 def has_checkpoint(self) -> bool
@@ -2595,7 +2598,7 @@ def has_checkpoint(self) -> bool
 
 ### `TopoGPT2Trainer`
 
-`class` | [topogpt3/model.py:2407](../../topogpt3/model.py#L2407)
+`class` | [topogpt3/model.py:3005](../../topogpt3/model.py#L3005)
 
 ```python
 class TopoGPT2Trainer
@@ -2623,7 +2626,7 @@ Caracteristicas:
 
 #### `TopoGPT2Trainer.__init__`
 
-`constructor` | [topogpt3/model.py:2419](../../topogpt3/model.py#L2419)
+`constructor` | [topogpt3/model.py:3017](../../topogpt3/model.py#L3017)
 
 ```python
 def __init__(self, model: 'TopoGPT2', config: TopoGPT2Config, tokenizer: Optional['BPETokenizer'] = None)
@@ -2645,7 +2648,7 @@ def __init__(self, model: 'TopoGPT2', config: TopoGPT2Config, tokenizer: Optiona
 
 #### `TopoGPT2Trainer.resume`
 
-`method` | [topogpt3/model.py:2454](../../topogpt3/model.py#L2454)
+`method` | [topogpt3/model.py:3066](../../topogpt3/model.py#L3066)
 
 ```python
 def resume(self) -> bool
@@ -2665,10 +2668,10 @@ Restaura: pesos del modelo, estado del optimizador, historial acumulado, epoch/s
 
 #### `TopoGPT2Trainer.train`
 
-`method` | [topogpt3/model.py:2502](../../topogpt3/model.py#L2502)
+`method` | [topogpt3/model.py:3114](../../topogpt3/model.py#L3114)
 
 ```python
-def train(self, train_dl: torch.utils.data.DataLoader, val_dl: torch.utils.data.DataLoader) -> Dict[str, List[float]]
+def train(self, train_dl: torch.utils.data.DataLoader, val_dl: torch.utils.data.DataLoader) -> dict[str, list[float]]
 ```
 
 Entrena cfg.EPOCHS epocas adicionales a partir de completed_epochs.
@@ -2682,7 +2685,7 @@ El historial se acumula sobre sesiones previas.
 | `train_dl` | `torch.utils.data.DataLoader` |  |  |
 | `val_dl` | `torch.utils.data.DataLoader` |  |  |
 
-**Returns:** `Dict[str, List[float]]`
+**Returns:** `dict[str, list[float]]`
 
 *Calls:* [`CheckpointManager.save`](#checkpointmanager-save), [`CheckpointManager.should_save`](#checkpointmanager-should_save), [`MechanisticMetrics.compute_all`](#mechanisticmetrics-compute_all), [`MechanisticMetrics.format_log`](#mechanisticmetrics-format_log), [`MechanisticMetrics.update_grad_buffer`](#mechanisticmetrics-update_grad_buffer), [`TopoGPT2Trainer.evaluate`](#topogpt2trainer-evaluate)
 
@@ -2692,12 +2695,12 @@ El historial se acumula sobre sesiones previas.
 
 #### `TopoGPT2Trainer.evaluate`
 
-`method` | [topogpt3/model.py:2670](../../topogpt3/model.py#L2670)
+`method` | [topogpt3/model.py:3308](../../topogpt3/model.py#L3308)
 
 Decorators: `@torch.no_grad()`
 
 ```python
-def evaluate(self, dataloader) -> Tuple[float, float]
+def evaluate(self, dataloader) -> tuple[float, float]
 ```
 
 **Parameters**
@@ -2706,7 +2709,7 @@ def evaluate(self, dataloader) -> Tuple[float, float]
 |---|---|---|---|
 | `dataloader` |  |  |  |
 
-**Returns:** `Tuple[float, float]`
+**Returns:** `tuple[float, float]`
 
 *Called by:* [`CurriculumTrainer.evaluate`](#curriculumtrainer-evaluate), [`TopoGPT2Trainer.train`](#topogpt2trainer-train)
 
@@ -2716,7 +2719,7 @@ def evaluate(self, dataloader) -> Tuple[float, float]
 
 ### `MechanisticMetrics`
 
-`class` | [topogpt3/model.py:2700](../../topogpt3/model.py#L2700)
+`class` | [topogpt3/model.py:3342](../../topogpt3/model.py#L3342)
 
 ```python
 class MechanisticMetrics
@@ -2760,7 +2763,7 @@ sp:         superposicion = correlacion promedio inter-fila de pesos.
 
 #### `MechanisticMetrics.__init__`
 
-`constructor` | [topogpt3/model.py:2720](../../topogpt3/model.py#L2720)
+`constructor` | [topogpt3/model.py:3362](../../topogpt3/model.py#L3362)
 
 ```python
 def __init__(self, config: 'TopoGPT2Config')
@@ -2778,7 +2781,7 @@ def __init__(self, config: 'TopoGPT2Config')
 
 #### `MechanisticMetrics.compute_delta`
 
-`method` | [topogpt3/model.py:2728](../../topogpt3/model.py#L2728)
+`method` | [topogpt3/model.py:3371](../../topogpt3/model.py#L3371)
 
 ```python
 def compute_delta(self, model: nn.Module) -> float
@@ -2798,7 +2801,7 @@ def compute_delta(self, model: nn.Module) -> float
 
 #### `MechanisticMetrics.compute_alpha`
 
-`method` | [topogpt3/model.py:2735](../../topogpt3/model.py#L2735)
+`method` | [topogpt3/model.py:3378](../../topogpt3/model.py#L3378)
 
 ```python
 def compute_alpha(self, delta: float) -> float
@@ -2818,7 +2821,7 @@ def compute_alpha(self, delta: float) -> float
 
 #### `MechanisticMetrics.update_grad_buffer`
 
-`method` | [topogpt3/model.py:2740](../../topogpt3/model.py#L2740)
+`method` | [topogpt3/model.py:3383](../../topogpt3/model.py#L3383)
 
 ```python
 def update_grad_buffer(self, model: nn.Module) -> None
@@ -2838,7 +2841,7 @@ Captura gradientes de forma segura, ignorando tensores corruptos.
 
 #### `MechanisticMetrics.compute_t_eff`
 
-`method` | [topogpt3/model.py:2766](../../topogpt3/model.py#L2766)
+`method` | [topogpt3/model.py:3409](../../topogpt3/model.py#L3409)
 
 ```python
 def compute_t_eff(self, lr: float) -> float
@@ -2862,7 +2865,7 @@ Temperatura termodinamica efectiva.
 
 #### `MechanisticMetrics.compute_kappa`
 
-`method` | [topogpt3/model.py:2774](../../topogpt3/model.py#L2774)
+`method` | [topogpt3/model.py:3417](../../topogpt3/model.py#L3417)
 
 ```python
 def compute_kappa(self, model: nn.Module, dataloader, n_batches: int = 5) -> float
@@ -2890,7 +2893,7 @@ Parámetro de orden para cristalización (κ≈1 = cristal). Nota: requiere pasa
 
 #### `MechanisticMetrics.compute_berry_phase`
 
-`method` | [topogpt3/model.py:2832](../../topogpt3/model.py#L2832)
+`method` | [topogpt3/model.py:3475](../../topogpt3/model.py#L3475)
 
 ```python
 def compute_berry_phase(self, model: nn.Module) -> float
@@ -2914,7 +2917,7 @@ Surge de los parametros ki_w, ki_x, ki_y, ki_z de QuaternionSpectralLayer. |berr
 
 #### `MechanisticMetrics.compute_lc`
 
-`method` | [topogpt3/model.py:2845](../../topogpt3/model.py#L2845)
+`method` | [topogpt3/model.py:3488](../../topogpt3/model.py#L3488)
 
 ```python
 def compute_lc(self, model: nn.Module) -> float
@@ -2936,7 +2939,7 @@ Complejidad local: 1 - similitud coseno promedio entre filas de pesos.
 
 #### `MechanisticMetrics.compute_sp`
 
-`method` | [topogpt3/model.py:2859](../../topogpt3/model.py#L2859)
+`method` | [topogpt3/model.py:3502](../../topogpt3/model.py#L3502)
 
 ```python
 def compute_sp(self, model: nn.Module) -> float
@@ -2958,7 +2961,7 @@ Superposicion: correlacion inter-fila promedio (entrelazamiento de features).
 
 #### `MechanisticMetrics.classify_phase`
 
-`method` | [topogpt3/model.py:2875](../../topogpt3/model.py#L2875)
+`method` | [topogpt3/model.py:3518](../../topogpt3/model.py#L3518)
 
 ```python
 def classify_phase(self, delta: float, kappa: float, berry: float) -> str
@@ -2987,10 +2990,10 @@ functional_glass:       intermedio (lo mas comun en LM)
 
 #### `MechanisticMetrics.compute_all`
 
-`method` | [topogpt3/model.py:2894](../../topogpt3/model.py#L2894)
+`method` | [topogpt3/model.py:3536](../../topogpt3/model.py#L3536)
 
 ```python
-def compute_all(self, model: nn.Module, lr: float, dataloader=None, compute_kappa: bool = False) -> Dict[str, Any]
+def compute_all(self, model: nn.Module, lr: float, dataloader=None, compute_kappa: bool = False) -> dict[str, Any]
 ```
 
 Calcula todas las metricas. compute_kappa=True hace pasadas backward adicionales (caro, usar cada N epochs).
@@ -3004,7 +3007,7 @@ Calcula todas las metricas. compute_kappa=True hace pasadas backward adicionales
 | `dataloader` |  | `None` |  |
 | `compute_kappa` | `bool` | `False` |  |
 
-**Returns:** `Dict[str, Any]`
+**Returns:** `dict[str, Any]`
 
 *Calls:* [`MechanisticMetrics.classify_phase`](#mechanisticmetrics-classify_phase), [`MechanisticMetrics.compute_alpha`](#mechanisticmetrics-compute_alpha), [`MechanisticMetrics.compute_berry_phase`](#mechanisticmetrics-compute_berry_phase), [`MechanisticMetrics.compute_delta`](#mechanisticmetrics-compute_delta), [`MechanisticMetrics.compute_kappa`](#mechanisticmetrics-compute_kappa), [`MechanisticMetrics.compute_lc`](#mechanisticmetrics-compute_lc), [`MechanisticMetrics.compute_sp`](#mechanisticmetrics-compute_sp), [`MechanisticMetrics.compute_t_eff`](#mechanisticmetrics-compute_t_eff)
 
@@ -3014,17 +3017,17 @@ Calcula todas las metricas. compute_kappa=True hace pasadas backward adicionales
 
 #### `MechanisticMetrics.format_log`
 
-`method` | [topogpt3/model.py:2919](../../topogpt3/model.py#L2919)
+`method` | [topogpt3/model.py:3568](../../topogpt3/model.py#L3568)
 
 ```python
-def format_log(self, m: Dict[str, Any]) -> str
+def format_log(self, m: dict[str, Any]) -> str
 ```
 
 **Parameters**
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `m` | `Dict[str, Any]` |  |  |
+| `m` | `dict[str, Any]` |  |  |
 
 **Returns:** `str`
 
@@ -3036,7 +3039,7 @@ def format_log(self, m: Dict[str, Any]) -> str
 
 ### `Phase0_KernelOptimizer`
 
-`class` | [topogpt3/model.py:2937](../../topogpt3/model.py#L2937)
+`class` | [topogpt3/model.py:3587](../../topogpt3/model.py#L3587)
 
 ```python
 class Phase0_KernelOptimizer
@@ -3072,7 +3075,7 @@ Tiempo tipico: < 30 segundos.
 
 #### `Phase0_KernelOptimizer.__init__`
 
-`constructor` | [topogpt3/model.py:2955](../../topogpt3/model.py#L2955)
+`constructor` | [topogpt3/model.py:3605](../../topogpt3/model.py#L3605)
 
 ```python
 def __init__(self, config: 'TopoGPT2Config', logger: logging.Logger)
@@ -3091,7 +3094,7 @@ def __init__(self, config: 'TopoGPT2Config', logger: logging.Logger)
 
 #### `Phase0_KernelOptimizer.optimize`
 
-`method` | [topogpt3/model.py:2988](../../topogpt3/model.py#L2988)
+`method` | [topogpt3/model.py:3640](../../topogpt3/model.py#L3640)
 
 ```python
 def optimize(self, dataloader) -> float
@@ -3115,7 +3118,7 @@ Retorna el mejor ratio de inicializacion de kernels espectrales.
 
 ### `Phase1_BatchProspector`
 
-`class` | [topogpt3/model.py:3012](../../topogpt3/model.py#L3012)
+`class` | [topogpt3/model.py:3667](../../topogpt3/model.py#L3667)
 
 ```python
 class Phase1_BatchProspector
@@ -3145,7 +3148,7 @@ Tiempo tipico: < 2 minutos para 3 candidatos × 30 pasos.
 
 #### `Phase1_BatchProspector.__init__`
 
-`constructor` | [topogpt3/model.py:3028](../../topogpt3/model.py#L3028)
+`constructor` | [topogpt3/model.py:3683](../../topogpt3/model.py#L3683)
 
 ```python
 def __init__(self, config: 'TopoGPT2Config', logger: logging.Logger)
@@ -3164,10 +3167,10 @@ def __init__(self, config: 'TopoGPT2Config', logger: logging.Logger)
 
 #### `Phase1_BatchProspector.prospect`
 
-`method` | [topogpt3/model.py:3032](../../topogpt3/model.py#L3032)
+`method` | [topogpt3/model.py:3687](../../topogpt3/model.py#L3687)
 
 ```python
-def prospect(self, candidates: List[int], train_dataset, prospect_steps: int = 30) -> int
+def prospect(self, candidates: list[int], train_dataset, prospect_steps: int = 30) -> int
 ```
 
 Retorna el mejor batch size segun delta y T_eff.
@@ -3176,7 +3179,7 @@ Retorna el mejor batch size segun delta y T_eff.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `candidates` | `List[int]` |  |  |
+| `candidates` | `list[int]` |  |  |
 | `train_dataset` |  |  |  |
 | `prospect_steps` | `int` | `30` |  |
 
@@ -3192,7 +3195,7 @@ Retorna el mejor batch size segun delta y T_eff.
 
 ### `Phase2_SeedMiner`
 
-`class` | [topogpt3/model.py:3095](../../topogpt3/model.py#L3095)
+`class` | [topogpt3/model.py:3758](../../topogpt3/model.py#L3758)
 
 ```python
 class Phase2_SeedMiner
@@ -3222,7 +3225,7 @@ Tiempo tipico: < 3 minutos para 5 semillas × 50 pasos.
 
 #### `Phase2_SeedMiner.__init__`
 
-`constructor` | [topogpt3/model.py:3111](../../topogpt3/model.py#L3111)
+`constructor` | [topogpt3/model.py:3774](../../topogpt3/model.py#L3774)
 
 ```python
 def __init__(self, config: 'TopoGPT2Config', logger: logging.Logger)
@@ -3241,7 +3244,7 @@ def __init__(self, config: 'TopoGPT2Config', logger: logging.Logger)
 
 #### `Phase2_SeedMiner.mine`
 
-`method` | [topogpt3/model.py:3115](../../topogpt3/model.py#L3115)
+`method` | [topogpt3/model.py:3778](../../topogpt3/model.py#L3778)
 
 ```python
 def mine(self, seed_start: int, n_seeds: int, train_dataset, prospect_steps: int = 50) -> int
@@ -3270,7 +3273,7 @@ Retorna la semilla con la mejor trayectoria de delta.
 
 ### `Phase4_AnnealingRefiner`
 
-`class` | [topogpt3/model.py:3177](../../topogpt3/model.py#L3177)
+`class` | [topogpt3/model.py:3855](../../topogpt3/model.py#L3855)
 
 ```python
 class Phase4_AnnealingRefiner
@@ -3304,7 +3307,7 @@ Tiempo: proporcional a refine_epochs (user-controlled).
 
 #### `Phase4_AnnealingRefiner.__init__`
 
-`constructor` | [topogpt3/model.py:3197](../../topogpt3/model.py#L3197)
+`constructor` | [topogpt3/model.py:3875](../../topogpt3/model.py#L3875)
 
 ```python
 def __init__(self, trainer: 'TopoGPT2Trainer', t0: float = 0.5, cooling_rate: float = 0.95, stagnation_patience: int = 5)
@@ -3325,10 +3328,10 @@ def __init__(self, trainer: 'TopoGPT2Trainer', t0: float = 0.5, cooling_rate: fl
 
 #### `Phase4_AnnealingRefiner.refine`
 
-`method` | [topogpt3/model.py:3206](../../topogpt3/model.py#L3206)
+`method` | [topogpt3/model.py:3888](../../topogpt3/model.py#L3888)
 
 ```python
-def refine(self, train_dl, val_dl, refine_epochs: int) -> Dict
+def refine(self, train_dl, val_dl, refine_epochs: int) -> dict
 ```
 
 Ejecuta refine_epochs epocas de recocido simulado.
@@ -3343,7 +3346,7 @@ Retorna el historial de refinamiento.
 | `val_dl` |  |  |  |
 | `refine_epochs` | `int` |  |  |
 
-**Returns:** `Dict`
+**Returns:** `dict`
 
 *Calls:* [`CurriculumTrainer.model`](#curriculumtrainer-model), [`MechanisticMetrics.__init__`](#mechanisticmetrics-__init__), [`MechanisticMetrics.compute_delta`](#mechanisticmetrics-compute_delta), [`MechanisticMetrics.compute_t_eff`](#mechanisticmetrics-compute_t_eff), [`MechanisticMetrics.update_grad_buffer`](#mechanisticmetrics-update_grad_buffer)
 
@@ -3355,7 +3358,7 @@ Retorna el historial de refinamiento.
 
 ### `TopoPhasePipelineV2`
 
-`class` | [topogpt3/model.py:3338](../../topogpt3/model.py#L3338)
+`class` | [topogpt3/model.py:4030](../../topogpt3/model.py#L4030)
 
 ```python
 class TopoPhasePipelineV2
@@ -3381,10 +3384,10 @@ Handles:
 
 #### `TopoPhasePipelineV2.__init__`
 
-`constructor` | [topogpt3/model.py:3349](../../topogpt3/model.py#L3349)
+`constructor` | [topogpt3/model.py:4041](../../topogpt3/model.py#L4041)
 
 ```python
-def __init__(self, config: 'TopoGPT2Config', train_tokens: np.ndarray, val_tokens: np.ndarray, tokenizer: 'BPETokenizer', logger: logging.Logger, curriculum_tiers: Optional[Dict[int, List[int]]] = None, progressive_seq: bool = True)
+def __init__(self, config: 'TopoGPT2Config', train_tokens: np.ndarray, val_tokens: np.ndarray, tokenizer: 'BPETokenizer', logger: logging.Logger, curriculum_tiers: dict[int, list[int]] | None = None, progressive_seq: bool = True)
 ```
 
 **Parameters**
@@ -3396,7 +3399,7 @@ def __init__(self, config: 'TopoGPT2Config', train_tokens: np.ndarray, val_token
 | `val_tokens` | `np.ndarray` |  |  |
 | `tokenizer` | `'BPETokenizer'` |  |  |
 | `logger` | `logging.Logger` |  |  |
-| `curriculum_tiers` | `Optional[Dict[int, List[int]]]` | `None` |  |
+| `curriculum_tiers` | `dict[int, list[int]] \| None` | `None` |  |
 | `progressive_seq` | `bool` | `True` |  |
 
 *Called by:* [`main`](#main)
@@ -3405,7 +3408,7 @@ def __init__(self, config: 'TopoGPT2Config', train_tokens: np.ndarray, val_token
 
 #### `TopoPhasePipelineV2.run`
 
-`method` | [topogpt3/model.py:3385](../../topogpt3/model.py#L3385)
+`method` | [topogpt3/model.py:4095](../../topogpt3/model.py#L4095)
 
 ```python
 def run(self, run_prospect: bool = False, refine_epochs: int = 0, resume: bool = False, prospect_steps: int = 50, probe_seeds: int = 3, seed_start: int = 1) -> 'CurriculumTrainer'
@@ -3432,7 +3435,7 @@ def run(self, run_prospect: bool = False, refine_epochs: int = 0, resume: bool =
 
 ### `TopoPhasePipeline`
 
-`class` | [topogpt3/model.py:3467](../../topogpt3/model.py#L3467)
+`class` | [topogpt3/model.py:4186](../../topogpt3/model.py#L4186)
 
 ```python
 class TopoPhasePipeline
@@ -3466,7 +3469,7 @@ Para no ser prohibitivo:
 
 #### `TopoPhasePipeline.__init__`
 
-`constructor` | [topogpt3/model.py:3487](../../topogpt3/model.py#L3487)
+`constructor` | [topogpt3/model.py:4206](../../topogpt3/model.py#L4206)
 
 ```python
 def __init__(self, config: 'TopoGPT2Config', train_dataset, val_dataset, tokenizer: 'BPETokenizer', logger: logging.Logger)
@@ -3488,7 +3491,7 @@ def __init__(self, config: 'TopoGPT2Config', train_dataset, val_dataset, tokeniz
 
 #### `TopoPhasePipeline.run`
 
-`method` | [topogpt3/model.py:3509](../../topogpt3/model.py#L3509)
+`method` | [topogpt3/model.py:4242](../../topogpt3/model.py#L4242)
 
 ```python
 def run(self, run_prospect: bool = False, refine_epochs: int = 0, resume: bool = False, prospect_steps: int = 50, probe_seeds: int = 3, seed_start: int = 1) -> 'TopoGPT2Trainer'
@@ -3523,7 +3526,7 @@ Retorna el trainer con el modelo entrenado.
 
 ### `setup_logger`
 
-`function` | [topogpt3/model.py:192](../../topogpt3/model.py#L192)
+`function` | [topogpt3/model.py:256](../../topogpt3/model.py#L256)
 
 ```python
 def setup_logger(name: str, level: str = 'INFO') -> logging.Logger
@@ -3546,7 +3549,7 @@ def setup_logger(name: str, level: str = 'INFO') -> logging.Logger
 
 ### `set_seed`
 
-`function` | [topogpt3/model.py:202](../../topogpt3/model.py#L202)
+`function` | [topogpt3/model.py:268](../../topogpt3/model.py#L268)
 
 ```python
 def set_seed(seed: int, device: str)
@@ -3567,10 +3570,10 @@ def set_seed(seed: int, device: str)
 
 ### `build_file_tiers`
 
-`function` | [topogpt3/model.py:1737](../../topogpt3/model.py#L1737)
+`function` | [topogpt3/model.py:2265](../../topogpt3/model.py#L2265)
 
 ```python
-def build_file_tiers(paths: List[str], short: int, med: int) -> Dict[int, List[int]]
+def build_file_tiers(paths: list[str], short: int, med: int) -> dict[int, list[int]]
 ```
 
 Classify file paths into complexity tiers by line count.
@@ -3582,11 +3585,11 @@ Tier 0 = short (<=short lines), tier 1 = medium, tier 2 = all.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `paths` | `List[str]` |  |  |
+| `paths` | `list[str]` |  |  |
 | `short` | `int` |  |  |
 | `med` | `int` |  |  |
 
-**Returns:** `Dict[int, List[int]]`
+**Returns:** `dict[int, list[int]]`
 
 *Called by:* [`main`](#main)
 
@@ -3596,7 +3599,7 @@ Tier 0 = short (<=short lines), tier 1 = medium, tier 2 = all.
 
 ### `apply_quantization`
 
-`function` | [topogpt3/model.py:1994](../../topogpt3/model.py#L1994)
+`function` | [topogpt3/model.py:2558](../../topogpt3/model.py#L2558)
 
 ```python
 def apply_quantization(model: 'TopoGPT2', config: 'TopoGPT2Config') -> 'TopoGPT2'
@@ -3621,7 +3624,7 @@ Quantize embedding and lm_head layers for reduced VRAM usage.
 
 ### `main`
 
-`function` | [topogpt3/model.py:3589](../../topogpt3/model.py#L3589)
+`function` | [topogpt3/model.py:4330](../../topogpt3/model.py#L4330)
 
 ```python
 def main()

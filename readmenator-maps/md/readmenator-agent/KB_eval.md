@@ -79,19 +79,19 @@
 - Layer: utility
 - Language: py
 - Symbols:
-  - `load_humaneval` (function, line 59) `def load_humaneval(cache_dir)`
-  - `build_prompt` (function, line 75) `def build_prompt(problem)`
-  - `extract_candidate` (function, line 100) `def extract_candidate(prompt, completion)`
-  - `run_one_test` (function, line 150) `def run_one_test(problem, candidate_src, timeout)`
-  - `run_one_test_sandboxed` (function, line 172) `def run_one_test_sandboxed(problem, candidate_src, timeout, sandbox_cfg)`
-  - `make_sampler` (function, line 195) `def make_sampler(mode, settings_kwargs)`
-  - `completion_for_problem` (function, line 204) `def completion_for_problem(sampler, prompt)`
-  - `ModelLoader` (class, line 217) `class ModelLoader`
-  - `evaluate_problem` (function, line 272) `def evaluate_problem(problem, loader, args, sample_idx)`
-  - `main` (function, line 315) `def main()`
-  - `__init__` (method, line 220) `def __init__(self, ckpt_dir, ckpt_name, device)`
-  - `generate` (method, line 246) `def generate(self, prompt, max_new_tokens, temperature, top_k, repetition_penalty)`
-- Depends on: `eval/samplers.py`, `eval/sandbox.py`, `topogpt3/__init__.py`
+  - `load_humaneval` (function, line 54) `def load_humaneval(cache_dir)`
+  - `build_prompt` (function, line 72) `def build_prompt(problem)`
+  - `extract_candidate` (function, line 97) `def extract_candidate(prompt, completion)`
+  - `run_one_test` (function, line 154) `def run_one_test(problem, candidate_src, timeout)`
+  - `run_one_test_sandboxed` (function, line 178) `def run_one_test_sandboxed(problem, candidate_src, timeout, sandbox_cfg)`
+  - `make_sampler` (function, line 205) `def make_sampler(mode, settings_kwargs)`
+  - `completion_for_problem` (function, line 215) `def completion_for_problem(sampler, prompt)`
+  - `ModelLoader` (class, line 229) `class ModelLoader`
+  - `evaluate_problem` (function, line 290) `def evaluate_problem(problem, loader, args, sample_idx)`
+  - `main` (function, line 343) `def main()`
+  - `__init__` (method, line 232) `def __init__(self, ckpt_dir, ckpt_name, device)`
+  - `generate` (method, line 257) `def generate(self, prompt, max_new_tokens, temperature, top_k, repetition_penalty)`
+- Depends on: `eval/samplers.py`, `eval/sandbox.py`, `topogpt3/__init__.py`, `topogpt3/checkpoint_meta.py`
 - Imported by: `eval/integration_smoke.py`, `eval/noise_sweep.py`, `eval/temp_sweep.py`
 
 ## eval/integration_smoke.py
@@ -195,6 +195,29 @@
   - `run_standard` (function, line 17) `def run_standard()`
   - `run_hrm` (function, line 36) `def run_hrm()`
 - Depends on: `topogpt3/__init__.py`
+
+## eval/tasks.py
+- Doc: Generic task eval: JSONL cases + safe verifiers.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `_extract_code` (function, line 34) `def _extract_code(text)`
+  - `_extract_json` (function, line 39) `def _extract_json(text)`
+  - `verify_tool_call` (function, line 50) `def verify_tool_call(case, completion)`
+  - `verify_json` (function, line 78) `def verify_json(case, completion)`
+  - `verify_regex` (function, line 90) `def verify_regex(case, completion)`
+  - `verify_exact` (function, line 97) `def verify_exact(case, completion)`
+  - `verify_contains` (function, line 105) `def verify_contains(case, completion)`
+  - `verify_python_ast` (function, line 114) `def verify_python_ast(case, completion)`
+  - `load_cases` (function, line 133) `def load_cases(path)`
+  - `evaluate_case` (function, line 145) `def evaluate_case(case, generate_fn)`
+  - `evaluate_cases` (function, line 174) `def evaluate_cases(cases, generate_fn, limit)`
+  - `summary` (function, line 187) `def summary(results)`
+  - `build_generate_fn` (function, line 197) `def build_generate_fn(ckpt_dir, ckpt_name, device, max_new_tokens)`
+  - `main` (function, line 251) `def main()`
+  - `generate` (function, line 221) `def generate(prompt, profile_name)`
+- Depends on: `topogpt3/chat.py`, `topogpt3/checkpoint_meta.py`, `topogpt3/fallback.py`, `topogpt3/model.py`
+- Imported by: `tests/test_eval_tasks.py`
 
 ## eval/temp_sweep.py
 - Doc: Barrido de temperatura x top-k sobre HumanEval.

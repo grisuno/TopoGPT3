@@ -296,6 +296,19 @@ curl -s http://localhost:8800/v1/chat/completions \
   -d '{"messages":[{"role":"user","content":"fibonacci"}],"stream":true}'
 ```
 
+### Local fallback deployment (LazyOwn / TopoSwarm)
+
+Both repos ship an OpenAI-compatible fallback contract (full chat history,
+`tool` role, top-level `tools`, `best_of` reranking, `min_new_tokens`,
+deterministic `seed`, apt_chain tool validation). See
+[Fallback Integration](docs/FALLBACK_INTEGRATION.md); no code changes are
+required in LazyOwn or TopoSwarm, they only need the `base_url`:
+
+```bash
+bash scripts/serve_fallback.sh    # TopoGPT3 :8800/v1 + TopoExploit :8801/v1
+make eval-tasks                   # apt_chain JSONL task evals
+```
+
 ### Structured outputs and deterministic seeds
 
 The server adopts the structured-output surface used by DeepInfer and
@@ -1147,3 +1160,10 @@ AI agents: Read `readmenator-wiki/index.md` first for the big picture, then `rea
 Developers: Read `KNOWLEDGE_BASE.md` for full architecture reference, open `readmenator-maps/index.html` for the visual gallery.
 <!-- /readmenator-kb-link -->
 
+<!-- deploynator-footer -->
+
+---
+
+Deployed with [deploynator](https://github.com/grisuno/deploynator)
+
+<!-- /deploynator-footer -->

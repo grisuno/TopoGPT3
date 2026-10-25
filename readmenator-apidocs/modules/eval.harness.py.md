@@ -34,17 +34,17 @@ flowchart LR
     n_eval_harness_py__build_prompt(["build_prompt"])
     n_eval_harness_py__extract_candidate(["extract_candidate"])
     n_eval_harness_py__run_one_test(["run_one_test"])
+    n_eval_harness_py__run_one_test_sandboxed(["run_one_test_sandboxed"])
     n_eval_harness_py__main(["main"])
     n_eval_harness_py__ModelLoader___init__(["ModelLoader.__init__"])
     n_eval_harness_py__load_humaneval(["load_humaneval"])
-    n_eval_harness_py__run_one_test_sandboxed(["run_one_test_sandboxed"])
     n_eval_sandbox_py__SandboxConfig["sandbox.SandboxConfig"]
     n_eval_sandbox_py__safe_exec["sandbox.safe_exec"]
     n_eval_harness_py__make_sampler(["make_sampler"])
     n_eval_samplers_py__build_sampler["samplers.build_sampler"]
+    n_topogpt3_checkpoint_meta_py__config_from_checkpoint["checkpoint_meta.config_from_checkpoint"]
     n_topogpt3_model_py__BPETokenizer___init__["model.BPETokenizer.__init__"]
     n_topogpt3_model_py__TopoGPT2___init__["model.TopoGPT2.__init__"]
-    n_topogpt3_model_py__TopoGPT2Config["model.TopoGPT2Config"]
     n_topogpt3_model_py__set_seed["model.set_seed"]
     n_topogpt3_model_py__BPETokenizer_decode["model.BPETokenizer.decode"]
     n_topogpt3_model_py__BPETokenizer_encode["model.BPETokenizer.encode"]
@@ -52,6 +52,7 @@ flowchart LR
     n_eval_harness_py__evaluate_problem --> n_eval_harness_py__build_prompt
     n_eval_harness_py__evaluate_problem --> n_eval_harness_py__extract_candidate
     n_eval_harness_py__evaluate_problem --> n_eval_harness_py__run_one_test
+    n_eval_harness_py__evaluate_problem --> n_eval_harness_py__run_one_test_sandboxed
     n_eval_harness_py__main --> n_eval_harness_py__ModelLoader___init__
     n_eval_harness_py__main --> n_eval_harness_py__build_prompt
     n_eval_harness_py__main --> n_eval_harness_py__evaluate_problem
@@ -59,9 +60,9 @@ flowchart LR
     n_eval_harness_py__run_one_test_sandboxed -.-> n_eval_sandbox_py__SandboxConfig
     n_eval_harness_py__run_one_test_sandboxed -.-> n_eval_sandbox_py__safe_exec
     n_eval_harness_py__make_sampler -.-> n_eval_samplers_py__build_sampler
+    n_eval_harness_py__ModelLoader___init__ -.-> n_topogpt3_checkpoint_meta_py__config_from_checkpoint
     n_eval_harness_py__ModelLoader___init__ -.-> n_topogpt3_model_py__BPETokenizer___init__
     n_eval_harness_py__ModelLoader___init__ -.-> n_topogpt3_model_py__TopoGPT2___init__
-    n_eval_harness_py__ModelLoader___init__ -.-> n_topogpt3_model_py__TopoGPT2Config
     n_eval_harness_py__ModelLoader___init__ -.-> n_topogpt3_model_py__set_seed
     n_eval_harness_py__ModelLoader_generate -.-> n_topogpt3_model_py__BPETokenizer_decode
     n_eval_harness_py__ModelLoader_generate -.-> n_topogpt3_model_py__BPETokenizer_encode
@@ -73,7 +74,7 @@ flowchart LR
 
 ### `ModelLoader`
 
-`class` | [eval/harness.py:217](../../eval/harness.py#L217)
+`class` | [eval/harness.py:229](../../eval/harness.py#L229)
 
 ```python
 class ModelLoader
@@ -92,7 +93,7 @@ Build the model and tokenizer once, run many generations.
 
 #### `ModelLoader.__init__`
 
-`constructor` | [eval/harness.py:220](../../eval/harness.py#L220)
+`constructor` | [eval/harness.py:232](../../eval/harness.py#L232)
 
 ```python
 def __init__(self, ckpt_dir: str, ckpt_name: str = 'last', device: str = None)
@@ -106,7 +107,7 @@ def __init__(self, ckpt_dir: str, ckpt_name: str = 'last', device: str = None)
 | `ckpt_name` | `str` | `'last'` |  |
 | `device` | `str` | `None` |  |
 
-*Calls:* [`BPETokenizer.__init__`](topogpt3.model.py.md#bpetokenizer-__init__), [`TopoGPT2.__init__`](topogpt3.model.py.md#topogpt2-__init__), [`TopoGPT2Config`](topogpt3.model.py.md#topogpt2config), [`set_seed`](topogpt3.model.py.md#set_seed)
+*Calls:* [`config_from_checkpoint`](topogpt3.checkpoint_meta.py.md#config_from_checkpoint), [`BPETokenizer.__init__`](topogpt3.model.py.md#bpetokenizer-__init__), [`TopoGPT2.__init__`](topogpt3.model.py.md#topogpt2-__init__), [`set_seed`](topogpt3.model.py.md#set_seed)
 
 *Called by:* [`main`](#main)
 
@@ -114,12 +115,12 @@ def __init__(self, ckpt_dir: str, ckpt_name: str = 'last', device: str = None)
 
 #### `ModelLoader.generate`
 
-`method` | [eval/harness.py:246](../../eval/harness.py#L246)
+`method` | [eval/harness.py:257](../../eval/harness.py#L257)
 
 Decorators: `@torch.no_grad()`
 
 ```python
-def generate(self, prompt: str, max_new_tokens: int, temperature: float, top_k: int, repetition_penalty: float) -> Tuple[str, dict]
+def generate(self, prompt: str, max_new_tokens: int, temperature: float, top_k: int, repetition_penalty: float) -> tuple[str, dict]
 ```
 
 **Parameters**
@@ -132,7 +133,7 @@ def generate(self, prompt: str, max_new_tokens: int, temperature: float, top_k: 
 | `top_k` | `int` |  |  |
 | `repetition_penalty` | `float` |  |  |
 
-**Returns:** `Tuple[str, dict]`
+**Returns:** `tuple[str, dict]`
 
 *Calls:* [`BPETokenizer.decode`](topogpt3.model.py.md#bpetokenizer-decode), [`BPETokenizer.encode`](topogpt3.model.py.md#bpetokenizer-encode)
 
@@ -146,7 +147,7 @@ def generate(self, prompt: str, max_new_tokens: int, temperature: float, top_k: 
 
 ### `load_humaneval`
 
-`function` | [eval/harness.py:59](../../eval/harness.py#L59)
+`function` | [eval/harness.py:54](../../eval/harness.py#L54)
 
 ```python
 def load_humaneval(cache_dir: str = 'data/humaneval')
@@ -166,7 +167,7 @@ def load_humaneval(cache_dir: str = 'data/humaneval')
 
 ### `build_prompt`
 
-`function` | [eval/harness.py:75](../../eval/harness.py#L75)
+`function` | [eval/harness.py:72](../../eval/harness.py#L72)
 
 ```python
 def build_prompt(problem: dict) -> str
@@ -193,7 +194,7 @@ docstring, with the body to be completed starting on the next line.
 
 ### `extract_candidate`
 
-`function` | [eval/harness.py:100](../../eval/harness.py#L100)
+`function` | [eval/harness.py:97](../../eval/harness.py#L97)
 
 ```python
 def extract_candidate(prompt: str, completion: str) -> str
@@ -232,10 +233,10 @@ Robustness fixes:
 
 ### `run_one_test`
 
-`function` | [eval/harness.py:150](../../eval/harness.py#L150)
+`function` | [eval/harness.py:154](../../eval/harness.py#L154)
 
 ```python
-def run_one_test(problem: dict, candidate_src: str, timeout: float) -> Tuple[bool, str, str, str, str]
+def run_one_test(problem: dict, candidate_src: str, timeout: float) -> tuple[bool, str, str, str, str]
 ```
 
 Execute the candidate against the hidden test.
@@ -252,7 +253,7 @@ expect `check(candidate) == None`.
 | `candidate_src` | `str` |  |  |
 | `timeout` | `float` |  |  |
 
-**Returns:** `Tuple[bool, str, str, str, str]`
+**Returns:** `tuple[bool, str, str, str, str]`
 
 *Called by:* [`evaluate_problem`](#evaluate_problem), [`main`](eval.integration_smoke.py.md#main), [`main`](eval.noise_sweep.py.md#main), [`evaluate_problems`](eval.temp_sweep.py.md#evaluate_problems)
 
@@ -262,10 +263,10 @@ expect `check(candidate) == None`.
 
 ### `run_one_test_sandboxed`
 
-`function` | [eval/harness.py:172](../../eval/harness.py#L172)
+`function` | [eval/harness.py:178](../../eval/harness.py#L178)
 
 ```python
-def run_one_test_sandboxed(problem: dict, candidate_src: str, timeout: float, sandbox_cfg=None) -> Tuple[bool, str, str, str, str]
+def run_one_test_sandboxed(problem: dict, candidate_src: str, timeout: float, sandbox_cfg=None) -> tuple[bool, str, str, str, str]
 ```
 
 Sandboxed variant of [`run_one_test`](#run_one_test).
@@ -284,11 +285,11 @@ by calling this function directly from your own evaluation script.
 | `timeout` | `float` |  |  |
 | `sandbox_cfg` |  | `None` |  |
 
-**Returns:** `Tuple[bool, str, str, str, str]`
+**Returns:** `tuple[bool, str, str, str, str]`
 
 *Calls:* [`SandboxConfig`](eval.sandbox.py.md#sandboxconfig), [`safe_exec`](eval.sandbox.py.md#safe_exec)
 
-*Called by:* [`main`](eval.integration_smoke.py.md#main)
+*Called by:* [`evaluate_problem`](#evaluate_problem), [`main`](eval.integration_smoke.py.md#main)
 
 ---
 
@@ -296,7 +297,7 @@ by calling this function directly from your own evaluation script.
 
 ### `make_sampler`
 
-`function` | [eval/harness.py:195](../../eval/harness.py#L195)
+`function` | [eval/harness.py:205](../../eval/harness.py#L205)
 
 ```python
 def make_sampler(mode: str, settings_kwargs: dict)
@@ -321,10 +322,10 @@ The real implementation lives in [`eval.samplers`](eval.samplers.py.md) as a dec
 
 ### `completion_for_problem`
 
-`function` | [eval/harness.py:204](../../eval/harness.py#L204)
+`function` | [eval/harness.py:215](../../eval/harness.py#L215)
 
 ```python
-def completion_for_problem(sampler, prompt: str) -> Tuple[str, dict]
+def completion_for_problem(sampler, prompt: str) -> tuple[str, dict]
 ```
 
 Run a single completion and return (raw_output_text, metrics_dict).
@@ -336,7 +337,7 @@ Run a single completion and return (raw_output_text, metrics_dict).
 | `sampler` |  |  |  |
 | `prompt` | `str` |  |  |
 
-**Returns:** `Tuple[str, dict]`
+**Returns:** `tuple[str, dict]`
 
 **Raises**
 
@@ -348,7 +349,7 @@ Run a single completion and return (raw_output_text, metrics_dict).
 
 ### `evaluate_problem`
 
-`function` | [eval/harness.py:272](../../eval/harness.py#L272)
+`function` | [eval/harness.py:290](../../eval/harness.py#L290)
 
 ```python
 def evaluate_problem(problem: dict, loader: ModelLoader, args, sample_idx: int = 0) -> dict
@@ -365,7 +366,7 @@ def evaluate_problem(problem: dict, loader: ModelLoader, args, sample_idx: int =
 
 **Returns:** `dict`
 
-*Calls:* [`ModelLoader.generate`](#modelloader-generate), [`build_prompt`](#build_prompt), [`extract_candidate`](#extract_candidate), [`run_one_test`](#run_one_test)
+*Calls:* [`ModelLoader.generate`](#modelloader-generate), [`build_prompt`](#build_prompt), [`extract_candidate`](#extract_candidate), [`run_one_test`](#run_one_test), [`run_one_test_sandboxed`](#run_one_test_sandboxed)
 
 *Called by:* [`main`](#main)
 
@@ -375,7 +376,7 @@ def evaluate_problem(problem: dict, loader: ModelLoader, args, sample_idx: int =
 
 ### `main`
 
-`function` | [eval/harness.py:315](../../eval/harness.py#L315)
+`function` | [eval/harness.py:343](../../eval/harness.py#L343)
 
 ```python
 def main()
@@ -391,7 +392,7 @@ def main()
 
 ### `HF_HE_REPO`
 
-`constant` | [eval/harness.py:56](../../eval/harness.py#L56)
+`constant` | [eval/harness.py:51](../../eval/harness.py#L51)
 
 ```python
 HF_HE_REPO = 'openai/openai_humaneval'

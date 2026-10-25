@@ -175,7 +175,7 @@ flowchart LR
 
 ### `ScalePreset`
 
-`class` `dataclass` | [topogpt3/inference.py:32](../../topogpt3/inference.py#L32)
+`class` `dataclass` | [topogpt3/inference.py:34](../../topogpt3/inference.py#L34)
 
 Decorators: `@dataclass(frozen=True)`
 
@@ -200,7 +200,7 @@ Immutable architecture preset for a named model scale.
 
 ### `InferenceSettings`
 
-`class` `dataclass` | [topogpt3/inference.py:42](../../topogpt3/inference.py#L42)
+`class` `dataclass` | [topogpt3/inference.py:44](../../topogpt3/inference.py#L44)
 
 Decorators: `@dataclass`
 
@@ -217,7 +217,7 @@ extending this class; no other module should embed literals.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| [`model_scale`](#inferencesettings-model_scale) | `str` | `'small'` |  |
+| [`model_scale`](#inferencesettings-model_scale) | `str` | `'auto'` |  |
 | [`device`](#inferencesettings-device) | `str` | `field(default_factory=lambda: 'cuda' if torch.cuda.is_available() else 'cpu')` |  |
 | [`seed`](#inferencesettings-seed) | `int` | `42` |  |
 | [`checkpoint_dir`](#inferencesettings-checkpoint_dir) | `str` | `'checkpoints_topogpt3'` |  |
@@ -271,7 +271,7 @@ extending this class; no other module should embed literals.
 
 #### `InferenceSettings.scale_presets`
 
-`staticmethod` | [topogpt3/inference.py:103](../../topogpt3/inference.py#L103)
+`staticmethod` | [topogpt3/inference.py:105](../../topogpt3/inference.py#L105)
 
 Decorators: `@staticmethod`
 
@@ -291,7 +291,7 @@ Return the architecture preset table indexed by scale name.
 
 #### `InferenceSettings.preset`
 
-`method` | [topogpt3/inference.py:116](../../topogpt3/inference.py#L116)
+`method` | [topogpt3/inference.py:120](../../topogpt3/inference.py#L120)
 
 ```python
 def preset(self) -> ScalePreset
@@ -313,7 +313,7 @@ Return the resolved preset for the configured model scale.
 
 #### `InferenceSettings.validate`
 
-`method` | [topogpt3/inference.py:126](../../topogpt3/inference.py#L126)
+`method` | [topogpt3/inference.py:130](../../topogpt3/inference.py#L130)
 
 ```python
 def validate(self) -> None
@@ -335,7 +335,7 @@ Raise ValueError if any setting falls outside its safety bounds.
 
 ### `InferenceLoggerFactory`
 
-`class` | [topogpt3/inference.py:158](../../topogpt3/inference.py#L158)
+`class` | [topogpt3/inference.py:163](../../topogpt3/inference.py#L163)
 
 ```python
 class InferenceLoggerFactory
@@ -353,7 +353,7 @@ Builds a stdout-attached logger from inference settings.
 
 #### `InferenceLoggerFactory.build`
 
-`staticmethod` | [topogpt3/inference.py:162](../../topogpt3/inference.py#L162)
+`staticmethod` | [topogpt3/inference.py:167](../../topogpt3/inference.py#L167)
 
 Decorators: `@staticmethod`
 
@@ -379,7 +379,7 @@ Return a configured Logger with a single deduplicated stdout handler.
 
 ### `SecurePathResolver`
 
-`class` | [topogpt3/inference.py:178](../../topogpt3/inference.py#L178)
+`class` | [topogpt3/inference.py:185](../../topogpt3/inference.py#L185)
 
 ```python
 class SecurePathResolver
@@ -398,7 +398,7 @@ Resolves filesystem paths while rejecting traversal outside their root.
 
 #### `SecurePathResolver.resolve_under`
 
-`staticmethod` | [topogpt3/inference.py:182](../../topogpt3/inference.py#L182)
+`staticmethod` | [topogpt3/inference.py:189](../../topogpt3/inference.py#L189)
 
 Decorators: `@staticmethod`
 
@@ -429,12 +429,12 @@ Raises ValueError if the resolved path escapes `root`.
 
 #### `SecurePathResolver.require_existing_file`
 
-`staticmethod` | [topogpt3/inference.py:198](../../topogpt3/inference.py#L198)
+`staticmethod` | [topogpt3/inference.py:205](../../topogpt3/inference.py#L205)
 
 Decorators: `@staticmethod`
 
 ```python
-def require_existing_file(path: Path, expected_suffix: Optional[str] = None) -> Path
+def require_existing_file(path: Path, expected_suffix: str | None = None) -> Path
 ```
 
 Validate `path` points to an existing regular file with the expected suffix.
@@ -444,7 +444,7 @@ Validate `path` points to an existing regular file with the expected suffix.
 | Name | Type | Default | Description |
 |---|---|---|---|
 | `path` | `Path` |  |  |
-| `expected_suffix` | `Optional[str]` | `None` |  |
+| `expected_suffix` | `str \| None` | `None` |  |
 
 **Returns:** `Path`
 
@@ -461,7 +461,7 @@ Validate `path` points to an existing regular file with the expected suffix.
 
 ### `SourceModuleLoader`
 
-`class` | [topogpt3/inference.py:212](../../topogpt3/inference.py#L212)
+`class` | [topogpt3/inference.py:218](../../topogpt3/inference.py#L218)
 
 ```python
 class SourceModuleLoader
@@ -480,7 +480,7 @@ Resolves the TopoGPT3 runtime module via the package import system.
 
 #### `SourceModuleLoader.__init__`
 
-`constructor` | [topogpt3/inference.py:215](../../topogpt3/inference.py#L215)
+`constructor` | [topogpt3/inference.py:221](../../topogpt3/inference.py#L221)
 
 ```python
 def __init__(self, settings: InferenceSettings, logger: logging.Logger)
@@ -499,7 +499,7 @@ def __init__(self, settings: InferenceSettings, logger: logging.Logger)
 
 #### `SourceModuleLoader.load`
 
-`method` | [topogpt3/inference.py:219](../../topogpt3/inference.py#L219)
+`method` | [topogpt3/inference.py:225](../../topogpt3/inference.py#L225)
 
 ```python
 def load(self) -> Any
@@ -517,7 +517,7 @@ Return the topogpt3.train module which re-exports model symbols.
 
 ### `CheckpointPaths`
 
-`class` | [topogpt3/inference.py:228](../../topogpt3/inference.py#L228)
+`class` | [topogpt3/inference.py:236](../../topogpt3/inference.py#L236)
 
 ```python
 class CheckpointPaths
@@ -539,7 +539,7 @@ Computes and validates checkpoint file paths under a single root.
 
 #### `CheckpointPaths.__init__`
 
-`constructor` | [topogpt3/inference.py:231](../../topogpt3/inference.py#L231)
+`constructor` | [topogpt3/inference.py:239](../../topogpt3/inference.py#L239)
 
 ```python
 def __init__(self, settings: InferenceSettings)
@@ -559,7 +559,7 @@ def __init__(self, settings: InferenceSettings)
 
 #### `CheckpointPaths.slot_dir`
 
-`property` | [topogpt3/inference.py:239](../../topogpt3/inference.py#L239)
+`property` | [topogpt3/inference.py:248](../../topogpt3/inference.py#L248)
 
 Decorators: `@property`
 
@@ -575,7 +575,7 @@ Directory holding the active checkpoint slot.
 
 #### `CheckpointPaths.model_file`
 
-`method` | [topogpt3/inference.py:243](../../topogpt3/inference.py#L243)
+`method` | [topogpt3/inference.py:252](../../topogpt3/inference.py#L252)
 
 ```python
 def model_file(self) -> Path
@@ -593,7 +593,7 @@ Resolved path to the safetensors weights file inside the slot.
 
 #### `CheckpointPaths.state_file`
 
-`method` | [topogpt3/inference.py:249](../../topogpt3/inference.py#L249)
+`method` | [topogpt3/inference.py:259](../../topogpt3/inference.py#L259)
 
 ```python
 def state_file(self) -> Path
@@ -609,7 +609,7 @@ Resolved path to the JSON training-state file inside the slot.
 
 #### `CheckpointPaths.assert_ready`
 
-`method` | [topogpt3/inference.py:255](../../topogpt3/inference.py#L255)
+`method` | [topogpt3/inference.py:266](../../topogpt3/inference.py#L266)
 
 ```python
 def assert_ready(self) -> None
@@ -631,7 +631,7 @@ Verify weights exist and the on-disk size lies within safety bounds.
 
 ### `WeightShapeProbe`
 
-`class` | [topogpt3/inference.py:274](../../topogpt3/inference.py#L274)
+`class` | [topogpt3/inference.py:284](../../topogpt3/inference.py#L284)
 
 ```python
 class WeightShapeProbe
@@ -650,7 +650,7 @@ Reads tensor metadata from safetensors to infer architecture details.
 
 #### `WeightShapeProbe.__init__`
 
-`constructor` | [topogpt3/inference.py:277](../../topogpt3/inference.py#L277)
+`constructor` | [topogpt3/inference.py:287](../../topogpt3/inference.py#L287)
 
 ```python
 def __init__(self, settings: InferenceSettings, logger: logging.Logger)
@@ -669,10 +669,10 @@ def __init__(self, settings: InferenceSettings, logger: logging.Logger)
 
 #### `WeightShapeProbe.detect_n_kv_heads`
 
-`method` | [topogpt3/inference.py:281](../../topogpt3/inference.py#L281)
+`method` | [topogpt3/inference.py:291](../../topogpt3/inference.py#L291)
 
 ```python
-def detect_n_kv_heads(self, weights_path: Path, d_model: int, n_heads: int) -> Optional[int]
+def detect_n_kv_heads(self, weights_path: Path, d_model: int, n_heads: int) -> int | None
 ```
 
 Recover N_KV_HEADS used at training by inspecting the k_proj shape.
@@ -688,7 +688,7 @@ fall back to scale defaults rather than guess.
 | `d_model` | `int` |  |  |
 | `n_heads` | `int` |  |  |
 
-**Returns:** `Optional[int]`
+**Returns:** `int | None`
 
 **Raises**
 
@@ -702,7 +702,7 @@ fall back to scale defaults rather than guess.
 
 ### `TopoGPT2ConfigAligner`
 
-`class` | [topogpt3/inference.py:318](../../topogpt3/inference.py#L318)
+`class` | [topogpt3/inference.py:331](../../topogpt3/inference.py#L331)
 
 ```python
 class TopoGPT2ConfigAligner
@@ -721,7 +721,7 @@ Builds a TopoGPT2Config matching the loaded checkpoint and tokenizer.
 
 #### `TopoGPT2ConfigAligner.__init__`
 
-`constructor` | [topogpt3/inference.py:321](../../topogpt3/inference.py#L321)
+`constructor` | [topogpt3/inference.py:334](../../topogpt3/inference.py#L334)
 
 ```python
 def __init__(self, settings: InferenceSettings, source_module: Any, logger: logging.Logger)
@@ -741,10 +741,10 @@ def __init__(self, settings: InferenceSettings, source_module: Any, logger: logg
 
 #### `TopoGPT2ConfigAligner.build`
 
-`method` | [topogpt3/inference.py:327](../../topogpt3/inference.py#L327)
+`method` | [topogpt3/inference.py:341](../../topogpt3/inference.py#L341)
 
 ```python
-def build(self, n_kv_heads: Optional[int], vocab_size: int) -> Any
+def build(self, n_kv_heads: int | None, vocab_size: int) -> Any
 ```
 
 Return a TopoGPT2Config dataclass ready to instantiate the model.
@@ -753,10 +753,12 @@ Return a TopoGPT2Config dataclass ready to instantiate the model.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `n_kv_heads` | `Optional[int]` |  |  |
+| `n_kv_heads` | `int \| None` |  |  |
 | `vocab_size` | `int` |  |  |
 
 **Returns:** `Any`
+
+*Calls:* [`config_from_checkpoint`](topogpt3.checkpoint_meta.py.md#config_from_checkpoint)
 
 *Called by:* [`InferencePipeline.execute`](#inferencepipeline-execute), [`HRMInferencePipeline.execute`](topogpt3.inference_hrm.py.md#hrminferencepipeline-execute)
 
@@ -766,7 +768,7 @@ Return a TopoGPT2Config dataclass ready to instantiate the model.
 
 ### `TokenizerFactory`
 
-`class` | [topogpt3/inference.py:349](../../topogpt3/inference.py#L349)
+`class` | [topogpt3/inference.py:390](../../topogpt3/inference.py#L390)
 
 ```python
 class TokenizerFactory
@@ -785,7 +787,7 @@ Builds a BPETokenizer instance using the configured encoding.
 
 #### `TokenizerFactory.__init__`
 
-`constructor` | [topogpt3/inference.py:352](../../topogpt3/inference.py#L352)
+`constructor` | [topogpt3/inference.py:393](../../topogpt3/inference.py#L393)
 
 ```python
 def __init__(self, settings: InferenceSettings, source_module: Any)
@@ -804,7 +806,7 @@ def __init__(self, settings: InferenceSettings, source_module: Any)
 
 #### `TokenizerFactory.build`
 
-`method` | [topogpt3/inference.py:356](../../topogpt3/inference.py#L356)
+`method` | [topogpt3/inference.py:397](../../topogpt3/inference.py#L397)
 
 ```python
 def build(self) -> Any
@@ -822,7 +824,7 @@ Return an instance of BPETokenizer bound to the configured encoding.
 
 ### `GaussPatchApplier`
 
-`class` | [topogpt3/inference.py:362](../../topogpt3/inference.py#L362)
+`class` | [topogpt3/inference.py:403](../../topogpt3/inference.py#L403)
 
 ```python
 class GaussPatchApplier
@@ -841,7 +843,7 @@ Applies the idempotent Gauss complex-multiply patch when enabled.
 
 #### `GaussPatchApplier.__init__`
 
-`constructor` | [topogpt3/inference.py:365](../../topogpt3/inference.py#L365)
+`constructor` | [topogpt3/inference.py:406](../../topogpt3/inference.py#L406)
 
 ```python
 def __init__(self, settings: InferenceSettings, source_module: Any, logger: logging.Logger)
@@ -861,7 +863,7 @@ def __init__(self, settings: InferenceSettings, source_module: Any, logger: logg
 
 #### `GaussPatchApplier.apply_if_enabled`
 
-`method` | [topogpt3/inference.py:371](../../topogpt3/inference.py#L371)
+`method` | [topogpt3/inference.py:413](../../topogpt3/inference.py#L413)
 
 ```python
 def apply_if_enabled(self) -> None
@@ -877,7 +879,7 @@ Patch QuaternionSpectralLayer to use the 3-multiply Gauss contract.
 
 ### `ModelAssembler`
 
-`class` | [topogpt3/inference.py:380](../../topogpt3/inference.py#L380)
+`class` | [topogpt3/inference.py:422](../../topogpt3/inference.py#L422)
 
 ```python
 class ModelAssembler
@@ -896,7 +898,7 @@ Instantiates the model and loads weights from safetensors.
 
 #### `ModelAssembler.__init__`
 
-`constructor` | [topogpt3/inference.py:383](../../topogpt3/inference.py#L383)
+`constructor` | [topogpt3/inference.py:425](../../topogpt3/inference.py#L425)
 
 ```python
 def __init__(self, settings: InferenceSettings, source_module: Any, logger: logging.Logger)
@@ -916,7 +918,7 @@ def __init__(self, settings: InferenceSettings, source_module: Any, logger: logg
 
 #### `ModelAssembler.assemble`
 
-`method` | [topogpt3/inference.py:389](../../topogpt3/inference.py#L389)
+`method` | [topogpt3/inference.py:432](../../topogpt3/inference.py#L432)
 
 ```python
 def assemble(self, aligned_cfg: Any, paths: CheckpointPaths) -> torch.nn.Module
@@ -943,7 +945,7 @@ Build the TopoGPT2 graph, load weights into it, and return it in eval mode.
 
 ### `SeedSynchronizer`
 
-`class` | [topogpt3/inference.py:417](../../topogpt3/inference.py#L417)
+`class` | [topogpt3/inference.py:461](../../topogpt3/inference.py#L461)
 
 ```python
 class SeedSynchronizer
@@ -962,7 +964,7 @@ Applies deterministic seeds across torch, CUDA and the model package.
 
 #### `SeedSynchronizer.__init__`
 
-`constructor` | [topogpt3/inference.py:420](../../topogpt3/inference.py#L420)
+`constructor` | [topogpt3/inference.py:464](../../topogpt3/inference.py#L464)
 
 ```python
 def __init__(self, settings: InferenceSettings, source_module: Any, logger: logging.Logger)
@@ -982,7 +984,7 @@ def __init__(self, settings: InferenceSettings, source_module: Any, logger: logg
 
 #### `SeedSynchronizer.apply`
 
-`method` | [topogpt3/inference.py:426](../../topogpt3/inference.py#L426)
+`method` | [topogpt3/inference.py:471](../../topogpt3/inference.py#L471)
 
 ```python
 def apply(self) -> None
@@ -998,7 +1000,7 @@ Seed all relevant RNGs using the model package helper when available.
 
 ### `SamplingPolicy`
 
-`class` `dataclass` | [topogpt3/inference.py:441](../../topogpt3/inference.py#L441)
+`class` `dataclass` | [topogpt3/inference.py:487](../../topogpt3/inference.py#L487)
 
 Decorators: `@dataclass(frozen=True)`
 
@@ -1027,12 +1029,12 @@ Immutable sampling parameters consumed by the generation engine.
 
 #### `SamplingPolicy.from_settings`
 
-`classmethod` | [topogpt3/inference.py:450](../../topogpt3/inference.py#L450)
+`classmethod` | [topogpt3/inference.py:496](../../topogpt3/inference.py#L496)
 
 Decorators: `@classmethod`
 
 ```python
-def from_settings(cls, settings: InferenceSettings) -> 'SamplingPolicy'
+def from_settings(cls, settings: InferenceSettings) -> SamplingPolicy
 ```
 
 Construct a SamplingPolicy from inference settings.
@@ -1043,7 +1045,7 @@ Construct a SamplingPolicy from inference settings.
 |---|---|---|---|
 | `settings` | `InferenceSettings` |  |  |
 
-**Returns:** `'SamplingPolicy'`
+**Returns:** `SamplingPolicy`
 
 *Called by:* [`InferencePipeline.execute`](#inferencepipeline-execute), [`HRMInferencePipeline.execute`](topogpt3.inference_hrm.py.md#hrminferencepipeline-execute)
 
@@ -1053,7 +1055,7 @@ Construct a SamplingPolicy from inference settings.
 
 ### `GenerationReport`
 
-`class` `dataclass` | [topogpt3/inference.py:461](../../topogpt3/inference.py#L461)
+`class` `dataclass` | [topogpt3/inference.py:507](../../topogpt3/inference.py#L507)
 
 Decorators: `@dataclass(frozen=True)`
 
@@ -1083,7 +1085,7 @@ Quantitative summary of a single generation call.
 
 #### `GenerationReport.tokens_per_second`
 
-`method` | [topogpt3/inference.py:470](../../topogpt3/inference.py#L470)
+`method` | [topogpt3/inference.py:516](../../topogpt3/inference.py#L516)
 
 ```python
 def tokens_per_second(self, elapsed_floor: float) -> float
@@ -1107,7 +1109,7 @@ Return throughput in tokens/sec, clamped to avoid divide-by-zero.
 
 ### `GenerationEngine`
 
-`class` | [topogpt3/inference.py:475](../../topogpt3/inference.py#L475)
+`class` | [topogpt3/inference.py:521](../../topogpt3/inference.py#L521)
 
 ```python
 class GenerationEngine
@@ -1126,7 +1128,7 @@ Runs autoregressive sampling against a loaded model and tokenizer.
 
 #### `GenerationEngine.__init__`
 
-`constructor` | [topogpt3/inference.py:478](../../topogpt3/inference.py#L478)
+`constructor` | [topogpt3/inference.py:524](../../topogpt3/inference.py#L524)
 
 ```python
 def __init__(self, settings: InferenceSettings, logger: logging.Logger)
@@ -1145,7 +1147,7 @@ def __init__(self, settings: InferenceSettings, logger: logging.Logger)
 
 #### `GenerationEngine.run`
 
-`method` | [topogpt3/inference.py:483](../../topogpt3/inference.py#L483)
+`method` | [topogpt3/inference.py:529](../../topogpt3/inference.py#L529)
 
 Decorators: `@torch.no_grad()`
 
@@ -1180,7 +1182,7 @@ Generate a completion for [`prompt`](#inferencesettings-prompt) and return a Gen
 
 ### `ResultRenderer`
 
-`class` | [topogpt3/inference.py:533](../../topogpt3/inference.py#L533)
+`class` | [topogpt3/inference.py:586](../../topogpt3/inference.py#L586)
 
 ```python
 class ResultRenderer
@@ -1199,7 +1201,7 @@ Prints a GenerationReport to stdout using settings-defined formatting.
 
 #### `ResultRenderer.__init__`
 
-`constructor` | [topogpt3/inference.py:536](../../topogpt3/inference.py#L536)
+`constructor` | [topogpt3/inference.py:589](../../topogpt3/inference.py#L589)
 
 ```python
 def __init__(self, settings: InferenceSettings, logger: logging.Logger)
@@ -1218,7 +1220,7 @@ def __init__(self, settings: InferenceSettings, logger: logging.Logger)
 
 #### `ResultRenderer.render`
 
-`method` | [topogpt3/inference.py:540](../../topogpt3/inference.py#L540)
+`method` | [topogpt3/inference.py:593](../../topogpt3/inference.py#L593)
 
 ```python
 def render(self, report: GenerationReport) -> None
@@ -1242,7 +1244,7 @@ Emit a banner with prompt and completion, plus a throughput log line.
 
 ### `InferencePipeline`
 
-`class` | [topogpt3/inference.py:562](../../topogpt3/inference.py#L562)
+`class` | [topogpt3/inference.py:612](../../topogpt3/inference.py#L612)
 
 ```python
 class InferencePipeline
@@ -1261,10 +1263,10 @@ Orchestrator wiring loader, builder, engine and renderer.
 
 #### `InferencePipeline.__init__`
 
-`constructor` | [topogpt3/inference.py:565](../../topogpt3/inference.py#L565)
+`constructor` | [topogpt3/inference.py:615](../../topogpt3/inference.py#L615)
 
 ```python
-def __init__(self, settings: InferenceSettings, logger: Optional[logging.Logger] = None)
+def __init__(self, settings: InferenceSettings, logger: logging.Logger | None = None)
 ```
 
 **Parameters**
@@ -1272,7 +1274,7 @@ def __init__(self, settings: InferenceSettings, logger: Optional[logging.Logger]
 | Name | Type | Default | Description |
 |---|---|---|---|
 | `settings` | `InferenceSettings` |  |  |
-| `logger` | `Optional[logging.Logger]` | `None` |  |
+| `logger` | `logging.Logger \| None` | `None` |  |
 
 *Calls:* [`InferenceLoggerFactory.build`](#inferenceloggerfactory-build), [`InferenceSettings.validate`](#inferencesettings-validate)
 
@@ -1282,7 +1284,7 @@ def __init__(self, settings: InferenceSettings, logger: Optional[logging.Logger]
 
 #### `InferencePipeline.execute`
 
-`method` | [topogpt3/inference.py:571](../../topogpt3/inference.py#L571)
+`method` | [topogpt3/inference.py:622](../../topogpt3/inference.py#L622)
 
 ```python
 def execute(self) -> GenerationReport
@@ -1302,7 +1304,7 @@ Run the full inference pipeline end-to-end and return the report.
 
 ### `CliArgumentParser`
 
-`class` | [topogpt3/inference.py:615](../../topogpt3/inference.py#L615)
+`class` | [topogpt3/inference.py:678](../../topogpt3/inference.py#L678)
 
 ```python
 class CliArgumentParser
@@ -1321,7 +1323,7 @@ Translates command-line arguments into an InferenceSettings instance.
 
 #### `CliArgumentParser.build_parser`
 
-`staticmethod` | [topogpt3/inference.py:619](../../topogpt3/inference.py#L619)
+`staticmethod` | [topogpt3/inference.py:682](../../topogpt3/inference.py#L682)
 
 Decorators: `@staticmethod`
 
@@ -1341,12 +1343,12 @@ Return the configured argparse.ArgumentParser.
 
 #### `CliArgumentParser.parse`
 
-`staticmethod` | [topogpt3/inference.py:698](../../topogpt3/inference.py#L698)
+`staticmethod` | [topogpt3/inference.py:791](../../topogpt3/inference.py#L791)
 
 Decorators: `@staticmethod`
 
 ```python
-def parse(argv: Optional[List[str]] = None) -> InferenceSettings
+def parse(argv: list[str] | None = None) -> InferenceSettings
 ```
 
 Parse `argv` (or sys.argv) and return a populated InferenceSettings.
@@ -1355,7 +1357,7 @@ Parse `argv` (or sys.argv) and return a populated InferenceSettings.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `argv` | `Optional[List[str]]` | `None` |  |
+| `argv` | `list[str] \| None` | `None` |  |
 
 **Returns:** `InferenceSettings`
 
@@ -1371,10 +1373,10 @@ Parse `argv` (or sys.argv) and return a populated InferenceSettings.
 
 ### `main`
 
-`function` | [topogpt3/inference.py:721](../../topogpt3/inference.py#L721)
+`function` | [topogpt3/inference.py:814](../../topogpt3/inference.py#L814)
 
 ```python
-def main(argv: Optional[List[str]] = None) -> int
+def main(argv: list[str] | None = None) -> int
 ```
 
 CLI entry point.
@@ -1385,7 +1387,7 @@ Returns a process exit code.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `argv` | `Optional[List[str]]` | `None` |  |
+| `argv` | `list[str] \| None` | `None` |  |
 
 **Returns:** `int`
 

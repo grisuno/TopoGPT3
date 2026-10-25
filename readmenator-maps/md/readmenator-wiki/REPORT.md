@@ -1,6 +1,6 @@
 # Audit Report
 
-*Project: TopoGPT3 | 2026-10-24 | offline, deterministic*
+*Project: TopoGPT3 | 2026-10-25 | offline, deterministic*
 
 ## Confidence Trail
 
@@ -8,15 +8,15 @@ Every edge is tagged. Extracted means parsed from source; inferred means derived
 
 | Confidence | Count | Meaning |
 |------------|-------|---------|
-| EXTRACTED | 120 | Resolved import edges parsed from source |
-| EXTRACTED | 571 | Raw import statements (may include externals) |
+| EXTRACTED | 153 | Resolved import edges parsed from source |
+| EXTRACTED | 649 | Raw import statements (may include externals) |
 | INFERRED | 5 | Surprising cross-community bridges |
 | AMBIGUOUS | 0 | No uncertain edges are emitted by the static scanner |
 
 ## Coverage
 
-- Files: 55, communities: 7
-- File doc coverage: 48/55
+- Files: 64, communities: 7
+- File doc coverage: 57/64
 - Orphans (no docs at any level): 1
 - Layers detected: 5
 - Security findings: 0
@@ -31,7 +31,7 @@ Every edge is tagged. Extracted means parsed from source; inferred means derived
 
 ## Token Benchmark
 
-- Wiki index plus community pages estimate: ~27305 tokens (chars/4).
+- Wiki index plus community pages estimate: ~28812 tokens (chars/4).
 - Full re-read of every source file would cost strictly more on any non-trivial project; this wiki is the cheaper entry point.
 - Generation cost: $0, offline, no network calls.
 

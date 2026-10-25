@@ -1,10 +1,10 @@
 # eval
 
-*Community 1 | 11 files | cohesion 0.43*
+*Community 1 | 13 files | cohesion 0.44*
 
 ## Definition
 
-This community groups 11 file(s) rooted at `eval` with dominant language py (cohesion 0.43). Central symbols: `CheckpointPaths`, `CliArgumentParser`, `GaussPatchApplier`, `GenerationEngine`, `GenerationGovernor`, `GenerationReport`, `GenerationResult`, `InferenceLoggerFactory`. Core file: `topogpt3/inference.py` (54 symbols). Documented purpose: Streaming + governance for autoregressive generation.  Two classes that fix two real problems with the existing `topogpt3.inference` pipeline:  - `TokenStream` .
+This community groups 13 file(s) rooted at `eval` with dominant language py (cohesion 0.44). Central symbols: `GenerationGovernor`, `GenerationResult`, `ModelLoader`, `SandboxConfig`, `StopReason`, `TokenStream`, `YaRNConfig`, `__init__`. Core file: `eval/governor.py` (20 symbols). Documented purpose: Streaming + governance for autoregressive generation.  Two classes that fix two real problems with the existing `topogpt3.inference` pipeline:  - `TokenStream` .
 
 ## Files
 
@@ -17,10 +17,12 @@ This community groups 11 file(s) rooted at `eval` with dominant language py (coh
 | `eval/noise_sweep.py` | py | utility | 4 | yes |
 | `eval/repair.py` | py | utility | 6 | yes |
 | `eval/samplers.py` | py | utility | 7 | yes |
+| `eval/sandbox.py` | py | utility | 9 | yes |
+| `eval/sandbox_smoke.py` | py | utility | 1 | yes |
 | `eval/smoke.py` | py | utility | 2 | yes |
 | `eval/temp_sweep.py` | py | utility | 5 | yes |
 | `topogpt3/__init__.py` | py | utility | 0 | yes |
-| `topogpt3/inference.py` | py | utility | 54 | yes |
+| `topogpt3/yarn.py` | py | utility | 3 | yes |
 
 ## Key Symbols
 
@@ -51,50 +53,51 @@ This community groups 11 file(s) rooted at `eval` with dominant language py (coh
 - `test_governor_basic` (function, `eval/governor_smoke.py:79`) `def test_governor_basic()`
 - `test_loop_detector` (function, `eval/governor_smoke.py:98`) `def test_loop_detector()`
 - `test_cancel` (function, `eval/governor_smoke.py:118`) `def test_cancel()`
-- `load_humaneval` (function, `eval/harness.py:59`) `def load_humaneval(cache_dir)`
-- `build_prompt` (function, `eval/harness.py:75`) `def build_prompt(problem)` - Return the exact prompt text fed to the model.
-- `extract_candidate` (function, `eval/harness.py:100`) `def extract_candidate(prompt, completion)` - Combine prompt + completion into a single Python source string.
+- `load_humaneval` (function, `eval/harness.py:54`) `def load_humaneval(cache_dir)`
+- `build_prompt` (function, `eval/harness.py:72`) `def build_prompt(problem)` - Return the exact prompt text fed to the model.
+- `extract_candidate` (function, `eval/harness.py:97`) `def extract_candidate(prompt, completion)` - Combine prompt + completion into a single Python source string.
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 14
-- Cross-boundary resolved imports (EXTRACTED): 17
+- Internal resolved imports (EXTRACTED): 16
+- Cross-boundary resolved imports (EXTRACTED): 19
 
 ## Connections
 
-- [EXTRACTED] depends_on community 2 <-> 1 (strength 0.9): Extracted import edge crosses communities: eval/diag_static.py imports topogpt3/__init__.py.
-- [EXTRACTED] depends_on community 1 <-> 3 (strength 0.9): Extracted import edge crosses communities: eval/harness.py imports eval/sandbox.py.
+- [EXTRACTED] depends_on community 0 <-> 1 (strength 0.9): Extracted import edge crosses communities: eval/diag_static.py imports topogpt3/__init__.py.
+- [EXTRACTED] depends_on community 1 <-> 3 (strength 0.9): Extracted import edge crosses communities: eval/harness.py imports topogpt3/checkpoint_meta.py.
+- [EXTRACTED] depends_on community 2 <-> 1 (strength 0.9): Extracted import edge crosses communities: tests/test_heritage.py imports topogpt3/yarn.py.
 - [EXTRACTED] depends_on community 1 <-> 4 (strength 0.9): Extracted import edge crosses communities: topogpt3/__init__.py imports topogpt3/lens_model.py.
-- [EXTRACTED] depends_on community 1 <-> 0 (strength 0.9): Extracted import edge crosses communities: topogpt3/__init__.py imports topogpt3/lora.py.
-- [INFERRED] bridges community 1 <-> 3 (strength 0.5): Inferred cross-community bridge: eval/governor.py reaches eval/sandbox_smoke.py in 5 hops.
-- [INFERRED] bridges community 1 <-> 2 (strength 0.5): Inferred cross-community bridge: eval/governor.py reaches topogpt3/structured_output.py in 5 hops.
-- [INFERRED] bridges community 1 <-> 2 (strength 0.5): Inferred cross-community bridge: eval/integration_smoke.py reaches topogpt3/structured_output.py in 5 hops.
+- [INFERRED] bridges community 1 <-> 3 (strength 0.5): Inferred cross-community bridge: eval/governor.py reaches tests/test_checkpoint_meta.py in 5 hops.
+- [INFERRED] bridges community 1 <-> 3 (strength 0.5): Inferred cross-community bridge: eval/governor.py reaches topogpt3/structured_output.py in 5 hops.
+- [INFERRED] bridges community 1 <-> 3 (strength 0.5): Inferred cross-community bridge: eval/governor.py reaches topogpt3/tokenizer_tools.py in 5 hops.
+- [INFERRED] bridges community 1 <-> 0 (strength 0.5): Inferred cross-community bridge: eval/sandbox_smoke.py reaches synthetic_dataset.py in 5 hops.
+- [INFERRED] bridges community 1 <-> 4 (strength 0.5): Inferred cross-community bridge: eval/sandbox_smoke.py reaches tests/test_jlens.py in 5 hops.
 - [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 1 (eval) and community 5 (root).
-- [INFERRED] shares_context community 1 <-> 6 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 1 (eval) and community 6 (orphans).
 
 ## Risks
 
 - [taint critical] `eval/governor_smoke.py` -> `eval/governor_smoke.py` via `eval` (0 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/__init__.py` via `eval` (1 hops)
 - [taint critical] `eval/governor_smoke.py` -> `eval/governor.py` via `eval` (1 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/eval_toolcall.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/model.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/jlens.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/lens_model.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/rewards.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/inference.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/chat.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/train.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/yarn.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/__init__.py` via `eval` (1 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/inference_hrm.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/rollout.py` via `eval` (2 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/lora.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/trainer_utils_topo.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/eval_toolcall.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/yarn.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/chat.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/rollout.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/train.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/tools_agent.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/jlens.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/rewards.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/model.py` via `eval` (2 hops)
 
 ## Open Questions
 
 - Is the dangerous import `eval` in `eval/governor_smoke.py` still required, or can it be isolated?
 - What would break if the most connected file in eval changed?
-- Should eval be split, given cohesion 0.43?
+- Should eval be split, given cohesion 0.44?
 
 ## Sources
 
@@ -105,7 +108,9 @@ This community groups 11 file(s) rooted at `eval` with dominant language py (coh
 - `eval/noise_sweep.py`
 - `eval/repair.py`
 - `eval/samplers.py`
+- `eval/sandbox.py`
+- `eval/sandbox_smoke.py`
 - `eval/smoke.py`
 - `eval/temp_sweep.py`
 - `topogpt3/__init__.py`
-- `topogpt3/inference.py`
+- `topogpt3/yarn.py`

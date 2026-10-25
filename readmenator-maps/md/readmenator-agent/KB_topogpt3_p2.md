@@ -6,196 +6,196 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
 - Layer: business_logic
 - Language: py
 - Symbols:
-  - `TopoGPT2Config` (class, line 56) `class TopoGPT2Config`
-  - `setup_logger` (function, line 192) `def setup_logger(name, level)`
-  - `set_seed` (function, line 202) `def set_seed(seed, device)`
-  - `QuaternionOps` (class, line 214) `class QuaternionOps`
-  - `QuaternionLinear` (class, line 253) `class QuaternionLinear(Module)`
-  - `QuaternionSpectralLayer` (class, line 298) `class QuaternionSpectralLayer(Module)`
-  - `SpectralAutoencoder` (class, line 385) `class SpectralAutoencoder(Module)`
-  - `QuaternionTorusBrain` (class, line 468) `class QuaternionTorusBrain(Module)`
-  - `RotaryEmbedding` (class, line 685) `class RotaryEmbedding(Module)`
-  - `RMSNorm` (class, line 760) `class RMSNorm(Module)`
-  - `SwiGLU` (class, line 777) `class SwiGLU(Module)`
-  - `TopoMoEBrain` (class, line 806) `class TopoMoEBrain(Module)`
-  - `MultiHeadAttention` (class, line 911) `class MultiHeadAttention(Module)`
-  - `TopoGPT2Layer` (class, line 1015) `class TopoGPT2Layer(Module)`
-  - `TopoGPT2` (class, line 1062) `class TopoGPT2(Module)`
-  - `BPETokenizer` (class, line 1279) `class BPETokenizer`
-  - `FileManifest` (class, line 1405) `class FileManifest`
-  - `MemmapTokenizer` (class, line 1472) `class MemmapTokenizer`
-  - `MappedTokenDataset` (class, line 1561) `class MappedTokenDataset(Dataset)`
-  - `TextFilter` (class, line 1595) `class TextFilter`
-  - `CurriculumDataset` (class, line 1699) `class CurriculumDataset(Dataset)`
-  - `build_file_tiers` (function, line 1737) `def build_file_tiers(paths, short, med)`
-  - `ProgressiveSeqLenTrainer` (class, line 1763) `class ProgressiveSeqLenTrainer`
-  - `SpeculativeDecoder` (class, line 1839) `class SpeculativeDecoder`
-  - `QuantizedEmbedding` (class, line 1954) `class QuantizedEmbedding(Module)`
-  - `apply_quantization` (function, line 1994) `def apply_quantization(model, config)`
-  - `CurriculumTrainer` (class, line 2022) `class CurriculumTrainer`
-  - `_tokenize_text_to_memmap` (function, line 2162) `def _tokenize_text_to_memmap(text, tokenizer, path, max_tokens)`
-  - `CheckpointManager` (class, line 2174) `class CheckpointManager`
-  - `TopoGPT2Trainer` (class, line 2407) `class TopoGPT2Trainer`
-  - `MechanisticMetrics` (class, line 2700) `class MechanisticMetrics`
-  - `Phase0_KernelOptimizer` (class, line 2937) `class Phase0_KernelOptimizer`
-  - `Phase1_BatchProspector` (class, line 3012) `class Phase1_BatchProspector`
-  - `Phase2_SeedMiner` (class, line 3095) `class Phase2_SeedMiner`
-  - `Phase4_AnnealingRefiner` (class, line 3177) `class Phase4_AnnealingRefiner`
-  - `TopoPhasePipelineV2` (class, line 3338) `class TopoPhasePipelineV2`
-  - `TopoPhasePipeline` (class, line 3467) `class TopoPhasePipeline`
-  - `main` (function, line 3589) `def main()`
-  - `__post_init__` (method, line 161) `def __post_init__(self)`
-  - `hamilton_product` (method, line 222) `def hamilton_product(q1, q2)`
-  - `normalize` (method, line 234) `def normalize(q, eps)`
-  - `conjugate` (method, line 238) `def conjugate(q)`
-  - `rotate_vector` (method, line 243) `def rotate_vector(v, q)`
-  - `__init__` (method, line 265) `def __init__(self, in_features, out_features, bias)`
-  - `forward` (method, line 281) `def forward(self, x)`
-  - `__init__` (method, line 318) `def __init__(self, in_q, out_q, grid_h, grid_w, init_scale)`
-  - `_kernel` (method, line 337) `def _kernel(self, c)`
-  - `_contract` (method, line 340) `def _contract(self, W, X)`
-  - `forward` (method, line 344) `def forward(self, x)`
-  - `__init__` (method, line 398) `def __init__(self, config)`
-  - `_filter1d` (method, line 430) `def _filter1d(self, x, kr, ki)`
-  - `encode` (method, line 436) `def encode(self, x)`
-  - `decode` (method, line 441) `def decode(self, z)`
-  - `forward` (method, line 446) `def forward(self, x)`
-  - `process_torus_grid` (method, line 453) `def process_torus_grid(self, grid)`
-  - `__init__` (method, line 486) `def __init__(self, d_model, config)`
-  - `_build_torus_graph` (method, line 526) `def _build_torus_graph(self)`
-  - `_torus_soft_assign` (method, line 560) `def _torus_soft_assign(self, phi1, phi2)`
-  - `_message_passing` (method, line 587) `def _message_passing(self, node_feat)`
-  - `forward` (method, line 624) `def forward(self, x)`
-  - `__init__` (method, line 697) `def __init__(self, d_head, max_seq_len, base, yarn_factor, yarn_orig_max)`
-  - `enable_yarn` (method, line 716) `def enable_yarn(self, factor, orig_max)`
-  - `_build_cache` (method, line 724) `def _build_cache(self, seq_len)`
-  - `_rotate_half` (method, line 732) `def _rotate_half(self, x)`
-  - `forward` (method, line 736) `def forward(self, q, k, seq_len, offset)`
-  - `__init__` (method, line 763) `def __init__(self, d_model, eps)`
-  - `forward` (method, line 768) `def forward(self, x)`
-  - `__init__` (method, line 784) `def __init__(self, d_model, expansion, dropout)`
-  - `forward` (method, line 798) `def forward(self, x)`
-  - `__init__` (method, line 821) `def __init__(self, d_model, config)`
-  - `_route` (method, line 842) `def _route(self, x)`
-  - `forward` (method, line 884) `def forward(self, x)`
-  - `__init__` (method, line 921) `def __init__(self, d_model, n_heads, config)`
-  - `forward` (method, line 940) `def forward(self, x, is_causal, past_kv)`
-  - `__init__` (method, line 1024) `def __init__(self, d_model, n_heads, config)`
-  - `_forward_impl` (method, line 1033) `def _forward_impl(self, x, past_kv)`
-  - `forward` (method, line 1042) `def forward(self, x, past_kv)`
-  - `__init__` (method, line 1073) `def __init__(self, config)`
-  - `_init_weights` (method, line 1098) `def _init_weights(self)`
-  - `forward` (method, line 1105) `def forward(self, token_ids, past_kvs)`
-  - `forward_with_memory` (method, line 1128) `def forward_with_memory(self, token_ids)`
-  - `count_params` (method, line 1178) `def count_params(self)`
-  - `generate` (method, line 1184) `def generate(self, token_ids, max_new_tokens, temperature, top_k, repetition_penalty)`
-  - `generate_with_continuation` (method, line 1235) `def generate_with_continuation(self, token_ids, tokenizer, max_new_tokens, temperature, top_k, repetition_penalty...`
-  - `__init__` (method, line 1282) `def __init__(self, encoding)`
-  - `encode` (method, line 1290) `def encode(self, text)`
-  - `decode` (method, line 1293) `def decode(self, tokens)`
-  - `eot_token` (method, line 1296) `def eot_token(self)`
-  - `__init__` (method, line 1408) `def __init__(self, root, cache_dir, logger)`
-  - `scan` (method, line 1415) `def scan(self, force)`
-  - `__init__` (method, line 1482) `def __init__(self, cache_dir, logger)`
-  - `tokenize` (method, line 1487) `def tokenize(self, file_paths, tokenizer, cache_key, max_tokens, min_chars)`
-  - `__init__` (method, line 1570) `def __init__(self, tokens, seq_len)`
-  - `__len__` (method, line 1575) `def __len__(self)`
-  - `__getitem__` (method, line 1578) `def __getitem__(self, idx)`
-  - `__init__` (method, line 1598) `def __init__(self, config, logger)`
-  - `_compute_entropy` (method, line 1607) `def _compute_entropy(self, text)`
-  - `_has_long_lines` (method, line 1621) `def _has_long_lines(self, text, threshold)`
-  - `_special_token_ratio` (method, line 1628) `def _special_token_ratio(self, text, tokenizer)`
-  - `_content_hash` (method, line 1642) `def _content_hash(self, text)`
-  - `filter_file` (method, line 1645) `def filter_file(self, path, tokenizer)`
-  - `report` (method, line 1685) `def report(self)`
-  - `__init__` (method, line 1706) `def __init__(self, tokens, seq_len, file_tiers, active_tier, logger)`
-  - `_update_len` (method, line 1716) `def _update_len(self)`
-  - `set_tier` (method, line 1722) `def set_tier(self, tier)`
-  - `__len__` (method, line 1726) `def __len__(self)`
-  - `__getitem__` (method, line 1729) `def __getitem__(self, idx)`
-  - `__init__` (method, line 1774) `def __init__(self, base_trainer)`
-  - `_build_dataloader` (method, line 1780) `def _build_dataloader(self, dataset, seq_len, batch_size, is_train)`
-  - `run` (method, line 1790) `def run(self, train_paths, val_paths, tokenizer, file_tiers, phases)`
-  - `__init__` (method, line 1848) `def __init__(self, target_model, config, logger)`
-  - `_build_draft` (method, line 1856) `def _build_draft(self)`
-  - `generate` (method, line 1870) `def generate(self, token_ids, max_new_tokens, temperature, top_k, repetition_penalty)`
-  - `__init__` (method, line 1961) `def __init__(self, embed, mode)`
-  - `forward` (method, line 1990) `def forward(self, indices)`
-  - `__init__` (method, line 2030) `def __init__(self, model, config, tokenizer)`
-  - `cache_tokens` (method, line 2037) `def cache_tokens(self, key, tokens)`
-  - `model` (method, line 2041) `def model(self)`
-  - `optimizer` (method, line 2045) `def optimizer(self)`
-  - `scaler` (method, line 2049) `def scaler(self)`
-  - `amp_dtype` (method, line 2053) `def amp_dtype(self)`
-  - `completed_epochs` (method, line 2057) `def completed_epochs(self)`
-  - `completed_epochs` (method, line 2061) `def completed_epochs(self, v)`
-  - `global_step` (method, line 2065) `def global_step(self)`
-  - `global_step` (method, line 2069) `def global_step(self, v)`
-  - `best_val_loss` (method, line 2073) `def best_val_loss(self)`
-  - `best_val_loss` (method, line 2077) `def best_val_loss(self, v)`
-  - `history` (method, line 2081) `def history(self)`
-  - `ckpt_mgr` (method, line 2085) `def ckpt_mgr(self)`
-  - `resume` (method, line 2088) `def resume(self)`
-  - `_current_state` (method, line 2091) `def _current_state(self)`
-  - `_cosine_lr` (method, line 2094) `def _cosine_lr(self)`
-  - `_set_lr` (method, line 2097) `def _set_lr(self)`
-  - `evaluate` (method, line 2100) `def evaluate(self, dataloader)`
-  - `_sample_text` (method, line 2103) `def _sample_text(self)`
-  - `_progressive_train` (method, line 2106) `def _progressive_train(self, train_paths, val_paths, tokenizer, phases, memtok)`
-  - `train` (method, line 2145) `def train(self, train_dl, val_dl)`
-  - `run_curriculum` (method, line 2148) `def run_curriculum(self, train_paths, val_paths, tokenizer, phases)`
-  - `__init__` (method, line 2199) `def __init__(self, config, logger)`
-  - `patch_config_for_resume` (method, line 2209) `def patch_config_for_resume(self, cfg)`
-  - `_save_model` (method, line 2238) `def _save_model(self, model, directory)`
-  - `_load_model` (method, line 2251) `def _load_model(self, model, directory)`
-  - `_save_optimizer` (method, line 2282) `def _save_optimizer(self, optimizer, directory)`
-  - `_load_optimizer` (method, line 2285) `def _load_optimizer(self, optimizer, directory, device)`
-  - `_save_state` (method, line 2294) `def _save_state(self, state, directory)`
-  - `_load_state` (method, line 2299) `def _load_state(self, directory)`
-  - `should_save` (method, line 2310) `def should_save(self)`
-  - `save` (method, line 2313) `def save(self, model, optimizer, state, is_best)`
-  - `load_latest` (method, line 2358) `def load_latest(self, model, optimizer)`
-  - `load_best` (method, line 2385) `def load_best(self, model)`
-  - `has_checkpoint` (method, line 2397) `def has_checkpoint(self)`
-  - `__init__` (method, line 2419) `def __init__(self, model, config, tokenizer)`
-  - `resume` (method, line 2454) `def resume(self)`
-  - `_current_state` (method, line 2479) `def _current_state(self)`
-  - `_cosine_lr` (method, line 2490) `def _cosine_lr(self, step_in_session, total_steps_session)`
-  - `_set_lr` (method, line 2498) `def _set_lr(self, lr)`
-  - `train` (method, line 2502) `def train(self, train_dl, val_dl)`
-  - `_sample_text` (method, line 2638) `def _sample_text(self, tokenizer, prompts, max_new, temperature, top_k)`
-  - `evaluate` (method, line 2670) `def evaluate(self, dataloader)`
-  - `__init__` (method, line 2720) `def __init__(self, config)`
-  - `compute_delta` (method, line 2728) `def compute_delta(self, model)`
-  - `compute_alpha` (method, line 2735) `def compute_alpha(self, delta)`
-  - `update_grad_buffer` (method, line 2740) `def update_grad_buffer(self, model)`
-  - `compute_t_eff` (method, line 2766) `def compute_t_eff(self, lr)`
-  - `compute_kappa` (method, line 2774) `def compute_kappa(self, model, dataloader, n_batches)`
-  - `compute_berry_phase` (method, line 2832) `def compute_berry_phase(self, model)`
-  - `compute_lc` (method, line 2845) `def compute_lc(self, model)`
-  - `compute_sp` (method, line 2859) `def compute_sp(self, model)`
-  - `classify_phase` (method, line 2875) `def classify_phase(self, delta, kappa, berry)`
-  - `compute_all` (method, line 2894) `def compute_all(self, model, lr, dataloader, compute_kappa)`
-  - `format_log` (method, line 2919) `def format_log(self, m)`
-  - `__init__` (method, line 2955) `def __init__(self, config, logger)`
-  - `_measure_ratio` (method, line 2959) `def _measure_ratio(self, ratio, sample_batch)`
-  - `optimize` (method, line 2988) `def optimize(self, dataloader)`
-  - `__init__` (method, line 3028) `def __init__(self, config, logger)`
-  - `prospect` (method, line 3032) `def prospect(self, candidates, train_dataset, prospect_steps)`
-  - `__init__` (method, line 3111) `def __init__(self, config, logger)`
-  - `mine` (method, line 3115) `def mine(self, seed_start, n_seeds, train_dataset, prospect_steps)`
-  - `__init__` (method, line 3197) `def __init__(self, trainer, t0, cooling_rate, stagnation_patience)`
-  - `refine` (method, line 3206) `def refine(self, train_dl, val_dl, refine_epochs)`
-  - `__init__` (method, line 3349) `def __init__(self, config, train_tokens, val_tokens, tokenizer, logger, curriculum_tiers, progressive_seq)`
-  - `_build_dataloader` (method, line 3362) `def _build_dataloader(self, tokens, seq_len, batch_size, shuffle, tag)`
-  - `_build_phases` (method, line 3376) `def _build_phases(self)`
-  - `run` (method, line 3385) `def run(self, run_prospect, refine_epochs, resume, prospect_steps, probe_seeds, seed_start)`
-  - `__init__` (method, line 3487) `def __init__(self, config, train_dataset, val_dataset, tokenizer, logger)`
-  - `_make_dataloaders` (method, line 3497) `def _make_dataloaders(self, batch_size)`
-  - `run` (method, line 3509) `def run(self, run_prospect, refine_epochs, resume, prospect_steps, probe_seeds, seed_start)`
-  - `ckpt_fn` (function, line 1050) `def ckpt_fn(x_in)`
+  - `TopoGPT2Config` (class, line 59) `class TopoGPT2Config`
+  - `setup_logger` (function, line 256) `def setup_logger(name, level)`
+  - `set_seed` (function, line 268) `def set_seed(seed, device)`
+  - `QuaternionOps` (class, line 281) `class QuaternionOps`
+  - `QuaternionLinear` (class, line 324) `class QuaternionLinear(Module)`
+  - `QuaternionSpectralLayer` (class, line 375) `class QuaternionSpectralLayer(Module)`
+  - `SpectralAutoencoder` (class, line 473) `class SpectralAutoencoder(Module)`
+  - `QuaternionTorusBrain` (class, line 561) `class QuaternionTorusBrain(Module)`
+  - `RotaryEmbedding` (class, line 799) `class RotaryEmbedding(Module)`
+  - `RMSNorm` (class, line 885) `class RMSNorm(Module)`
+  - `SwiGLU` (class, line 903) `class SwiGLU(Module)`
+  - `TopoMoEBrain` (class, line 932) `class TopoMoEBrain(Module)`
+  - `MultiHeadAttention` (class, line 1045) `class MultiHeadAttention(Module)`
+  - `TopoGPT2Layer` (class, line 1164) `class TopoGPT2Layer(Module)`
+  - `TopoGPT2` (class, line 1222) `class TopoGPT2(Module)`
+  - `BPETokenizer` (class, line 1471) `class BPETokenizer`
+  - `FileManifest` (class, line 1906) `class FileManifest`
+  - `MemmapTokenizer` (class, line 1975) `class MemmapTokenizer`
+  - `MappedTokenDataset` (class, line 2075) `class MappedTokenDataset(Dataset)`
+  - `TextFilter` (class, line 2110) `class TextFilter`
+  - `CurriculumDataset` (class, line 2223) `class CurriculumDataset(Dataset)`
+  - `build_file_tiers` (function, line 2265) `def build_file_tiers(paths, short, med)`
+  - `ProgressiveSeqLenTrainer` (class, line 2292) `class ProgressiveSeqLenTrainer`
+  - `SpeculativeDecoder` (class, line 2394) `class SpeculativeDecoder`
+  - `QuantizedEmbedding` (class, line 2518) `class QuantizedEmbedding(Module)`
+  - `apply_quantization` (function, line 2558) `def apply_quantization(model, config)`
+  - `CurriculumTrainer` (class, line 2587) `class CurriculumTrainer`
+  - `_tokenize_text_to_memmap` (function, line 2752) `def _tokenize_text_to_memmap(text, tokenizer, path, max_tokens)`
+  - `CheckpointManager` (class, line 2766) `class CheckpointManager`
+  - `TopoGPT2Trainer` (class, line 3005) `class TopoGPT2Trainer`
+  - `MechanisticMetrics` (class, line 3342) `class MechanisticMetrics`
+  - `Phase0_KernelOptimizer` (class, line 3587) `class Phase0_KernelOptimizer`
+  - `Phase1_BatchProspector` (class, line 3667) `class Phase1_BatchProspector`
+  - `Phase2_SeedMiner` (class, line 3758) `class Phase2_SeedMiner`
+  - `Phase4_AnnealingRefiner` (class, line 3855) `class Phase4_AnnealingRefiner`
+  - `TopoPhasePipelineV2` (class, line 4030) `class TopoPhasePipelineV2`
+  - `TopoPhasePipeline` (class, line 4186) `class TopoPhasePipeline`
+  - `main` (function, line 4330) `def main()`
+  - `__post_init__` (method, line 170) `def __post_init__(self)`
+  - `hamilton_product` (method, line 289) `def hamilton_product(q1, q2)`
+  - `normalize` (method, line 304) `def normalize(q, eps)`
+  - `conjugate` (method, line 308) `def conjugate(q)`
+  - `rotate_vector` (method, line 313) `def rotate_vector(v, q)`
+  - `__init__` (method, line 336) `def __init__(self, in_features, out_features, bias)`
+  - `forward` (method, line 352) `def forward(self, x)`
+  - `__init__` (method, line 395) `def __init__(self, in_q, out_q, grid_h, grid_w, init_scale)`
+  - `_kernel` (method, line 419) `def _kernel(self, c)`
+  - `_contract` (method, line 422) `def _contract(self, W, X)`
+  - `forward` (method, line 426) `def forward(self, x)`
+  - `__init__` (method, line 486) `def __init__(self, config)`
+  - `_filter1d` (method, line 520) `def _filter1d(self, x, kr, ki)`
+  - `encode` (method, line 528) `def encode(self, x)`
+  - `decode` (method, line 533) `def decode(self, z)`
+  - `forward` (method, line 538) `def forward(self, x)`
+  - `process_torus_grid` (method, line 545) `def process_torus_grid(self, grid)`
+  - `__init__` (method, line 579) `def __init__(self, d_model, config)`
+  - `_build_torus_graph` (method, line 619) `def _build_torus_graph(self)`
+  - `_torus_soft_assign` (method, line 661) `def _torus_soft_assign(self, phi1, phi2)`
+  - `_message_passing` (method, line 698) `def _message_passing(self, node_feat)`
+  - `forward` (method, line 735) `def forward(self, x)`
+  - `__init__` (method, line 811) `def __init__(self, d_head, max_seq_len, base, yarn_factor, yarn_orig_max)`
+  - `enable_yarn` (method, line 837) `def enable_yarn(self, factor, orig_max)`
+  - `_build_cache` (method, line 847) `def _build_cache(self, seq_len)`
+  - `_rotate_half` (method, line 855) `def _rotate_half(self, x)`
+  - `forward` (method, line 859) `def forward(self, q, k, seq_len, offset)`
+  - `__init__` (method, line 888) `def __init__(self, d_model, eps)`
+  - `forward` (method, line 893) `def forward(self, x)`
+  - `__init__` (method, line 910) `def __init__(self, d_model, expansion, dropout)`
+  - `forward` (method, line 923) `def forward(self, x)`
+  - `__init__` (method, line 947) `def __init__(self, d_model, config)`
+  - `_route` (method, line 970) `def _route(self, x)`
+  - `forward` (method, line 1018) `def forward(self, x)`
+  - `__init__` (method, line 1055) `def __init__(self, d_model, n_heads, config)`
+  - `forward` (method, line 1074) `def forward(self, x, is_causal, past_kv, position_offset)`
+  - `__init__` (method, line 1173) `def __init__(self, d_model, n_heads, config)`
+  - `_forward_impl` (method, line 1182) `def _forward_impl(self, x, past_kv, position_offset)`
+  - `forward` (method, line 1196) `def forward(self, x, past_kv, position_offset)`
+  - `__init__` (method, line 1233) `def __init__(self, config)`
+  - `_init_weights` (method, line 1260) `def _init_weights(self)`
+  - `forward` (method, line 1267) `def forward(self, token_ids, past_kvs, position_offset)`
+  - `forward_with_memory` (method, line 1293) `def forward_with_memory(self, token_ids)`
+  - `count_params` (method, line 1343) `def count_params(self)`
+  - `generate` (method, line 1349) `def generate(self, token_ids, max_new_tokens, temperature, top_k, repetition_penalty)`
+  - `generate_with_continuation` (method, line 1409) `def generate_with_continuation(self, token_ids, tokenizer, max_new_tokens, temperature, top_k, repetition_penalty...`
+  - `__init__` (method, line 1474) `def __init__(self, encoding)`
+  - `encode` (method, line 1483) `def encode(self, text)`
+  - `decode` (method, line 1486) `def decode(self, tokens)`
+  - `eot_token` (method, line 1489) `def eot_token(self)`
+  - `__init__` (method, line 1909) `def __init__(self, root, cache_dir, logger)`
+  - `scan` (method, line 1916) `def scan(self, force)`
+  - `__init__` (method, line 1985) `def __init__(self, cache_dir, logger)`
+  - `tokenize` (method, line 1990) `def tokenize(self, file_paths, tokenizer, cache_key, max_tokens, min_chars)`
+  - `__init__` (method, line 2084) `def __init__(self, tokens, seq_len)`
+  - `__len__` (method, line 2089) `def __len__(self)`
+  - `__getitem__` (method, line 2092) `def __getitem__(self, idx)`
+  - `__init__` (method, line 2113) `def __init__(self, config, logger)`
+  - `_compute_entropy` (method, line 2127) `def _compute_entropy(self, text)`
+  - `_has_long_lines` (method, line 2142) `def _has_long_lines(self, text, threshold)`
+  - `_special_token_ratio` (method, line 2149) `def _special_token_ratio(self, text, tokenizer)`
+  - `_content_hash` (method, line 2162) `def _content_hash(self, text)`
+  - `filter_file` (method, line 2165) `def filter_file(self, path, tokenizer)`
+  - `report` (method, line 2207) `def report(self)`
+  - `__init__` (method, line 2230) `def __init__(self, tokens, seq_len, file_tiers, active_tier, logger)`
+  - `_update_len` (method, line 2244) `def _update_len(self)`
+  - `set_tier` (method, line 2249) `def set_tier(self, tier)`
+  - `__len__` (method, line 2253) `def __len__(self)`
+  - `__getitem__` (method, line 2256) `def __getitem__(self, idx)`
+  - `__init__` (method, line 2303) `def __init__(self, base_trainer)`
+  - `_build_dataloader` (method, line 2309) `def _build_dataloader(self, dataset, seq_len, batch_size, is_train)`
+  - `run` (method, line 2324) `def run(self, train_paths, val_paths, tokenizer, file_tiers, phases)`
+  - `__init__` (method, line 2403) `def __init__(self, target_model, config, logger)`
+  - `_build_draft` (method, line 2412) `def _build_draft(self)`
+  - `generate` (method, line 2427) `def generate(self, token_ids, max_new_tokens, temperature, top_k, repetition_penalty)`
+  - `__init__` (method, line 2525) `def __init__(self, embed, mode)`
+  - `forward` (method, line 2554) `def forward(self, indices)`
+  - `__init__` (method, line 2595) `def __init__(self, model, config, tokenizer)`
+  - `cache_tokens` (method, line 2602) `def cache_tokens(self, key, tokens)`
+  - `model` (method, line 2606) `def model(self)`
+  - `optimizer` (method, line 2610) `def optimizer(self)`
+  - `scaler` (method, line 2614) `def scaler(self)`
+  - `amp_dtype` (method, line 2618) `def amp_dtype(self)`
+  - `completed_epochs` (method, line 2622) `def completed_epochs(self)`
+  - `completed_epochs` (method, line 2626) `def completed_epochs(self, v)`
+  - `global_step` (method, line 2630) `def global_step(self)`
+  - `global_step` (method, line 2634) `def global_step(self, v)`
+  - `best_val_loss` (method, line 2638) `def best_val_loss(self)`
+  - `best_val_loss` (method, line 2642) `def best_val_loss(self, v)`
+  - `history` (method, line 2646) `def history(self)`
+  - `ckpt_mgr` (method, line 2650) `def ckpt_mgr(self)`
+  - `resume` (method, line 2653) `def resume(self)`
+  - `_current_state` (method, line 2656) `def _current_state(self)`
+  - `_cosine_lr` (method, line 2659) `def _cosine_lr(self)`
+  - `_set_lr` (method, line 2662) `def _set_lr(self)`
+  - `evaluate` (method, line 2665) `def evaluate(self, dataloader)`
+  - `_sample_text` (method, line 2668) `def _sample_text(self)`
+  - `_progressive_train` (method, line 2671) `def _progressive_train(self, train_paths, val_paths, tokenizer, phases, memtok)`
+  - `train` (method, line 2725) `def train(self, train_dl, val_dl)`
+  - `run_curriculum` (method, line 2728) `def run_curriculum(self, train_paths, val_paths, tokenizer, phases)`
+  - `__init__` (method, line 2791) `def __init__(self, config, logger)`
+  - `patch_config_for_resume` (method, line 2801) `def patch_config_for_resume(self, cfg)`
+  - `_save_model` (method, line 2830) `def _save_model(self, model, directory)`
+  - `_load_model` (method, line 2843) `def _load_model(self, model, directory)`
+  - `_save_optimizer` (method, line 2876) `def _save_optimizer(self, optimizer, directory)`
+  - `_load_optimizer` (method, line 2879) `def _load_optimizer(self, optimizer, directory, device)`
+  - `_save_state` (method, line 2888) `def _save_state(self, state, directory)`
+  - `_load_state` (method, line 2893) `def _load_state(self, directory)`
+  - `should_save` (method, line 2904) `def should_save(self)`
+  - `save` (method, line 2907) `def save(self, model, optimizer, state, is_best)`
+  - `load_latest` (method, line 2955) `def load_latest(self, model, optimizer)`
+  - `load_best` (method, line 2982) `def load_best(self, model)`
+  - `has_checkpoint` (method, line 2996) `def has_checkpoint(self)`
+  - `__init__` (method, line 3017) `def __init__(self, model, config, tokenizer)`
+  - `resume` (method, line 3066) `def resume(self)`
+  - `_current_state` (method, line 3091) `def _current_state(self)`
+  - `_cosine_lr` (method, line 3102) `def _cosine_lr(self, step_in_session, total_steps_session)`
+  - `_set_lr` (method, line 3110) `def _set_lr(self, lr)`
+  - `train` (method, line 3114) `def train(self, train_dl, val_dl)`
+  - `_sample_text` (method, line 3270) `def _sample_text(self, tokenizer, prompts, max_new, temperature, top_k)`
+  - `evaluate` (method, line 3308) `def evaluate(self, dataloader)`
+  - `__init__` (method, line 3362) `def __init__(self, config)`
+  - `compute_delta` (method, line 3371) `def compute_delta(self, model)`
+  - `compute_alpha` (method, line 3378) `def compute_alpha(self, delta)`
+  - `update_grad_buffer` (method, line 3383) `def update_grad_buffer(self, model)`
+  - `compute_t_eff` (method, line 3409) `def compute_t_eff(self, lr)`
+  - `compute_kappa` (method, line 3417) `def compute_kappa(self, model, dataloader, n_batches)`
+  - `compute_berry_phase` (method, line 3475) `def compute_berry_phase(self, model)`
+  - `compute_lc` (method, line 3488) `def compute_lc(self, model)`
+  - `compute_sp` (method, line 3502) `def compute_sp(self, model)`
+  - `classify_phase` (method, line 3518) `def classify_phase(self, delta, kappa, berry)`
+  - `compute_all` (method, line 3536) `def compute_all(self, model, lr, dataloader, compute_kappa)`
+  - `format_log` (method, line 3568) `def format_log(self, m)`
+  - `__init__` (method, line 3605) `def __init__(self, config, logger)`
+  - `_measure_ratio` (method, line 3609) `def _measure_ratio(self, ratio, sample_batch)`
+  - `optimize` (method, line 3640) `def optimize(self, dataloader)`
+  - `__init__` (method, line 3683) `def __init__(self, config, logger)`
+  - `prospect` (method, line 3687) `def prospect(self, candidates, train_dataset, prospect_steps)`
+  - `__init__` (method, line 3774) `def __init__(self, config, logger)`
+  - `mine` (method, line 3778) `def mine(self, seed_start, n_seeds, train_dataset, prospect_steps)`
+  - `__init__` (method, line 3875) `def __init__(self, trainer, t0, cooling_rate, stagnation_patience)`
+  - `refine` (method, line 3888) `def refine(self, train_dl, val_dl, refine_epochs)`
+  - `__init__` (method, line 4041) `def __init__(self, config, train_tokens, val_tokens, tokenizer, logger, curriculum_tiers, progressive_seq)`
+  - `_build_dataloader` (method, line 4059) `def _build_dataloader(self, tokens, seq_len, batch_size, shuffle, tag)`
+  - `_build_phases` (method, line 4084) `def _build_phases(self)`
+  - `run` (method, line 4095) `def run(self, run_prospect, refine_epochs, resume, prospect_steps, probe_seeds, seed_start)`
+  - `__init__` (method, line 4206) `def __init__(self, config, train_dataset, val_dataset, tokenizer, logger)`
+  - `_make_dataloaders` (method, line 4220) `def _make_dataloaders(self, batch_size)`
+  - `run` (method, line 4242) `def run(self, run_prospect, refine_epochs, resume, prospect_steps, probe_seeds, seed_start)`
+  - `ckpt_fn` (function, line 1208) `def ckpt_fn(x_in)`
 - Depends on: `synthetic_dataset.py`, `topogpt3/continuation.py`, `topogpt3/yarn.py`
-- Imported by: `eval/diag_static.py`, `eval/noise_sweep.py`, `tests/test_heritage.py`, `tests/test_lens_model.py`, `tests/test_structured_output.py`, `topogpt3/__init__.py`, `topogpt3/api_server.py`, `topogpt3/convert.py`, `topogpt3/export_chat.py`, `topogpt3/lens_model.py`, `topogpt3/train.py`, `topogpt3/train_agent.py`, `topogpt3/train_distill.py`, `topogpt3/train_dpo.py`, `topogpt3/train_grpo.py`, `topogpt3/train_lora.py`, `topogpt3/train_ppo.py`
+- Imported by: `eval/diag_static.py`, `eval/noise_sweep.py`, `eval/tasks.py`, `tests/test_heritage.py`, `tests/test_lens_model.py`, `tests/test_structured_output.py`, `topogpt3/__init__.py`, `topogpt3/api_server.py`, `topogpt3/checkpoint_meta.py`, `topogpt3/convert.py`, `topogpt3/export_chat.py`, `topogpt3/lens_model.py`, `topogpt3/train.py`, `topogpt3/train_agent.py`, `topogpt3/train_distill.py`, `topogpt3/train_dpo.py`, `topogpt3/train_grpo.py`, `topogpt3/train_lora.py`, `topogpt3/train_ppo.py`
 
 ## topogpt3/rewards.py
 - Doc: Reward + advantage + loss helpers for TopoGPT3 group-RL.
@@ -205,12 +205,16 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
   - `rep_penalty` (function, line 17) `def rep_penalty(text, n, cap)`
   - `base_rewards` (function, line 25) `def base_rewards(prompts, completions, reward_fn, device)`
   - `spectral_bonus` (function, line 55) `def spectral_bonus(fisher_gap, drift, w_fisher, w_drift)`
-  - `grpo_advantages` (function, line 67) `def grpo_advantages(rewards, num_generations)`
-  - `k3_kl` (function, line 74) `def k3_kl(ref_logp, new_logp)`
-  - `grpo_loss` (function, line 79) `def grpo_loss(new_logp, old_logp, ref_logp, adv, mask, beta, eps, loss_type, eps_high)`
-  - `logits_to_log_probs` (function, line 94) `def logits_to_log_probs(logits, labels)`
-  - `dpo_loss_fn` (function, line 99) `def dpo_loss_fn(ref_lp, pol_lp, mask, beta)`
-  - `distillation_loss` (function, line 108) `def distillation_loss(student_logits, teacher_logits, mask, labels, alpha, temp)`
+  - `grpo_advantages` (function, line 70) `def grpo_advantages(rewards, num_generations)`
+  - `k3_kl` (function, line 77) `def k3_kl(ref_logp, new_logp)`
+  - `grpo_loss` (function, line 82) `def grpo_loss(new_logp, old_logp, ref_logp, adv, mask, beta, eps, loss_type, eps_high)`
+  - `logits_to_log_probs` (function, line 107) `def logits_to_log_probs(logits, labels)`
+  - `dpo_loss_fn` (function, line 113) `def dpo_loss_fn(ref_lp, pol_lp, mask, beta)`
+  - `distillation_loss` (function, line 122) `def distillation_loss(student_logits, teacher_logits, mask, labels, alpha, temp)`
+  - `tool_call_reward` (function, line 151) `def tool_call_reward(text, allowed_tools, require_tool)`
+  - `verifier_reward` (function, line 176) `def verifier_reward(text, mode)`
+  - `execution_reward` (function, line 202) `def execution_reward(results)`
+- Depends on: `topogpt3/chat.py`, `topogpt3/fallback.py`
 - Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/train_agent.py`, `topogpt3/train_distill.py`, `topogpt3/train_dpo.py`, `topogpt3/train_grpo.py`, `topogpt3/train_ppo.py`
 
 ## topogpt3/rollout.py
@@ -255,14 +259,32 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
   - `accept` (method, line 211) `def accept(self, token_id)`
 - Imported by: `tests/test_structured_output.py`, `topogpt3/api_server.py`
 
+## topogpt3/tokenizer_tools.py
+- Doc: Tokenizer efficiency toolkit.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `audit` (function, line 27) `def audit(checkpoint_dir, corpus_files, sample_chars)`
+  - `train_code_bpe` (function, line 76) `def train_code_bpe(corpus_files, out_dir, vocab_size)`
+  - `load_tokenizer_artifact` (function, line 110) `def load_tokenizer_artifact(path)`
+  - `resize_embeddings` (function, line 135) `def resize_embeddings(checkpoint_dir, new_vocab, out_dir)`
+  - `main` (function, line 183) `def main()`
+  - `ArtifactTokenizer` (class, line 116) `class ArtifactTokenizer`
+  - `__init__` (method, line 119) `def __init__(self)`
+  - `encode` (method, line 123) `def encode(self, text)`
+  - `decode` (method, line 126) `def decode(self, tokens)`
+  - `eot_token` (method, line 129) `def eot_token(self)`
+- Depends on: `topogpt3/checkpoint_meta.py`
+
 ## topogpt3/tools_agent.py
 - Doc: Code-first tool definitions for TopoGPT3 Agent-RL.
 - Layer: utility
 - Language: py
 - Symbols:
-  - `execute_tool` (function, line 59) `def execute_tool(name, args)`
-  - `rollout_multiturn` (function, line 80) `def rollout_multiturn(generate_fn, tokenizer, messages, tools, max_turns, max_new_tokens, open_thinking)`
-- Depends on: `eval/sandbox.py`, `topogpt3/chat.py`
+  - `_apt_chain_preview` (function, line 55) `def _apt_chain_preview(args)`
+  - `execute_tool` (function, line 96) `def execute_tool(name, args)`
+  - `rollout_multiturn` (function, line 117) `def rollout_multiturn(generate_fn, tokenizer, messages, tools, max_turns, max_new_tokens, open_thinking)`
+- Depends on: `eval/sandbox.py`, `topogpt3/chat.py`, `topogpt3/fallback.py`
 - Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/eval_toolcall.py`, `topogpt3/train_agent.py`
 
 ## topogpt3/train.py
@@ -340,9 +362,9 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
 - Layer: utility
 - Language: py
 - Symbols:
-  - `agent_reward` (function, line 31) `def agent_reward(text, gt, used_tools)`
-  - `main` (function, line 43) `def main()`
-- Depends on: `topogpt3/chat.py`, `topogpt3/model.py`, `topogpt3/rewards.py`, `topogpt3/tools_agent.py`, `topogpt3/trainer_utils_topo.py`
+  - `agent_reward` (function, line 41) `def agent_reward(text, gt, used_tools, tool_results, allowed_tools, require_tool, verifier)`
+  - `main` (function, line 67) `def main()`
+- Depends on: `topogpt3/chat.py`, `topogpt3/checkpoint_meta.py`, `topogpt3/model.py`, `topogpt3/rewards.py`, `topogpt3/tools_agent.py`, `topogpt3/trainer_utils_topo.py`
 - Imported by: `topogpt3/__main__.py`
 
 ## topogpt3/train_distill.py
@@ -350,8 +372,8 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
 - Layer: utility
 - Language: py
 - Symbols:
-  - `main` (function, line 24) `def main()`
-- Depends on: `topogpt3/model.py`, `topogpt3/rewards.py`, `topogpt3/trainer_utils_topo.py`
+  - `main` (function, line 27) `def main()`
+- Depends on: `topogpt3/checkpoint_meta.py`, `topogpt3/model.py`, `topogpt3/rewards.py`, `topogpt3/trainer_utils_topo.py`
 - Imported by: `topogpt3/__main__.py`
 
 ## topogpt3/train_dpo.py
@@ -359,9 +381,9 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
 - Layer: utility
 - Language: py
 - Symbols:
-  - `load_model` (function, line 24) `def load_model(checkpoint, device)`
-  - `main` (function, line 33) `def main()`
-- Depends on: `topogpt3/model.py`, `topogpt3/rewards.py`, `topogpt3/trainer_utils_topo.py`
+  - `load_model` (function, line 31) `def load_model(checkpoint, device)`
+  - `main` (function, line 43) `def main()`
+- Depends on: `topogpt3/checkpoint_meta.py`, `topogpt3/model.py`, `topogpt3/rewards.py`, `topogpt3/trainer_utils_topo.py`
 - Imported by: `topogpt3/__main__.py`
 
 ## topogpt3/train_grpo.py
@@ -369,9 +391,9 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
 - Layer: utility
 - Language: py
 - Symbols:
-  - `main` (function, line 29) `def main()`
-  - `_gather` (function, line 88) `def _gather(lg, _plen, _R, _comp)`
-- Depends on: `topogpt3/model.py`, `topogpt3/rewards.py`, `topogpt3/rollout.py`, `topogpt3/trainer_utils_topo.py`
+  - `main` (function, line 32) `def main()`
+  - `_gather` (function, line 105) `def _gather(lg, _plen, _R, _comp)`
+- Depends on: `topogpt3/checkpoint_meta.py`, `topogpt3/model.py`, `topogpt3/rewards.py`, `topogpt3/rollout.py`, `topogpt3/trainer_utils_topo.py`
 - Imported by: `topogpt3/__main__.py`
 
 ## topogpt3/train_lora.py
@@ -379,9 +401,9 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
 - Layer: utility
 - Language: py
 - Symbols:
-  - `load_base` (function, line 25) `def load_base(checkpoint, device)`
-  - `main` (function, line 36) `def main()`
-- Depends on: `topogpt3/lora.py`, `topogpt3/model.py`, `topogpt3/trainer_utils_topo.py`
+  - `load_base` (function, line 32) `def load_base(checkpoint, device)`
+  - `main` (function, line 46) `def main()`
+- Depends on: `topogpt3/checkpoint_meta.py`, `topogpt3/lora.py`, `topogpt3/model.py`, `topogpt3/trainer_utils_topo.py`
 - Imported by: `topogpt3/__main__.py`
 
 ## topogpt3/train_ppo.py
@@ -389,11 +411,11 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
 - Layer: utility
 - Language: py
 - Symbols:
-  - `TopoCritic` (class, line 29) `class TopoCritic(Module)`
-  - `main` (function, line 45) `def main()`
-  - `__init__` (method, line 30) `def __init__(self, trunk)`
-  - `forward` (method, line 36) `def forward(self, ids)`
-- Depends on: `topogpt3/model.py`, `topogpt3/rewards.py`, `topogpt3/rollout.py`, `topogpt3/trainer_utils_topo.py`
+  - `TopoCritic` (class, line 31) `class TopoCritic(Module)`
+  - `main` (function, line 47) `def main()`
+  - `__init__` (method, line 32) `def __init__(self, trunk)`
+  - `forward` (method, line 38) `def forward(self, ids)`
+- Depends on: `topogpt3/checkpoint_meta.py`, `topogpt3/model.py`, `topogpt3/rewards.py`, `topogpt3/rollout.py`, `topogpt3/trainer_utils_topo.py`
 - Imported by: `topogpt3/__main__.py`
 
 ## topogpt3/trainer_utils_topo.py

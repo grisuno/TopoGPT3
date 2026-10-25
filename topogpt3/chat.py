@@ -11,7 +11,7 @@ from __future__ import annotations
 import json
 import random
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 BOS = "<|im_start|>"
 EOS = "<|im_end|>"
@@ -40,8 +40,8 @@ THINK_RE = re.compile(r"<think>(.*?)</think>", re.DOTALL)
 TOOL_CALL_RE = re.compile(r"<tool_call>(.*?)</tool_call>", re.DOTALL)
 
 
-def pre_processing_chat(conversations: List[Dict[str, Any]],
-                        add_system_ratio: float = 0.2) -> List[Dict[str, Any]]:
+def pre_processing_chat(conversations: list[dict[str, Any]],
+                        add_system_ratio: float = 0.2) -> list[dict[str, Any]]:
     """Randomly prepend a system prompt (skip when tools present)."""
     if any(c.get("tools") for c in conversations):
         return conversations
@@ -57,19 +57,60 @@ def post_processing_chat(prompt: str, empty_think_ratio: float = 0.2) -> str:
     return prompt
 
 
-def _fmt_tool_defs(tools: Optional[List[Dict[str, Any]]]) -> str:
+def _fmt_tool_defs(tools: list[dict[str, Any]] | None) -> str:
     if not tools:
         return ""
     lines = ["# Tools", "", "You may call these tools with:"]
     lines.append(f"{TOOL_CALL_OPEN}{{\"name\": ..., \"arguments\": ...}}{TOOL_CALL_CLOSE}")
     for t in tools:
         fn = t.get("function", t) if isinstance(t, dict) else {}
-        lines.append(f"- {fn.get('name')}: {fn.get('description', '')}")
+        name = fn.get("name", "")
+        desc = fn.get("description", "")
+        params = fn.get("parameters", {})
+        line = f"- {name}: {desc}"
+        if isinstance(params, dict):
+            required = set(params.get("required") or ())
+            compact = ", ".join(
+                f"{k}:{spec.get('type', 'any')}{'*' if k in required else ''}"
+                + ("=" + json.dumps(spec["default"]) if "default" in spec else "")
+                for k, spec in (params.get("properties") or {}).items()
+                if isinstance(spec, dict)
+            )
+            if compact:
+                line += f" [{compact}]"
+        lines.append(line)
     return "\n".join(lines) + "\n\n"
 
 
-def apply_chat_template(messages: List[Dict[str, Any]],
-                        tools: Optional[List[Dict[str, Any]]] = None,
+def _tool_calls_text(tc: Any) -> str:
+    if not tc:
+        return ""
+    if isinstance(tc, str):
+        return tc
+    if isinstance(tc, dict):
+        tc = [tc]
+    if not isinstance(tc, list):
+        return ""
+    calls = []
+    for call in tc:
+        if not isinstance(call, dict):
+            continue
+        fn = call.get("function", call)
+        name = fn.get("name", "")
+        args = fn.get("arguments", {})
+        if isinstance(args, str):
+            try:
+                args = json.loads(args)
+            except Exception:
+                args = {}
+        calls.append({"name": name, "arguments": args})
+    if not calls:
+        return ""
+    return json.dumps(calls[0] if len(calls) == 1 else calls)
+
+
+def apply_chat_template(messages: list[dict[str, Any]],
+                        tools: list[dict[str, Any]] | None = None,
                         add_generation_prompt: bool = False,
                         open_thinking: bool = False) -> str:
     """Render messages with tool definitions, thinking and tool-call blocks.
@@ -77,7 +118,7 @@ def apply_chat_template(messages: List[Dict[str, Any]],
     Supports roles: system/user/assistant/tool + reasoning_content,
     tool_calls (list or json str), open_thinking switch.
     """
-    out: List[str] = []
+    out: list[str] = []
     sys_tools = tools
     for m in messages:
         role = m.get("role", "user")
@@ -92,9 +133,7 @@ def apply_chat_template(messages: List[Dict[str, Any]],
         elif role == "assistant":
             reasoning = m.get("reasoning_content", "")
             content = m.get("content", "")
-            tc = m.get("tool_calls", "")
-            if isinstance(tc, (list, dict)):
-                tc = json.dumps(tc)
+            tc = _tool_calls_text(m.get("tool_calls", ""))
             body = ""
             if reasoning:
                 body += f"{THINK_OPEN}{reasoning}{THINK_CLOSE}\n"
@@ -103,7 +142,12 @@ def apply_chat_template(messages: List[Dict[str, Any]],
                 body += f"\n{TOOL_CALL_OPEN}{tc}{TOOL_CALL_CLOSE}"
             out.append(f"{BOS}assistant\n{body}\n{EOS}\n")
         elif role == "tool":
-            out.append(f"{BOS}tool\n{TOOL_RESPONSE_OPEN}{m.get('content', '')}{TOOL_RESPONSE_CLOSE}\n{EOS}\n")
+            name = m.get("name", "")
+            header = f"name={name}\n" if name else ""
+            out.append(
+                f"{BOS}tool\n{header}{TOOL_RESPONSE_OPEN}"
+                f"{m.get('content', '')}{TOOL_RESPONSE_CLOSE}\n{EOS}\n"
+            )
     if sys_tools and not any("Tools" in p for p in out):
         out.insert(0, f"{BOS}system\n{_fmt_tool_defs(sys_tools)}{EOS}\n")
     if add_generation_prompt:
@@ -113,7 +157,7 @@ def apply_chat_template(messages: List[Dict[str, Any]],
     return post_processing_chat("".join(out))
 
 
-def parse_tool_calls(text: str) -> List[Dict[str, Any]]:
+def parse_tool_calls(text: str) -> list[dict[str, Any]]:
     calls = []
     for m in TOOL_CALL_RE.findall(text):
         try:
@@ -123,7 +167,7 @@ def parse_tool_calls(text: str) -> List[Dict[str, Any]]:
     return calls
 
 
-def parse_thinking(text: str) -> Dict[str, str]:
+def parse_thinking(text: str) -> dict[str, str]:
     m = THINK_RE.search(text)
     if not m:
         return {"thinking": "", "answer": text}
@@ -131,7 +175,7 @@ def parse_thinking(text: str) -> Dict[str, str]:
             "answer": THINK_RE.sub("", text).strip()}
 
 
-def split_reasoning_content(text: str) -> Dict[str, Any]:
+def split_reasoning_content(text: str) -> dict[str, Any]:
     """Split generated text into reasoning_content / content / tool_calls (API)."""
     th = parse_thinking(text)
     tcs = parse_tool_calls(text)

@@ -1,6 +1,6 @@
 # `topogpt3.api_server`
 
-> Source: [topogpt3/api_server.py:1](../../topogpt3/api_server.py#L1) | language `py` | coverage 3.8% | [API index](../index.md)
+> Source: [topogpt3/api_server.py:1](../../topogpt3/api_server.py#L1) | language `py` | coverage 3.7% | [API index](../index.md)
 
 OpenAI-compatible HTTP API server so TopoGPT3 can be used as a backend for coding agents (e.g.
 
@@ -55,7 +55,7 @@ LazyOwn red-team checklist
 
 - **Classes:** [`ApiKey`](#apikey), [`AuthState`](#authstate), [`TokenBucket`](#tokenbucket), [`RateLimiter`](#ratelimiter), [`IpBanner`](#ipbanner), [`CompletionRequest`](#completionrequest), [`Message`](#message), [`ChatCompletionRequest`](#chatcompletionrequest), [`ServerModel`](#servermodel)
 - **Functions:** [`load_model`](#load_model), [`lifespan`](#lifespan), [`health`](#health), [`list_models`](#list_models), [`completions`](#completions), [`chat_completions`](#chat_completions), [`main`](#main)
-- **Constants:** [`MAX_REQUEST_BODY`](#max_request_body), [`MAX_PROMPT_CHARS`](#max_prompt_chars), [`MAX_MESSAGES`](#max_messages), [`MAX_STOP_STRINGS`](#max_stop_strings), [`MAX_STOP_STRING_LEN`](#max_stop_string_len), [`MAX_CONTENT_LEN`](#max_content_len), [`MAX_OUTPUT_TOKENS`](#max_output_tokens), [`MAX_TEMPERATURE`](#max_temperature), [`BAN_WINDOW_S`](#ban_window_s), [`MAX_AUTH_FAILURES`](#max_auth_failures), [`MAX_CONCURRENT_REQUESTS`](#max_concurrent_requests), [`RATE_LIMIT_USER_RPS`](#rate_limit_user_rps), [`RATE_LIMIT_ADMIN_RPS`](#rate_limit_admin_rps), [`RATE_BUCKET_CAPACITY`](#rate_bucket_capacity)
+- **Constants:** [`MAX_REQUEST_BODY`](#max_request_body), [`MAX_PROMPT_CHARS`](#max_prompt_chars), [`MAX_MESSAGES`](#max_messages), [`MAX_STOP_STRINGS`](#max_stop_strings), [`MAX_STOP_STRING_LEN`](#max_stop_string_len), [`MAX_CONTENT_LEN`](#max_content_len), [`MAX_OUTPUT_TOKENS`](#max_output_tokens), [`MAX_TEMPERATURE`](#max_temperature), [`BAN_WINDOW_S`](#ban_window_s), [`MAX_AUTH_FAILURES`](#max_auth_failures), [`MAX_CONCURRENT_REQUESTS`](#max_concurrent_requests), [`MAX_TOOL_BUFFER`](#max_tool_buffer), [`RATE_LIMIT_USER_RPS`](#rate_limit_user_rps), [`RATE_LIMIT_ADMIN_RPS`](#rate_limit_admin_rps), [`RATE_BUCKET_CAPACITY`](#rate_bucket_capacity)
 
 ## Type Diagram
 
@@ -66,8 +66,8 @@ classDiagram
     ApiKey : str key_hash
     ApiKey : str role
     class AuthState
-    AuthState : Set[str] keys
-    AuthState : Dict[str, ApiKey] by_hash
+    AuthState : set[str] keys
+    AuthState : dict[str, ApiKey] by_hash
     AuthState : bool enabled
     AuthState : validate()
     class TokenBucket
@@ -86,11 +86,12 @@ classDiagram
     class CompletionRequest
     CompletionRequest : model_config
     CompletionRequest : str model
+    CompletionRequest : str  None profile
     CompletionRequest : str prompt
-    CompletionRequest : int max_tokens
-    CompletionRequest : float temperature
-    CompletionRequest : int top_k
-    CompletionRequest : float repetition_penalty
+    CompletionRequest : int  None max_tokens
+    CompletionRequest : float  None temperature
+    CompletionRequest : int  None top_k
+    CompletionRequest : float  None repetition_penalty
     CompletionRequest : Any stop
     CompletionRequest : bool stream
     CompletionRequest : bool auto_continue
@@ -98,18 +99,27 @@ classDiagram
     CompletionRequest : int  None seed
     CompletionRequest : Any response_format
     CompletionRequest : Any so_args
+    CompletionRequest : Any tools
+    CompletionRequest : Any tool_choice
+    CompletionRequest : int n
+    CompletionRequest : int  None best_of
     class Message
     Message : model_config
     Message : str role
     Message : str  list[dict] content
+    Message : str  None name
+    Message : str  None tool_call_id
+    Message : Any tool_calls
+    Message : str  None reasoning_content
     class ChatCompletionRequest
     ChatCompletionRequest : model_config
     ChatCompletionRequest : str model
+    ChatCompletionRequest : str  None profile
     ChatCompletionRequest : list[Message] messages
-    ChatCompletionRequest : int max_tokens
-    ChatCompletionRequest : float temperature
-    ChatCompletionRequest : int top_k
-    ChatCompletionRequest : float repetition_penalty
+    ChatCompletionRequest : int  None max_tokens
+    ChatCompletionRequest : float  None temperature
+    ChatCompletionRequest : int  None top_k
+    ChatCompletionRequest : float  None repetition_penalty
     ChatCompletionRequest : Any stop
     ChatCompletionRequest : bool stream
     ChatCompletionRequest : bool auto_continue
@@ -118,12 +128,18 @@ classDiagram
     ChatCompletionRequest : Any response_format
     ChatCompletionRequest : Any so_args
     ChatCompletionRequest : Any tools
+    ChatCompletionRequest : Any tool_choice
+    ChatCompletionRequest : int n
+    ChatCompletionRequest : int  None best_of
+    ChatCompletionRequest : int  None min_new_tokens
     ChatCompletionRequest : bool open_thinking
     class ServerModel
     ServerModel : TopoGPT2 model
     ServerModel : BPETokenizer tokenizer
     ServerModel : str device
     ServerModel : str checkpoint
+    ServerModel : dict[str, Any] meta
+    ServerModel : complete_candidates()
     ServerModel : complete()
     ServerModel : stream_complete()
 ```
@@ -138,10 +154,11 @@ flowchart LR
     n_topogpt3_api_server_py__ApiKey(["ApiKey"])
     n_topogpt3_api_server_py__RateLimiter_allow(["RateLimiter.allow"])
     n_topogpt3_api_server_py__TokenBucket(["TokenBucket"])
+    n_topogpt3_api_server_py__ServerModel_complete(["ServerModel.complete"])
+    n_topogpt3_api_server_py__ServerModel_complete_candidates(["ServerModel.complete_candidates"])
     n_topogpt3_api_server_py__load_model(["load_model"])
     n_topogpt3_api_server_py__ServerModel(["ServerModel"])
     n_topogpt3_api_server_py__lifespan(["lifespan"])
-    n_topogpt3_api_server_py__ServerModel_complete(["ServerModel.complete"])
     n_topogpt3_model_py__BPETokenizer_decode["model.BPETokenizer.decode"]
     n_topogpt3_model_py__BPETokenizer_encode["model.BPETokenizer.encode"]
     n_topogpt3_model_py__TopoGPT2_generate_with_continuation["model.TopoGPT2.generate_with_continuation"]
@@ -152,18 +169,24 @@ flowchart LR
     n_topogpt3_structured_output_py__GrammarConstraint_accept["structured_output.GrammarConstraint.accept"]
     n_topogpt3_structured_output_py__GrammarConstraint_apply["structured_output.GrammarConstraint.apply"]
     n_topogpt3_structured_output_py__GrammarConstraint_reset["structured_output.GrammarConstraint.reset"]
+    n_topogpt3_checkpoint_meta_py__config_from_checkpoint["checkpoint_meta.config_from_checkpoint"]
     n_topogpt3_model_py__BPETokenizer___init__["model.BPETokenizer.__init__"]
     n_topogpt3_model_py__TopoGPT2___init__["model.TopoGPT2.__init__"]
-    n_topogpt3_model_py__TopoGPT2Config["model.TopoGPT2Config"]
     n_topogpt3_model_py__set_seed["model.set_seed"]
+    n_topogpt3_api_server_py__list_models(["list_models"])
+    n_topogpt3_fallback_py__models_payload["fallback.models_payload"]
+    n_topogpt3_api_server_py__completions(["completions"])
+    n_topogpt3_fallback_py__rank_candidates["fallback.rank_candidates"]
+    n_topogpt3_api_server_py__chat_completions(["chat_completions"])
     n_topogpt3_api_server_py__AuthState_validate --> n_topogpt3_api_server_py__ApiKey
     n_topogpt3_api_server_py__RateLimiter_allow --> n_topogpt3_api_server_py__TokenBucket
+    n_topogpt3_api_server_py__ServerModel_complete --> n_topogpt3_api_server_py__ServerModel_complete_candidates
     n_topogpt3_api_server_py__load_model --> n_topogpt3_api_server_py__ServerModel
     n_topogpt3_api_server_py__lifespan --> n_topogpt3_api_server_py__load_model
-    n_topogpt3_api_server_py__ServerModel_complete -.-> n_topogpt3_model_py__BPETokenizer_decode
-    n_topogpt3_api_server_py__ServerModel_complete -.-> n_topogpt3_model_py__BPETokenizer_encode
-    n_topogpt3_api_server_py__ServerModel_complete -.-> n_topogpt3_model_py__TopoGPT2_generate_with_continuation
-    n_topogpt3_api_server_py__ServerModel_complete -.-> n_topogpt3_structured_output_py__StructuredOutputError
+    n_topogpt3_api_server_py__ServerModel_complete_candidates -.-> n_topogpt3_model_py__BPETokenizer_decode
+    n_topogpt3_api_server_py__ServerModel_complete_candidates -.-> n_topogpt3_model_py__BPETokenizer_encode
+    n_topogpt3_api_server_py__ServerModel_complete_candidates -.-> n_topogpt3_model_py__TopoGPT2_generate_with_continuation
+    n_topogpt3_api_server_py__ServerModel_complete_candidates -.-> n_topogpt3_structured_output_py__StructuredOutputError
     n_topogpt3_api_server_py__ServerModel_stream_complete -.-> n_topogpt3_continuation_py__extract_tail_for_continuation
     n_topogpt3_api_server_py__ServerModel_stream_complete -.-> n_topogpt3_continuation_py__is_response_complete
     n_topogpt3_api_server_py__ServerModel_stream_complete -.-> n_topogpt3_model_py__BPETokenizer_decode
@@ -172,10 +195,13 @@ flowchart LR
     n_topogpt3_api_server_py__ServerModel_stream_complete -.-> n_topogpt3_structured_output_py__GrammarConstraint_apply
     n_topogpt3_api_server_py__ServerModel_stream_complete -.-> n_topogpt3_structured_output_py__GrammarConstraint_reset
     n_topogpt3_api_server_py__ServerModel_stream_complete -.-> n_topogpt3_structured_output_py__StructuredOutputError
+    n_topogpt3_api_server_py__load_model -.-> n_topogpt3_checkpoint_meta_py__config_from_checkpoint
     n_topogpt3_api_server_py__load_model -.-> n_topogpt3_model_py__BPETokenizer___init__
     n_topogpt3_api_server_py__load_model -.-> n_topogpt3_model_py__TopoGPT2___init__
-    n_topogpt3_api_server_py__load_model -.-> n_topogpt3_model_py__TopoGPT2Config
     n_topogpt3_api_server_py__load_model -.-> n_topogpt3_model_py__set_seed
+    n_topogpt3_api_server_py__list_models -.-> n_topogpt3_fallback_py__models_payload
+    n_topogpt3_api_server_py__completions -.-> n_topogpt3_fallback_py__rank_candidates
+    n_topogpt3_api_server_py__chat_completions -.-> n_topogpt3_fallback_py__rank_candidates
 ```
 
 ## Classes
@@ -184,7 +210,7 @@ flowchart LR
 
 ### `ApiKey`
 
-`class` `dataclass` | [topogpt3/api_server.py:142](../../topogpt3/api_server.py#L142)
+`class` `dataclass` | [topogpt3/api_server.py:153](../../topogpt3/api_server.py#L153)
 
 Decorators: `@dataclass`
 
@@ -205,7 +231,7 @@ class ApiKey
 
 ### `AuthState`
 
-`class` `dataclass` | [topogpt3/api_server.py:148](../../topogpt3/api_server.py#L148)
+`class` `dataclass` | [topogpt3/api_server.py:159](../../topogpt3/api_server.py#L159)
 
 Decorators: `@dataclass`
 
@@ -217,8 +243,8 @@ class AuthState
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| [`keys`](#authstate-keys) | `Set[str]` | `field(default_factory=set)` |  |
-| [`by_hash`](#authstate-by_hash) | `Dict[str, ApiKey]` | `field(default_factory=dict)` |  |
+| [`keys`](#authstate-keys) | `set[str]` | `field(default_factory=set)` |  |
+| [`by_hash`](#authstate-by_hash) | `dict[str, ApiKey]` | `field(default_factory=dict)` |  |
 | [`enabled`](#authstate-enabled) | `bool` | `True` |  |
 
 **Members**
@@ -231,7 +257,7 @@ class AuthState
 
 #### `AuthState.validate`
 
-`method` | [topogpt3/api_server.py:153](../../topogpt3/api_server.py#L153)
+`method` | [topogpt3/api_server.py:164](../../topogpt3/api_server.py#L164)
 
 ```python
 def validate(self, raw: str | None) -> ApiKey
@@ -257,7 +283,7 @@ def validate(self, raw: str | None) -> ApiKey
 
 ### `TokenBucket`
 
-`class` `dataclass` | [topogpt3/api_server.py:207](../../topogpt3/api_server.py#L207)
+`class` `dataclass` | [topogpt3/api_server.py:221](../../topogpt3/api_server.py#L221)
 
 Decorators: `@dataclass`
 
@@ -284,7 +310,7 @@ class TokenBucket
 
 #### `TokenBucket.consume`
 
-`method` | [topogpt3/api_server.py:213](../../topogpt3/api_server.py#L213)
+`method` | [topogpt3/api_server.py:227](../../topogpt3/api_server.py#L227)
 
 ```python
 def consume(self, n: float = 1.0) -> bool
@@ -304,7 +330,7 @@ def consume(self, n: float = 1.0) -> bool
 
 ### `RateLimiter`
 
-`class` | [topogpt3/api_server.py:224](../../topogpt3/api_server.py#L224)
+`class` | [topogpt3/api_server.py:238](../../topogpt3/api_server.py#L238)
 
 ```python
 class RateLimiter
@@ -321,7 +347,7 @@ class RateLimiter
 
 #### `RateLimiter.__init__`
 
-`constructor` | [topogpt3/api_server.py:225](../../topogpt3/api_server.py#L225)
+`constructor` | [topogpt3/api_server.py:239](../../topogpt3/api_server.py#L239)
 
 ```python
 def __init__(self, user_rps: float, admin_rps: float, capacity: float)
@@ -339,7 +365,7 @@ def __init__(self, user_rps: float, admin_rps: float, capacity: float)
 
 #### `RateLimiter.allow`
 
-`method` | [topogpt3/api_server.py:238](../../topogpt3/api_server.py#L238)
+`method` | [topogpt3/api_server.py:252](../../topogpt3/api_server.py#L252)
 
 ```python
 def allow(self, key: str, role: str = 'user') -> bool
@@ -362,7 +388,7 @@ def allow(self, key: str, role: str = 'user') -> bool
 
 ### `IpBanner`
 
-`class` | [topogpt3/api_server.py:255](../../topogpt3/api_server.py#L255)
+`class` | [topogpt3/api_server.py:269](../../topogpt3/api_server.py#L269)
 
 ```python
 class IpBanner
@@ -380,7 +406,7 @@ class IpBanner
 
 #### `IpBanner.__init__`
 
-`constructor` | [topogpt3/api_server.py:256](../../topogpt3/api_server.py#L256)
+`constructor` | [topogpt3/api_server.py:270](../../topogpt3/api_server.py#L270)
 
 ```python
 def __init__(self, max_failures: int = MAX_AUTH_FAILURES, window: float = BAN_WINDOW_S)
@@ -397,7 +423,7 @@ def __init__(self, max_failures: int = MAX_AUTH_FAILURES, window: float = BAN_WI
 
 #### `IpBanner.record_failure`
 
-`method` | [topogpt3/api_server.py:262](../../topogpt3/api_server.py#L262)
+`method` | [topogpt3/api_server.py:278](../../topogpt3/api_server.py#L278)
 
 ```python
 def record_failure(self, ip: str) -> None
@@ -413,7 +439,7 @@ def record_failure(self, ip: str) -> None
 
 #### `IpBanner.is_banned`
 
-`method` | [topogpt3/api_server.py:270](../../topogpt3/api_server.py#L270)
+`method` | [topogpt3/api_server.py:290](../../topogpt3/api_server.py#L290)
 
 ```python
 def is_banned(self, ip: str) -> bool
@@ -433,7 +459,7 @@ def is_banned(self, ip: str) -> bool
 
 ### `CompletionRequest`
 
-`class` | [topogpt3/api_server.py:296](../../topogpt3/api_server.py#L296)
+`class` | [topogpt3/api_server.py:316](../../topogpt3/api_server.py#L316)
 
 ```python
 class CompletionRequest(BaseModel)
@@ -447,11 +473,12 @@ Bases: `BaseModel`
 |---|---|---|---|
 | [`model_config`](#completionrequest-model_config) |  | `{'extra': 'allow'}` |  |
 | [`model`](#completionrequest-model) | `str` | `'topogpt3'` |  |
+| [`profile`](#completionrequest-profile) | `str \| None` | `None` |  |
 | [`prompt`](#completionrequest-prompt) | `str` | `Field(default='', max_length=MAX_PROMPT_CHARS)` |  |
-| [`max_tokens`](#completionrequest-max_tokens) | `int` | `Field(default=512, ge=1, le=MAX_OUTPUT_TOKENS)` |  |
-| [`temperature`](#completionrequest-temperature) | `float` | `Field(default=0.7, ge=0.0, le=MAX_TEMPERATURE)` |  |
-| [`top_k`](#completionrequest-top_k) | `int` | `Field(default=50, ge=0, le=200)` |  |
-| [`repetition_penalty`](#completionrequest-repetition_penalty) | `float` | `Field(default=1.1, ge=0.5, le=3.0)` |  |
+| [`max_tokens`](#completionrequest-max_tokens) | `int \| None` | `Field(default=None, ge=1, le=MAX_OUTPUT_TOKENS)` |  |
+| [`temperature`](#completionrequest-temperature) | `float \| None` | `Field(default=None, ge=0.0, le=MAX_TEMPERATURE)` |  |
+| [`top_k`](#completionrequest-top_k) | `int \| None` | `Field(default=None, ge=0, le=200)` |  |
+| [`repetition_penalty`](#completionrequest-repetition_penalty) | `float \| None` | `Field(default=None, ge=0.5, le=3.0)` |  |
 | [`stop`](#completionrequest-stop) | `Any` | `None` |  |
 | [`stream`](#completionrequest-stream) | `bool` | `False` |  |
 | [`auto_continue`](#completionrequest-auto_continue) | `bool` | `False` |  |
@@ -459,6 +486,10 @@ Bases: `BaseModel`
 | [`seed`](#completionrequest-seed) | `int \| None` | `Field(default=None, ge=0, le=2 ** 63 - 1)` |  |
 | [`response_format`](#completionrequest-response_format) | `Any` | `None` |  |
 | [`so_args`](#completionrequest-so_args) | `Any` | `None` |  |
+| [`tools`](#completionrequest-tools) | `Any` | `None` |  |
+| [`tool_choice`](#completionrequest-tool_choice) | `Any` | `'auto'` |  |
+| [`n`](#completionrequest-n) | `int` | `Field(default=1, ge=1, le=4)` |  |
+| [`best_of`](#completionrequest-best_of) | `int \| None` | `Field(default=None, ge=1, le=8)` |  |
 
 ---
 
@@ -466,7 +497,7 @@ Bases: `BaseModel`
 
 ### `Message`
 
-`class` | [topogpt3/api_server.py:318](../../topogpt3/api_server.py#L318)
+`class` | [topogpt3/api_server.py:343](../../topogpt3/api_server.py#L343)
 
 ```python
 class Message(BaseModel)
@@ -479,8 +510,12 @@ Bases: `BaseModel`
 | Name | Type | Default | Description |
 |---|---|---|---|
 | [`model_config`](#message-model_config) |  | `{'extra': 'allow'}` |  |
-| [`role`](#message-role) | `str` | `Field(default='user', pattern='^(system\|user\|assistant)$')` |  |
+| [`role`](#message-role) | `str` | `Field(default='user', pattern='^(system\|user\|assistant\|tool)$')` |  |
 | [`content`](#message-content) | `str \| list[dict]` | `Field(default='')` |  |
+| [`name`](#message-name) | `str \| None` | `None` |  |
+| [`tool_call_id`](#message-tool_call_id) | `str \| None` | `None` |  |
+| [`tool_calls`](#message-tool_calls) | `Any` | `None` |  |
+| [`reasoning_content`](#message-reasoning_content) | `str \| None` | `None` |  |
 
 ---
 
@@ -488,7 +523,7 @@ Bases: `BaseModel`
 
 ### `ChatCompletionRequest`
 
-`class` | [topogpt3/api_server.py:324](../../topogpt3/api_server.py#L324)
+`class` | [topogpt3/api_server.py:353](../../topogpt3/api_server.py#L353)
 
 ```python
 class ChatCompletionRequest(BaseModel)
@@ -502,11 +537,12 @@ Bases: `BaseModel`
 |---|---|---|---|
 | [`model_config`](#chatcompletionrequest-model_config) |  | `{'extra': 'allow'}` |  |
 | [`model`](#chatcompletionrequest-model) | `str` | `'topogpt3'` |  |
+| [`profile`](#chatcompletionrequest-profile) | `str \| None` | `None` |  |
 | [`messages`](#chatcompletionrequest-messages) | `list[Message]` | `Field(default_factory=list, max_length=MAX_MESSAGES)` |  |
-| [`max_tokens`](#chatcompletionrequest-max_tokens) | `int` | `Field(default=512, ge=1, le=MAX_OUTPUT_TOKENS)` |  |
-| [`temperature`](#chatcompletionrequest-temperature) | `float` | `Field(default=0.7, ge=0.0, le=MAX_TEMPERATURE)` |  |
-| [`top_k`](#chatcompletionrequest-top_k) | `int` | `Field(default=50, ge=0, le=200)` |  |
-| [`repetition_penalty`](#chatcompletionrequest-repetition_penalty) | `float` | `Field(default=1.1, ge=0.5, le=3.0)` |  |
+| [`max_tokens`](#chatcompletionrequest-max_tokens) | `int \| None` | `Field(default=None, ge=1, le=MAX_OUTPUT_TOKENS)` |  |
+| [`temperature`](#chatcompletionrequest-temperature) | `float \| None` | `Field(default=None, ge=0.0, le=MAX_TEMPERATURE)` |  |
+| [`top_k`](#chatcompletionrequest-top_k) | `int \| None` | `Field(default=None, ge=0, le=200)` |  |
+| [`repetition_penalty`](#chatcompletionrequest-repetition_penalty) | `float \| None` | `Field(default=None, ge=0.5, le=3.0)` |  |
 | [`stop`](#chatcompletionrequest-stop) | `Any` | `None` |  |
 | [`stream`](#chatcompletionrequest-stream) | `bool` | `False` |  |
 | [`auto_continue`](#chatcompletionrequest-auto_continue) | `bool` | `False` |  |
@@ -515,6 +551,10 @@ Bases: `BaseModel`
 | [`response_format`](#chatcompletionrequest-response_format) | `Any` | `None` |  |
 | [`so_args`](#chatcompletionrequest-so_args) | `Any` | `None` |  |
 | [`tools`](#chatcompletionrequest-tools) | `Any` | `None` |  |
+| [`tool_choice`](#chatcompletionrequest-tool_choice) | `Any` | `'auto'` |  |
+| [`n`](#chatcompletionrequest-n) | `int` | `Field(default=1, ge=1, le=4)` |  |
+| [`best_of`](#chatcompletionrequest-best_of) | `int \| None` | `Field(default=None, ge=1, le=8)` |  |
+| [`min_new_tokens`](#chatcompletionrequest-min_new_tokens) | `int \| None` | `Field(default=None, ge=1, le=MAX_OUTPUT_TOKENS)` |  |
 | [`open_thinking`](#chatcompletionrequest-open_thinking) | `bool` | `False` |  |
 
 ---
@@ -523,7 +563,7 @@ Bases: `BaseModel`
 
 ### `ServerModel`
 
-`class` `dataclass` | [topogpt3/api_server.py:369](../../topogpt3/api_server.py#L369)
+`class` `dataclass` | [topogpt3/api_server.py:410](../../topogpt3/api_server.py#L410)
 
 Decorators: `@dataclass`
 
@@ -539,19 +579,60 @@ class ServerModel
 | [`tokenizer`](#servermodel-tokenizer) | `BPETokenizer` |  |  |
 | [`device`](#servermodel-device) | `str` |  |  |
 | [`checkpoint`](#servermodel-checkpoint) | `str` |  |  |
+| [`meta`](#servermodel-meta) | `dict[str, Any]` | `field(default_factory=dict)` |  |
 
 **Members**
 
 | Member | Kind | Summary |
 |---|---|---|
+| [`complete_candidates`](#servermodel-complete_candidates) | method |  |
 | [`complete`](#servermodel-complete) | method |  |
 | [`stream_complete`](#servermodel-stream_complete) | method |  |
+
+<a id="servermodel-complete_candidates"></a>
+
+#### `ServerModel.complete_candidates`
+
+`method` | [topogpt3/api_server.py:516](../../topogpt3/api_server.py#L516)
+
+Decorators: `@torch.no_grad()`
+
+```python
+def complete_candidates(self, prompt: str, *, count: int = 1, max_new_tokens: int = 512, temperature: float = 0.7, top_k: int = 50, repetition_penalty: float = 1.1, stop: list[str] | None = None, auto_continue: bool = False, max_continuations: int = 3, seed: int | None = None, constraint: GrammarConstraint | None = None, min_new_tokens: int = 0) -> list[str]
+```
+
+**Parameters**
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `prompt` | `str` |  |  |
+| `count` | `int` | `1` |  |
+| `max_new_tokens` | `int` | `512` |  |
+| `temperature` | `float` | `0.7` |  |
+| `top_k` | `int` | `50` |  |
+| `repetition_penalty` | `float` | `1.1` |  |
+| `stop` | `list[str] \| None` | `None` |  |
+| `auto_continue` | `bool` | `False` |  |
+| `max_continuations` | `int` | `3` |  |
+| `seed` | `int \| None` | `None` |  |
+| `constraint` | `GrammarConstraint \| None` | `None` |  |
+| `min_new_tokens` | `int` | `0` |  |
+
+**Returns:** `list[str]`
+
+**Raises**
+
+- [`StructuredOutputError`](topogpt3.structured_output.py.md#structuredoutputerror): (raised in the body, not documented)
+
+*Calls:* [`BPETokenizer.decode`](topogpt3.model.py.md#bpetokenizer-decode), [`BPETokenizer.encode`](topogpt3.model.py.md#bpetokenizer-encode), [`TopoGPT2.generate_with_continuation`](topogpt3.model.py.md#topogpt2-generate_with_continuation), [`StructuredOutputError`](topogpt3.structured_output.py.md#structuredoutputerror)
+
+*Called by:* [`ServerModel.complete`](#servermodel-complete)
 
 <a id="servermodel-complete"></a>
 
 #### `ServerModel.complete`
 
-`method` | [topogpt3/api_server.py:443](../../topogpt3/api_server.py#L443)
+`method` | [topogpt3/api_server.py:572](../../topogpt3/api_server.py#L572)
 
 Decorators: `@torch.no_grad()`
 
@@ -576,22 +657,18 @@ def complete(self, prompt: str, *, max_new_tokens: int = 512, temperature: float
 
 **Returns:** `str`
 
-**Raises**
-
-- [`StructuredOutputError`](topogpt3.structured_output.py.md#structuredoutputerror): (raised in the body, not documented)
-
-*Calls:* [`BPETokenizer.decode`](topogpt3.model.py.md#bpetokenizer-decode), [`BPETokenizer.encode`](topogpt3.model.py.md#bpetokenizer-encode), [`TopoGPT2.generate_with_continuation`](topogpt3.model.py.md#topogpt2-generate_with_continuation), [`StructuredOutputError`](topogpt3.structured_output.py.md#structuredoutputerror)
+*Calls:* [`ServerModel.complete_candidates`](#servermodel-complete_candidates)
 
 <a id="servermodel-stream_complete"></a>
 
 #### `ServerModel.stream_complete`
 
-`method` `generator` | [topogpt3/api_server.py:497](../../topogpt3/api_server.py#L497)
+`method` `generator` | [topogpt3/api_server.py:601](../../topogpt3/api_server.py#L601)
 
 Decorators: `@torch.no_grad()`
 
 ```python
-def stream_complete(self, prompt: str, *, max_new_tokens: int = 512, temperature: float = 0.7, top_k: int = 50, repetition_penalty: float = 1.1, stop: list[str] | None = None, auto_continue: bool = False, max_continuations: int = 3, seed: int | None = None, constraint: GrammarConstraint | None = None)
+def stream_complete(self, prompt: str, *, max_new_tokens: int = 512, temperature: float = 0.7, top_k: int = 50, repetition_penalty: float = 1.1, stop: list[str] | None = None, auto_continue: bool = False, max_continuations: int = 3, seed: int | None = None, constraint: GrammarConstraint | None = None, min_new_tokens: int = 0)
 ```
 
 **Parameters**
@@ -608,6 +685,7 @@ def stream_complete(self, prompt: str, *, max_new_tokens: int = 512, temperature
 | `max_continuations` | `int` | `3` |  |
 | `seed` | `int \| None` | `None` |  |
 | `constraint` | `GrammarConstraint \| None` | `None` |  |
+| `min_new_tokens` | `int` | `0` |  |
 
 **Raises**
 
@@ -623,7 +701,7 @@ def stream_complete(self, prompt: str, *, max_new_tokens: int = 512, temperature
 
 ### `load_model`
 
-`function` | [topogpt3/api_server.py:650](../../topogpt3/api_server.py#L650)
+`function` | [topogpt3/api_server.py:771](../../topogpt3/api_server.py#L771)
 
 ```python
 def load_model(checkpoint: str, device: str | None = None) -> ServerModel
@@ -638,7 +716,7 @@ def load_model(checkpoint: str, device: str | None = None) -> ServerModel
 
 **Returns:** `ServerModel`
 
-*Calls:* [`ServerModel`](#servermodel), [`BPETokenizer.__init__`](topogpt3.model.py.md#bpetokenizer-__init__), [`TopoGPT2.__init__`](topogpt3.model.py.md#topogpt2-__init__), [`TopoGPT2Config`](topogpt3.model.py.md#topogpt2config), [`set_seed`](topogpt3.model.py.md#set_seed)
+*Calls:* [`ServerModel`](#servermodel), [`config_from_checkpoint`](topogpt3.checkpoint_meta.py.md#config_from_checkpoint), [`BPETokenizer.__init__`](topogpt3.model.py.md#bpetokenizer-__init__), [`TopoGPT2.__init__`](topogpt3.model.py.md#topogpt2-__init__), [`set_seed`](topogpt3.model.py.md#set_seed)
 
 *Called by:* [`lifespan`](#lifespan)
 
@@ -648,7 +726,7 @@ def load_model(checkpoint: str, device: str | None = None) -> ServerModel
 
 ### `lifespan`
 
-`function` `async` `generator` | [topogpt3/api_server.py:671](../../topogpt3/api_server.py#L671)
+`function` `async` `generator` | [topogpt3/api_server.py:806](../../topogpt3/api_server.py#L806)
 
 Decorators: `@asynccontextmanager`
 
@@ -670,7 +748,7 @@ async def lifespan(app: FastAPI)
 
 ### `health`
 
-`function` `async` | [topogpt3/api_server.py:800](../../topogpt3/api_server.py#L800)
+`function` `async` | [topogpt3/api_server.py:946](../../topogpt3/api_server.py#L946)
 
 Decorators: `@app.get('/health')`
 
@@ -690,7 +768,7 @@ async def health(request: Request)
 
 ### `list_models`
 
-`function` `async` | [topogpt3/api_server.py:807](../../topogpt3/api_server.py#L807)
+`function` `async` | [topogpt3/api_server.py:953](../../topogpt3/api_server.py#L953)
 
 Decorators: `@app.get('/v1/models')`
 
@@ -704,13 +782,15 @@ async def list_models(request: Request)
 |---|---|---|---|
 | `request` | `Request` |  |  |
 
+*Calls:* [`models_payload`](topogpt3.fallback.py.md#models_payload)
+
 ---
 
 <a id="completions"></a>
 
 ### `completions`
 
-`function` `async` | [topogpt3/api_server.py:824](../../topogpt3/api_server.py#L824)
+`function` `async` | [topogpt3/api_server.py:1004](../../topogpt3/api_server.py#L1004)
 
 Decorators: `@app.post('/v1/completions')`
 
@@ -725,13 +805,19 @@ async def completions(req: CompletionRequest, request: Request)
 | `req` | `CompletionRequest` |  |  |
 | `request` | `Request` |  |  |
 
+**Raises**
+
+- `HTTPException`: (raised in the body, not documented)
+
+*Calls:* [`rank_candidates`](topogpt3.fallback.py.md#rank_candidates)
+
 ---
 
 <a id="chat_completions"></a>
 
 ### `chat_completions`
 
-`function` `async` | [topogpt3/api_server.py:884](../../topogpt3/api_server.py#L884)
+`function` `async` | [topogpt3/api_server.py:1109](../../topogpt3/api_server.py#L1109)
 
 Decorators: `@app.post('/v1/chat/completions')`
 
@@ -746,13 +832,19 @@ async def chat_completions(req: ChatCompletionRequest, request: Request)
 | `req` | `ChatCompletionRequest` |  |  |
 | `request` | `Request` |  |  |
 
+**Raises**
+
+- `HTTPException`: (raised in the body, not documented)
+
+*Calls:* [`rank_candidates`](topogpt3.fallback.py.md#rank_candidates), [`split_response`](topogpt3.fallback.py.md#split_response), [`synthesize_tool_call`](topogpt3.fallback.py.md#synthesize_tool_call), [`tool_calls_payload`](topogpt3.fallback.py.md#tool_calls_payload)
+
 ---
 
 <a id="main"></a>
 
 ### `main`
 
-`function` | [topogpt3/api_server.py:1097](../../topogpt3/api_server.py#L1097)
+`function` | [topogpt3/api_server.py:1546](../../topogpt3/api_server.py#L1546)
 
 ```python
 def main()
@@ -766,7 +858,7 @@ def main()
 
 ### `MAX_REQUEST_BODY`
 
-`constant` | [topogpt3/api_server.py:96](../../topogpt3/api_server.py#L96)
+`constant` | [topogpt3/api_server.py:106](../../topogpt3/api_server.py#L106)
 
 ```python
 MAX_REQUEST_BODY = 256 * 1024
@@ -778,7 +870,7 @@ MAX_REQUEST_BODY = 256 * 1024
 
 ### `MAX_PROMPT_CHARS`
 
-`constant` | [topogpt3/api_server.py:97](../../topogpt3/api_server.py#L97)
+`constant` | [topogpt3/api_server.py:107](../../topogpt3/api_server.py#L107)
 
 ```python
 MAX_PROMPT_CHARS = 64 * 1024
@@ -790,7 +882,7 @@ MAX_PROMPT_CHARS = 64 * 1024
 
 ### `MAX_MESSAGES`
 
-`constant` | [topogpt3/api_server.py:98](../../topogpt3/api_server.py#L98)
+`constant` | [topogpt3/api_server.py:108](../../topogpt3/api_server.py#L108)
 
 ```python
 MAX_MESSAGES = 200
@@ -802,7 +894,7 @@ MAX_MESSAGES = 200
 
 ### `MAX_STOP_STRINGS`
 
-`constant` | [topogpt3/api_server.py:99](../../topogpt3/api_server.py#L99)
+`constant` | [topogpt3/api_server.py:109](../../topogpt3/api_server.py#L109)
 
 ```python
 MAX_STOP_STRINGS = 10
@@ -814,7 +906,7 @@ MAX_STOP_STRINGS = 10
 
 ### `MAX_STOP_STRING_LEN`
 
-`constant` | [topogpt3/api_server.py:100](../../topogpt3/api_server.py#L100)
+`constant` | [topogpt3/api_server.py:110](../../topogpt3/api_server.py#L110)
 
 ```python
 MAX_STOP_STRING_LEN = 128
@@ -826,7 +918,7 @@ MAX_STOP_STRING_LEN = 128
 
 ### `MAX_CONTENT_LEN`
 
-`constant` | [topogpt3/api_server.py:101](../../topogpt3/api_server.py#L101)
+`constant` | [topogpt3/api_server.py:111](../../topogpt3/api_server.py#L111)
 
 ```python
 MAX_CONTENT_LEN = 32 * 1024
@@ -838,7 +930,7 @@ MAX_CONTENT_LEN = 32 * 1024
 
 ### `MAX_OUTPUT_TOKENS`
 
-`constant` | [topogpt3/api_server.py:102](../../topogpt3/api_server.py#L102)
+`constant` | [topogpt3/api_server.py:112](../../topogpt3/api_server.py#L112)
 
 ```python
 MAX_OUTPUT_TOKENS = 4096
@@ -850,7 +942,7 @@ MAX_OUTPUT_TOKENS = 4096
 
 ### `MAX_TEMPERATURE`
 
-`constant` | [topogpt3/api_server.py:103](../../topogpt3/api_server.py#L103)
+`constant` | [topogpt3/api_server.py:113](../../topogpt3/api_server.py#L113)
 
 ```python
 MAX_TEMPERATURE = 2.0
@@ -862,7 +954,7 @@ MAX_TEMPERATURE = 2.0
 
 ### `BAN_WINDOW_S`
 
-`constant` | [topogpt3/api_server.py:104](../../topogpt3/api_server.py#L104)
+`constant` | [topogpt3/api_server.py:114](../../topogpt3/api_server.py#L114)
 
 ```python
 BAN_WINDOW_S = 3600
@@ -874,7 +966,7 @@ BAN_WINDOW_S = 3600
 
 ### `MAX_AUTH_FAILURES`
 
-`constant` | [topogpt3/api_server.py:105](../../topogpt3/api_server.py#L105)
+`constant` | [topogpt3/api_server.py:115](../../topogpt3/api_server.py#L115)
 
 ```python
 MAX_AUTH_FAILURES = 10
@@ -886,10 +978,22 @@ MAX_AUTH_FAILURES = 10
 
 ### `MAX_CONCURRENT_REQUESTS`
 
-`constant` | [topogpt3/api_server.py:106](../../topogpt3/api_server.py#L106)
+`constant` | [topogpt3/api_server.py:116](../../topogpt3/api_server.py#L116)
 
 ```python
 MAX_CONCURRENT_REQUESTS = 8
+```
+
+---
+
+<a id="max_tool_buffer"></a>
+
+### `MAX_TOOL_BUFFER`
+
+`constant` | [topogpt3/api_server.py:117](../../topogpt3/api_server.py#L117)
+
+```python
+MAX_TOOL_BUFFER = 8192
 ```
 
 ---
@@ -898,7 +1002,7 @@ MAX_CONCURRENT_REQUESTS = 8
 
 ### `RATE_LIMIT_USER_RPS`
 
-`constant` | [topogpt3/api_server.py:109](../../topogpt3/api_server.py#L109)
+`constant` | [topogpt3/api_server.py:120](../../topogpt3/api_server.py#L120)
 
 ```python
 RATE_LIMIT_USER_RPS = 10.0
@@ -910,7 +1014,7 @@ RATE_LIMIT_USER_RPS = 10.0
 
 ### `RATE_LIMIT_ADMIN_RPS`
 
-`constant` | [topogpt3/api_server.py:110](../../topogpt3/api_server.py#L110)
+`constant` | [topogpt3/api_server.py:121](../../topogpt3/api_server.py#L121)
 
 ```python
 RATE_LIMIT_ADMIN_RPS = 50.0
@@ -922,7 +1026,7 @@ RATE_LIMIT_ADMIN_RPS = 50.0
 
 ### `RATE_BUCKET_CAPACITY`
 
-`constant` | [topogpt3/api_server.py:111](../../topogpt3/api_server.py#L111)
+`constant` | [topogpt3/api_server.py:122](../../topogpt3/api_server.py#L122)
 
 ```python
 RATE_BUCKET_CAPACITY = 60

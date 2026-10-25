@@ -1,5 +1,69 @@
 # Subsystem: tests
 
+## tests/test_checkpoint_meta.py
+- Doc: Checkpoint architecture discovery tests.
+- Layer: testing
+- Language: py
+- Symbols:
+  - `test_read_state_missing` (function, line 12) `def test_read_state_missing(tmp_path)`
+  - `test_probe_t3_small` (function, line 16) `def test_probe_t3_small()`
+  - `test_probe_exploitgym_meta` (function, line 24) `def test_probe_exploitgym_meta()`
+  - `test_config_matches_weights` (function, line 31) `def test_config_matches_weights()`
+- Depends on: `topogpt3/checkpoint_meta.py`
+
+## tests/test_data_pipeline.py
+- Doc: Data pipeline tests: dedup, filters, teacher/verify/export (offline).
+- Layer: testing
+- Language: py
+- Symbols:
+  - `test_normalize_strips_control_and_collapses_space` (function, line 15) `def test_normalize_strips_control_and_collapses_space()`
+  - `test_dedup_exact_and_fuzzy` (function, line 23) `def test_dedup_exact_and_fuzzy()`
+  - `test_quality_filter_bounds` (function, line 35) `def test_quality_filter_bounds()`
+  - `test_verify_python_ast_and_sandbox` (function, line 44) `def test_verify_python_ast_and_sandbox()`
+  - `test_write_jsonl_roundtrip` (function, line 51) `def test_write_jsonl_roundtrip(tmp_path)`
+  - `test_to_chat_row` (function, line 58) `def test_to_chat_row()`
+
+## tests/test_eval_tasks.py
+- Doc: Generic task eval tests (no model load).
+- Layer: testing
+- Language: py
+- Symbols:
+  - `_gen` (function, line 16) `def _gen(prompt, profile_name)`
+  - `test_apt_chain_cases_full_pass` (function, line 21) `def test_apt_chain_cases_full_pass()`
+  - `test_regex_verifier` (function, line 30) `def test_regex_verifier()`
+  - `test_tool_call_verifier_rejects_wrong_target` (function, line 36) `def test_tool_call_verifier_rejects_wrong_target()`
+- Depends on: `eval/tasks.py`, `topogpt3/chat.py`, `topogpt3/fallback.py`
+
+## tests/test_fallback.py
+- Doc: Fallback profiles, apt_chain validation and candidate reranking tests.
+- Layer: testing
+- Language: py
+- Symbols:
+  - `_call` (function, line 19) `def _call(name, args)`
+  - `TestProfiles` (class, line 23) `class TestProfiles`
+  - `TestValidateToolCall` (class, line 38) `class TestValidateToolCall`
+  - `TestScoring` (class, line 72) `class TestScoring`
+  - `TestSynthesize` (class, line 103) `class TestSynthesize`
+  - `TestToolCallsPayload` (class, line 122) `class TestToolCallsPayload`
+  - `test_all_profiles_have_system` (function, line 131) `def test_all_profiles_have_system()`
+  - `test_resolve_by_name_and_alias` (method, line 24) `def test_resolve_by_name_and_alias(self)`
+  - `test_unknown_falls_back` (method, line 29) `def test_unknown_falls_back(self)`
+  - `test_apt_chain_tools_registered` (method, line 32) `def test_apt_chain_tools_registered(self)`
+  - `test_valid_apt_chain` (method, line 39) `def test_valid_apt_chain(self)`
+  - `test_requires_target` (method, line 48) `def test_requires_target(self)`
+  - `test_invalid_chain_name` (method, line 52) `def test_invalid_chain_name(self)`
+  - `test_run_command_forbidden_chars` (method, line 61) `def test_run_command_forbidden_chars(self)`
+  - `test_unknown_tool` (method, line 67) `def test_unknown_tool(self)`
+  - `test_tool_profile_prefers_valid_call` (method, line 73) `def test_tool_profile_prefers_valid_call(self)`
+  - `test_require_tool_penalizes_prose` (method, line 84) `def test_require_tool_penalizes_prose(self)`
+  - `test_code_profile_scores_parseable_code` (method, line 89) `def test_code_profile_scores_parseable_code(self)`
+  - `test_rank_candidates_sorted` (method, line 95) `def test_rank_candidates_sorted(self)`
+  - `test_ip_prompt` (method, line 104) `def test_ip_prompt(self)`
+  - `test_playbook_extraction` (method, line 111) `def test_playbook_extraction(self)`
+  - `test_no_target_no_call` (method, line 118) `def test_no_target_no_call(self)`
+  - `test_openai_shape` (method, line 123) `def test_openai_shape(self)`
+- Depends on: `topogpt3/chat.py`, `topogpt3/fallback.py`
+
 ## tests/test_heritage.py
 - Doc: Advanced-training tests: LoRA/RL/chat modules preserve quaternionic identity.
 - Layer: testing

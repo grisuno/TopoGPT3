@@ -4,7 +4,7 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 ## Suggested
 
-### Q: What does model.py depend on, and what depends on it? (20 connections)
+### Q: What does model.py depend on, and what depends on it? (22 connections)
 
 - Status: unanswered
 
@@ -12,15 +12,15 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 - Status: unanswered
 
-### Q: What does __main__.py depend on, and what depends on it? (14 connections)
+### Q: What does checkpoint_meta.py depend on, and what depends on it? (14 connections)
 
 - Status: unanswered
 
-### Q: How are the 12 files in 'topogpt3: lora' related to each other?
+### Q: How are the 15 files in 'topogpt3: model' related to each other?
 
 - Status: unanswered
 
-### Q: Why are governor.py and sandbox_smoke.py connected through 5 hops across 2 communities?
+### Q: Why are governor.py and test_checkpoint_meta.py connected through 5 hops across 2 communities?
 
 - Status: unanswered
 

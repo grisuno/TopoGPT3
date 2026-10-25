@@ -19,6 +19,7 @@ Solid arrows stay in this module, dashed arrows leave it.
 ```mermaid
 flowchart LR
     n_topogpt3_train_grpo_py__main(["main"])
+    n_topogpt3_checkpoint_meta_py__config_from_checkpoint["checkpoint_meta.config_from_checkpoint"]
     n_topogpt3_model_py__BPETokenizer___init__["model.BPETokenizer.__init__"]
     n_topogpt3_model_py__BPETokenizer_decode["model.BPETokenizer.decode"]
     n_topogpt3_model_py__BPETokenizer_encode["model.BPETokenizer.encode"]
@@ -32,6 +33,7 @@ flowchart LR
     n_topogpt3_trainer_utils_topo_py__Logger["trainer_utils_topo.Logger"]
     n_topogpt3_trainer_utils_topo_py__is_main_process["trainer_utils_topo.is_main_process"]
     n_topogpt3_trainer_utils_topo_py__setup_seed["trainer_utils_topo.setup_seed"]
+    n_topogpt3_train_grpo_py__main -.-> n_topogpt3_checkpoint_meta_py__config_from_checkpoint
     n_topogpt3_train_grpo_py__main -.-> n_topogpt3_model_py__BPETokenizer___init__
     n_topogpt3_train_grpo_py__main -.-> n_topogpt3_model_py__BPETokenizer_decode
     n_topogpt3_train_grpo_py__main -.-> n_topogpt3_model_py__BPETokenizer_encode
@@ -53,12 +55,12 @@ flowchart LR
 
 ### `main`
 
-`function` | [topogpt3/train_grpo.py:29](../../topogpt3/train_grpo.py#L29)
+`function` | [topogpt3/train_grpo.py:32](../../topogpt3/train_grpo.py#L32)
 
 ```python
 def main()
 ```
 
-*Calls:* [`BPETokenizer.__init__`](topogpt3.model.py.md#bpetokenizer-__init__), [`BPETokenizer.decode`](topogpt3.model.py.md#bpetokenizer-decode), [`BPETokenizer.encode`](topogpt3.model.py.md#bpetokenizer-encode), [`CurriculumTrainer.model`](topogpt3.model.py.md#curriculumtrainer-model), [`TopoGPT2.__init__`](topogpt3.model.py.md#topogpt2-__init__), [`TopoGPT2Config`](topogpt3.model.py.md#topogpt2config), [`base_rewards`](topogpt3.rewards.py.md#base_rewards), [`grpo_advantages`](topogpt3.rewards.py.md#grpo_advantages), [`grpo_loss`](topogpt3.rewards.py.md#grpo_loss), [`create_rollout_engine`](topogpt3.rollout.py.md#create_rollout_engine), [`Logger`](topogpt3.trainer_utils_topo.py.md#logger), [`is_main_process`](topogpt3.trainer_utils_topo.py.md#is_main_process) and 1 more
+*Calls:* [`config_from_checkpoint`](topogpt3.checkpoint_meta.py.md#config_from_checkpoint), [`BPETokenizer.__init__`](topogpt3.model.py.md#bpetokenizer-__init__), [`BPETokenizer.decode`](topogpt3.model.py.md#bpetokenizer-decode), [`BPETokenizer.encode`](topogpt3.model.py.md#bpetokenizer-encode), [`CurriculumTrainer.model`](topogpt3.model.py.md#curriculumtrainer-model), [`TopoGPT2.__init__`](topogpt3.model.py.md#topogpt2-__init__), [`TopoGPT2Config`](topogpt3.model.py.md#topogpt2config), [`base_rewards`](topogpt3.rewards.py.md#base_rewards), [`grpo_advantages`](topogpt3.rewards.py.md#grpo_advantages), [`grpo_loss`](topogpt3.rewards.py.md#grpo_loss), [`create_rollout_engine`](topogpt3.rollout.py.md#create_rollout_engine), [`Logger`](topogpt3.trainer_utils_topo.py.md#logger) and 2 more
 
 ---

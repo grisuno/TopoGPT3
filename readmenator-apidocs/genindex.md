@@ -13,6 +13,7 @@
 - [`ActivationRecorder`](modules/topogpt3.jlens.py.md#activationrecorder) class in `topogpt3.jlens`
 - [`AE_RECON_WEIGHT`](modules/topogpt3.model.py.md#topogpt2config-ae_recon_weight) attribute of `TopoGPT2Config` in `topogpt3.model`
 - [`agent_reward`](modules/topogpt3.train_agent.py.md#agent_reward) function in `topogpt3.train_agent`
+- [`ALIASES`](modules/topogpt3.fallback.py.md#aliases) constant in `topogpt3.fallback`
 - [`allow`](modules/topogpt3.api_server.py.md#ratelimiter-allow) method of `RateLimiter` in `topogpt3.api_server`
 - [`allowed_builtin_names`](modules/eval.sandbox.py.md#sandboxconfig-allowed_builtin_names) attribute of `SandboxConfig` in `eval.sandbox`
 - [`amp_dtype`](modules/topogpt3.model.py.md#curriculumtrainer-amp_dtype) property of `CurriculumTrainer` in `topogpt3.model`
@@ -30,6 +31,7 @@
 - [`apply_lora`](modules/topogpt3.lora.py.md#apply_lora) function in `topogpt3.lora`
 - [`apply_quantization`](modules/topogpt3.model.py.md#apply_quantization) function in `topogpt3.model`
 - [`apply_yarn_to_rope`](modules/topogpt3.yarn.py.md#apply_yarn_to_rope) function in `topogpt3.yarn`
+- [`APT_CHAIN_TOOL`](modules/topogpt3.fallback.py.md#apt_chain_tool) constant in `topogpt3.fallback`
 - [`assemble`](modules/topogpt3.inference.py.md#modelassembler-assemble) method of `ModelAssembler` in `topogpt3.inference`
 - [`assemble`](modules/topogpt3.inference_hrm.py.md#modelassembler-assemble) method of `ModelAssembler` in `topogpt3.inference_hrm`
 - [`assert_ready`](modules/topogpt3.inference.py.md#checkpointpaths-assert_ready) method of `CheckpointPaths` in `topogpt3.inference`
@@ -37,6 +39,7 @@
 - [`ATTN_WINDOW`](modules/topogpt3.model.py.md#topogpt2config-attn_window) attribute of `TopoGPT2Config` in `topogpt3.model`
 - [`attractor_high_epsilon`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-attractor_high_epsilon) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
 - [`attractor_low_epsilon`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-attractor_low_epsilon) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`audit`](modules/topogpt3.tokenizer_tools.py.md#audit) function in `topogpt3.tokenizer_tools`
 - [`AuthState`](modules/topogpt3.api_server.py.md#authstate) class in `topogpt3.api_server`
 - [`auto_continue`](modules/topogpt3.api_server.py.md#chatcompletionrequest-auto_continue) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
 - [`auto_continue`](modules/topogpt3.api_server.py.md#completionrequest-auto_continue) attribute of `CompletionRequest` in `topogpt3.api_server`
@@ -49,9 +52,13 @@
 
 - [`BAN_WINDOW_S`](modules/topogpt3.api_server.py.md#ban_window_s) constant in `topogpt3.api_server`
 - [`base_rewards`](modules/topogpt3.rewards.py.md#base_rewards) function in `topogpt3.rewards`
+- [`BASE_SYSTEM`](modules/topogpt3.fallback.py.md#base_system) constant in `topogpt3.fallback`
 - [`BATCH_SIZE`](modules/topogpt3.model.py.md#topogpt2config-batch_size) attribute of `TopoGPT2Config` in `topogpt3.model`
 - [`BATCH_SIZE`](modules/topogpt3.train.py.md#topogpt3config-batch_size) attribute of `TopoGPT3Config` in `topogpt3.train`
 - [`BEST`](modules/topogpt3.model.py.md#checkpointmanager-best) attribute of `CheckpointManager` in `topogpt3.model`
+- [`best_of`](modules/topogpt3.api_server.py.md#chatcompletionrequest-best_of) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`best_of`](modules/topogpt3.api_server.py.md#completionrequest-best_of) attribute of `CompletionRequest` in `topogpt3.api_server`
+- [`best_of`](modules/topogpt3.fallback.py.md#profile-best_of) attribute of `Profile` in `topogpt3.fallback`
 - [`best_val_loss`](modules/topogpt3.model.py.md#curriculumtrainer-best_val_loss) property of `CurriculumTrainer` in `topogpt3.model`
 - [`beta_fast`](modules/topogpt3.yarn.py.md#yarnconfig-beta_fast) attribute of `YaRNConfig` in `topogpt3.yarn`
 - [`beta_slow`](modules/topogpt3.yarn.py.md#yarnconfig-beta_slow) attribute of `YaRNConfig` in `topogpt3.yarn`
@@ -70,6 +77,7 @@
 - [`build_backend`](modules/synthetic_dataset.py.md#build_backend) function in `synthetic_dataset`
 - [`build_constraint`](modules/topogpt3.structured_output.py.md#build_constraint) function in `topogpt3.structured_output`
 - [`build_file_tiers`](modules/topogpt3.model.py.md#build_file_tiers) function in `topogpt3.model`
+- [`build_generate_fn`](modules/eval.tasks.py.md#build_generate_fn) function in `eval.tasks`
 - [`build_logger`](modules/synthetic_dataset.py.md#build_logger) function in `synthetic_dataset`
 - [`build_parser`](modules/topogpt3.inference.py.md#cliargumentparser-build_parser) staticmethod of `CliArgumentParser` in `topogpt3.inference`
 - [`build_parser`](modules/topogpt3.inference_hrm.py.md#cliargumentparser-build_parser) staticmethod of `CliArgumentParser` in `topogpt3.inference_hrm`
@@ -119,6 +127,7 @@
 - [`CodeCurriculumLoader`](modules/topogpt3.train.py.md#codecurriculumloader) class in `topogpt3.train`
 - [`commit`](modules/topogpt3.inference_hrm.py.md#sparsehighlevelstatecache-commit) method of `SparseHighLevelStateCache` in `topogpt3.inference_hrm`
 - [`complete`](modules/topogpt3.api_server.py.md#servermodel-complete) method of `ServerModel` in `topogpt3.api_server`
+- [`complete_candidates`](modules/topogpt3.api_server.py.md#servermodel-complete_candidates) method of `ServerModel` in `topogpt3.api_server`
 - [`completed_epochs`](modules/topogpt3.model.py.md#curriculumtrainer-completed_epochs) property of `CurriculumTrainer` in `topogpt3.model`
 - [`completion_for_problem`](modules/eval.harness.py.md#completion_for_problem) function in `eval.harness`
 - [`completion_ids`](modules/topogpt3.rollout.py.md#rolloutresult-completion_ids) attribute of `RolloutResult` in `topogpt3.rollout`
@@ -139,6 +148,8 @@
 - [`compute_slice`](modules/topogpt3.jlens.py.md#compute_slice) function in `topogpt3.jlens`
 - [`compute_sp`](modules/topogpt3.model.py.md#mechanisticmetrics-compute_sp) method of `MechanisticMetrics` in `topogpt3.model`
 - [`compute_t_eff`](modules/topogpt3.model.py.md#mechanisticmetrics-compute_t_eff) method of `MechanisticMetrics` in `topogpt3.model`
+- [`config_dict`](modules/topogpt3.checkpoint_meta.py.md#config_dict) function in `topogpt3.checkpoint_meta`
+- [`config_from_checkpoint`](modules/topogpt3.checkpoint_meta.py.md#config_from_checkpoint) function in `topogpt3.checkpoint_meta`
 - [`conjugate`](modules/topogpt3.model.py.md#quaternionops-conjugate) staticmethod of `QuaternionOps` in `topogpt3.model`
 - [`conjugation_distance_su2`](modules/topogpt3.train.py.md#grassmanniantracker-conjugation_distance_su2) staticmethod of `GrassmannianTracker` in `topogpt3.train`
 - [`consistency_across_runs`](modules/eval.noise_analysis.py.md#consistency_across_runs) function in `eval.noise_analysis`
@@ -245,12 +256,16 @@
 - [`evaluate`](modules/topogpt3.model.py.md#curriculumtrainer-evaluate) method of `CurriculumTrainer` in `topogpt3.model`
 - [`evaluate`](modules/topogpt3.model.py.md#topogpt2trainer-evaluate) method of `TopoGPT2Trainer` in `topogpt3.model`
 - [`evaluate`](modules/topogpt3.eval_toolcall.py.md#evaluate) function in `topogpt3.eval_toolcall`
+- [`evaluate_case`](modules/eval.tasks.py.md#evaluate_case) function in `eval.tasks`
+- [`evaluate_cases`](modules/eval.tasks.py.md#evaluate_cases) function in `eval.tasks`
 - [`evaluate_problem`](modules/eval.harness.py.md#evaluate_problem) function in `eval.harness`
 - [`evaluate_problems`](modules/eval.temp_sweep.py.md#evaluate_problems) function in `eval.temp_sweep`
 - [`execute`](modules/topogpt3.inference_hrm.py.md#hrminferencepipeline-execute) method of `HRMInferencePipeline` in `topogpt3.inference_hrm`
 - [`execute`](modules/topogpt3.inference.py.md#inferencepipeline-execute) method of `InferencePipeline` in `topogpt3.inference`
 - [`execute_tool`](modules/topogpt3.tools_agent.py.md#execute_tool) function in `topogpt3.tools_agent`
+- [`execution_reward`](modules/topogpt3.rewards.py.md#execution_reward) function in `topogpt3.rewards`
 - [`EXPERT_INNER`](modules/topogpt3.c.md#expert_inner) macro in `topogpt3.c`
+- [`EXPLOIT_SYSTEM`](modules/topogpt3.fallback.py.md#exploit_system) constant in `topogpt3.fallback`
 - [`export_hf_stub`](modules/topogpt3.convert.py.md#export_hf_stub) function in `topogpt3.convert`
 - [`extract_candidate`](modules/eval.harness.py.md#extract_candidate) function in `eval.harness`
 - [`extract_candidate`](modules/eval.repair.py.md#extract_candidate) function in `eval.repair`
@@ -522,6 +537,7 @@
 - [`layers`](modules/topogpt3.jlens.py.md#topogpt3jlensappconfig-layers) attribute of `TopoGPT3JLensAppConfig` in `topogpt3.jlens`
 - [`layers`](modules/topogpt3.lens_model.py.md#topogpt3lensmodel-layers) property of `TopoGPT3LensModel` in `topogpt3.lens_model`
 - [`LayerWeights`](modules/topogpt3.c.md#layerweights) struct in `topogpt3.c`
+- [`LAZYOWN_TOOLS`](modules/topogpt3.fallback.py.md#lazyown_tools) constant in `topogpt3.fallback`
 - [`LEARNING_RATE`](modules/topogpt3.model.py.md#topogpt2config-learning_rate) attribute of `TopoGPT2Config` in `topogpt3.model`
 - [`LEARNING_RATE`](modules/topogpt3.train.py.md#topogpt3config-learning_rate) attribute of `TopoGPT3Config` in `topogpt3.train`
 - [`LensModel`](modules/topogpt3.lens_model.py.md#lensmodel) protocol in `topogpt3.lens_model`
@@ -535,6 +551,7 @@
 - [`load`](modules/topogpt3.inference_hrm.py.md#sourcemoduleloader-load) method of `SourceModuleLoader` in `topogpt3.inference_hrm`
 - [`load_base`](modules/topogpt3.train_lora.py.md#load_base) function in `topogpt3.train_lora`
 - [`load_best`](modules/topogpt3.model.py.md#checkpointmanager-load_best) method of `CheckpointManager` in `topogpt3.model`
+- [`load_cases`](modules/eval.tasks.py.md#load_cases) function in `eval.tasks`
 - [`load_humaneval`](modules/eval.harness.py.md#load_humaneval) function in `eval.harness`
 - [`load_jsonl`](modules/eval.analyze.py.md#load_jsonl) function in `eval.analyze`
 - [`load_jsonl`](modules/eval.report.py.md#load_jsonl) function in `eval.report`
@@ -547,6 +564,7 @@
 - [`load_model`](modules/topogpt3.train_dpo.py.md#load_model) function in `topogpt3.train_dpo`
 - [`load_paths`](modules/synthetic_dataset.py.md#load_paths) function in `synthetic_dataset`
 - [`load_records`](modules/eval.analyze_results.py.md#load_records) function in `eval.analyze_results`
+- [`load_tokenizer_artifact`](modules/topogpt3.tokenizer_tools.py.md#load_tokenizer_artifact) function in `topogpt3.tokenizer_tools`
 - [`log_date_format`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-log_date_format) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
 - [`log_date_format`](modules/topogpt3.inference.py.md#inferencesettings-log_date_format) attribute of `InferenceSettings` in `topogpt3.inference`
 - [`LOG_FILE`](modules/topogpt3.train.py.md#topogpt3config-log_file) attribute of `TopoGPT3Config` in `topogpt3.train`
@@ -588,6 +606,7 @@
 - [`main`](modules/eval.repair.py.md#main) function in `eval.repair`
 - [`main`](modules/eval.report.py.md#main) function in `eval.report`
 - [`main`](modules/eval.sandbox_smoke.py.md#main) function in `eval.sandbox_smoke`
+- [`main`](modules/eval.tasks.py.md#main) function in `eval.tasks`
 - [`main`](modules/eval.temp_sweep.py.md#main) function in `eval.temp_sweep`
 - [`main`](modules/synthetic_dataset.py.md#main) function in `synthetic_dataset`
 - [`main`](modules/topogpt3.c.md#main) function in `topogpt3.c`
@@ -598,6 +617,7 @@
 - [`main`](modules/topogpt3.inference.py.md#main) function in `topogpt3.inference`
 - [`main`](modules/topogpt3.inference_hrm.py.md#main) function in `topogpt3.inference_hrm`
 - [`main`](modules/topogpt3.model.py.md#main) function in `topogpt3.model`
+- [`main`](modules/topogpt3.tokenizer_tools.py.md#main) function in `topogpt3.tokenizer_tools`
 - [`main`](modules/topogpt3.train.py.md#main) function in `topogpt3.train`
 - [`main`](modules/topogpt3.train_agent.py.md#main) function in `topogpt3.train_agent`
 - [`main`](modules/topogpt3.train_distill.py.md#main) function in `topogpt3.train_distill`
@@ -668,8 +688,11 @@
 - [`max_tokens`](modules/topogpt3.api_server.py.md#chatcompletionrequest-max_tokens) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
 - [`max_tokens`](modules/topogpt3.api_server.py.md#completionrequest-max_tokens) attribute of `CompletionRequest` in `topogpt3.api_server`
 - [`MAX_TOKENS`](modules/topogpt3.c.md#max_tokens) macro in `topogpt3.c`
+- [`max_tokens`](modules/topogpt3.fallback.py.md#profile-max_tokens) attribute of `Profile` in `topogpt3.fallback`
 - [`MAX_TOKENS`](modules/eval.governor.py.md#stopreason-max_tokens) attribute of `StopReason` in `eval.governor`
 - [`MAX_TOKENS_PER_TIER`](modules/topogpt3.train.py.md#topogpt3config-max_tokens_per_tier) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`MAX_TOOL_BUFFER`](modules/topogpt3.api_server.py.md#max_tool_buffer) constant in `topogpt3.api_server`
+- [`MAX_TOOL_TEXT`](modules/topogpt3.fallback.py.md#max_tool_text) constant in `topogpt3.fallback`
 - [`MAX_TRAIN_BATCHES_PER_EPOCH`](modules/topogpt3.train.py.md#topogpt3config-max_train_batches_per_epoch) attribute of `TopoGPT3Config` in `topogpt3.train`
 - [`MAX_TRAIN_TOKENS`](modules/topogpt3.model.py.md#topogpt2config-max_train_tokens) attribute of `TopoGPT2Config` in `topogpt3.model`
 - [`measure_throughput`](modules/topogpt3.train.py.md#efficiencymetrics-measure_throughput) method of `EfficiencyMetrics` in `topogpt3.train`
@@ -683,6 +706,7 @@
 - [`merge_lora`](modules/topogpt3.lora.py.md#merge_lora) function in `topogpt3.lora`
 - [`Message`](modules/topogpt3.api_server.py.md#message) class in `topogpt3.api_server`
 - [`messages`](modules/topogpt3.api_server.py.md#chatcompletionrequest-messages) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`meta`](modules/topogpt3.api_server.py.md#servermodel-meta) attribute of `ServerModel` in `topogpt3.api_server`
 - [`min_checkpoint_bytes`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_checkpoint_bytes) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
 - [`min_checkpoint_bytes`](modules/topogpt3.inference.py.md#inferencesettings-min_checkpoint_bytes) attribute of `InferenceSettings` in `topogpt3.inference`
 - [`min_hrm_drift`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_hrm_drift) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
@@ -695,6 +719,8 @@
 - [`min_hrm_warm_start`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_hrm_warm_start) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
 - [`min_max_new_tokens`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_max_new_tokens) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
 - [`min_max_new_tokens`](modules/topogpt3.inference.py.md#inferencesettings-min_max_new_tokens) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`min_new_tokens`](modules/topogpt3.api_server.py.md#chatcompletionrequest-min_new_tokens) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`min_new_tokens`](modules/topogpt3.fallback.py.md#profile-min_new_tokens) attribute of `Profile` in `topogpt3.fallback`
 - [`min_repetition_penalty`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_repetition_penalty) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
 - [`min_repetition_penalty`](modules/topogpt3.inference.py.md#inferencesettings-min_repetition_penalty) attribute of `InferenceSettings` in `topogpt3.inference`
 - [`min_temperature`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_temperature) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
@@ -721,6 +747,7 @@
 - [`ModelAssembler`](modules/topogpt3.inference.py.md#modelassembler) class in `topogpt3.inference`
 - [`ModelAssembler`](modules/topogpt3.inference_hrm.py.md#modelassembler) class in `topogpt3.inference_hrm`
 - [`ModelLoader`](modules/eval.harness.py.md#modelloader) class in `eval.harness`
+- [`models_payload`](modules/topogpt3.fallback.py.md#models_payload) function in `topogpt3.fallback`
 - [`ModelWeights`](modules/topogpt3.c.md#modelweights) struct in `topogpt3.c`
 - [`MOE_AUX_LOSS_WEIGHT`](modules/topogpt3.model.py.md#topogpt2config-moe_aux_loss_weight) attribute of `TopoGPT2Config` in `topogpt3.model`
 - [`MOE_ENABLED`](modules/topogpt3.model.py.md#topogpt2config-moe_enabled) attribute of `TopoGPT2Config` in `topogpt3.model`
@@ -734,6 +761,8 @@
 
 ## N
 
+- [`n`](modules/topogpt3.api_server.py.md#chatcompletionrequest-n) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`n`](modules/topogpt3.api_server.py.md#completionrequest-n) attribute of `CompletionRequest` in `topogpt3.api_server`
 - [`N_ANGULAR`](modules/topogpt3.c.md#n_angular) macro in `topogpt3.c`
 - [`N_EDGE_TYPES`](modules/topogpt3.c.md#n_edge_types) macro in `topogpt3.c`
 - [`N_EDGES`](modules/topogpt3.c.md#n_edges) macro in `topogpt3.c`
@@ -762,8 +791,10 @@
 - [`n_tokens`](modules/eval.governor.py.md#generationresult-n_tokens) attribute of `GenerationResult` in `eval.governor`
 - [`name`](modules/synthetic_dataset.py.md#groqbackend-name) method of `GroqBackend` in `synthetic_dataset`
 - [`name`](modules/synthetic_dataset.py.md#llmbackend-name) method of `LLMBackend` in `synthetic_dataset`
+- [`name`](modules/topogpt3.api_server.py.md#message-name) attribute of `Message` in `topogpt3.api_server`
 - [`name`](modules/synthetic_dataset.py.md#ollamabackend-name) method of `OllamaBackend` in `synthetic_dataset`
 - [`name`](modules/synthetic_dataset.py.md#openrouterbackend-name) method of `OpenRouterBackend` in `synthetic_dataset`
+- [`name`](modules/topogpt3.fallback.py.md#profile-name) attribute of `Profile` in `topogpt3.fallback`
 - [`new_tokens`](modules/topogpt3.inference.py.md#generationreport-new_tokens) attribute of `GenerationReport` in `topogpt3.inference`
 - [`new_tokens`](modules/topogpt3.inference_hrm.py.md#generationreport-new_tokens) attribute of `GenerationReport` in `topogpt3.inference_hrm`
 - [`normalize`](modules/topogpt3.model.py.md#quaternionops-normalize) staticmethod of `QuaternionOps` in `topogpt3.model`
@@ -814,17 +845,23 @@
 - [`positions`](modules/topogpt3.jlens.py.md#topogpt3jlensappconfig-positions) attribute of `TopoGPT3JLensAppConfig` in `topogpt3.jlens`
 - [`post_processing_chat`](modules/topogpt3.chat.py.md#post_processing_chat) function in `topogpt3.chat`
 - [`pre_processing_chat`](modules/topogpt3.chat.py.md#pre_processing_chat) function in `topogpt3.chat`
+- [`prefer_code`](modules/topogpt3.fallback.py.md#profile-prefer_code) attribute of `Profile` in `topogpt3.fallback`
 - [`prepare_all`](modules/topogpt3.train.py.md#topogpt3trainer-prepare_all) method of `TopoGPT3Trainer` in `topogpt3.train`
 - [`prepare_tier`](modules/topogpt3.train.py.md#codecurriculumloader-prepare_tier) method of `CodeCurriculumLoader` in `topogpt3.train`
 - [`preset`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-preset) method of `HRMInferenceSettings` in `topogpt3.inference_hrm`
 - [`preset`](modules/topogpt3.inference.py.md#inferencesettings-preset) method of `InferenceSettings` in `topogpt3.inference`
 - [`printf`](modules/topogpt3.c.md#printf) function in `topogpt3.c`
 - [`probe_checkpoint`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-probe_checkpoint) classmethod of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`probe_checkpoint`](modules/topogpt3.checkpoint_meta.py.md#probe_checkpoint) function in `topogpt3.checkpoint_meta`
 - [`process_batch`](modules/synthetic_dataset.py.md#syntheticdatasetgenerator-process_batch) method of `SyntheticDatasetGenerator` in `synthetic_dataset`
 - [`process_file`](modules/synthetic_dataset.py.md#syntheticdatasetgenerator-process_file) method of `SyntheticDatasetGenerator` in `synthetic_dataset`
 - [`process_torus_grid`](modules/topogpt3.model.py.md#spectralautoencoder-process_torus_grid) method of `SpectralAutoencoder` in `topogpt3.model`
 - [`processed_files`](modules/synthetic_dataset.py.md#processedmanifest-processed_files) attribute of `ProcessedManifest` in `synthetic_dataset`
 - [`ProcessedManifest`](modules/synthetic_dataset.py.md#processedmanifest) class in `synthetic_dataset`
+- [`profile`](modules/topogpt3.api_server.py.md#chatcompletionrequest-profile) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`profile`](modules/topogpt3.api_server.py.md#completionrequest-profile) attribute of `CompletionRequest` in `topogpt3.api_server`
+- [`Profile`](modules/topogpt3.fallback.py.md#profile) class in `topogpt3.fallback`
+- [`PROFILES`](modules/topogpt3.fallback.py.md#profiles) constant in `topogpt3.fallback`
 - [`PROGRESSIVE_SEQ`](modules/topogpt3.model.py.md#topogpt2config-progressive_seq) attribute of `TopoGPT2Config` in `topogpt3.model`
 - [`PROGRESSIVE_SEQ_EPOCHS`](modules/topogpt3.model.py.md#topogpt2config-progressive_seq_epochs) attribute of `TopoGPT2Config` in `topogpt3.model`
 - [`PROGRESSIVE_SEQ_STEPS`](modules/topogpt3.model.py.md#topogpt2config-progressive_seq_steps) attribute of `TopoGPT2Config` in `topogpt3.model`
@@ -865,17 +902,21 @@
 
 - [`RANDOM_SEED`](modules/topogpt3.model.py.md#topogpt2config-random_seed) attribute of `TopoGPT2Config` in `topogpt3.model`
 - [`RANDOM_SEED`](modules/topogpt3.train.py.md#topogpt3config-random_seed) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`rank_candidates`](modules/topogpt3.fallback.py.md#rank_candidates) function in `topogpt3.fallback`
 - [`rate`](modules/topogpt3.api_server.py.md#tokenbucket-rate) attribute of `TokenBucket` in `topogpt3.api_server`
 - [`RATE_BUCKET_CAPACITY`](modules/topogpt3.api_server.py.md#rate_bucket_capacity) constant in `topogpt3.api_server`
 - [`RATE_LIMIT_ADMIN_RPS`](modules/topogpt3.api_server.py.md#rate_limit_admin_rps) constant in `topogpt3.api_server`
 - [`RATE_LIMIT_USER_RPS`](modules/topogpt3.api_server.py.md#rate_limit_user_rps) constant in `topogpt3.api_server`
 - [`RateLimiter`](modules/topogpt3.api_server.py.md#ratelimiter) class in `topogpt3.api_server`
 - [`RATIOS_TO_TEST`](modules/topogpt3.model.py.md#phase0_kerneloptimizer-ratios_to_test) attribute of `Phase0_KernelOptimizer` in `topogpt3.model`
+- [`READ_FACTS_TOOL`](modules/topogpt3.fallback.py.md#read_facts_tool) constant in `topogpt3.fallback`
+- [`read_state`](modules/topogpt3.checkpoint_meta.py.md#read_state) function in `topogpt3.checkpoint_meta`
 - [`READ_TENSOR`](modules/topogpt3.c.md#read_tensor) macro in `topogpt3.c`
 - [`READ_TENSOR16`](modules/topogpt3.c.md#read_tensor16) macro in `topogpt3.c`
 - [`READOUT_INNER`](modules/topogpt3.c.md#readout_inner) macro in `topogpt3.c`
 - [`reason`](modules/topogpt3.inference_hrm.py.md#hierarchicalrecursivereasoner-reason) method of `HierarchicalRecursiveReasoner` in `topogpt3.inference_hrm`
 - [`reasoning`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-reasoning) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`reasoning_content`](modules/topogpt3.api_server.py.md#message-reasoning_content) attribute of `Message` in `topogpt3.api_server`
 - [`reasoning_label`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-reasoning_label) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
 - [`reasoning_summary`](modules/topogpt3.inference_hrm.py.md#generationreport-reasoning_summary) attribute of `GenerationReport` in `topogpt3.inference_hrm`
 - [`ReasoningIterationStats`](modules/topogpt3.inference_hrm.py.md#reasoningiterationstats) class in `topogpt3.inference_hrm`
@@ -892,6 +933,7 @@
 - [`repetition_penalty`](modules/topogpt3.api_server.py.md#completionrequest-repetition_penalty) attribute of `CompletionRequest` in `topogpt3.api_server`
 - [`repetition_penalty`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-repetition_penalty) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
 - [`repetition_penalty`](modules/topogpt3.inference.py.md#inferencesettings-repetition_penalty) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`repetition_penalty`](modules/topogpt3.fallback.py.md#profile-repetition_penalty) attribute of `Profile` in `topogpt3.fallback`
 - [`repetition_penalty`](modules/topogpt3.inference.py.md#samplingpolicy-repetition_penalty) attribute of `SamplingPolicy` in `topogpt3.inference`
 - [`repetition_penalty`](modules/topogpt3.inference_hrm.py.md#samplingpolicy-repetition_penalty) attribute of `SamplingPolicy` in `topogpt3.inference_hrm`
 - [`REPO_ROOT`](modules/eval.diag_static.py.md#repo_root) constant in `eval.diag_static`
@@ -901,7 +943,10 @@
 - [`report`](modules/topogpt3.model.py.md#textfilter-report) method of `TextFilter` in `topogpt3.model`
 - [`require_existing_file`](modules/topogpt3.inference.py.md#securepathresolver-require_existing_file) staticmethod of `SecurePathResolver` in `topogpt3.inference`
 - [`require_existing_file`](modules/topogpt3.inference_hrm.py.md#securepathresolver-require_existing_file) staticmethod of `SecurePathResolver` in `topogpt3.inference_hrm`
+- [`require_tool`](modules/topogpt3.fallback.py.md#profile-require_tool) attribute of `Profile` in `topogpt3.fallback`
 - [`reset`](modules/topogpt3.structured_output.py.md#grammarconstraint-reset) method of `GrammarConstraint` in `topogpt3.structured_output`
+- [`resize_embeddings`](modules/topogpt3.tokenizer_tools.py.md#resize_embeddings) function in `topogpt3.tokenizer_tools`
+- [`resolve_profile`](modules/topogpt3.fallback.py.md#resolve_profile) function in `topogpt3.fallback`
 - [`resolve_under`](modules/topogpt3.inference.py.md#securepathresolver-resolve_under) staticmethod of `SecurePathResolver` in `topogpt3.inference`
 - [`resolve_under`](modules/topogpt3.inference_hrm.py.md#securepathresolver-resolve_under) staticmethod of `SecurePathResolver` in `topogpt3.inference_hrm`
 - [`response_format`](modules/topogpt3.api_server.py.md#chatcompletionrequest-response_format) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
@@ -935,6 +980,7 @@
 - [`run`](modules/topogpt3.model.py.md#topophasepipeline-run) method of `TopoPhasePipeline` in `topogpt3.model`
 - [`run`](modules/topogpt3.model.py.md#topophasepipelinev2-run) method of `TopoPhasePipelineV2` in `topogpt3.model`
 - [`run_case`](modules/topogpt3.eval_toolcall.py.md#run_case) function in `topogpt3.eval_toolcall`
+- [`RUN_COMMAND_TOOL`](modules/topogpt3.fallback.py.md#run_command_tool) constant in `topogpt3.fallback`
 - [`run_curriculum`](modules/topogpt3.model.py.md#curriculumtrainer-run_curriculum) method of `CurriculumTrainer` in `topogpt3.model`
 - [`run_hrm`](modules/eval.smoke.py.md#run_hrm) function in `eval.smoke`
 - [`run_hrm_inference`](modules/gradio_app.py.md#run_hrm_inference) function in `gradio_app`
@@ -976,6 +1022,7 @@
 - [`ScalePreset`](modules/topogpt3.inference_hrm.py.md#scalepreset) class in `topogpt3.inference_hrm`
 - [`scaler`](modules/topogpt3.model.py.md#curriculumtrainer-scaler) property of `CurriculumTrainer` in `topogpt3.model`
 - [`scan`](modules/topogpt3.model.py.md#filemanifest-scan) method of `FileManifest` in `topogpt3.model`
+- [`score_candidate`](modules/topogpt3.fallback.py.md#score_candidate) function in `topogpt3.fallback`
 - [`SecurePathResolver`](modules/topogpt3.inference.py.md#securepathresolver) class in `topogpt3.inference`
 - [`SecurePathResolver`](modules/topogpt3.inference_hrm.py.md#securepathresolver) class in `topogpt3.inference_hrm`
 - [`seed`](modules/topogpt3.api_server.py.md#chatcompletionrequest-seed) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
@@ -989,6 +1036,7 @@
 - [`SEEK_END`](modules/topogpt3.c.md#seek_end) macro in `topogpt3.c`
 - [`SEEK_SET`](modules/topogpt3.c.md#seek_set) macro in `topogpt3.c`
 - [`seen_hashes`](modules/synthetic_dataset.py.md#processedmanifest-seen_hashes) attribute of `ProcessedManifest` in `synthetic_dataset`
+- [`select_best`](modules/topogpt3.fallback.py.md#select_best) function in `topogpt3.fallback`
 - [`seq_len`](modules/topogpt3.jlens.py.md#slicedata-seq_len) attribute of `SliceData` in `topogpt3.jlens`
 - [`ServerModel`](modules/topogpt3.api_server.py.md#servermodel) class in `topogpt3.api_server`
 - [`set_seed`](modules/topogpt3.model.py.md#set_seed) function in `topogpt3.model`
@@ -1027,19 +1075,23 @@
 - [`SpeculativeDecoder`](modules/topogpt3.model.py.md#speculativedecoder) class in `topogpt3.model`
 - [`split_at_last_newline`](modules/topogpt3.continuation.py.md#split_at_last_newline) function in `topogpt3.continuation`
 - [`split_reasoning_content`](modules/topogpt3.chat.py.md#split_reasoning_content) function in `topogpt3.chat`
+- [`split_response`](modules/topogpt3.fallback.py.md#split_response) function in `topogpt3.fallback`
 - [`SPLIT_SEED`](modules/topogpt3.train.py.md#topogpt3config-split_seed) attribute of `TopoGPT3Config` in `topogpt3.train`
 - [`sprintf`](modules/topogpt3.c.md#sprintf) function in `topogpt3.c`
+- [`start_one`](modules/scripts.serve_fallback.sh.md#start_one) function in `scripts/serve_fallback.sh`
 - [`started_at`](modules/synthetic_dataset.py.md#processedmanifest-started_at) attribute of `ProcessedManifest` in `synthetic_dataset`
 - [`state_file`](modules/topogpt3.inference.py.md#checkpointpaths-state_file) method of `CheckpointPaths` in `topogpt3.inference`
 - [`state_file`](modules/topogpt3.inference_hrm.py.md#checkpointpaths-state_file) method of `CheckpointPaths` in `topogpt3.inference_hrm`
 - [`state_filename`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-state_filename) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
 - [`state_filename`](modules/topogpt3.inference.py.md#inferencesettings-state_filename) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`state_summary`](modules/topogpt3.checkpoint_meta.py.md#state_summary) function in `topogpt3.checkpoint_meta`
 - [`static_kappa`](modules/eval.diag_static.py.md#static_kappa) function in `eval.diag_static`
 - [`stderr`](modules/topogpt3.c.md#stderr) variable in `topogpt3.c`
 - [`stdin`](modules/topogpt3.c.md#stdin) variable in `topogpt3.c`
 - [`stdout`](modules/topogpt3.c.md#stdout) variable in `topogpt3.c`
 - [`stop`](modules/topogpt3.api_server.py.md#chatcompletionrequest-stop) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
 - [`stop`](modules/topogpt3.api_server.py.md#completionrequest-stop) attribute of `CompletionRequest` in `topogpt3.api_server`
+- [`stop`](modules/topogpt3.fallback.py.md#profile-stop) attribute of `Profile` in `topogpt3.fallback`
 - [`stop_reason`](modules/eval.governor.py.md#generationresult-stop_reason) attribute of `GenerationResult` in `eval.governor`
 - [`StopReason`](modules/eval.governor.py.md#stopreason) enum in `eval.governor`
 - [`strcmp`](modules/topogpt3.c.md#strcmp) function in `topogpt3.c`
@@ -1056,9 +1108,12 @@
 - [`summarize`](modules/eval.analyze_results.py.md#summarize) function in `eval.analyze_results`
 - [`summarize`](modules/eval.temp_sweep.py.md#summarize) function in `eval.temp_sweep`
 - [`summarize_run`](modules/eval.report.py.md#summarize_run) function in `eval.report`
+- [`summary`](modules/eval.tasks.py.md#summary) function in `eval.tasks`
 - [`SwiGLU`](modules/topogpt3.model.py.md#swiglu) class in `topogpt3.model`
+- [`synthesize_tool_call`](modules/topogpt3.fallback.py.md#synthesize_tool_call) function in `topogpt3.fallback`
 - [`synthetic_winding`](modules/eval.diag_static.py.md#synthetic_winding) function in `eval.diag_static`
 - [`SyntheticDatasetGenerator`](modules/synthetic_dataset.py.md#syntheticdatasetgenerator) class in `synthetic_dataset`
+- [`system`](modules/topogpt3.fallback.py.md#profile-system) attribute of `Profile` in `topogpt3.fallback`
 - [`SYSTEM_PROMPTS`](modules/topogpt3.chat.py.md#system_prompts) constant in `topogpt3.chat`
 
 <a id="t"></a>
@@ -1071,6 +1126,7 @@
 - [`temperature`](modules/topogpt3.api_server.py.md#completionrequest-temperature) attribute of `CompletionRequest` in `topogpt3.api_server`
 - [`temperature`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-temperature) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
 - [`temperature`](modules/topogpt3.inference.py.md#inferencesettings-temperature) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`temperature`](modules/topogpt3.fallback.py.md#profile-temperature) attribute of `Profile` in `topogpt3.fallback`
 - [`temperature`](modules/topogpt3.inference.py.md#samplingpolicy-temperature) attribute of `SamplingPolicy` in `topogpt3.inference`
 - [`temperature`](modules/topogpt3.inference_hrm.py.md#samplingpolicy-temperature) attribute of `SamplingPolicy` in `topogpt3.inference_hrm`
 - [`test_cancel`](modules/eval.governor_smoke.py.md#test_cancel) function in `eval.governor_smoke`
@@ -1108,17 +1164,28 @@
 - [`tokens_per_second`](modules/topogpt3.inference_hrm.py.md#generationreport-tokens_per_second) method of `GenerationReport` in `topogpt3.inference_hrm`
 - [`TokenStream`](modules/eval.governor.py.md#tokenstream) class in `eval.governor`
 - [`TOOL_CALL_CLOSE`](modules/topogpt3.chat.py.md#tool_call_close) constant in `topogpt3.chat`
+- [`tool_call_id`](modules/topogpt3.api_server.py.md#message-tool_call_id) attribute of `Message` in `topogpt3.api_server`
 - [`TOOL_CALL_OPEN`](modules/topogpt3.chat.py.md#tool_call_open) constant in `topogpt3.chat`
 - [`TOOL_CALL_RE`](modules/topogpt3.chat.py.md#tool_call_re) constant in `topogpt3.chat`
+- [`tool_call_reward`](modules/topogpt3.rewards.py.md#tool_call_reward) function in `topogpt3.rewards`
+- [`tool_calls`](modules/topogpt3.api_server.py.md#message-tool_calls) attribute of `Message` in `topogpt3.api_server`
+- [`tool_calls_payload`](modules/topogpt3.fallback.py.md#tool_calls_payload) function in `topogpt3.fallback`
+- [`tool_choice`](modules/topogpt3.api_server.py.md#chatcompletionrequest-tool_choice) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`tool_choice`](modules/topogpt3.api_server.py.md#completionrequest-tool_choice) attribute of `CompletionRequest` in `topogpt3.api_server`
+- [`tool_names`](modules/topogpt3.fallback.py.md#profile-tool_names) method of `Profile` in `topogpt3.fallback`
 - [`TOOL_RESPONSE_CLOSE`](modules/topogpt3.chat.py.md#tool_response_close) constant in `topogpt3.chat`
 - [`TOOL_RESPONSE_OPEN`](modules/topogpt3.chat.py.md#tool_response_open) constant in `topogpt3.chat`
+- [`TOOL_SYSTEM`](modules/topogpt3.fallback.py.md#tool_system) constant in `topogpt3.fallback`
 - [`tools`](modules/topogpt3.api_server.py.md#chatcompletionrequest-tools) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`tools`](modules/topogpt3.api_server.py.md#completionrequest-tools) attribute of `CompletionRequest` in `topogpt3.api_server`
+- [`tools`](modules/topogpt3.fallback.py.md#profile-tools) attribute of `Profile` in `topogpt3.fallback`
 - [`TOOLS`](modules/topogpt3.tools_agent.py.md#tools) constant in `topogpt3.tools_agent`
 - [`top_ids`](modules/topogpt3.jlens.py.md#slicedata-top_ids) attribute of `SliceData` in `topogpt3.jlens`
 - [`top_k`](modules/topogpt3.api_server.py.md#chatcompletionrequest-top_k) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
 - [`top_k`](modules/topogpt3.api_server.py.md#completionrequest-top_k) attribute of `CompletionRequest` in `topogpt3.api_server`
 - [`top_k`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-top_k) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
 - [`top_k`](modules/topogpt3.inference.py.md#inferencesettings-top_k) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`top_k`](modules/topogpt3.fallback.py.md#profile-top_k) attribute of `Profile` in `topogpt3.fallback`
 - [`top_k`](modules/topogpt3.inference.py.md#samplingpolicy-top_k) attribute of `SamplingPolicy` in `topogpt3.inference`
 - [`top_k`](modules/topogpt3.inference_hrm.py.md#samplingpolicy-top_k) attribute of `SamplingPolicy` in `topogpt3.inference_hrm`
 - [`top_n`](modules/topogpt3.jlens.py.md#slicedata-top_n) attribute of `SliceData` in `topogpt3.jlens`
@@ -1157,6 +1224,7 @@
 - [`total_samples`](modules/synthetic_dataset.py.md#processedmanifest-total_samples) attribute of `ProcessedManifest` in `synthetic_dataset`
 - [`train`](modules/topogpt3.model.py.md#curriculumtrainer-train) method of `CurriculumTrainer` in `topogpt3.model`
 - [`train`](modules/topogpt3.model.py.md#topogpt2trainer-train) method of `TopoGPT2Trainer` in `topogpt3.model`
+- [`train_code_bpe`](modules/topogpt3.tokenizer_tools.py.md#train_code_bpe) function in `topogpt3.tokenizer_tools`
 - [`transport`](modules/topogpt3.jlens.py.md#jacobianlens-transport) method of `JacobianLens` in `topogpt3.jlens`
 
 <a id="u"></a>
@@ -1185,6 +1253,16 @@
 - [`validate`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-validate) method of `HRMInferenceSettings` in `topogpt3.inference_hrm`
 - [`validate`](modules/topogpt3.inference.py.md#inferencesettings-validate) method of `InferenceSettings` in `topogpt3.inference`
 - [`validate_sample`](modules/synthetic_dataset.py.md#validate_sample) function in `synthetic_dataset`
+- [`validate_tool_call`](modules/topogpt3.fallback.py.md#validate_tool_call) function in `topogpt3.fallback`
+- [`verifier`](modules/topogpt3.fallback.py.md#profile-verifier) attribute of `Profile` in `topogpt3.fallback`
+- [`verifier_reward`](modules/topogpt3.rewards.py.md#verifier_reward) function in `topogpt3.rewards`
+- [`VERIFIERS`](modules/eval.tasks.py.md#verifiers) constant in `eval.tasks`
+- [`verify_contains`](modules/eval.tasks.py.md#verify_contains) function in `eval.tasks`
+- [`verify_exact`](modules/eval.tasks.py.md#verify_exact) function in `eval.tasks`
+- [`verify_json`](modules/eval.tasks.py.md#verify_json) function in `eval.tasks`
+- [`verify_python_ast`](modules/eval.tasks.py.md#verify_python_ast) function in `eval.tasks`
+- [`verify_regex`](modules/eval.tasks.py.md#verify_regex) function in `eval.tasks`
+- [`verify_tool_call`](modules/eval.tasks.py.md#verify_tool_call) function in `eval.tasks`
 - [`VOCAB_SIZE`](modules/topogpt3.model.py.md#topogpt2config-vocab_size) attribute of `TopoGPT2Config` in `topogpt3.model`
 - [`vocab_size`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-vocab_size) attribute of `TopoGPT3LensConfig` in `topogpt3.lens_model`
 - [`VOCAB_SIZE`](modules/topogpt3.c.md#vocab_size) macro in `topogpt3.c`

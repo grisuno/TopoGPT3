@@ -35,10 +35,10 @@ flowchart LR
 
 ### `execute_tool`
 
-`function` | [topogpt3/tools_agent.py:59](../../topogpt3/tools_agent.py#L59)
+`function` | [topogpt3/tools_agent.py:96](../../topogpt3/tools_agent.py#L96)
 
 ```python
-def execute_tool(name: str, args: Dict[str, Any]) -> Optional[Dict[str, Any]]
+def execute_tool(name: str, args: dict[str, Any]) -> dict[str, Any] | None
 ```
 
 **Parameters**
@@ -46,9 +46,9 @@ def execute_tool(name: str, args: Dict[str, Any]) -> Optional[Dict[str, Any]]
 | Name | Type | Default | Description |
 |---|---|---|---|
 | `name` | `str` |  |  |
-| `args` | `Dict[str, Any]` |  |  |
+| `args` | `dict[str, Any]` |  |  |
 
-**Returns:** `Optional[Dict[str, Any]]`
+**Returns:** `dict[str, Any] | None`
 
 *Calls:* [`safe_exec`](eval.sandbox.py.md#safe_exec)
 
@@ -60,10 +60,10 @@ def execute_tool(name: str, args: Dict[str, Any]) -> Optional[Dict[str, Any]]
 
 ### `rollout_multiturn`
 
-`function` | [topogpt3/tools_agent.py:80](../../topogpt3/tools_agent.py#L80)
+`function` | [topogpt3/tools_agent.py:117](../../topogpt3/tools_agent.py#L117)
 
 ```python
-def rollout_multiturn(generate_fn, tokenizer, messages: List[Dict[str, Any]], tools=None, max_turns: int = 3, max_new_tokens: int = 256, open_thinking: bool = False)
+def rollout_multiturn(generate_fn, tokenizer, messages: list[dict[str, Any]], tools=None, max_turns: int = 3, max_new_tokens: int = 256, open_thinking: bool = False)
 ```
 
 generate_fn(prompt_text)->text.
@@ -76,7 +76,7 @@ Returns (full_text, tool_trace).
 |---|---|---|---|
 | `generate_fn` |  |  |  |
 | `tokenizer` |  |  |  |
-| `messages` | `List[Dict[str, Any]]` |  |  |
+| `messages` | `list[dict[str, Any]]` |  |  |
 | `tools` |  | `None` |  |
 | `max_turns` | `int` | `3` |  |
 | `max_new_tokens` | `int` | `256` |  |
@@ -92,7 +92,7 @@ Returns (full_text, tool_trace).
 
 ### `TOOLS`
 
-`constant` | [topogpt3/tools_agent.py:23](../../topogpt3/tools_agent.py#L23)
+`constant` | [topogpt3/tools_agent.py:24](../../topogpt3/tools_agent.py#L24)
 
 ```python
 TOOLS
@@ -104,7 +104,7 @@ TOOLS
 
 ### `MOCK`
 
-`constant` | [topogpt3/tools_agent.py:45](../../topogpt3/tools_agent.py#L45)
+`constant` | [topogpt3/tools_agent.py:47](../../topogpt3/tools_agent.py#L47)
 
 ```python
 MOCK
@@ -116,7 +116,7 @@ MOCK
 
 ### `CHECK_ARGS`
 
-`constant` | [topogpt3/tools_agent.py:52](../../topogpt3/tools_agent.py#L52)
+`constant` | [topogpt3/tools_agent.py:86](../../topogpt3/tools_agent.py#L86)
 
 ```python
 CHECK_ARGS

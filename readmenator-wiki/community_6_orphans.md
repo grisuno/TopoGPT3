@@ -1,10 +1,10 @@
 # orphans
 
-*Community 6 | 8 files | cohesion 0.00*
+*Community 6 | 10 files | cohesion 0.00*
 
 ## Definition
 
-This community groups 8 file(s) rooted at `eval` with dominant language py (cohesion 0.00). Central symbols: `_load`, `classify_error`, `consistency_across_runs`, `convert`, `load_jsonl`, `load_records`, `main`, `pass_at_k`. Core file: `eval/report.py` (6 symbols). Documented purpose: TopoGPT3 Weight Converter: safetensors -> flat float32 binary.  Usage: python convert_weights.py [--input model.safetensors] [--output topogpt3.weights]  Output.
+This community groups 10 file(s) rooted at `eval` with dominant language py (cohesion 0.00). Central symbols: `_load`, `classify_error`, `consistency_across_runs`, `convert`, `load_jsonl`, `load_records`, `main`, `pass_at_k`. Core file: `eval/report.py` (6 symbols). Documented purpose: TopoGPT3 Weight Converter: safetensors -> flat float32 binary.  Usage: python convert_weights.py [--input model.safetensors] [--output topogpt3.weights]  Output.
 
 ## Files
 
@@ -18,6 +18,8 @@ This community groups 8 file(s) rooted at `eval` with dominant language py (cohe
 | `eval/noise_analysis.py` | py | utility | 3 | yes |
 | `eval/report.py` | py | utility | 6 | yes |
 | `install.sh` | sh | utility | 0 | no |
+| `scripts/serve_fallback.sh` | sh | utility | 1 | yes |
+| `tests/test_data_pipeline.py` | py | testing | 6 | yes |
 
 ## Key Symbols
 
@@ -43,6 +45,13 @@ This community groups 8 file(s) rooted at `eval` with dominant language py (cohe
 - `summarize_run` (function, `eval/report.py:56`) `def summarize_run(p)`
 - `repair_summary` (function, `eval/report.py:90`) `def repair_summary(repair_path, baseline_path)`
 - `main` (function, `eval/report.py:117`) `def main()`
+- `start_one` (function, `scripts/serve_fallback.sh:24`)
+- `test_normalize_strips_control_and_collapses_space` (function, `tests/test_data_pipeline.py:15`) `def test_normalize_strips_control_and_collapses_space()`
+- `test_dedup_exact_and_fuzzy` (function, `tests/test_data_pipeline.py:23`) `def test_dedup_exact_and_fuzzy()`
+- `test_quality_filter_bounds` (function, `tests/test_data_pipeline.py:35`) `def test_quality_filter_bounds()`
+- `test_verify_python_ast_and_sandbox` (function, `tests/test_data_pipeline.py:44`) `def test_verify_python_ast_and_sandbox()`
+- `test_write_jsonl_roundtrip` (function, `tests/test_data_pipeline.py:51`) `def test_write_jsonl_roundtrip(tmp_path)`
+- `test_to_chat_row` (function, `tests/test_data_pipeline.py:58`) `def test_to_chat_row()`
 
 ## Internal vs External Edges
 
@@ -51,9 +60,9 @@ This community groups 8 file(s) rooted at `eval` with dominant language py (cohe
 
 ## Connections
 
-- [INFERRED] shares_context community 0 <-> 6 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 0 (topogpt3: lora) and community 6 (orphans).
+- [INFERRED] shares_context community 0 <-> 6 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 0 (topogpt3: model) and community 6 (orphans).
 - [INFERRED] shares_context community 1 <-> 6 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 1 (eval) and community 6 (orphans).
-- [INFERRED] shares_context community 2 <-> 6 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 2 (topogpt3: model) and community 6 (orphans).
+- [INFERRED] shares_context community 2 <-> 6 (strength 0.5): Inferred shared context (language py and layer utility) with no import path between community 2 (topogpt3: tasks) and community 6 (orphans).
 
 ## Risks
 
@@ -75,3 +84,5 @@ This community groups 8 file(s) rooted at `eval` with dominant language py (cohe
 - `eval/noise_analysis.py`
 - `eval/report.py`
 - `install.sh`
+- `scripts/serve_fallback.sh`
+- `tests/test_data_pipeline.py`

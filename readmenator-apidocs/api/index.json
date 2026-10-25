@@ -2,25 +2,25 @@
  "schema_version": 1,
  "format": "jsonl",
  "meta": {
-  "modules": 51,
-  "entities": 1139,
+  "modules": 56,
+  "entities": 1222,
   "languages": {
    "c": 1,
-   "py": 49,
-   "sh": 1
+   "py": 53,
+   "sh": 2
   },
   "kinds": {
-   "attribute": 396,
-   "class": 119,
+   "attribute": 424,
+   "class": 120,
    "classmethod": 8,
-   "constant": 51,
+   "constant": 63,
    "constructor": 80,
    "enum": 1,
    "exception": 1,
-   "function": 183,
+   "function": 218,
    "macro": 41,
-   "method": 165,
-   "module": 51,
+   "method": 167,
+   "module": 56,
    "property": 18,
    "protocol": 1,
    "staticmethod": 18,
@@ -28,20 +28,20 @@
    "variable": 3
   },
   "truncated": false,
-  "skipped_files": 4,
+  "skipped_files": 8,
   "privacy_mode": false
  },
  "coverage": {
   "overall": {
-   "documented": 348,
-   "total": 689,
-   "percent": 50.5
+   "documented": 367,
+   "total": 732,
+   "percent": 50.1
   },
   "by_kind": {
    "class": {
     "documented": 102,
-    "total": 119,
-    "percent": 85.7
+    "total": 120,
+    "percent": 85.0
    },
    "classmethod": {
     "documented": 8,
@@ -64,9 +64,9 @@
     "percent": 100.0
    },
    "function": {
-    "documented": 62,
-    "total": 183,
-    "percent": 33.9
+    "documented": 76,
+    "total": 218,
+    "percent": 34.9
    },
    "macro": {
     "documented": 4,
@@ -75,13 +75,13 @@
    },
    "method": {
     "documented": 104,
-    "total": 165,
-    "percent": 63.0
+    "total": 167,
+    "percent": 62.3
    },
    "module": {
-    "documented": 46,
-    "total": 51,
-    "percent": 90.2
+    "documented": 51,
+    "total": 56,
+    "percent": 91.1
    },
    "property": {
     "documented": 3,
@@ -200,6 +200,11 @@
     "total": 3,
     "percent": 33.3
    },
+   "eval/tasks.py": {
+    "documented": 1,
+    "total": 13,
+    "percent": 7.7
+   },
    "eval/temp_sweep.py": {
     "documented": 1,
     "total": 6,
@@ -214,6 +219,11 @@
     "documented": 0,
     "total": 1,
     "percent": 0.0
+   },
+   "scripts/serve_fallback.sh": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
    },
    "synthetic_dataset.py": {
     "documented": 13,
@@ -237,13 +247,18 @@
    },
    "topogpt3/api_server.py": {
     "documented": 1,
-    "total": 26,
-    "percent": 3.8
+    "total": 27,
+    "percent": 3.7
    },
    "topogpt3/chat.py": {
     "documented": 4,
     "total": 7,
     "percent": 57.1
+   },
+   "topogpt3/checkpoint_meta.py": {
+    "documented": 4,
+    "total": 6,
+    "percent": 66.7
    },
    "topogpt3/continuation.py": {
     "documented": 4,
@@ -264,6 +279,11 @@
     "documented": 1,
     "total": 2,
     "percent": 50.0
+   },
+   "topogpt3/fallback.py": {
+    "documented": 5,
+    "total": 12,
+    "percent": 41.7
    },
    "topogpt3/inference.py": {
     "documented": 44,
@@ -296,9 +316,9 @@
     "percent": 54.2
    },
    "topogpt3/rewards.py": {
-    "documented": 4,
-    "total": 10,
-    "percent": 40.0
+    "documented": 7,
+    "total": 13,
+    "percent": 53.8
    },
    "topogpt3/rollout.py": {
     "documented": 1,
@@ -309,6 +329,11 @@
     "documented": 9,
     "total": 14,
     "percent": 64.3
+   },
+   "topogpt3/tokenizer_tools.py": {
+    "documented": 4,
+    "total": 6,
+    "percent": 66.7
    },
    "topogpt3/tools_agent.py": {
     "documented": 2,
@@ -321,9 +346,9 @@
     "percent": 47.2
    },
    "topogpt3/train_agent.py": {
-    "documented": 1,
+    "documented": 2,
     "total": 3,
-    "percent": 33.3
+    "percent": 66.7
    },
    "topogpt3/train_distill.py": {
     "documented": 1,
@@ -459,6 +484,11 @@
    "entities": 3
   },
   {
+   "uid": "eval/tasks.py",
+   "path": "modules/eval.tasks.py.jsonl",
+   "entities": 14
+  },
+  {
    "uid": "eval/temp_sweep.py",
    "path": "modules/eval.temp_sweep.py.jsonl",
    "entities": 7
@@ -472,6 +502,11 @@
    "uid": "install.sh",
    "path": "modules/install.sh.jsonl",
    "entities": 1
+  },
+  {
+   "uid": "scripts/serve_fallback.sh",
+   "path": "modules/scripts.serve_fallback.sh.jsonl",
+   "entities": 2
   },
   {
    "uid": "synthetic_dataset.py",
@@ -496,12 +531,17 @@
   {
    "uid": "topogpt3/api_server.py",
    "path": "modules/topogpt3.api_server.py.jsonl",
-   "entities": 86
+   "entities": 103
   },
   {
    "uid": "topogpt3/chat.py",
    "path": "modules/topogpt3.chat.py.jsonl",
    "entities": 21
+  },
+  {
+   "uid": "topogpt3/checkpoint_meta.py",
+   "path": "modules/topogpt3.checkpoint_meta.py.jsonl",
+   "entities": 6
   },
   {
    "uid": "topogpt3/continuation.py",
@@ -522,6 +562,11 @@
    "uid": "topogpt3/export_chat.py",
    "path": "modules/topogpt3.export_chat.py.jsonl",
    "entities": 2
+  },
+  {
+   "uid": "topogpt3/fallback.py",
+   "path": "modules/topogpt3.fallback.py.jsonl",
+   "entities": 35
   },
   {
    "uid": "topogpt3/inference.py",
@@ -556,7 +601,7 @@
   {
    "uid": "topogpt3/rewards.py",
    "path": "modules/topogpt3.rewards.py.jsonl",
-   "entities": 10
+   "entities": 13
   },
   {
    "uid": "topogpt3/rollout.py",
@@ -567,6 +612,11 @@
    "uid": "topogpt3/structured_output.py",
    "path": "modules/topogpt3.structured_output.py.jsonl",
    "entities": 17
+  },
+  {
+   "uid": "topogpt3/tokenizer_tools.py",
+   "path": "modules/topogpt3.tokenizer_tools.py.jsonl",
+   "entities": 6
   },
   {
    "uid": "topogpt3/tools_agent.py",
@@ -621,7 +671,7 @@
  ],
  "warnings": {
   "path": "warnings.jsonl",
-  "total": 270
+  "total": 296
  },
  "usage": [
   "grep -h '\"name\":\"<Name>\"' readmenator-apidocs/api/modules/*.jsonl",

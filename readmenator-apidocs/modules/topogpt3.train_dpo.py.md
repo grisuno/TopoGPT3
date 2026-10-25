@@ -18,6 +18,7 @@ Solid arrows stay in this module, dashed arrows leave it.
 flowchart LR
     n_topogpt3_train_dpo_py__main(["main"])
     n_topogpt3_train_dpo_py__load_model(["load_model"])
+    n_topogpt3_checkpoint_meta_py__config_from_checkpoint["checkpoint_meta.config_from_checkpoint"]
     n_topogpt3_model_py__TopoGPT2___init__["model.TopoGPT2.__init__"]
     n_topogpt3_model_py__TopoGPT2Config["model.TopoGPT2Config"]
     n_topogpt3_model_py__BPETokenizer___init__["model.BPETokenizer.__init__"]
@@ -31,6 +32,7 @@ flowchart LR
     n_topogpt3_trainer_utils_topo_py__setup_seed["trainer_utils_topo.setup_seed"]
     n_topogpt3_trainer_utils_topo_py__topo_checkpoint["trainer_utils_topo.topo_checkpoint"]
     n_topogpt3_train_dpo_py__main --> n_topogpt3_train_dpo_py__load_model
+    n_topogpt3_train_dpo_py__load_model -.-> n_topogpt3_checkpoint_meta_py__config_from_checkpoint
     n_topogpt3_train_dpo_py__load_model -.-> n_topogpt3_model_py__TopoGPT2___init__
     n_topogpt3_train_dpo_py__load_model -.-> n_topogpt3_model_py__TopoGPT2Config
     n_topogpt3_train_dpo_py__main -.-> n_topogpt3_model_py__BPETokenizer___init__
@@ -51,7 +53,7 @@ flowchart LR
 
 ### `load_model`
 
-`function` | [topogpt3/train_dpo.py:24](../../topogpt3/train_dpo.py#L24)
+`function` | [topogpt3/train_dpo.py:31](../../topogpt3/train_dpo.py#L31)
 
 ```python
 def load_model(checkpoint, device)
@@ -64,7 +66,7 @@ def load_model(checkpoint, device)
 | `checkpoint` |  |  |  |
 | `device` |  |  |  |
 
-*Calls:* [`TopoGPT2.__init__`](topogpt3.model.py.md#topogpt2-__init__), [`TopoGPT2Config`](topogpt3.model.py.md#topogpt2config)
+*Calls:* [`config_from_checkpoint`](topogpt3.checkpoint_meta.py.md#config_from_checkpoint), [`TopoGPT2.__init__`](topogpt3.model.py.md#topogpt2-__init__), [`TopoGPT2Config`](topogpt3.model.py.md#topogpt2config)
 
 *Called by:* [`main`](#main)
 
@@ -74,7 +76,7 @@ def load_model(checkpoint, device)
 
 ### `main`
 
-`function` | [topogpt3/train_dpo.py:33](../../topogpt3/train_dpo.py#L33)
+`function` | [topogpt3/train_dpo.py:43](../../topogpt3/train_dpo.py#L43)
 
 ```python
 def main()

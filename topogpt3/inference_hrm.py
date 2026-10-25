@@ -34,15 +34,17 @@ Usage:
     python3 inference_hrm.py --prompt "def fibonacci(" --hrm-h-iters 4 \\
         --hrm-l-iters 6 --hrm-l-window 3 --max-new 256
 """
+
 from __future__ import annotations
 
 import argparse
 import logging
 import sys
 import time
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Optional, Tuple
+from typing import Any
 
 import torch
 import torch.nn.functional as F
@@ -139,7 +141,7 @@ class HRMInferenceSettings:
     embed literals.
     """
 
-    model_scale: str = "small"
+    model_scale: str = "auto"
     device: str = field(
         default_factory=lambda: "cuda" if torch.cuda.is_available() else "cpu"
     )
@@ -195,7 +197,7 @@ class HRMInferenceSettings:
     min_top_k: int = 0
     min_repetition_penalty: float = 0.5
     max_repetition_penalty: float = 5.0
-    max_checkpoint_bytes: int = 50 * (1024 ** 3)
+    max_checkpoint_bytes: int = 50 * (1024**3)
     min_checkpoint_bytes: int = 1024
 
     min_hrm_h_iters: int = 0
@@ -221,14 +223,12 @@ class HRMInferenceSettings:
     def scale_presets() -> Mapping[str, ScalePreset]:
         """Return the architecture preset table indexed by scale name."""
         return {
-            "micro":  ScalePreset(d_model=64,  n_heads=4,  n_layers=2,
-                                  max_seq_len=128),
-            "small":  ScalePreset(d_model=256, n_heads=8,  n_layers=6,
-                                  max_seq_len=256),
-            "medium": ScalePreset(d_model=512, n_heads=8,  n_layers=12,
-                                  max_seq_len=512),
-            "gpt2":   ScalePreset(d_model=768, n_heads=12, n_layers=12,
-                                  max_seq_len=1024),
+            "micro": ScalePreset(d_model=64, n_heads=4, n_layers=2, max_seq_len=128),
+            "small": ScalePreset(d_model=256, n_heads=8, n_layers=6, max_seq_len=256),
+            "medium": ScalePreset(d_model=512, n_heads=8, n_layers=12, max_seq_len=512),
+            "large": ScalePreset(d_model=512, n_heads=8, n_layers=13, max_seq_len=512),
+            "xlarge": ScalePreset(d_model=576, n_heads=8, n_layers=14, max_seq_len=512),
+            "gpt2": ScalePreset(d_model=768, n_heads=12, n_layers=12, max_seq_len=1024),
         }
 
     def preset(self) -> ScalePreset:
@@ -243,24 +243,25 @@ class HRMInferenceSettings:
 
     def validate(self) -> None:
         """Raise ValueError if any setting falls outside its safety bounds."""
-        if not (self.min_max_new_tokens
-                <= self.max_new_tokens <= self.max_max_new_tokens):
+        if not (
+            self.min_max_new_tokens <= self.max_new_tokens <= self.max_max_new_tokens
+        ):
             raise ValueError(
                 f"max_new_tokens={self.max_new_tokens} outside "
                 f"[{self.min_max_new_tokens}, {self.max_max_new_tokens}]"
             )
-        if not (self.min_temperature
-                <= self.temperature <= self.max_temperature):
+        if not (self.min_temperature <= self.temperature <= self.max_temperature):
             raise ValueError(
                 f"temperature={self.temperature} outside "
                 f"[{self.min_temperature}, {self.max_temperature}]"
             )
         if self.top_k < self.min_top_k:
-            raise ValueError(
-                f"top_k={self.top_k} must be >= {self.min_top_k}"
-            )
-        if not (self.min_repetition_penalty
-                <= self.repetition_penalty <= self.max_repetition_penalty):
+            raise ValueError(f"top_k={self.top_k} must be >= {self.min_top_k}")
+        if not (
+            self.min_repetition_penalty
+            <= self.repetition_penalty
+            <= self.max_repetition_penalty
+        ):
             raise ValueError(
                 f"repetition_penalty={self.repetition_penalty} outside "
                 f"[{self.min_repetition_penalty}, "
@@ -271,26 +272,22 @@ class HRMInferenceSettings:
         if self.elapsed_floor_seconds <= 0:
             raise ValueError("elapsed_floor_seconds must be positive")
         r = self.reasoning
-        if not (self.min_hrm_h_iters
-                <= r.max_high_level_iters <= self.max_hrm_h_iters):
+        if not (self.min_hrm_h_iters <= r.max_high_level_iters <= self.max_hrm_h_iters):
             raise ValueError(
                 f"max_high_level_iters={r.max_high_level_iters} outside "
                 f"[{self.min_hrm_h_iters}, {self.max_hrm_h_iters}]"
             )
-        if not (self.min_hrm_l_iters
-                <= r.max_low_level_iters <= self.max_hrm_l_iters):
+        if not (self.min_hrm_l_iters <= r.max_low_level_iters <= self.max_hrm_l_iters):
             raise ValueError(
                 f"max_low_level_iters={r.max_low_level_iters} outside "
                 f"[{self.min_hrm_l_iters}, {self.max_hrm_l_iters}]"
             )
-        if not (self.min_hrm_l_window
-                <= r.low_level_window <= self.max_hrm_l_window):
+        if not (self.min_hrm_l_window <= r.low_level_window <= self.max_hrm_l_window):
             raise ValueError(
                 f"low_level_window={r.low_level_window} outside "
                 f"[{self.min_hrm_l_window}, {self.max_hrm_l_window}]"
             )
-        if not (self.min_hrm_h_window
-                <= r.high_level_window <= self.max_hrm_h_window):
+        if not (self.min_hrm_h_window <= r.high_level_window <= self.max_hrm_h_window):
             raise ValueError(
                 f"high_level_window={r.high_level_window} outside "
                 f"[{self.min_hrm_h_window}, {self.max_hrm_h_window}]"
@@ -300,8 +297,9 @@ class HRMInferenceSettings:
                 f"high_level_window={r.high_level_window} must be >= "
                 f"low_level_window={r.low_level_window}"
             )
-        if not (self.min_hrm_persist
-                <= r.high_level_persist_tokens <= self.max_hrm_persist):
+        if not (
+            self.min_hrm_persist <= r.high_level_persist_tokens <= self.max_hrm_persist
+        ):
             raise ValueError(
                 f"high_level_persist_tokens={r.high_level_persist_tokens} "
                 f"outside [{self.min_hrm_persist}, {self.max_hrm_persist}]"
@@ -316,15 +314,17 @@ class HRMInferenceSettings:
                 f"high_level_step={r.high_level_step} outside "
                 f"[{self.min_hrm_step}, {self.max_hrm_step}]"
             )
-        if not (self.min_hrm_warm_start
-                <= r.cache_warm_start_weight <= self.max_hrm_warm_start):
+        if not (
+            self.min_hrm_warm_start
+            <= r.cache_warm_start_weight
+            <= self.max_hrm_warm_start
+        ):
             raise ValueError(
                 f"cache_warm_start_weight={r.cache_warm_start_weight} "
                 f"outside [{self.min_hrm_warm_start}, "
                 f"{self.max_hrm_warm_start}]"
             )
-        if not (self.min_hrm_drift
-                <= r.max_drift_relative <= self.max_hrm_drift):
+        if not (self.min_hrm_drift <= r.max_drift_relative <= self.max_hrm_drift):
             raise ValueError(
                 f"max_drift_relative={r.max_drift_relative} outside "
                 f"[{self.min_hrm_drift}, {self.max_hrm_drift}]"
@@ -351,10 +351,12 @@ class HRMLoggerFactory:
         logger.setLevel(level)
         if not logger.handlers:
             handler = logging.StreamHandler(sys.stdout)
-            handler.setFormatter(logging.Formatter(
-                fmt=settings.log_format,
-                datefmt=settings.log_date_format,
-            ))
+            handler.setFormatter(
+                logging.Formatter(
+                    fmt=settings.log_format,
+                    datefmt=settings.log_date_format,
+                )
+            )
             logger.addHandler(handler)
         logger.propagate = False
         return logger
@@ -380,8 +382,7 @@ class SecurePathResolver:
         return candidate
 
     @staticmethod
-    def require_existing_file(path: Path,
-                              expected_suffix: Optional[str] = None) -> Path:
+    def require_existing_file(path: Path, expected_suffix: str | None = None) -> Path:
         """Validate path points to an existing regular file with the expected suffix."""
         if not path.exists():
             raise FileNotFoundError(f"Required file not found: {path}")
@@ -404,8 +405,10 @@ class SourceModuleLoader:
     def load(self) -> Any:
         """Return the topogpt3.train module which re-exports model symbols."""
         from . import train as runtime_module
+
         self._logger.info(
-            "Loaded TopoGPT3 runtime module: %s", runtime_module.__name__,
+            "Loaded TopoGPT3 runtime module: %s",
+            runtime_module.__name__,
         )
         return runtime_module
 
@@ -417,7 +420,8 @@ class CheckpointPaths:
         self._settings = settings
         self._root = Path(settings.checkpoint_dir).resolve()
         self._slot = SecurePathResolver.resolve_under(
-            self._root, settings.checkpoint_name,
+            self._root,
+            settings.checkpoint_name,
         )
 
     @property
@@ -428,26 +432,27 @@ class CheckpointPaths:
     def model_file(self) -> Path:
         """Resolved path to the safetensors weights file inside the slot."""
         return SecurePathResolver.resolve_under(
-            self._slot, self._settings.model_filename,
+            self._slot,
+            self._settings.model_filename,
         )
 
     def state_file(self) -> Path:
         """Resolved path to the JSON training-state file inside the slot."""
         return SecurePathResolver.resolve_under(
-            self._slot, self._settings.state_filename,
+            self._slot,
+            self._settings.state_filename,
         )
 
     def assert_ready(self) -> None:
         """Verify weights exist and the on-disk size lies within safety bounds."""
         weights = self.model_file()
         SecurePathResolver.require_existing_file(
-            weights, expected_suffix=Path(self._settings.model_filename).suffix,
+            weights,
+            expected_suffix=Path(self._settings.model_filename).suffix,
         )
         size_bytes = weights.stat().st_size
         if size_bytes < self._settings.min_checkpoint_bytes:
-            raise ValueError(
-                f"Checkpoint too small ({size_bytes} bytes): {weights}"
-            )
+            raise ValueError(f"Checkpoint too small ({size_bytes} bytes): {weights}")
         if size_bytes > self._settings.max_checkpoint_bytes:
             raise ValueError(
                 f"Checkpoint exceeds allowed size "
@@ -463,8 +468,9 @@ class WeightShapeProbe:
         self._settings = settings
         self._logger = logger
 
-    def detect_n_kv_heads(self, weights_path: Path,
-                          d_model: int, n_heads: int) -> Optional[int]:
+    def detect_n_kv_heads(
+        self, weights_path: Path, d_model: int, n_heads: int
+    ) -> int | None:
         """Recover N_KV_HEADS used at training by inspecting the k_proj shape.
 
         Returns None when the probe key is absent, signalling the caller to
@@ -482,7 +488,8 @@ class WeightShapeProbe:
             if probe_key not in keys:
                 self._logger.warning(
                     "Probe key '%s' missing from checkpoint; "
-                    "falling back to scale defaults.", probe_key,
+                    "falling back to scale defaults.",
+                    probe_key,
                 )
                 return None
             tensor = handle.get_tensor(probe_key)
@@ -494,7 +501,9 @@ class WeightShapeProbe:
         n_kv = k_dim // d_head
         self._logger.info(
             "Detected N_KV_HEADS=%d (k_dim=%d, d_head=%d).",
-            n_kv, k_dim, d_head,
+            n_kv,
+            k_dim,
+            d_head,
         )
         return n_kv
 
@@ -502,16 +511,38 @@ class WeightShapeProbe:
 class TopoGPT2ConfigAligner:
     """Builds a TopoGPT2Config matching the loaded checkpoint and tokenizer."""
 
-    def __init__(self, settings: HRMInferenceSettings, source_module: Any,
-                 logger: logging.Logger):
+    def __init__(
+        self, settings: HRMInferenceSettings, source_module: Any, logger: logging.Logger
+    ):
         self._settings = settings
         self._source = source_module
         self._logger = logger
 
-    def build(self, n_kv_heads: Optional[int], vocab_size: int) -> Any:
+    def build(self, n_kv_heads: int | None, vocab_size: int) -> Any:
         """Return a TopoGPT2Config dataclass ready to instantiate the model."""
-        cfg_cls = getattr(self._source, "TopoGPT2Config")
-        kwargs: Dict[str, Any] = {
+        if self._settings.model_scale == "auto":
+            from .checkpoint_meta import config_from_checkpoint
+
+            checkpoint = (
+                Path(self._settings.checkpoint_dir) / self._settings.checkpoint_name
+            )
+            cfg, _meta = config_from_checkpoint(
+                str(checkpoint), device=self._settings.device
+            )
+            cfg.VOCAB_SIZE = vocab_size
+            self._logger.info(
+                "Auto-aligned TopoGPT2Config: scale=%s d_model=%d layers=%d "
+                "n_kv_heads=%d vocab=%d max_seq=%d",
+                cfg.SCALE,
+                cfg.D_MODEL,
+                cfg.N_LAYERS,
+                cfg.N_KV_HEADS,
+                cfg.VOCAB_SIZE,
+                cfg.MAX_SEQ_LEN,
+            )
+            return cfg
+        cfg_cls = self._source.TopoGPT2Config
+        kwargs: dict[str, Any] = {
             "SCALE": self._settings.model_scale,
             "DEVICE": self._settings.device,
             "RANDOM_SEED": self._settings.seed,
@@ -524,8 +555,14 @@ class TopoGPT2ConfigAligner:
         self._logger.info(
             "Aligned TopoGPT2Config: scale=%s d_model=%d n_heads=%d "
             "n_layers=%d n_kv_heads=%d vocab=%d max_seq=%d device=%s",
-            cfg.SCALE, cfg.D_MODEL, cfg.N_HEADS, cfg.N_LAYERS,
-            cfg.N_KV_HEADS, cfg.VOCAB_SIZE, cfg.MAX_SEQ_LEN, cfg.DEVICE,
+            cfg.SCALE,
+            cfg.D_MODEL,
+            cfg.N_HEADS,
+            cfg.N_LAYERS,
+            cfg.N_KV_HEADS,
+            cfg.VOCAB_SIZE,
+            cfg.MAX_SEQ_LEN,
+            cfg.DEVICE,
         )
         return cfg
 
@@ -539,15 +576,16 @@ class TokenizerFactory:
 
     def build(self) -> Any:
         """Return an instance of BPETokenizer bound to the configured encoding."""
-        tokenizer_cls = getattr(self._source, "BPETokenizer")
+        tokenizer_cls = self._source.BPETokenizer
         return tokenizer_cls(self._settings.tokenizer_encoding)
 
 
 class GaussPatchApplier:
     """Applies the idempotent Gauss complex-multiply patch when enabled."""
 
-    def __init__(self, settings: HRMInferenceSettings, source_module: Any,
-                 logger: logging.Logger):
+    def __init__(
+        self, settings: HRMInferenceSettings, source_module: Any, logger: logging.Logger
+    ):
         self._settings = settings
         self._source = source_module
         self._logger = logger
@@ -557,23 +595,23 @@ class GaussPatchApplier:
         if not self._settings.apply_gauss_patch_at_load:
             self._logger.info("Gauss complex-multiply patch disabled by settings.")
             return
-        patch_fn = getattr(self._source, "apply_gauss_patch")
+        patch_fn = self._source.apply_gauss_patch
         patch_fn(self._logger)
 
 
 class ModelAssembler:
     """Instantiates the model and loads weights from safetensors."""
 
-    def __init__(self, settings: HRMInferenceSettings, source_module: Any,
-                 logger: logging.Logger):
+    def __init__(
+        self, settings: HRMInferenceSettings, source_module: Any, logger: logging.Logger
+    ):
         self._settings = settings
         self._source = source_module
         self._logger = logger
 
-    def assemble(self, aligned_cfg: Any,
-                 paths: CheckpointPaths) -> torch.nn.Module:
+    def assemble(self, aligned_cfg: Any, paths: CheckpointPaths) -> torch.nn.Module:
         """Build the TopoGPT2 graph, load weights into it, and return it in eval mode."""
-        model_cls = getattr(self._source, "TopoGPT2")
+        model_cls = self._source.TopoGPT2
         model = model_cls(aligned_cfg)
         model.to(aligned_cfg.DEVICE)
         model.eval()
@@ -581,28 +619,33 @@ class ModelAssembler:
         params = model.count_params()
         self._logger.info(
             "Model parameters: total=%s trainable=%s",
-            f"{params['total']:,}", f"{params['trainable']:,}",
+            f"{params['total']:,}",
+            f"{params['trainable']:,}",
         )
 
         weights_path = paths.model_file()
         self._logger.info("Loading weights from %s", weights_path)
         state_dict = load_file(str(weights_path), device=aligned_cfg.DEVICE)
         missing, unexpected = model.load_state_dict(
-            state_dict, strict=self._settings.strict_state_dict,
+            state_dict,
+            strict=self._settings.strict_state_dict,
         )
         if missing:
             self._logger.info("Missing keys (likely tied weights): %s", missing)
         if unexpected:
             self._logger.info("Unexpected keys ignored: %s", unexpected)
-        self._logger.info("Weights loaded successfully (zero new parameters introduced).")
+        self._logger.info(
+            "Weights loaded successfully (zero new parameters introduced)."
+        )
         return model
 
 
 class SeedSynchronizer:
     """Applies deterministic seeds across torch, CUDA and the model package."""
 
-    def __init__(self, settings: HRMInferenceSettings, source_module: Any,
-                 logger: logging.Logger):
+    def __init__(
+        self, settings: HRMInferenceSettings, source_module: Any, logger: logging.Logger
+    ):
         self._settings = settings
         self._source = source_module
         self._logger = logger
@@ -617,7 +660,8 @@ class SeedSynchronizer:
             set_seed_fn(self._settings.seed, self._settings.device)
         self._logger.info(
             "Seed synchronized (seed=%d device=%s).",
-            self._settings.seed, self._settings.device,
+            self._settings.seed,
+            self._settings.device,
         )
 
 
@@ -629,8 +673,7 @@ class LatentChangeMetric:
             raise ValueError("epsilon_floor must be positive")
         self._epsilon_floor = epsilon_floor
 
-    def relative_change(self, current: torch.Tensor,
-                        previous: torch.Tensor) -> float:
+    def relative_change(self, current: torch.Tensor, previous: torch.Tensor) -> float:
         """Return ||current - previous|| / max(||previous||, epsilon_floor)."""
         if current.shape != previous.shape:
             raise ValueError(
@@ -694,20 +737,22 @@ class SparseHighLevelStateCache:
         if persist_tokens < 1:
             raise ValueError("persist_tokens must be >= 1")
         self._persist_tokens = persist_tokens
-        self._state: Optional[torch.Tensor] = None
+        self._state: torch.Tensor | None = None
         self._age: int = 0
 
-    def get_or_init(self, reference: torch.Tensor) -> Tuple[torch.Tensor, bool]:
+    def get_or_init(self, reference: torch.Tensor) -> tuple[torch.Tensor, bool]:
         """Return the cached high-level state or a zeroed one when stale.
 
         The boolean flag indicates whether the returned tensor came from a
         live cache hit (True) or a fresh zero initialization (False).
         """
-        if (self._state is None
-                or self._state.shape != reference.shape
-                or self._state.dtype != reference.dtype
-                or self._state.device != reference.device
-                or self._age >= self._persist_tokens):
+        if (
+            self._state is None
+            or self._state.shape != reference.shape
+            or self._state.dtype != reference.dtype
+            or self._state.device != reference.device
+            or self._age >= self._persist_tokens
+        ):
             self._state = torch.zeros_like(reference)
             self._age = 0
             return self._state, False
@@ -765,10 +810,13 @@ class HierarchicalRecursiveReasoner:
     horizons to amortize thinking effort over multiple tokens.
     """
 
-    def __init__(self, layers: List[torch.nn.Module],
-                 final_norm: torch.nn.Module,
-                 reasoning_config: RecursiveReasoningConfig,
-                 logger: logging.Logger):
+    def __init__(
+        self,
+        layers: list[torch.nn.Module],
+        final_norm: torch.nn.Module,
+        reasoning_config: RecursiveReasoningConfig,
+        logger: logging.Logger,
+    ):
         if reasoning_config.low_level_window > len(layers):
             raise ValueError(
                 f"low_level_window={reasoning_config.low_level_window} "
@@ -790,24 +838,33 @@ class HierarchicalRecursiveReasoner:
         """Return the number of trained transformer layers."""
         return len(self._layers)
 
-    def _full_pass(self, z_in: torch.Tensor,
-                   base_kvs: List[Optional[Tuple[torch.Tensor, torch.Tensor]]]
-                   ) -> Tuple[torch.Tensor, List[Tuple[torch.Tensor, torch.Tensor]]]:
+    def _full_pass(
+        self,
+        z_in: torch.Tensor,
+        base_kvs: list[tuple[torch.Tensor, torch.Tensor] | None],
+        position_offset: int | None = None,
+    ) -> tuple[torch.Tensor, list[tuple[torch.Tensor, torch.Tensor]]]:
         """Forward z_in through every layer using base_kvs as immutable prefix cache.
 
         Returns the layer-stack output and the freshly produced per-layer kv
         caches that incorporate the K and V derived from z_in.
         """
         x = z_in
-        produced: List[Tuple[torch.Tensor, torch.Tensor]] = []
+        produced: list[tuple[torch.Tensor, torch.Tensor]] = []
         for layer_idx, layer in enumerate(self._layers):
-            x, _aux_loss, kv_cache = layer(x, past_kv=base_kvs[layer_idx])
+            x, _aux_loss, kv_cache = layer(
+                x, past_kv=base_kvs[layer_idx], position_offset=position_offset
+            )
             produced.append(kv_cache)
         return x, produced
 
-    def _window_pass(self, z_in: torch.Tensor,
-                     base_kvs: List[Optional[Tuple[torch.Tensor, torch.Tensor]]],
-                     window: int) -> torch.Tensor:
+    def _window_pass(
+        self,
+        z_in: torch.Tensor,
+        base_kvs: list[tuple[torch.Tensor, torch.Tensor] | None],
+        window: int,
+        position_offset: int | None = None,
+    ) -> torch.Tensor:
         """Forward z_in through the trailing `window` layers only.
 
         The per-layer kv caches produced during this read-only pass are
@@ -820,18 +877,22 @@ class HierarchicalRecursiveReasoner:
         x = z_in
         for layer_idx in range(n - window, n):
             x, _aux_loss, _kv_cache = self._layers[layer_idx](
-                x, past_kv=base_kvs[layer_idx],
+                x, past_kv=base_kvs[layer_idx], position_offset=position_offset
             )
         return x
 
-    def reason(self,
-               z_initial: torch.Tensor,
-               base_kvs: List[Optional[Tuple[torch.Tensor, torch.Tensor]]],
-               cached_refinement: Optional[torch.Tensor],
-               ) -> Tuple[torch.Tensor,
-                          List[Tuple[torch.Tensor, torch.Tensor]],
-                          torch.Tensor,
-                          ReasoningIterationStats]:
+    def reason(
+        self,
+        z_initial: torch.Tensor,
+        base_kvs: list[tuple[torch.Tensor, torch.Tensor] | None],
+        cached_refinement: torch.Tensor | None,
+        position_offset: int | None = None,
+    ) -> tuple[
+        torch.Tensor,
+        list[tuple[torch.Tensor, torch.Tensor]],
+        torch.Tensor,
+        ReasoningIterationStats,
+    ]:
         """Run hierarchical recursive thinking for a single emission step.
 
         Args:
@@ -852,18 +913,21 @@ class HierarchicalRecursiveReasoner:
         cfg = self._config
         stats = ReasoningIterationStats()
 
-        z_baseline, committed_kvs = self._full_pass(z_initial, base_kvs)
+        z_baseline, committed_kvs = self._full_pass(
+            z_initial, base_kvs, position_offset
+        )
 
-        recursion_requested = (cfg.enabled
-                               and (cfg.max_high_level_iters > 0
-                                    or cfg.max_low_level_iters > 0))
+        recursion_requested = cfg.enabled and (
+            cfg.max_high_level_iters > 0 or cfg.max_low_level_iters > 0
+        )
         if not recursion_requested:
-            return (z_baseline, committed_kvs,
-                    torch.zeros_like(z_baseline), stats)
+            return (z_baseline, committed_kvs, torch.zeros_like(z_baseline), stats)
 
         z = z_baseline
-        if (cached_refinement is not None
-                and cached_refinement.shape == z_baseline.shape):
+        if (
+            cached_refinement is not None
+            and cached_refinement.shape == z_baseline.shape
+        ):
             z = z + cfg.cache_warm_start_weight * cached_refinement
             stats.h_reused_from_cache = True
 
@@ -873,7 +937,9 @@ class HierarchicalRecursiveReasoner:
 
         for h_step in range(cfg.max_high_level_iters):
             for l_step in range(cfg.max_low_level_iters):
-                z_new = self._window_pass(z, base_kvs, cfg.low_level_window)
+                z_new = self._window_pass(
+                    z, base_kvs, cfg.low_level_window, position_offset
+                )
                 delta = z_new - z
                 low_change = self._metric.relative_change(z_new, z)
                 z = z + cfg.low_level_step * delta
@@ -886,8 +952,10 @@ class HierarchicalRecursiveReasoner:
                     z = z_baseline
                     stats.halted_by_safety_cap = True
                     break
-                if (l_step + 1 >= cfg.minimum_low_level_iters
-                        and low_change < cfg.attractor_low_epsilon):
+                if (
+                    l_step + 1 >= cfg.minimum_low_level_iters
+                    and low_change < cfg.attractor_low_epsilon
+                ):
                     break
                 if total_layer_calls >= cfg.safety_max_total_iterations:
                     stats.halted_by_safety_cap = True
@@ -896,7 +964,9 @@ class HierarchicalRecursiveReasoner:
             if stats.halted_by_safety_cap:
                 break
 
-            z_new = self._window_pass(z, base_kvs, cfg.high_level_window)
+            z_new = self._window_pass(
+                z, base_kvs, cfg.high_level_window, position_offset
+            )
             delta = z_new - z
             high_change = self._metric.relative_change(z_new, z)
             z = z + cfg.high_level_step * delta
@@ -909,8 +979,10 @@ class HierarchicalRecursiveReasoner:
                 z = z_baseline
                 stats.halted_by_safety_cap = True
                 break
-            if (h_step + 1 >= cfg.minimum_high_level_iters
-                    and high_change < cfg.attractor_high_epsilon):
+            if (
+                h_step + 1 >= cfg.minimum_high_level_iters
+                and high_change < cfg.attractor_high_epsilon
+            ):
                 stats.converged_high_level = True
                 break
             if total_layer_calls >= cfg.safety_max_total_iterations:
@@ -923,9 +995,12 @@ class HierarchicalRecursiveReasoner:
             self._logger.debug(
                 "HRM token: h_iters=%d l_iters=%d converged=%s safety=%s "
                 "h_change=%.3e l_change=%.3e h_reused=%s",
-                stats.high_level_iters, stats.low_level_iters_total,
-                stats.converged_high_level, stats.halted_by_safety_cap,
-                stats.final_high_level_change, stats.final_low_level_change,
+                stats.high_level_iters,
+                stats.low_level_iters_total,
+                stats.converged_high_level,
+                stats.halted_by_safety_cap,
+                stats.final_high_level_change,
+                stats.final_low_level_change,
                 stats.h_reused_from_cache,
             )
 
@@ -938,9 +1013,14 @@ class LogitsSampler:
     def __init__(self, logger: logging.Logger):
         self._logger = logger
 
-    def sample(self, logits: torch.Tensor, token_history: torch.Tensor,
-               temperature: float, top_k: int,
-               repetition_penalty: float) -> torch.Tensor:
+    def sample(
+        self,
+        logits: torch.Tensor,
+        token_history: torch.Tensor,
+        temperature: float,
+        top_k: int,
+        repetition_penalty: float,
+    ) -> torch.Tensor:
         """Return a sampled token id tensor of shape [B, 1] from raw logits [B, V]."""
         if temperature <= 0:
             raise ValueError("temperature must be positive at sampling time")
@@ -953,8 +1033,9 @@ class LogitsSampler:
             effective_k = min(top_k, scaled.size(-1))
             top_values, _ = torch.topk(scaled, effective_k)
             threshold = top_values[:, -1:].expand_as(scaled)
-            scaled = torch.where(scaled < threshold,
-                                 torch.full_like(scaled, float("-inf")), scaled)
+            scaled = torch.where(
+                scaled < threshold, torch.full_like(scaled, float("-inf")), scaled
+            )
         probabilities = F.softmax(scaled, dim=-1)
         return torch.multinomial(probabilities, 1)
 
@@ -970,7 +1051,7 @@ class SamplingPolicy:
     end_of_text_token_id: int
 
     @classmethod
-    def from_settings(cls, settings: HRMInferenceSettings) -> "SamplingPolicy":
+    def from_settings(cls, settings: HRMInferenceSettings) -> SamplingPolicy:
         """Construct a SamplingPolicy from inference settings."""
         return cls(
             max_new_tokens=settings.max_new_tokens,
@@ -1013,10 +1094,9 @@ class HRMGenerationEngine:
         self._logger = logger
         self._sampler = LogitsSampler(logger)
 
-    def _encode_prompt(self, model: torch.nn.Module, prompt_ids: List[int]
-                       ) -> Tuple[torch.Tensor,
-                                  List[Tuple[torch.Tensor, torch.Tensor]],
-                                  torch.Tensor]:
+    def _encode_prompt(
+        self, model: torch.nn.Module, prompt_ids: list[int]
+    ) -> tuple[torch.Tensor, list[tuple[torch.Tensor, torch.Tensor]], torch.Tensor]:
         """Run the prompt through the full stack once, returning the final
         hidden state of the last position, the per-layer base kv caches that
         cover all prompt tokens except the last one, and the embedding of the
@@ -1028,7 +1108,7 @@ class HRMGenerationEngine:
 
         token_tensor = torch.tensor([prompt_ids], dtype=torch.long, device=device)
         if len(prompt_ids) == 1:
-            base_kvs: List[Optional[Tuple[torch.Tensor, torch.Tensor]]] = [
+            base_kvs: list[tuple[torch.Tensor, torch.Tensor] | None] = [
                 None for _ in model.layers
             ]
             seed_embed = model.token_embed(token_tensor)
@@ -1037,7 +1117,7 @@ class HRMGenerationEngine:
         prefix_tokens = token_tensor[:, :-1]
         last_token = token_tensor[:, -1:]
         x = model.token_embed(prefix_tokens)
-        base_kvs_built: List[Tuple[torch.Tensor, torch.Tensor]] = []
+        base_kvs_built: list[tuple[torch.Tensor, torch.Tensor]] = []
         for layer in model.layers:
             x, _aux_loss, kv_cache = layer(x, past_kv=None)
             base_kvs_built.append(kv_cache)
@@ -1045,8 +1125,13 @@ class HRMGenerationEngine:
         return seed_embed, base_kvs_built, token_tensor
 
     @torch.no_grad()
-    def run(self, model: torch.nn.Module, tokenizer: Any, prompt: str,
-            policy: SamplingPolicy) -> GenerationReport:
+    def run(
+        self,
+        model: torch.nn.Module,
+        tokenizer: Any,
+        prompt: str,
+        policy: SamplingPolicy,
+    ) -> GenerationReport:
         """Generate a completion for prompt and return a GenerationReport."""
         prompt_ids = tokenizer.encode(prompt)
         if len(prompt_ids) == 0:
@@ -1069,8 +1154,12 @@ class HRMGenerationEngine:
             "Sampling: temp=%.3f top_k=%d rep_pen=%.3f max_new=%d "
             "prompt_tokens=%d hrm_enabled=%s h_iters=%d l_iters=%d "
             "l_window=%d persist=%d",
-            policy.temperature, policy.top_k, policy.repetition_penalty,
-            policy.max_new_tokens, len(prompt_ids), reasoning_cfg.enabled,
+            policy.temperature,
+            policy.top_k,
+            policy.repetition_penalty,
+            policy.max_new_tokens,
+            len(prompt_ids),
+            reasoning_cfg.enabled,
             reasoning_cfg.max_high_level_iters,
             reasoning_cfg.max_low_level_iters,
             reasoning_cfg.low_level_window,
@@ -1105,7 +1194,7 @@ class HRMGenerationEngine:
         z_seed, base_kvs, full_history = self._encode_prompt(model, prompt_ids)
         prompt_ids_base = prompt_ids
         active_history = full_history
-        emitted_ids_all: List[int] = []
+        emitted_ids_all: list[int] = []
         full_text = ""
         continuation_count = 0
 
@@ -1113,8 +1202,9 @@ class HRMGenerationEngine:
             current_prompt = tokenizer.decode(active_history[0].tolist())
             z_seed, base_kvs, full_history = self._encode_prompt(model, prompt_ids_base)
             z_input = z_seed
-            emitted_ids: List[int] = []
+            emitted_ids: list[int] = []
             active_history = full_history
+            position = len(prompt_ids_base) - 1
 
             for new_token_index in range(policy.max_new_tokens):
                 cached_refinement, _hit = h_cache.get_or_init(z_input)
@@ -1122,6 +1212,7 @@ class HRMGenerationEngine:
                     z_initial=z_input,
                     base_kvs=base_kvs,
                     cached_refinement=cached_refinement,
+                    position_offset=position,
                 )
                 summary.absorb(stats)
                 base_kvs = list(committed_kvs)
@@ -1137,6 +1228,7 @@ class HRMGenerationEngine:
                     repetition_penalty=policy.repetition_penalty,
                 )
                 next_id = int(next_tok.item())
+                position += 1
                 emitted_ids.append(next_id)
                 active_history = torch.cat([active_history, next_tok], dim=1)
 
@@ -1151,16 +1243,24 @@ class HRMGenerationEngine:
             if not self._settings.auto_continue:
                 break
 
-            from .continuation import is_response_complete, extract_tail_for_continuation
+            from .continuation import (
+                extract_tail_for_continuation,
+                is_response_complete,
+            )
 
-            prompt_text = tokenizer.decode(torch.tensor([prompt_ids_base],
-                                          dtype=torch.long, device=device)[0].tolist())
-            generated = full_text[len(prompt_text):]
+            prompt_text = tokenizer.decode(
+                torch.tensor([prompt_ids_base], dtype=torch.long, device=device)[
+                    0
+                ].tolist()
+            )
+            generated = full_text[len(prompt_text) :]
 
             if is_response_complete(generated):
                 break
 
-            tail = extract_tail_for_continuation(generated, tail_lines=self._settings.continuation_tail_lines)
+            tail = extract_tail_for_continuation(
+                generated, tail_lines=self._settings.continuation_tail_lines
+            )
             if not tail:
                 break
 
@@ -1197,26 +1297,32 @@ class ResultRenderer:
         """Emit a banner with prompt, completion, throughput and reasoning stats."""
         s = self._settings
         sep = s.result_separator_char * s.result_separator_width
-        completion = (
-            report.output[len(report.prompt):]
-            if report.output.startswith(report.prompt)
-            else report.output
-        )
+        completion = report.output.removeprefix(report.prompt)
         summary = report.reasoning_summary
-        avg_h = (summary.total_high_level_iters / summary.tokens_generated
-                 if summary.tokens_generated > 0 else 0.0)
-        avg_l = (summary.total_low_level_iters / summary.tokens_generated
-                 if summary.tokens_generated > 0 else 0.0)
+        avg_h = (
+            summary.total_high_level_iters / summary.tokens_generated
+            if summary.tokens_generated > 0
+            else 0.0
+        )
+        avg_l = (
+            summary.total_low_level_iters / summary.tokens_generated
+            if summary.tokens_generated > 0
+            else 0.0
+        )
         self._logger.info(
             "Generated %d new tokens in %.2fs (%.1f tok/s)",
-            report.new_tokens, report.elapsed_seconds,
+            report.new_tokens,
+            report.elapsed_seconds,
             report.tokens_per_second(s.elapsed_floor_seconds),
         )
         self._logger.info(
             "%s: avg_h=%.2f avg_l=%.2f h_converged=%d safety_halts=%d "
             "h_cache_reuses=%d",
-            s.reasoning_label, avg_h, avg_l,
-            summary.high_level_convergences, summary.safety_halts,
+            s.reasoning_label,
+            avg_h,
+            avg_l,
+            summary.high_level_convergences,
+            summary.safety_halts,
             summary.h_cache_reuses,
         )
         out = sys.stdout
@@ -1230,8 +1336,9 @@ class ResultRenderer:
 class HRMInferencePipeline:
     """Orchestrator wiring loader, builder, reasoner, engine and renderer."""
 
-    def __init__(self, settings: HRMInferenceSettings,
-                 logger: Optional[logging.Logger] = None):
+    def __init__(
+        self, settings: HRMInferenceSettings, logger: logging.Logger | None = None
+    ):
         settings.validate()
         self._settings = settings
         self._logger = logger or HRMLoggerFactory.build(settings)
@@ -1239,15 +1346,20 @@ class HRMInferencePipeline:
     def execute(self) -> GenerationReport:
         """Run the full inference pipeline end-to-end and return the report."""
         source_module = SourceModuleLoader(
-            self._settings, self._logger,
+            self._settings,
+            self._logger,
         ).load()
 
         SeedSynchronizer(
-            self._settings, source_module, self._logger,
+            self._settings,
+            source_module,
+            self._logger,
         ).apply()
 
         GaussPatchApplier(
-            self._settings, source_module, self._logger,
+            self._settings,
+            source_module,
+            self._logger,
         ).apply_if_enabled()
 
         paths = CheckpointPaths(self._settings)
@@ -1255,7 +1367,8 @@ class HRMInferencePipeline:
 
         preset = self._settings.preset()
         n_kv = WeightShapeProbe(
-            self._settings, self._logger,
+            self._settings,
+            self._logger,
         ).detect_n_kv_heads(
             paths.model_file(),
             d_model=preset.d_model,
@@ -1264,16 +1377,22 @@ class HRMInferencePipeline:
 
         tokenizer = TokenizerFactory(self._settings, source_module).build()
         aligned_cfg = TopoGPT2ConfigAligner(
-            self._settings, source_module, self._logger,
+            self._settings,
+            source_module,
+            self._logger,
         ).build(n_kv_heads=n_kv, vocab_size=tokenizer.vocab_size)
 
         model = ModelAssembler(
-            self._settings, source_module, self._logger,
+            self._settings,
+            source_module,
+            self._logger,
         ).assemble(aligned_cfg, paths)
 
         engine = HRMGenerationEngine(self._settings, self._logger)
         report = engine.run(
-            model, tokenizer, self._settings.prompt,
+            model,
+            tokenizer,
+            self._settings.prompt,
             SamplingPolicy.from_settings(self._settings),
         )
         ResultRenderer(self._settings, self._logger).render(report)
@@ -1295,157 +1414,201 @@ class CliArgumentParser:
             ),
         )
         parser.add_argument(
-            "--prompt", type=str, default=defaults.prompt,
+            "--prompt",
+            type=str,
+            default=defaults.prompt,
             help="Code prefix to complete.",
         )
         parser.add_argument(
-            "--scale", type=str, default=defaults.model_scale,
-            choices=sorted(HRMInferenceSettings.scale_presets().keys()),
+            "--scale",
+            type=str,
+            default=defaults.model_scale,
+            choices=["auto"] + sorted(HRMInferenceSettings.scale_presets().keys()),
             help="Model scale preset.",
         )
         parser.add_argument(
-            "--max-new", type=int, default=defaults.max_new_tokens,
+            "--max-new",
+            type=int,
+            default=defaults.max_new_tokens,
             help="Maximum number of new tokens to generate.",
         )
         parser.add_argument(
-            "--temp", type=float, default=defaults.temperature,
+            "--temp",
+            type=float,
+            default=defaults.temperature,
             help="Sampling temperature (lower means more deterministic).",
         )
         parser.add_argument(
-            "--top-k", type=int, default=defaults.top_k,
+            "--top-k",
+            type=int,
+            default=defaults.top_k,
             help="Top-k filtering (0 disables it).",
         )
         parser.add_argument(
-            "--rep-penalty", type=float, default=defaults.repetition_penalty,
+            "--rep-penalty",
+            type=float,
+            default=defaults.repetition_penalty,
             help="Repetition penalty (values above 1 reduce repeats).",
         )
         parser.add_argument(
-            "--device", type=str, default=defaults.device,
+            "--device",
+            type=str,
+            default=defaults.device,
             help="Compute device, e.g. cuda, cpu, cuda:0.",
         )
         parser.add_argument(
-            "--ckpt-dir", type=str, default=defaults.checkpoint_dir,
+            "--ckpt-dir",
+            type=str,
+            default=defaults.checkpoint_dir,
             help="Root directory holding TopoGPT3 checkpoints.",
         )
         parser.add_argument(
-            "--ckpt-name", type=str, default=defaults.checkpoint_name,
+            "--ckpt-name",
+            type=str,
+            default=defaults.checkpoint_name,
             help="Checkpoint slot to load (e.g. 'last').",
         )
         parser.add_argument(
-            "--source-dir", type=str, default=defaults.source_directory,
+            "--source-dir",
+            type=str,
+            default=defaults.source_directory,
             help="Directory containing train.py and model.py.",
         )
         parser.add_argument(
-            "--no-gauss", action="store_true",
+            "--no-gauss",
+            action="store_true",
             help="Disable the Gauss complex-multiply patch at load.",
         )
         parser.add_argument(
-            "--strict-load", action="store_true",
+            "--strict-load",
+            action="store_true",
             help="Require strict state_dict matching when loading weights.",
         )
         parser.add_argument(
-            "--seed", type=int, default=defaults.seed,
+            "--seed",
+            type=int,
+            default=defaults.seed,
             help="Deterministic seed for sampling reproducibility.",
         )
         parser.add_argument(
-            "--log-level", type=str, default=defaults.log_level,
+            "--log-level",
+            type=str,
+            default=defaults.log_level,
             choices=["DEBUG", "INFO", "WARNING", "ERROR"],
             help="Logging verbosity.",
         )
         parser.add_argument(
-            "--disable-hrm", action="store_true",
+            "--disable-hrm",
+            action="store_true",
             help="Disable hierarchical recursive reasoning (fallback to "
-                 "standard autoregressive generation).",
+            "standard autoregressive generation).",
         )
         parser.add_argument(
-            "--hrm-h-iters", type=int,
+            "--hrm-h-iters",
+            type=int,
             default=reasoning_defaults.max_high_level_iters,
             help="Maximum high-level (slow) iterations per emitted token.",
         )
         parser.add_argument(
-            "--hrm-l-iters", type=int,
+            "--hrm-l-iters",
+            type=int,
             default=reasoning_defaults.max_low_level_iters,
             help="Maximum low-level (fast) iterations per high-level step.",
         )
         parser.add_argument(
-            "--hrm-l-window", type=int,
+            "--hrm-l-window",
+            type=int,
             default=reasoning_defaults.low_level_window,
             help="Number of trailing layers used by the low-level loop.",
         )
         parser.add_argument(
-            "--hrm-h-window", type=int,
+            "--hrm-h-window",
+            type=int,
             default=reasoning_defaults.high_level_window,
             help="Number of trailing layers used by the high-level loop "
-                 "(must be >= --hrm-l-window).",
+            "(must be >= --hrm-l-window).",
         )
         parser.add_argument(
-            "--hrm-l-step", type=float,
+            "--hrm-l-step",
+            type=float,
             default=reasoning_defaults.low_level_step,
             help="Damping coefficient for the low-level update in [0, 1].",
         )
         parser.add_argument(
-            "--hrm-h-step", type=float,
+            "--hrm-h-step",
+            type=float,
             default=reasoning_defaults.high_level_step,
             help="Damping coefficient for the high-level update in [0, 1].",
         )
         parser.add_argument(
-            "--hrm-persist", type=int,
+            "--hrm-persist",
+            type=int,
             default=reasoning_defaults.high_level_persist_tokens,
             help="Tokens during which the refinement vector is reused as a "
-                 "warm start before being re-initialized.",
+            "warm start before being re-initialized.",
         )
         parser.add_argument(
-            "--hrm-warm-start", type=float,
+            "--hrm-warm-start",
+            type=float,
             default=reasoning_defaults.cache_warm_start_weight,
             help="Scalar in [0, 1] applied to the cached refinement vector "
-                 "when warm-starting the next token's iteration.",
+            "when warm-starting the next token's iteration.",
         )
         parser.add_argument(
-            "--hrm-max-drift", type=float,
+            "--hrm-max-drift",
+            type=float,
             default=reasoning_defaults.max_drift_relative,
             help="Relative L2 ceiling between the iterated latent and the "
-                 "baseline; exceeding it aborts thinking and resets to "
-                 "baseline for the current token.",
+            "baseline; exceeding it aborts thinking and resets to "
+            "baseline for the current token.",
         )
         parser.add_argument(
-            "--hrm-low-eps", type=float,
+            "--hrm-low-eps",
+            type=float,
             default=reasoning_defaults.attractor_low_epsilon,
             help="Relative L2 threshold halting the low-level loop.",
         )
         parser.add_argument(
-            "--hrm-high-eps", type=float,
+            "--hrm-high-eps",
+            type=float,
             default=reasoning_defaults.attractor_high_epsilon,
             help="Relative L2 threshold halting the high-level loop.",
         )
         parser.add_argument(
-            "--hrm-safety-cap", type=int,
+            "--hrm-safety-cap",
+            type=int,
             default=reasoning_defaults.safety_max_total_iterations,
             help="Hard cap on total layer invocations per emitted token.",
         )
         parser.add_argument(
-            "--hrm-diagnostic", action="store_true",
+            "--hrm-diagnostic",
+            action="store_true",
             help="Enable per-token HRM diagnostic logging.",
         )
         parser.add_argument(
-            "--thinking", action="store_true",
+            "--thinking",
+            action="store_true",
             default=defaults.thinking_mode,
             help="Enable thinking mode: HRM runs with higher iteration counts "
-                 "(high=4, low=8) for deeper reasoning per token.",
+            "(high=4, low=8) for deeper reasoning per token.",
         )
         parser.add_argument(
-            "--auto-continue", "-C", action="store_true",
+            "--auto-continue",
+            "-C",
+            action="store_true",
             default=defaults.auto_continue,
             help="Auto-continue truncated responses by feeding tail lines back.",
         )
         parser.add_argument(
-            "--max-continuations", type=int,
+            "--max-continuations",
+            type=int,
             default=defaults.max_continuations,
             help="Max number of continuation rounds (requires --auto-continue).",
         )
         return parser
 
     @staticmethod
-    def parse(argv: Optional[List[str]] = None) -> HRMInferenceSettings:
+    def parse(argv: list[str] | None = None) -> HRMInferenceSettings:
         """Parse argv (or sys.argv) and return a populated HRMInferenceSettings."""
         namespace = CliArgumentParser.build_parser().parse_args(argv)
         defaults = HRMInferenceSettings()
@@ -1491,7 +1654,7 @@ class CliArgumentParser:
         )
 
 
-def main(argv: Optional[List[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """CLI entry point. Returns a process exit code."""
     settings = CliArgumentParser.parse(argv)
     HRMInferencePipeline(settings).execute()

@@ -95,6 +95,11 @@ convert-merge: ## Merge LoRA into base (LORA_OUT=... OUTDIR=...)
 
 eval-tools: ## Tool-call accuracy eval
 	$(PY) -c "from topogpt3.eval_toolcall import evaluate; print(evaluate(lambda p: '<tool_call>{\"name\": \"calculate_math\", \"arguments\": {\"expression\": \"1+1\"}}</tool_call>')['accuracy'])"
+eval-tasks: ## Run generic JSONL task evals (apt_chain cases)
+	$(PY) -m eval.tasks --tasks-file eval/apt_chain_cases.jsonl \
+		--ckpt-dir checkpoints_topogpt3 --ckpt-name last \
+		--out eval/runs/tasks.jsonl || true
+
 
 # ── Inference ────────────────────────────────────────────────────────────────
 

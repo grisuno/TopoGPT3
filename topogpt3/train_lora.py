@@ -2,6 +2,7 @@
 
 Freezes quaternion/spectral base, trains only LoRA deltas. DDP + AMP ready.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -9,21 +10,30 @@ import os
 import sys
 
 import torch
+from safetensors.torch import load_file
 from torch import optim
 from torch.nn.parallel import DistributedDataParallel
 from torch.utils.data import DataLoader
-from safetensors.torch import load_file
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from topogpt3.model import BPETokenizer, TopoGPT2, TopoGPT2Config
+from topogpt3.checkpoint_meta import config_from_checkpoint
 from topogpt3.datasets_chat import SFTDatasetJSONL
 from topogpt3.lora import apply_lora, freeze_non_lora, lora_parameters, save_lora
-from topogpt3.trainer_utils_topo import (Logger, get_lr, init_distributed_mode,
-                                         is_main_process, setup_seed)
+from topogpt3.model import BPETokenizer, TopoGPT2, TopoGPT2Config
+from topogpt3.trainer_utils_topo import (
+    Logger,
+    get_lr,
+    init_distributed_mode,
+    is_main_process,
+    setup_seed,
+)
 
 
 def load_base(checkpoint: str, device: str):
-    cfg = TopoGPT2Config()
+    try:
+        cfg, _meta = config_from_checkpoint(checkpoint, device="cpu")
+    except (FileNotFoundError, ValueError):
+        cfg = TopoGPT2Config()
     model = TopoGPT2(cfg)
     sf = os.path.join(checkpoint, "model.safetensors")
     if os.path.exists(sf):
@@ -50,7 +60,11 @@ def main():
 
     setup_seed(args.seed)
     local_rank = init_distributed_mode()
-    device = f"cuda:{local_rank}" if torch.cuda.is_available() and os.environ.get("RANK") else args.device
+    device = (
+        f"cuda:{local_rank}"
+        if torch.cuda.is_available() and os.environ.get("RANK")
+        else args.device
+    )
 
     tok = BPETokenizer()
     model, _ = load_base(args.checkpoint, device)
@@ -74,15 +88,29 @@ def main():
             lr = get_lr(step, total, args.lr)
             for pg in opt.param_groups:
                 pg["lr"] = lr
-            with torch.autocast(device_type="cuda" if "cuda" in device else "cpu",
-                                enabled=device.startswith("cuda")):
-                out = model.module if isinstance(model, DistributedDataParallel) else model
+            with torch.autocast(
+                device_type="cuda" if "cuda" in device else "cpu",
+                enabled=device.startswith("cuda"),
+            ):
+                out = (
+                    model.module
+                    if isinstance(model, DistributedDataParallel)
+                    else model
+                )
                 logits, aux, _ = out(x)
-                loss = torch.nn.functional.cross_entropy(
-                    logits[:, :-1].reshape(-1, logits.size(-1)),
-                    x[:, 1:].reshape(-1), ignore_index=-100) if (y == -100).all() else \
+                loss = (
                     torch.nn.functional.cross_entropy(
-                    logits.reshape(-1, logits.size(-1)), y.reshape(-1), ignore_index=-100)
+                        logits[:, :-1].reshape(-1, logits.size(-1)),
+                        x[:, 1:].reshape(-1),
+                        ignore_index=-100,
+                    )
+                    if (y == -100).all()
+                    else torch.nn.functional.cross_entropy(
+                        logits.reshape(-1, logits.size(-1)),
+                        y.reshape(-1),
+                        ignore_index=-100,
+                    )
+                )
                 loss = loss + 0.0 * aux  # aux kept for logging, LoRA doesn't route MoE
             scaler.scale(loss).backward()
             scaler.unscale_(opt)
