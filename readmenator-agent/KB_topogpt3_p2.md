@@ -7,8 +7,8 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
 - Language: py
 - Symbols:
   - `TopoGPT2Config` (class, line 56) `class TopoGPT2Config`
-  - `setup_logger` (method, line 192) `def setup_logger(name, level)`
-  - `set_seed` (method, line 202) `def set_seed(seed, device)`
+  - `setup_logger` (function, line 192) `def setup_logger(name, level)`
+  - `set_seed` (function, line 202) `def set_seed(seed, device)`
   - `QuaternionOps` (class, line 214) `class QuaternionOps`
   - `QuaternionLinear` (class, line 253) `class QuaternionLinear(Module)`
   - `QuaternionSpectralLayer` (class, line 298) `class QuaternionSpectralLayer(Module)`
@@ -27,13 +27,13 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
   - `MappedTokenDataset` (class, line 1561) `class MappedTokenDataset(Dataset)`
   - `TextFilter` (class, line 1595) `class TextFilter`
   - `CurriculumDataset` (class, line 1699) `class CurriculumDataset(Dataset)`
-  - `build_file_tiers` (method, line 1737) `def build_file_tiers(paths, short, med)`
+  - `build_file_tiers` (function, line 1737) `def build_file_tiers(paths, short, med)`
   - `ProgressiveSeqLenTrainer` (class, line 1763) `class ProgressiveSeqLenTrainer`
   - `SpeculativeDecoder` (class, line 1839) `class SpeculativeDecoder`
   - `QuantizedEmbedding` (class, line 1954) `class QuantizedEmbedding(Module)`
-  - `apply_quantization` (method, line 1994) `def apply_quantization(model, config)`
+  - `apply_quantization` (function, line 1994) `def apply_quantization(model, config)`
   - `CurriculumTrainer` (class, line 2022) `class CurriculumTrainer`
-  - `_tokenize_text_to_memmap` (method, line 2162) `def _tokenize_text_to_memmap(text, tokenizer, path, max_tokens)`
+  - `_tokenize_text_to_memmap` (function, line 2162) `def _tokenize_text_to_memmap(text, tokenizer, path, max_tokens)`
   - `CheckpointManager` (class, line 2174) `class CheckpointManager`
   - `TopoGPT2Trainer` (class, line 2407) `class TopoGPT2Trainer`
   - `MechanisticMetrics` (class, line 2700) `class MechanisticMetrics`
@@ -43,7 +43,7 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
   - `Phase4_AnnealingRefiner` (class, line 3177) `class Phase4_AnnealingRefiner`
   - `TopoPhasePipelineV2` (class, line 3338) `class TopoPhasePipelineV2`
   - `TopoPhasePipeline` (class, line 3467) `class TopoPhasePipeline`
-  - `main` (method, line 3589) `def main()`
+  - `main` (function, line 3589) `def main()`
   - `__post_init__` (method, line 161) `def __post_init__(self)`
   - `hamilton_product` (method, line 222) `def hamilton_product(q1, q2)`
   - `normalize` (method, line 234) `def normalize(q, eps)`
@@ -193,7 +193,7 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
   - `__init__` (method, line 3487) `def __init__(self, config, train_dataset, val_dataset, tokenizer, logger)`
   - `_make_dataloaders` (method, line 3497) `def _make_dataloaders(self, batch_size)`
   - `run` (method, line 3509) `def run(self, run_prospect, refine_epochs, resume, prospect_steps, probe_seeds, seed_start)`
-  - `ckpt_fn` (method, line 1050) `def ckpt_fn(x_in)`
+  - `ckpt_fn` (function, line 1050) `def ckpt_fn(x_in)`
 - Depends on: `synthetic_dataset.py`, `topogpt3/continuation.py`, `topogpt3/yarn.py`
 - Imported by: `eval/diag_static.py`, `eval/noise_sweep.py`, `tests/test_heritage.py`, `tests/test_lens_model.py`, `topogpt3/__init__.py`, `topogpt3/api_server.py`, `topogpt3/convert.py`, `topogpt3/export_chat.py`, `topogpt3/lens_model.py`, `topogpt3/train.py`, `topogpt3/train_agent.py`, `topogpt3/train_distill.py`, `topogpt3/train_dpo.py`, `topogpt3/train_grpo.py`, `topogpt3/train_lora.py`, `topogpt3/train_ppo.py`
 
@@ -219,10 +219,10 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
 - Language: py
 - Symbols:
   - `RolloutResult` (class, line 18) `class RolloutResult`
-  - `compute_per_token_logps` (method, line 27) `def compute_per_token_logps(model, input_ids, n_keep)`
+  - `compute_per_token_logps` (function, line 27) `def compute_per_token_logps(model, input_ids, n_keep)`
   - `RolloutEngine` (class, line 39) `class RolloutEngine(ABC)`
   - `TorchRolloutEngine` (class, line 50) `class TorchRolloutEngine(RolloutEngine)`
-  - `create_rollout_engine` (method, line 83) `def create_rollout_engine(policy_model, tokenizer, device)`
+  - `create_rollout_engine` (function, line 83) `def create_rollout_engine(policy_model, tokenizer, device)`
   - `rollout` (method, line 41) `def rollout(self, prompt_ids, num_generations, max_new_tokens, temperature, tokenizer)`
   - `update_policy` (method, line 46) `def update_policy(self, model)`
   - `__init__` (method, line 51) `def __init__(self, policy_model, tokenizer, device, decode)`
@@ -247,15 +247,15 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
 - Symbols:
   - `TopoGPT3Config` (class, line 83) `class TopoGPT3Config`
   - `GrassmannianTracker` (class, line 197) `class GrassmannianTracker`
-  - `_gauss_complex_contract` (method, line 532) `def _gauss_complex_contract(self, W, X)`
-  - `apply_gauss_patch` (method, line 568) `def apply_gauss_patch(logger)`
+  - `_gauss_complex_contract` (function, line 532) `def _gauss_complex_contract(self, W, X)`
+  - `apply_gauss_patch` (function, line 568) `def apply_gauss_patch(logger)`
   - `EfficiencyMetrics` (class, line 585) `class EfficiencyMetrics`
   - `CodeCurriculumLoader` (class, line 713) `class CodeCurriculumLoader`
   - `BlockTokenDataset` (class, line 1000) `class BlockTokenDataset(Dataset)`
   - `CheckpointStore` (class, line 1027) `class CheckpointStore`
   - `TopoGPT3Trainer` (class, line 1103) `class TopoGPT3Trainer`
-  - `parse_args` (method, line 1538) `def parse_args()`
-  - `main` (method, line 1567) `def main()`
+  - `parse_args` (function, line 1538) `def parse_args()`
+  - `main` (function, line 1567) `def main()`
   - `build_topogpt2_config` (method, line 170) `def build_topogpt2_config(self, max_seq_len, attn_window)`
   - `__init__` (method, line 217) `def __init__(self, config, logger)`
   - `_stack_spectral_kernels` (method, line 231) `def _stack_spectral_kernels(model)`
@@ -306,7 +306,7 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
   - `_state_dict` (method, line 1436) `def _state_dict(self)`
   - `run` (method, line 1449) `def run(self)`
   - `_eval_combined_holdout` (method, line 1506) `def _eval_combined_holdout(self)`
-  - `flush` (method, line 922) `def flush(split)`
+  - `flush` (function, line 922) `def flush(split)`
 - Depends on: `topogpt3/model.py`
 - Imported by: `eval/diag_static.py`, `topogpt3/__init__.py`, `topogpt3/__main__.py`, `topogpt3/export_chat.py`
 
@@ -365,7 +365,7 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
 - Language: py
 - Symbols:
   - `TopoCritic` (class, line 29) `class TopoCritic(Module)`
-  - `main` (method, line 45) `def main()`
+  - `main` (function, line 45) `def main()`
   - `__init__` (method, line 30) `def __init__(self, trunk)`
   - `forward` (method, line 36) `def forward(self, ids)`
 - Depends on: `topogpt3/model.py`, `topogpt3/rewards.py`, `topogpt3/rollout.py`, `topogpt3/trainer_utils_topo.py`
@@ -382,7 +382,7 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
   - `setup_seed` (function, line 34) `def setup_seed(seed)`
   - `init_distributed_mode` (function, line 43) `def init_distributed_mode()`
   - `SkipBatchSampler` (class, line 52) `class SkipBatchSampler(Sampler)`
-  - `topo_checkpoint` (method, line 77) `def topo_checkpoint(save_dir, weight, model, optimizer, scheduler, scaler, epoch, step, wandb, extra)`
+  - `topo_checkpoint` (function, line 77) `def topo_checkpoint(save_dir, weight, model, optimizer, scheduler, scaler, epoch, step, wandb, extra)`
   - `__init__` (method, line 53) `def __init__(self, sampler, batch_size, skip_batches)`
   - `__iter__` (method, line 58) `def __iter__(self)`
   - `__len__` (method, line 72) `def __len__(self)`
@@ -394,7 +394,7 @@ Previous: [KB_topogpt3.md](KB_topogpt3.md)
 - Language: py
 - Symbols:
   - `YaRNConfig` (class, line 18) `class YaRNConfig`
-  - `yarn_scale_inv_freq` (method, line 26) `def yarn_scale_inv_freq(inv_freq, d_head, cfg)`
-  - `apply_yarn_to_rope` (method, line 50) `def apply_yarn_to_rope(rope_module, cfg)`
+  - `yarn_scale_inv_freq` (function, line 26) `def yarn_scale_inv_freq(inv_freq, d_head, cfg)`
+  - `apply_yarn_to_rope` (function, line 50) `def apply_yarn_to_rope(rope_module, cfg)`
 - Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/model.py`
 

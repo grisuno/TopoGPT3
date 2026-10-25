@@ -1,0 +1,1191 @@
+# General Index
+
+[Back to index](index.md)
+
+[A](#a) | [B](#b) | [C](#c) | [D](#d) | [E](#e) | [F](#f) | [G](#g) | [H](#h) | [I](#i) | [J](#j) | [K](#k) | [L](#l) | [M](#m) | [N](#n) | [O](#o) | [P](#p) | [Q](#q) | [R](#r) | [S](#s) | [T](#t) | [U](#u) | [V](#v) | [W](#w) | [Y](#y)
+
+<a id="a"></a>
+
+## A
+
+- [`absorb`](modules/topogpt3.inference_hrm.py.md#generationreasoningsummary-absorb) method of `GenerationReasoningSummary` in `topogpt3.inference_hrm`
+- [`ActivationRecorder`](modules/topogpt3.jlens.py.md#activationrecorder) class in `topogpt3.jlens`
+- [`AE_RECON_WEIGHT`](modules/topogpt3.model.py.md#topogpt2config-ae_recon_weight) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`agent_reward`](modules/topogpt3.train_agent.py.md#agent_reward) function in `topogpt3.train_agent`
+- [`allow`](modules/topogpt3.api_server.py.md#ratelimiter-allow) method of `RateLimiter` in `topogpt3.api_server`
+- [`allowed_builtin_names`](modules/eval.sandbox.py.md#sandboxconfig-allowed_builtin_names) attribute of `SandboxConfig` in `eval.sandbox`
+- [`amp_dtype`](modules/topogpt3.model.py.md#curriculumtrainer-amp_dtype) property of `CurriculumTrainer` in `topogpt3.model`
+- [`ApiKey`](modules/topogpt3.api_server.py.md#apikey) class in `topogpt3.api_server`
+- [`apply`](modules/topogpt3.jlens.py.md#jacobianlens-apply) method of `JacobianLens` in `topogpt3.jlens`
+- [`apply`](modules/topogpt3.inference.py.md#seedsynchronizer-apply) method of `SeedSynchronizer` in `topogpt3.inference`
+- [`apply`](modules/topogpt3.inference_hrm.py.md#seedsynchronizer-apply) method of `SeedSynchronizer` in `topogpt3.inference_hrm`
+- [`apply_chat_template`](modules/topogpt3.chat.py.md#apply_chat_template) function in `topogpt3.chat`
+- [`apply_gauss_patch`](modules/topogpt3.train.py.md#apply_gauss_patch) function in `topogpt3.train`
+- [`apply_gauss_patch_at_load`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-apply_gauss_patch_at_load) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`apply_gauss_patch_at_load`](modules/topogpt3.inference.py.md#inferencesettings-apply_gauss_patch_at_load) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`apply_if_enabled`](modules/topogpt3.inference.py.md#gausspatchapplier-apply_if_enabled) method of `GaussPatchApplier` in `topogpt3.inference`
+- [`apply_if_enabled`](modules/topogpt3.inference_hrm.py.md#gausspatchapplier-apply_if_enabled) method of `GaussPatchApplier` in `topogpt3.inference_hrm`
+- [`apply_lora`](modules/topogpt3.lora.py.md#apply_lora) function in `topogpt3.lora`
+- [`apply_quantization`](modules/topogpt3.model.py.md#apply_quantization) function in `topogpt3.model`
+- [`apply_yarn_to_rope`](modules/topogpt3.yarn.py.md#apply_yarn_to_rope) function in `topogpt3.yarn`
+- [`assemble`](modules/topogpt3.inference.py.md#modelassembler-assemble) method of `ModelAssembler` in `topogpt3.inference`
+- [`assemble`](modules/topogpt3.inference_hrm.py.md#modelassembler-assemble) method of `ModelAssembler` in `topogpt3.inference_hrm`
+- [`assert_ready`](modules/topogpt3.inference.py.md#checkpointpaths-assert_ready) method of `CheckpointPaths` in `topogpt3.inference`
+- [`assert_ready`](modules/topogpt3.inference_hrm.py.md#checkpointpaths-assert_ready) method of `CheckpointPaths` in `topogpt3.inference_hrm`
+- [`ATTN_WINDOW`](modules/topogpt3.model.py.md#topogpt2config-attn_window) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`attractor_high_epsilon`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-attractor_high_epsilon) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`attractor_low_epsilon`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-attractor_low_epsilon) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`AuthState`](modules/topogpt3.api_server.py.md#authstate) class in `topogpt3.api_server`
+- [`auto_continue`](modules/topogpt3.api_server.py.md#chatcompletionrequest-auto_continue) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`auto_continue`](modules/topogpt3.api_server.py.md#completionrequest-auto_continue) attribute of `CompletionRequest` in `topogpt3.api_server`
+- [`auto_continue`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-auto_continue) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`auto_continue`](modules/topogpt3.inference.py.md#inferencesettings-auto_continue) attribute of `InferenceSettings` in `topogpt3.inference`
+
+<a id="b"></a>
+
+## B
+
+- [`BAN_WINDOW_S`](modules/topogpt3.api_server.py.md#ban_window_s) constant in `topogpt3.api_server`
+- [`base_rewards`](modules/topogpt3.rewards.py.md#base_rewards) function in `topogpt3.rewards`
+- [`BATCH_SIZE`](modules/topogpt3.model.py.md#topogpt2config-batch_size) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`BATCH_SIZE`](modules/topogpt3.train.py.md#topogpt3config-batch_size) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`BEST`](modules/topogpt3.model.py.md#checkpointmanager-best) attribute of `CheckpointManager` in `topogpt3.model`
+- [`best_val_loss`](modules/topogpt3.model.py.md#curriculumtrainer-best_val_loss) property of `CurriculumTrainer` in `topogpt3.model`
+- [`beta_fast`](modules/topogpt3.yarn.py.md#yarnconfig-beta_fast) attribute of `YaRNConfig` in `topogpt3.yarn`
+- [`beta_slow`](modules/topogpt3.yarn.py.md#yarnconfig-beta_slow) attribute of `YaRNConfig` in `topogpt3.yarn`
+- [`blocked_dunder_attrs`](modules/eval.sandbox.py.md#sandboxconfig-blocked_dunder_attrs) attribute of `SandboxConfig` in `eval.sandbox`
+- [`blocked_modules`](modules/eval.sandbox.py.md#sandboxconfig-blocked_modules) attribute of `SandboxConfig` in `eval.sandbox`
+- [`BlockTokenDataset`](modules/topogpt3.train.py.md#blocktokendataset) class in `topogpt3.train`
+- [`BOS`](modules/topogpt3.chat.py.md#bos) constant in `topogpt3.chat`
+- [`BPETokenizer`](modules/topogpt3.model.py.md#bpetokenizer) class in `topogpt3.model`
+- [`BUFFER_TOKENS`](modules/topogpt3.chat.py.md#buffer_tokens) constant in `topogpt3.chat`
+- [`build`](modules/topogpt3.inference_hrm.py.md#hrmloggerfactory-build) staticmethod of `HRMLoggerFactory` in `topogpt3.inference_hrm`
+- [`build`](modules/topogpt3.inference.py.md#inferenceloggerfactory-build) staticmethod of `InferenceLoggerFactory` in `topogpt3.inference`
+- [`build`](modules/topogpt3.inference.py.md#tokenizerfactory-build) method of `TokenizerFactory` in `topogpt3.inference`
+- [`build`](modules/topogpt3.inference_hrm.py.md#tokenizerfactory-build) method of `TokenizerFactory` in `topogpt3.inference_hrm`
+- [`build`](modules/topogpt3.inference.py.md#topogpt2configaligner-build) method of `TopoGPT2ConfigAligner` in `topogpt3.inference`
+- [`build`](modules/topogpt3.inference_hrm.py.md#topogpt2configaligner-build) method of `TopoGPT2ConfigAligner` in `topogpt3.inference_hrm`
+- [`build_backend`](modules/synthetic_dataset.py.md#build_backend) function in `synthetic_dataset`
+- [`build_file_tiers`](modules/topogpt3.model.py.md#build_file_tiers) function in `topogpt3.model`
+- [`build_logger`](modules/synthetic_dataset.py.md#build_logger) function in `synthetic_dataset`
+- [`build_parser`](modules/topogpt3.inference.py.md#cliargumentparser-build_parser) staticmethod of `CliArgumentParser` in `topogpt3.inference`
+- [`build_parser`](modules/topogpt3.inference_hrm.py.md#cliargumentparser-build_parser) staticmethod of `CliArgumentParser` in `topogpt3.inference_hrm`
+- [`build_prompt`](modules/eval.harness.py.md#build_prompt) function in `eval.harness`
+- [`build_repair_prompt`](modules/eval.repair.py.md#build_repair_prompt) function in `eval.repair`
+- [`build_sampler`](modules/eval.samplers.py.md#build_sampler) function in `eval.samplers`
+- [`build_topogpt2_config`](modules/topogpt3.train.py.md#topogpt3config-build_topogpt2_config) method of `TopoGPT3Config` in `topogpt3.train`
+- [`build_ui`](modules/gradio_app.py.md#build_ui) function in `gradio_app`
+- [`by_hash`](modules/topogpt3.api_server.py.md#authstate-by_hash) attribute of `AuthState` in `topogpt3.api_server`
+
+<a id="c"></a>
+
+## C
+
+- [`cache_tokens`](modules/topogpt3.model.py.md#curriculumtrainer-cache_tokens) method of `CurriculumTrainer` in `topogpt3.model`
+- [`cache_warm_start_weight`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-cache_warm_start_weight) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`cancel`](modules/eval.governor.py.md#generationgovernor-cancel) method of `GenerationGovernor` in `eval.governor`
+- [`capacity`](modules/topogpt3.api_server.py.md#tokenbucket-capacity) attribute of `TokenBucket` in `topogpt3.api_server`
+- [`CASES`](modules/topogpt3.eval_toolcall.py.md#cases) constant in `topogpt3.eval_toolcall`
+- [`chat_completions`](modules/topogpt3.api_server.py.md#chat_completions) function in `topogpt3.api_server`
+- [`ChatCompletionRequest`](modules/topogpt3.api_server.py.md#chatcompletionrequest) class in `topogpt3.api_server`
+- [`CHECK_ARGS`](modules/topogpt3.tools_agent.py.md#check_args) constant in `topogpt3.tools_agent`
+- [`check_safety`](modules/eval.sandbox.py.md#check_safety) function in `eval.sandbox`
+- [`checkpoint`](modules/topogpt3.api_server.py.md#servermodel-checkpoint) attribute of `ServerModel` in `topogpt3.api_server`
+- [`checkpoint_dir`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-checkpoint_dir) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`checkpoint_dir`](modules/topogpt3.inference.py.md#inferencesettings-checkpoint_dir) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`CHECKPOINT_DIR`](modules/topogpt3.model.py.md#topogpt2config-checkpoint_dir) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`CHECKPOINT_DIR`](modules/topogpt3.train.py.md#topogpt3config-checkpoint_dir) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`checkpoint_every`](modules/topogpt3.jlens.py.md#topogpt3jlensfitconfig-checkpoint_every) attribute of `TopoGPT3JLensFitConfig` in `topogpt3.jlens`
+- [`CHECKPOINT_EVERY_MIN`](modules/topogpt3.train.py.md#topogpt3config-checkpoint_every_min) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`CHECKPOINT_INTERVAL_MINUTES`](modules/topogpt3.model.py.md#topogpt2config-checkpoint_interval_minutes) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`checkpoint_name`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-checkpoint_name) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`checkpoint_name`](modules/topogpt3.inference.py.md#inferencesettings-checkpoint_name) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`checkpoint_path`](modules/topogpt3.jlens.py.md#topogpt3jlensfitconfig-checkpoint_path) attribute of `TopoGPT3JLensFitConfig` in `topogpt3.jlens`
+- [`CheckpointManager`](modules/topogpt3.model.py.md#checkpointmanager) class in `topogpt3.model`
+- [`CheckpointPaths`](modules/topogpt3.inference.py.md#checkpointpaths) class in `topogpt3.inference`
+- [`CheckpointPaths`](modules/topogpt3.inference_hrm.py.md#checkpointpaths) class in `topogpt3.inference_hrm`
+- [`CheckpointStore`](modules/topogpt3.train.py.md#checkpointstore) class in `topogpt3.train`
+- [`CHUNK_TOKENS`](modules/topogpt3.model.py.md#memmaptokenizer-chunk_tokens) attribute of `MemmapTokenizer` in `topogpt3.model`
+- [`ckpt_mgr`](modules/topogpt3.model.py.md#curriculumtrainer-ckpt_mgr) property of `CurriculumTrainer` in `topogpt3.model`
+- [`classify_error`](modules/eval.analyze.py.md#classify_error) function in `eval.analyze`
+- [`classify_error`](modules/eval.report.py.md#classify_error) function in `eval.report`
+- [`classify_phase`](modules/topogpt3.model.py.md#mechanisticmetrics-classify_phase) method of `MechanisticMetrics` in `topogpt3.model`
+- [`CliArgumentParser`](modules/topogpt3.inference.py.md#cliargumentparser) class in `topogpt3.inference`
+- [`CliArgumentParser`](modules/topogpt3.inference_hrm.py.md#cliargumentparser) class in `topogpt3.inference_hrm`
+- [`CodeCurriculumLoader`](modules/topogpt3.train.py.md#codecurriculumloader) class in `topogpt3.train`
+- [`commit`](modules/topogpt3.inference_hrm.py.md#sparsehighlevelstatecache-commit) method of `SparseHighLevelStateCache` in `topogpt3.inference_hrm`
+- [`complete`](modules/topogpt3.api_server.py.md#servermodel-complete) method of `ServerModel` in `topogpt3.api_server`
+- [`completed_epochs`](modules/topogpt3.model.py.md#curriculumtrainer-completed_epochs) property of `CurriculumTrainer` in `topogpt3.model`
+- [`completion_for_problem`](modules/eval.harness.py.md#completion_for_problem) function in `eval.harness`
+- [`completion_ids`](modules/topogpt3.rollout.py.md#rolloutresult-completion_ids) attribute of `RolloutResult` in `topogpt3.rollout`
+- [`completion_label`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-completion_label) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`completion_label`](modules/topogpt3.inference.py.md#inferencesettings-completion_label) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`completion_mask`](modules/topogpt3.rollout.py.md#rolloutresult-completion_mask) attribute of `RolloutResult` in `topogpt3.rollout`
+- [`CompletionRequest`](modules/topogpt3.api_server.py.md#completionrequest) class in `topogpt3.api_server`
+- [`completions`](modules/topogpt3.rollout.py.md#rolloutresult-completions) attribute of `RolloutResult` in `topogpt3.rollout`
+- [`completions`](modules/topogpt3.api_server.py.md#completions) function in `topogpt3.api_server`
+- [`compute`](modules/topogpt3.train.py.md#efficiencymetrics-compute) method of `EfficiencyMetrics` in `topogpt3.train`
+- [`compute_all`](modules/topogpt3.model.py.md#mechanisticmetrics-compute_all) method of `MechanisticMetrics` in `topogpt3.model`
+- [`compute_alpha`](modules/topogpt3.model.py.md#mechanisticmetrics-compute_alpha) method of `MechanisticMetrics` in `topogpt3.model`
+- [`compute_berry_phase`](modules/topogpt3.model.py.md#mechanisticmetrics-compute_berry_phase) method of `MechanisticMetrics` in `topogpt3.model`
+- [`compute_delta`](modules/topogpt3.model.py.md#mechanisticmetrics-compute_delta) method of `MechanisticMetrics` in `topogpt3.model`
+- [`compute_kappa`](modules/topogpt3.model.py.md#mechanisticmetrics-compute_kappa) method of `MechanisticMetrics` in `topogpt3.model`
+- [`compute_lc`](modules/topogpt3.model.py.md#mechanisticmetrics-compute_lc) method of `MechanisticMetrics` in `topogpt3.model`
+- [`compute_per_token_logps`](modules/topogpt3.rollout.py.md#compute_per_token_logps) function in `topogpt3.rollout`
+- [`compute_slice`](modules/topogpt3.jlens.py.md#compute_slice) function in `topogpt3.jlens`
+- [`compute_sp`](modules/topogpt3.model.py.md#mechanisticmetrics-compute_sp) method of `MechanisticMetrics` in `topogpt3.model`
+- [`compute_t_eff`](modules/topogpt3.model.py.md#mechanisticmetrics-compute_t_eff) method of `MechanisticMetrics` in `topogpt3.model`
+- [`conjugate`](modules/topogpt3.model.py.md#quaternionops-conjugate) staticmethod of `QuaternionOps` in `topogpt3.model`
+- [`conjugation_distance_su2`](modules/topogpt3.train.py.md#grassmanniantracker-conjugation_distance_su2) staticmethod of `GrassmannianTracker` in `topogpt3.train`
+- [`consistency_across_runs`](modules/eval.noise_analysis.py.md#consistency_across_runs) function in `eval.noise_analysis`
+- [`consume`](modules/topogpt3.api_server.py.md#tokenbucket-consume) method of `TokenBucket` in `topogpt3.api_server`
+- [`content`](modules/topogpt3.api_server.py.md#message-content) attribute of `Message` in `topogpt3.api_server`
+- [`context_length_diagnostic`](modules/eval.diag_static.py.md#context_length_diagnostic) function in `eval.diag_static`
+- [`CONTEXT_OVERFLOW`](modules/eval.governor.py.md#stopreason-context_overflow) attribute of `StopReason` in `eval.governor`
+- [`continuation_tail_lines`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-continuation_tail_lines) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`continuation_tail_lines`](modules/topogpt3.inference.py.md#inferencesettings-continuation_tail_lines) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`converged_high_level`](modules/topogpt3.inference_hrm.py.md#reasoningiterationstats-converged_high_level) attribute of `ReasoningIterationStats` in `topogpt3.inference_hrm`
+- [`convert`](modules/convert_weights.py.md#convert) function in `convert_weights`
+- [`CORPUS`](modules/topogpt3.model.py.md#topogpt2config-corpus) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`CORPUS_FILE`](modules/topogpt3.model.py.md#topogpt2config-corpus_file) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`CORPUS_MIN_FILE_CHARS`](modules/topogpt3.model.py.md#topogpt2config-corpus_min_file_chars) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`CORPUS_ROOT`](modules/topogpt3.model.py.md#topogpt2config-corpus_root) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`count_params`](modules/topogpt3.model.py.md#topogpt2-count_params) method of `TopoGPT2` in `topogpt3.model`
+- [`create_rollout_engine`](modules/topogpt3.rollout.py.md#create_rollout_engine) function in `topogpt3.rollout`
+- [`CURRICULUM_ENABLED`](modules/topogpt3.model.py.md#topogpt2config-curriculum_enabled) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`CURRICULUM_MED_LINES`](modules/topogpt3.model.py.md#topogpt2config-curriculum_med_lines) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`CURRICULUM_SHORT_LINES`](modules/topogpt3.model.py.md#topogpt2config-curriculum_short_lines) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`CurriculumDataset`](modules/topogpt3.model.py.md#curriculumdataset) class in `topogpt3.model`
+- [`CurriculumTrainer`](modules/topogpt3.model.py.md#curriculumtrainer) class in `topogpt3.model`
+
+<a id="d"></a>
+
+## D
+
+- [`D_HEAD`](modules/topogpt3.c.md#d_head) macro in `topogpt3.c`
+- [`D_LAT_Q`](modules/topogpt3.c.md#d_lat_q) macro in `topogpt3.c`
+- [`D_MODEL`](modules/topogpt3.c.md#d_model) macro in `topogpt3.c`
+- [`d_model`](modules/topogpt3.lens_model.py.md#lensmodel-d_model) attribute of `LensModel` in `topogpt3.lens_model`
+- [`d_model`](modules/topogpt3.inference.py.md#scalepreset-d_model) attribute of `ScalePreset` in `topogpt3.inference`
+- [`d_model`](modules/topogpt3.inference_hrm.py.md#scalepreset-d_model) attribute of `ScalePreset` in `topogpt3.inference_hrm`
+- [`D_MODEL`](modules/topogpt3.model.py.md#topogpt2config-d_model) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`d_model`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-d_model) attribute of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`d_model`](modules/topogpt3.lens_model.py.md#topogpt3lensmodel-d_model) property of `TopoGPT3LensModel` in `topogpt3.lens_model`
+- [`D_QUAT`](modules/topogpt3.c.md#d_quat) macro in `topogpt3.c`
+- [`DATA_CACHE`](modules/topogpt3.train.py.md#topogpt3config-data_cache) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`DATA_DIR`](modules/topogpt3.model.py.md#topogpt2config-data_dir) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`decode`](modules/topogpt3.model.py.md#bpetokenizer-decode) method of `BPETokenizer` in `topogpt3.model`
+- [`decode`](modules/topogpt3.model.py.md#spectralautoencoder-decode) method of `SpectralAutoencoder` in `topogpt3.model`
+- [`DEFAULT_CHECKPOINT_DIR`](modules/app.py.md#default_checkpoint_dir) constant in `app`
+- [`DEFAULT_CHECKPOINT_DIR`](modules/gradio_app.py.md#default_checkpoint_dir) constant in `gradio_app`
+- [`DEFAULT_CHECKPOINT_SLOT`](modules/app.py.md#default_checkpoint_slot) constant in `app`
+- [`DEFAULT_MAX_NEW_TOKENS`](modules/app.py.md#default_max_new_tokens) constant in `app`
+- [`DEFAULT_PROMPT`](modules/app.py.md#default_prompt) constant in `app`
+- [`DEFAULT_REPETITION_PENALTY`](modules/app.py.md#default_repetition_penalty) constant in `app`
+- [`DEFAULT_TEMPERATURE`](modules/app.py.md#default_temperature) constant in `app`
+- [`DEFAULT_TOP_K`](modules/app.py.md#default_top_k) constant in `app`
+- [`describe_policy`](modules/eval.sandbox.py.md#describe_policy) function in `eval.sandbox`
+- [`detect_n_kv_heads`](modules/topogpt3.inference.py.md#weightshapeprobe-detect_n_kv_heads) method of `WeightShapeProbe` in `topogpt3.inference`
+- [`detect_n_kv_heads`](modules/topogpt3.inference_hrm.py.md#weightshapeprobe-detect_n_kv_heads) method of `WeightShapeProbe` in `topogpt3.inference_hrm`
+- [`device`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-device) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`device`](modules/topogpt3.inference.py.md#inferencesettings-device) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`device`](modules/topogpt3.api_server.py.md#servermodel-device) attribute of `ServerModel` in `topogpt3.api_server`
+- [`DEVICE`](modules/topogpt3.model.py.md#topogpt2config-device) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`DEVICE`](modules/topogpt3.train.py.md#topogpt3config-device) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`device`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-device) attribute of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`diagnostic_logging`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-diagnostic_logging) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`dim_batch`](modules/topogpt3.jlens.py.md#topogpt3jlensfitconfig-dim_batch) attribute of `TopoGPT3JLensFitConfig` in `topogpt3.jlens`
+- [`distillation_loss`](modules/topogpt3.rewards.py.md#distillation_loss) function in `topogpt3.rewards`
+- [`dpo_loss_fn`](modules/topogpt3.rewards.py.md#dpo_loss_fn) function in `topogpt3.rewards`
+- [`drain`](modules/eval.governor.py.md#tokenstream-drain) method of `TokenStream` in `eval.governor`
+- [`DROPOUT`](modules/topogpt3.model.py.md#topogpt2config-dropout) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`dropout`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-dropout) attribute of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`dry_run`](modules/eval.sandbox.py.md#sandboxconfig-dry_run) attribute of `SandboxConfig` in `eval.sandbox`
+
+<a id="e"></a>
+
+## E
+
+- [`EFFICIENCY_THROUGHPUT_BATCHES`](modules/topogpt3.train.py.md#topogpt3config-efficiency_throughput_batches) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`EfficiencyMetrics`](modules/topogpt3.train.py.md#efficiencymetrics) class in `topogpt3.train`
+- [`elapsed_floor_seconds`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-elapsed_floor_seconds) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`elapsed_floor_seconds`](modules/topogpt3.inference.py.md#inferencesettings-elapsed_floor_seconds) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`elapsed_s`](modules/eval.governor.py.md#generationresult-elapsed_s) attribute of `GenerationResult` in `eval.governor`
+- [`elapsed_seconds`](modules/topogpt3.inference.py.md#generationreport-elapsed_seconds) attribute of `GenerationReport` in `topogpt3.inference`
+- [`elapsed_seconds`](modules/topogpt3.inference_hrm.py.md#generationreport-elapsed_seconds) attribute of `GenerationReport` in `topogpt3.inference_hrm`
+- [`EMBED_INNER`](modules/topogpt3.c.md#embed_inner) macro in `topogpt3.c`
+- [`enable_yarn`](modules/topogpt3.model.py.md#rotaryembedding-enable_yarn) method of `RotaryEmbedding` in `topogpt3.model`
+- [`enabled`](modules/topogpt3.api_server.py.md#authstate-enabled) attribute of `AuthState` in `topogpt3.api_server`
+- [`enabled`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-enabled) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`enabled`](modules/topogpt3.yarn.py.md#yarnconfig-enabled) attribute of `YaRNConfig` in `topogpt3.yarn`
+- [`encode`](modules/topogpt3.model.py.md#bpetokenizer-encode) method of `BPETokenizer` in `topogpt3.model`
+- [`encode`](modules/topogpt3.lens_model.py.md#lensmodel-encode) method of `LensModel` in `topogpt3.lens_model`
+- [`encode`](modules/topogpt3.model.py.md#spectralautoencoder-encode) method of `SpectralAutoencoder` in `topogpt3.model`
+- [`encode`](modules/topogpt3.lens_model.py.md#topogpt3lensmodel-encode) method of `TopoGPT3LensModel` in `topogpt3.lens_model`
+- [`encoding`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-encoding) attribute of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`end_of_text_token_id`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-end_of_text_token_id) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`end_of_text_token_id`](modules/topogpt3.inference_hrm.py.md#samplingpolicy-end_of_text_token_id) attribute of `SamplingPolicy` in `topogpt3.inference_hrm`
+- [`ensure_checkpoint`](modules/gradio_app.py.md#ensure_checkpoint) function in `gradio_app`
+- [`EOS`](modules/topogpt3.chat.py.md#eos) constant in `topogpt3.chat`
+- [`EOS`](modules/eval.governor.py.md#stopreason-eos) attribute of `StopReason` in `eval.governor`
+- [`EOS_TOKEN`](modules/topogpt3.c.md#eos_token) macro in `topogpt3.c`
+- [`eot_token`](modules/topogpt3.model.py.md#bpetokenizer-eot_token) method of `BPETokenizer` in `topogpt3.model`
+- [`EOT_TOKEN`](modules/eval.governor.py.md#generationgovernor-eot_token) attribute of `GenerationGovernor` in `eval.governor`
+- [`EPOCHS`](modules/topogpt3.model.py.md#topogpt2config-epochs) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`EPS_RMS`](modules/topogpt3.c.md#eps_rms) macro in `topogpt3.c`
+- [`estimate_bytes_per_step`](modules/topogpt3.train.py.md#efficiencymetrics-estimate_bytes_per_step) method of `EfficiencyMetrics` in `topogpt3.train`
+- [`estimate_fisher_gap`](modules/topogpt3.train.py.md#grassmanniantracker-estimate_fisher_gap) method of `GrassmannianTracker` in `topogpt3.train`
+- [`estimate_flops_per_step`](modules/topogpt3.train.py.md#efficiencymetrics-estimate_flops_per_step) method of `EfficiencyMetrics` in `topogpt3.train`
+- [`EVAL_INTERVAL_STEPS`](modules/topogpt3.model.py.md#topogpt2config-eval_interval_steps) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`evaluate`](modules/topogpt3.model.py.md#curriculumtrainer-evaluate) method of `CurriculumTrainer` in `topogpt3.model`
+- [`evaluate`](modules/topogpt3.model.py.md#topogpt2trainer-evaluate) method of `TopoGPT2Trainer` in `topogpt3.model`
+- [`evaluate`](modules/topogpt3.eval_toolcall.py.md#evaluate) function in `topogpt3.eval_toolcall`
+- [`evaluate_problem`](modules/eval.harness.py.md#evaluate_problem) function in `eval.harness`
+- [`evaluate_problems`](modules/eval.temp_sweep.py.md#evaluate_problems) function in `eval.temp_sweep`
+- [`execute`](modules/topogpt3.inference_hrm.py.md#hrminferencepipeline-execute) method of `HRMInferencePipeline` in `topogpt3.inference_hrm`
+- [`execute`](modules/topogpt3.inference.py.md#inferencepipeline-execute) method of `InferencePipeline` in `topogpt3.inference`
+- [`execute_tool`](modules/topogpt3.tools_agent.py.md#execute_tool) function in `topogpt3.tools_agent`
+- [`EXPERT_INNER`](modules/topogpt3.c.md#expert_inner) macro in `topogpt3.c`
+- [`export_hf_stub`](modules/topogpt3.convert.py.md#export_hf_stub) function in `topogpt3.convert`
+- [`extract_candidate`](modules/eval.harness.py.md#extract_candidate) function in `eval.harness`
+- [`extract_candidate`](modules/eval.repair.py.md#extract_candidate) function in `eval.repair`
+- [`extract_tail_for_continuation`](modules/topogpt3.continuation.py.md#extract_tail_for_continuation) function in `topogpt3.continuation`
+
+<a id="f"></a>
+
+## F
+
+- [`factor`](modules/topogpt3.yarn.py.md#yarnconfig-factor) attribute of `YaRNConfig` in `topogpt3.yarn`
+- [`failed_files`](modules/synthetic_dataset.py.md#processedmanifest-failed_files) attribute of `ProcessedManifest` in `synthetic_dataset`
+- [`fclose`](modules/topogpt3.c.md#fclose) function in `topogpt3.c`
+- [`fflush`](modules/topogpt3.c.md#fflush) function in `topogpt3.c`
+- [`FILE`](modules/topogpt3.c.md#file) struct in `topogpt3.c`
+- [`FileManifest`](modules/topogpt3.model.py.md#filemanifest) class in `topogpt3.model`
+- [`FILTER_ENABLE_DEDUP`](modules/topogpt3.model.py.md#topogpt2config-filter_enable_dedup) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`FILTER_ENTROPY_MAX`](modules/topogpt3.model.py.md#topogpt2config-filter_entropy_max) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`FILTER_ENTROPY_MIN`](modules/topogpt3.model.py.md#topogpt2config-filter_entropy_min) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`filter_file`](modules/topogpt3.model.py.md#textfilter-filter_file) method of `TextFilter` in `topogpt3.model`
+- [`FILTER_MAX_LINE_LEN`](modules/topogpt3.model.py.md#topogpt2config-filter_max_line_len) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`FILTER_SPECIAL_TOKEN_RATIO_MAX`](modules/topogpt3.model.py.md#topogpt2config-filter_special_token_ratio_max) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`final_high_level_change`](modules/topogpt3.inference_hrm.py.md#reasoningiterationstats-final_high_level_change) attribute of `ReasoningIterationStats` in `topogpt3.inference_hrm`
+- [`final_low_level_change`](modules/topogpt3.inference_hrm.py.md#reasoningiterationstats-final_low_level_change) attribute of `ReasoningIterationStats` in `topogpt3.inference_hrm`
+- [`finish`](modules/synthetic_dataset.py.md#syntheticdatasetgenerator-finish) method of `SyntheticDatasetGenerator` in `synthetic_dataset`
+- [`fit`](modules/topogpt3.jlens.py.md#fit) function in `topogpt3.jlens`
+- [`fopen`](modules/topogpt3.c.md#fopen) function in `topogpt3.c`
+- [`format_log`](modules/topogpt3.train.py.md#efficiencymetrics-format_log) method of `EfficiencyMetrics` in `topogpt3.train`
+- [`format_log`](modules/topogpt3.train.py.md#grassmanniantracker-format_log) method of `GrassmannianTracker` in `topogpt3.train`
+- [`format_log`](modules/topogpt3.model.py.md#mechanisticmetrics-format_log) method of `MechanisticMetrics` in `topogpt3.model`
+- [`forward`](modules/topogpt3.lens_model.py.md#lensmodel-forward) method of `LensModel` in `topogpt3.lens_model`
+- [`forward`](modules/topogpt3.lora.py.md#lora-forward) method of `LoRA` in `topogpt3.lora`
+- [`forward`](modules/topogpt3.model.py.md#multiheadattention-forward) method of `MultiHeadAttention` in `topogpt3.model`
+- [`forward`](modules/topogpt3.model.py.md#quantizedembedding-forward) method of `QuantizedEmbedding` in `topogpt3.model`
+- [`forward`](modules/topogpt3.model.py.md#quaternionlinear-forward) method of `QuaternionLinear` in `topogpt3.model`
+- [`forward`](modules/topogpt3.model.py.md#quaternionspectrallayer-forward) method of `QuaternionSpectralLayer` in `topogpt3.model`
+- [`forward`](modules/topogpt3.model.py.md#quaterniontorusbrain-forward) method of `QuaternionTorusBrain` in `topogpt3.model`
+- [`forward`](modules/topogpt3.model.py.md#rmsnorm-forward) method of `RMSNorm` in `topogpt3.model`
+- [`forward`](modules/topogpt3.model.py.md#rotaryembedding-forward) method of `RotaryEmbedding` in `topogpt3.model`
+- [`forward`](modules/topogpt3.model.py.md#spectralautoencoder-forward) method of `SpectralAutoencoder` in `topogpt3.model`
+- [`forward`](modules/topogpt3.model.py.md#swiglu-forward) method of `SwiGLU` in `topogpt3.model`
+- [`forward`](modules/topogpt3.lens_model.py.md#tinydecoder-forward) method of `TinyDecoder` in `topogpt3.lens_model`
+- [`forward`](modules/topogpt3.train_ppo.py.md#topocritic-forward) method of `TopoCritic` in `topogpt3.train_ppo`
+- [`forward`](modules/topogpt3.model.py.md#topogpt2-forward) method of `TopoGPT2` in `topogpt3.model`
+- [`forward`](modules/topogpt3.model.py.md#topogpt2layer-forward) method of `TopoGPT2Layer` in `topogpt3.model`
+- [`forward`](modules/topogpt3.lens_model.py.md#topogpt3lensmodel-forward) method of `TopoGPT3LensModel` in `topogpt3.lens_model`
+- [`forward`](modules/topogpt3.model.py.md#topomoebrain-forward) method of `TopoMoEBrain` in `topogpt3.model`
+- [`forward_with_memory`](modules/topogpt3.model.py.md#topogpt2-forward_with_memory) method of `TopoGPT2` in `topogpt3.model`
+- [`fprintf`](modules/topogpt3.c.md#fprintf) function in `topogpt3.c`
+- [`fputc`](modules/topogpt3.c.md#fputc) function in `topogpt3.c`
+- [`fputs`](modules/topogpt3.c.md#fputs) function in `topogpt3.c`
+- [`fread`](modules/topogpt3.c.md#fread) function in `topogpt3.c`
+- [`free`](modules/topogpt3.c.md#free) function in `topogpt3.c`
+- [`freeze_non_lora`](modules/topogpt3.lora.py.md#freeze_non_lora) function in `topogpt3.lora`
+- [`FREQ_W`](modules/topogpt3.c.md#freq_w) macro in `topogpt3.c`
+- [`from_checkpoint`](modules/topogpt3.lens_model.py.md#topogpt3lensmodel-from_checkpoint) classmethod of `TopoGPT3LensModel` in `topogpt3.lens_model`
+- [`from_pretrained`](modules/topogpt3.jlens.py.md#jacobianlens-from_pretrained) classmethod of `JacobianLens` in `topogpt3.jlens`
+- [`from_settings`](modules/topogpt3.inference.py.md#samplingpolicy-from_settings) classmethod of `SamplingPolicy` in `topogpt3.inference`
+- [`from_settings`](modules/topogpt3.inference_hrm.py.md#samplingpolicy-from_settings) classmethod of `SamplingPolicy` in `topogpt3.inference_hrm`
+- [`from_topogpt2_config`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-from_topogpt2_config) classmethod of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`fseek`](modules/topogpt3.c.md#fseek) function in `topogpt3.c`
+- [`ftell`](modules/topogpt3.c.md#ftell) function in `topogpt3.c`
+- [`fwrite`](modules/topogpt3.c.md#fwrite) function in `topogpt3.c`
+
+<a id="g"></a>
+
+## G
+
+- [`GaussPatchApplier`](modules/topogpt3.inference.py.md#gausspatchapplier) class in `topogpt3.inference`
+- [`GaussPatchApplier`](modules/topogpt3.inference_hrm.py.md#gausspatchapplier) class in `topogpt3.inference_hrm`
+- [`gen`](modules/eval.repair.py.md#gen) function in `eval.repair`
+- [`generate`](modules/synthetic_dataset.py.md#groqbackend-generate) method of `GroqBackend` in `synthetic_dataset`
+- [`generate`](modules/synthetic_dataset.py.md#llmbackend-generate) method of `LLMBackend` in `synthetic_dataset`
+- [`generate`](modules/eval.harness.py.md#modelloader-generate) method of `ModelLoader` in `eval.harness`
+- [`generate`](modules/synthetic_dataset.py.md#ollamabackend-generate) method of `OllamaBackend` in `synthetic_dataset`
+- [`generate`](modules/synthetic_dataset.py.md#openrouterbackend-generate) method of `OpenRouterBackend` in `synthetic_dataset`
+- [`generate`](modules/topogpt3.model.py.md#speculativedecoder-generate) method of `SpeculativeDecoder` in `topogpt3.model`
+- [`generate`](modules/topogpt3.model.py.md#topogpt2-generate) method of `TopoGPT2` in `topogpt3.model`
+- [`generate_one`](modules/eval.noise_sweep.py.md#generate_one) function in `eval.noise_sweep`
+- [`generate_one`](modules/eval.temp_sweep.py.md#generate_one) function in `eval.temp_sweep`
+- [`generate_with_continuation`](modules/topogpt3.model.py.md#topogpt2-generate_with_continuation) method of `TopoGPT2` in `topogpt3.model`
+- [`GenerationEngine`](modules/topogpt3.inference.py.md#generationengine) class in `topogpt3.inference`
+- [`GenerationGovernor`](modules/eval.governor.py.md#generationgovernor) class in `eval.governor`
+- [`GenerationReasoningSummary`](modules/topogpt3.inference_hrm.py.md#generationreasoningsummary) class in `topogpt3.inference_hrm`
+- [`GenerationReport`](modules/topogpt3.inference.py.md#generationreport) class in `topogpt3.inference`
+- [`GenerationReport`](modules/topogpt3.inference_hrm.py.md#generationreport) class in `topogpt3.inference_hrm`
+- [`GenerationResult`](modules/eval.governor.py.md#generationresult) class in `eval.governor`
+- [`get_lr`](modules/topogpt3.trainer_utils_topo.py.md#get_lr) function in `topogpt3.trainer_utils_topo`
+- [`get_or_init`](modules/topogpt3.inference_hrm.py.md#sparsehighlevelstatecache-get_or_init) method of `SparseHighLevelStateCache` in `topogpt3.inference_hrm`
+- [`global_step`](modules/topogpt3.model.py.md#curriculumtrainer-global_step) property of `CurriculumTrainer` in `topogpt3.model`
+- [`GQA_GROUPS`](modules/topogpt3.c.md#gqa_groups) macro in `topogpt3.c`
+- [`GRAD_ACCUM_STEPS`](modules/topogpt3.model.py.md#topogpt2config-grad_accum_steps) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`GRAD_ACCUM_STEPS`](modules/topogpt3.train.py.md#topogpt3config-grad_accum_steps) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`GRADIENT_CHECKPOINTING`](modules/topogpt3.model.py.md#topogpt2config-gradient_checkpointing) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`GRADIENT_CHECKPOINTING`](modules/topogpt3.train.py.md#topogpt3config-gradient_checkpointing) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`gradient_checkpointing`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-gradient_checkpointing) attribute of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`GRADIENT_CHECKPOINTING_FACTOR`](modules/topogpt3.train.py.md#topogpt3config-gradient_checkpointing_factor) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`GRADIENT_CLIP_NORM`](modules/topogpt3.model.py.md#topogpt2config-gradient_clip_norm) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`GRADIENT_CLIP_NORM`](modules/topogpt3.train.py.md#topogpt3config-gradient_clip_norm) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`GRASS_ELBOW_RATIO`](modules/topogpt3.train.py.md#topogpt3config-grass_elbow_ratio) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`GRASS_FISHER_BATCHES`](modules/topogpt3.train.py.md#topogpt3config-grass_fisher_batches) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`GRASS_FISHER_GRADS`](modules/topogpt3.train.py.md#topogpt3config-grass_fisher_grads) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`GRASS_MAX_RANK`](modules/topogpt3.train.py.md#topogpt3config-grass_max_rank) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`GRASS_TRACK_EVERY`](modules/topogpt3.train.py.md#topogpt3config-grass_track_every) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`GrassmannianTracker`](modules/topogpt3.train.py.md#grassmanniantracker) class in `topogpt3.train`
+- [`GroqBackend`](modules/synthetic_dataset.py.md#groqbackend) class in `synthetic_dataset`
+- [`grpo_advantages`](modules/topogpt3.rewards.py.md#grpo_advantages) function in `topogpt3.rewards`
+- [`grpo_loss`](modules/topogpt3.rewards.py.md#grpo_loss) function in `topogpt3.rewards`
+
+<a id="h"></a>
+
+## H
+
+- [`h_cache_reuses`](modules/topogpt3.inference_hrm.py.md#generationreasoningsummary-h_cache_reuses) attribute of `GenerationReasoningSummary` in `topogpt3.inference_hrm`
+- [`h_reused_from_cache`](modules/topogpt3.inference_hrm.py.md#reasoningiterationstats-h_reused_from_cache) attribute of `ReasoningIterationStats` in `topogpt3.inference_hrm`
+- [`halted_by_safety_cap`](modules/topogpt3.inference_hrm.py.md#reasoningiterationstats-halted_by_safety_cap) attribute of `ReasoningIterationStats` in `topogpt3.inference_hrm`
+- [`hamilton_product`](modules/topogpt3.model.py.md#quaternionops-hamilton_product) staticmethod of `QuaternionOps` in `topogpt3.model`
+- [`has_checkpoint`](modules/topogpt3.model.py.md#checkpointmanager-has_checkpoint) method of `CheckpointManager` in `topogpt3.model`
+- [`health`](modules/topogpt3.api_server.py.md#health) function in `topogpt3.api_server`
+- [`HF_CHECKPOINT_SUBPATH`](modules/gradio_app.py.md#hf_checkpoint_subpath) constant in `gradio_app`
+- [`HF_CODE_FEEDBACK`](modules/topogpt3.train.py.md#topogpt3config-hf_code_feedback) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`HF_CODEALPACA`](modules/topogpt3.train.py.md#topogpt3config-hf_codealpaca) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`HF_HE_REPO`](modules/eval.harness.py.md#hf_he_repo) constant in `eval.harness`
+- [`HF_MAGICODER`](modules/topogpt3.train.py.md#topogpt3config-hf_magicoder) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`HF_REPO`](modules/gradio_app.py.md#hf_repo) constant in `gradio_app`
+- [`HF_TINY_STACK`](modules/topogpt3.train.py.md#topogpt3config-hf_tiny_stack) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`HF_TINY_STACK_FALLBACKS`](modules/topogpt3.train.py.md#topogpt3config-hf_tiny_stack_fallbacks) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`HierarchicalRecursiveReasoner`](modules/topogpt3.inference_hrm.py.md#hierarchicalrecursivereasoner) class in `topogpt3.inference_hrm`
+- [`high_level_convergences`](modules/topogpt3.inference_hrm.py.md#generationreasoningsummary-high_level_convergences) attribute of `GenerationReasoningSummary` in `topogpt3.inference_hrm`
+- [`high_level_iters`](modules/topogpt3.inference_hrm.py.md#reasoningiterationstats-high_level_iters) attribute of `ReasoningIterationStats` in `topogpt3.inference_hrm`
+- [`high_level_persist_tokens`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-high_level_persist_tokens) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`high_level_step`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-high_level_step) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`high_level_window`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-high_level_window) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`history`](modules/topogpt3.model.py.md#curriculumtrainer-history) property of `CurriculumTrainer` in `topogpt3.model`
+- [`HOLDOUT_FRACTION`](modules/topogpt3.train.py.md#topogpt3config-holdout_fraction) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`HRM_THINK_TOKEN_OPEN`](modules/topogpt3.chat.py.md#hrm_think_token_open) constant in `topogpt3.chat`
+- [`HRMGenerationEngine`](modules/topogpt3.inference_hrm.py.md#hrmgenerationengine) class in `topogpt3.inference_hrm`
+- [`HRMInferencePipeline`](modules/topogpt3.inference_hrm.py.md#hrminferencepipeline) class in `topogpt3.inference_hrm`
+- [`HRMInferenceSettings`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings) class in `topogpt3.inference_hrm`
+- [`HRMLoggerFactory`](modules/topogpt3.inference_hrm.py.md#hrmloggerfactory) class in `topogpt3.inference_hrm`
+
+<a id="i"></a>
+
+## I
+
+- [`InferenceLoggerFactory`](modules/topogpt3.inference.py.md#inferenceloggerfactory) class in `topogpt3.inference`
+- [`InferencePipeline`](modules/topogpt3.inference.py.md#inferencepipeline) class in `topogpt3.inference`
+- [`InferenceSettings`](modules/topogpt3.inference.py.md#inferencesettings) class in `topogpt3.inference`
+- [`__init__`](modules/topogpt3.jlens.py.md#activationrecorder-__init__) constructor of `ActivationRecorder` in `topogpt3.jlens`
+- [`__init__`](modules/topogpt3.model.py.md#bpetokenizer-__init__) constructor of `BPETokenizer` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.train.py.md#blocktokendataset-__init__) constructor of `BlockTokenDataset` in `topogpt3.train`
+- [`__init__`](modules/topogpt3.model.py.md#checkpointmanager-__init__) constructor of `CheckpointManager` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.inference.py.md#checkpointpaths-__init__) constructor of `CheckpointPaths` in `topogpt3.inference`
+- [`__init__`](modules/topogpt3.inference_hrm.py.md#checkpointpaths-__init__) constructor of `CheckpointPaths` in `topogpt3.inference_hrm`
+- [`__init__`](modules/topogpt3.train.py.md#checkpointstore-__init__) constructor of `CheckpointStore` in `topogpt3.train`
+- [`__init__`](modules/topogpt3.train.py.md#codecurriculumloader-__init__) constructor of `CodeCurriculumLoader` in `topogpt3.train`
+- [`__init__`](modules/topogpt3.model.py.md#curriculumdataset-__init__) constructor of `CurriculumDataset` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#curriculumtrainer-__init__) constructor of `CurriculumTrainer` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.train.py.md#efficiencymetrics-__init__) constructor of `EfficiencyMetrics` in `topogpt3.train`
+- [`__init__`](modules/topogpt3.model.py.md#filemanifest-__init__) constructor of `FileManifest` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.inference.py.md#gausspatchapplier-__init__) constructor of `GaussPatchApplier` in `topogpt3.inference`
+- [`__init__`](modules/topogpt3.inference_hrm.py.md#gausspatchapplier-__init__) constructor of `GaussPatchApplier` in `topogpt3.inference_hrm`
+- [`__init__`](modules/topogpt3.inference.py.md#generationengine-__init__) constructor of `GenerationEngine` in `topogpt3.inference`
+- [`__init__`](modules/eval.governor.py.md#generationgovernor-__init__) constructor of `GenerationGovernor` in `eval.governor`
+- [`__init__`](modules/topogpt3.train.py.md#grassmanniantracker-__init__) constructor of `GrassmannianTracker` in `topogpt3.train`
+- [`__init__`](modules/synthetic_dataset.py.md#groqbackend-__init__) constructor of `GroqBackend` in `synthetic_dataset`
+- [`__init__`](modules/topogpt3.inference_hrm.py.md#hrmgenerationengine-__init__) constructor of `HRMGenerationEngine` in `topogpt3.inference_hrm`
+- [`__init__`](modules/topogpt3.inference_hrm.py.md#hrminferencepipeline-__init__) constructor of `HRMInferencePipeline` in `topogpt3.inference_hrm`
+- [`__init__`](modules/topogpt3.inference_hrm.py.md#hierarchicalrecursivereasoner-__init__) constructor of `HierarchicalRecursiveReasoner` in `topogpt3.inference_hrm`
+- [`__init__`](modules/topogpt3.inference.py.md#inferencepipeline-__init__) constructor of `InferencePipeline` in `topogpt3.inference`
+- [`__init__`](modules/topogpt3.api_server.py.md#ipbanner-__init__) constructor of `IpBanner` in `topogpt3.api_server`
+- [`__init__`](modules/topogpt3.jlens.py.md#jacobianlens-__init__) constructor of `JacobianLens` in `topogpt3.jlens`
+- [`__init__`](modules/topogpt3.inference_hrm.py.md#latentchangemetric-__init__) constructor of `LatentChangeMetric` in `topogpt3.inference_hrm`
+- [`__init__`](modules/topogpt3.lora.py.md#lora-__init__) constructor of `LoRA` in `topogpt3.lora`
+- [`__init__`](modules/topogpt3.inference_hrm.py.md#logitssampler-__init__) constructor of `LogitsSampler` in `topogpt3.inference_hrm`
+- [`__init__`](modules/topogpt3.model.py.md#mappedtokendataset-__init__) constructor of `MappedTokenDataset` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#mechanisticmetrics-__init__) constructor of `MechanisticMetrics` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#memmaptokenizer-__init__) constructor of `MemmapTokenizer` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.inference.py.md#modelassembler-__init__) constructor of `ModelAssembler` in `topogpt3.inference`
+- [`__init__`](modules/topogpt3.inference_hrm.py.md#modelassembler-__init__) constructor of `ModelAssembler` in `topogpt3.inference_hrm`
+- [`__init__`](modules/eval.harness.py.md#modelloader-__init__) constructor of `ModelLoader` in `eval.harness`
+- [`__init__`](modules/topogpt3.model.py.md#multiheadattention-__init__) constructor of `MultiHeadAttention` in `topogpt3.model`
+- [`__init__`](modules/synthetic_dataset.py.md#ollamabackend-__init__) constructor of `OllamaBackend` in `synthetic_dataset`
+- [`__init__`](modules/synthetic_dataset.py.md#openrouterbackend-__init__) constructor of `OpenRouterBackend` in `synthetic_dataset`
+- [`__init__`](modules/topogpt3.model.py.md#phase0_kerneloptimizer-__init__) constructor of `Phase0_KernelOptimizer` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#phase1_batchprospector-__init__) constructor of `Phase1_BatchProspector` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#phase2_seedminer-__init__) constructor of `Phase2_SeedMiner` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#phase4_annealingrefiner-__init__) constructor of `Phase4_AnnealingRefiner` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#progressiveseqlentrainer-__init__) constructor of `ProgressiveSeqLenTrainer` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#quantizedembedding-__init__) constructor of `QuantizedEmbedding` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#quaternionlinear-__init__) constructor of `QuaternionLinear` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#quaternionspectrallayer-__init__) constructor of `QuaternionSpectralLayer` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#quaterniontorusbrain-__init__) constructor of `QuaternionTorusBrain` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#rmsnorm-__init__) constructor of `RMSNorm` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.api_server.py.md#ratelimiter-__init__) constructor of `RateLimiter` in `topogpt3.api_server`
+- [`__init__`](modules/topogpt3.inference.py.md#resultrenderer-__init__) constructor of `ResultRenderer` in `topogpt3.inference`
+- [`__init__`](modules/topogpt3.inference_hrm.py.md#resultrenderer-__init__) constructor of `ResultRenderer` in `topogpt3.inference_hrm`
+- [`__init__`](modules/topogpt3.model.py.md#rotaryembedding-__init__) constructor of `RotaryEmbedding` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.inference.py.md#seedsynchronizer-__init__) constructor of `SeedSynchronizer` in `topogpt3.inference`
+- [`__init__`](modules/topogpt3.inference_hrm.py.md#seedsynchronizer-__init__) constructor of `SeedSynchronizer` in `topogpt3.inference_hrm`
+- [`__init__`](modules/topogpt3.trainer_utils_topo.py.md#skipbatchsampler-__init__) constructor of `SkipBatchSampler` in `topogpt3.trainer_utils_topo`
+- [`__init__`](modules/topogpt3.inference.py.md#sourcemoduleloader-__init__) constructor of `SourceModuleLoader` in `topogpt3.inference`
+- [`__init__`](modules/topogpt3.inference_hrm.py.md#sourcemoduleloader-__init__) constructor of `SourceModuleLoader` in `topogpt3.inference_hrm`
+- [`__init__`](modules/topogpt3.inference_hrm.py.md#sparsehighlevelstatecache-__init__) constructor of `SparseHighLevelStateCache` in `topogpt3.inference_hrm`
+- [`__init__`](modules/topogpt3.model.py.md#spectralautoencoder-__init__) constructor of `SpectralAutoencoder` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#speculativedecoder-__init__) constructor of `SpeculativeDecoder` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#swiglu-__init__) constructor of `SwiGLU` in `topogpt3.model`
+- [`__init__`](modules/synthetic_dataset.py.md#syntheticdatasetgenerator-__init__) constructor of `SyntheticDatasetGenerator` in `synthetic_dataset`
+- [`__init__`](modules/topogpt3.model.py.md#textfilter-__init__) constructor of `TextFilter` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.lens_model.py.md#tinydecoder-__init__) constructor of `TinyDecoder` in `topogpt3.lens_model`
+- [`__init__`](modules/eval.governor.py.md#tokenstream-__init__) constructor of `TokenStream` in `eval.governor`
+- [`__init__`](modules/topogpt3.inference.py.md#tokenizerfactory-__init__) constructor of `TokenizerFactory` in `topogpt3.inference`
+- [`__init__`](modules/topogpt3.inference_hrm.py.md#tokenizerfactory-__init__) constructor of `TokenizerFactory` in `topogpt3.inference_hrm`
+- [`__init__`](modules/topogpt3.train_ppo.py.md#topocritic-__init__) constructor of `TopoCritic` in `topogpt3.train_ppo`
+- [`__init__`](modules/topogpt3.model.py.md#topogpt2-__init__) constructor of `TopoGPT2` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.inference.py.md#topogpt2configaligner-__init__) constructor of `TopoGPT2ConfigAligner` in `topogpt3.inference`
+- [`__init__`](modules/topogpt3.inference_hrm.py.md#topogpt2configaligner-__init__) constructor of `TopoGPT2ConfigAligner` in `topogpt3.inference_hrm`
+- [`__init__`](modules/topogpt3.model.py.md#topogpt2layer-__init__) constructor of `TopoGPT2Layer` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#topogpt2trainer-__init__) constructor of `TopoGPT2Trainer` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.lens_model.py.md#topogpt3lensmodel-__init__) constructor of `TopoGPT3LensModel` in `topogpt3.lens_model`
+- [`__init__`](modules/topogpt3.train.py.md#topogpt3trainer-__init__) constructor of `TopoGPT3Trainer` in `topogpt3.train`
+- [`__init__`](modules/topogpt3.model.py.md#topomoebrain-__init__) constructor of `TopoMoEBrain` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#topophasepipeline-__init__) constructor of `TopoPhasePipeline` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.model.py.md#topophasepipelinev2-__init__) constructor of `TopoPhasePipelineV2` in `topogpt3.model`
+- [`__init__`](modules/topogpt3.rollout.py.md#torchrolloutengine-__init__) constructor of `TorchRolloutEngine` in `topogpt3.rollout`
+- [`__init__`](modules/topogpt3.inference.py.md#weightshapeprobe-__init__) constructor of `WeightShapeProbe` in `topogpt3.inference`
+- [`__init__`](modules/topogpt3.inference_hrm.py.md#weightshapeprobe-__init__) constructor of `WeightShapeProbe` in `topogpt3.inference_hrm`
+- [`init_distributed_mode`](modules/topogpt3.trainer_utils_topo.py.md#init_distributed_mode) function in `topogpt3.trainer_utils_topo`
+- [`inject_noise`](modules/eval.noise_sweep.py.md#inject_noise) function in `eval.noise_sweep`
+- [`input_device`](modules/topogpt3.lens_model.py.md#topogpt3lensmodel-input_device) property of `TopoGPT3LensModel` in `topogpt3.lens_model`
+- [`input_ids`](modules/topogpt3.jlens.py.md#slicedata-input_ids) attribute of `SliceData` in `topogpt3.jlens`
+- [`invalidate`](modules/topogpt3.inference_hrm.py.md#sparsehighlevelstatecache-invalidate) method of `SparseHighLevelStateCache` in `topogpt3.inference_hrm`
+- [`IpBanner`](modules/topogpt3.api_server.py.md#ipbanner) class in `topogpt3.api_server`
+- [`is_banned`](modules/topogpt3.api_server.py.md#ipbanner-is_banned) method of `IpBanner` in `topogpt3.api_server`
+- [`is_closed`](modules/eval.governor.py.md#tokenstream-is_closed) method of `TokenStream` in `eval.governor`
+- [`is_main_process`](modules/topogpt3.trainer_utils_topo.py.md#is_main_process) function in `topogpt3.trainer_utils_topo`
+- [`is_response_complete`](modules/topogpt3.continuation.py.md#is_response_complete) function in `topogpt3.continuation`
+
+<a id="j"></a>
+
+## J
+
+- [`jacobian_for_prompt`](modules/topogpt3.jlens.py.md#jacobian_for_prompt) function in `topogpt3.jlens`
+- [`JacobianLens`](modules/topogpt3.jlens.py.md#jacobianlens) class in `topogpt3.jlens`
+
+<a id="k"></a>
+
+## K
+
+- [`k3_kl`](modules/topogpt3.rewards.py.md#k3_kl) function in `topogpt3.rewards`
+- [`key_hash`](modules/topogpt3.api_server.py.md#apikey-key_hash) attribute of `ApiKey` in `topogpt3.api_server`
+- [`keys`](modules/topogpt3.api_server.py.md#authstate-keys) attribute of `AuthState` in `topogpt3.api_server`
+
+<a id="l"></a>
+
+## L
+
+- [`last_refill`](modules/topogpt3.api_server.py.md#tokenbucket-last_refill) attribute of `TokenBucket` in `topogpt3.api_server`
+- [`last_window`](modules/eval.governor.py.md#generationresult-last_window) attribute of `GenerationResult` in `eval.governor`
+- [`latent_change_eps`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-latent_change_eps) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`LatentChangeMetric`](modules/topogpt3.inference_hrm.py.md#latentchangemetric) class in `topogpt3.inference_hrm`
+- [`LATEST`](modules/topogpt3.model.py.md#checkpointmanager-latest) attribute of `CheckpointManager` in `topogpt3.model`
+- [`layers`](modules/topogpt3.lens_model.py.md#lensmodel-layers) attribute of `LensModel` in `topogpt3.lens_model`
+- [`layers`](modules/topogpt3.jlens.py.md#slicedata-layers) attribute of `SliceData` in `topogpt3.jlens`
+- [`layers`](modules/topogpt3.jlens.py.md#topogpt3jlensappconfig-layers) attribute of `TopoGPT3JLensAppConfig` in `topogpt3.jlens`
+- [`layers`](modules/topogpt3.lens_model.py.md#topogpt3lensmodel-layers) property of `TopoGPT3LensModel` in `topogpt3.lens_model`
+- [`LayerWeights`](modules/topogpt3.c.md#layerweights) struct in `topogpt3.c`
+- [`LEARNING_RATE`](modules/topogpt3.model.py.md#topogpt2config-learning_rate) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`LEARNING_RATE`](modules/topogpt3.train.py.md#topogpt3config-learning_rate) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`LensModel`](modules/topogpt3.lens_model.py.md#lensmodel) protocol in `topogpt3.lens_model`
+- [`lifespan`](modules/topogpt3.api_server.py.md#lifespan) function in `topogpt3.api_server`
+- [`list_models`](modules/topogpt3.api_server.py.md#list_models) function in `topogpt3.api_server`
+- [`list_samplers`](modules/eval.samplers.py.md#list_samplers) function in `eval.samplers`
+- [`LLMBackend`](modules/synthetic_dataset.py.md#llmbackend) class in `synthetic_dataset`
+- [`load`](modules/topogpt3.jlens.py.md#jacobianlens-load) classmethod of `JacobianLens` in `topogpt3.jlens`
+- [`load`](modules/synthetic_dataset.py.md#processedmanifest-load) staticmethod of `ProcessedManifest` in `synthetic_dataset`
+- [`load`](modules/topogpt3.inference.py.md#sourcemoduleloader-load) method of `SourceModuleLoader` in `topogpt3.inference`
+- [`load`](modules/topogpt3.inference_hrm.py.md#sourcemoduleloader-load) method of `SourceModuleLoader` in `topogpt3.inference_hrm`
+- [`load_base`](modules/topogpt3.train_lora.py.md#load_base) function in `topogpt3.train_lora`
+- [`load_best`](modules/topogpt3.model.py.md#checkpointmanager-load_best) method of `CheckpointManager` in `topogpt3.model`
+- [`load_humaneval`](modules/eval.harness.py.md#load_humaneval) function in `eval.harness`
+- [`load_jsonl`](modules/eval.analyze.py.md#load_jsonl) function in `eval.analyze`
+- [`load_jsonl`](modules/eval.report.py.md#load_jsonl) function in `eval.report`
+- [`load_latest`](modules/topogpt3.model.py.md#checkpointmanager-load_latest) method of `CheckpointManager` in `topogpt3.model`
+- [`load_latest`](modules/topogpt3.train.py.md#checkpointstore-load_latest) method of `CheckpointStore` in `topogpt3.train`
+- [`load_lora`](modules/topogpt3.lora.py.md#load_lora) function in `topogpt3.lora`
+- [`load_model`](modules/eval.governor_smoke.py.md#load_model) function in `eval.governor_smoke`
+- [`load_model`](modules/eval.noise_sweep.py.md#load_model) function in `eval.noise_sweep`
+- [`load_model`](modules/topogpt3.api_server.py.md#load_model) function in `topogpt3.api_server`
+- [`load_model`](modules/topogpt3.train_dpo.py.md#load_model) function in `topogpt3.train_dpo`
+- [`load_paths`](modules/synthetic_dataset.py.md#load_paths) function in `synthetic_dataset`
+- [`load_records`](modules/eval.analyze_results.py.md#load_records) function in `eval.analyze_results`
+- [`log_date_format`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-log_date_format) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`log_date_format`](modules/topogpt3.inference.py.md#inferencesettings-log_date_format) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`LOG_FILE`](modules/topogpt3.train.py.md#topogpt3config-log_file) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`log_format`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-log_format) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`log_format`](modules/topogpt3.inference.py.md#inferencesettings-log_format) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`LOG_INTERVAL_STEPS`](modules/topogpt3.model.py.md#topogpt2config-log_interval_steps) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`LOG_INTERVAL_STEPS`](modules/topogpt3.train.py.md#topogpt3config-log_interval_steps) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`log_level`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-log_level) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`log_level`](modules/topogpt3.inference.py.md#inferencesettings-log_level) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`LOG_LEVEL`](modules/topogpt3.model.py.md#topogpt2config-log_level) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`log_name`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-log_name) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`log_name`](modules/topogpt3.inference.py.md#inferencesettings-log_name) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`Logger`](modules/topogpt3.trainer_utils_topo.py.md#logger) function in `topogpt3.trainer_utils_topo`
+- [`logits_to_log_probs`](modules/topogpt3.rewards.py.md#logits_to_log_probs) function in `topogpt3.rewards`
+- [`LogitsSampler`](modules/topogpt3.inference_hrm.py.md#logitssampler) class in `topogpt3.inference_hrm`
+- [`LOOP`](modules/eval.governor.py.md#stopreason-loop) attribute of `StopReason` in `eval.governor`
+- [`LoRA`](modules/topogpt3.lora.py.md#lora) class in `topogpt3.lora`
+- [`lora_parameters`](modules/topogpt3.lora.py.md#lora_parameters) function in `topogpt3.lora`
+- [`lora_targets`](modules/topogpt3.lora.py.md#lora_targets) function in `topogpt3.lora`
+- [`low_level_iters_total`](modules/topogpt3.inference_hrm.py.md#reasoningiterationstats-low_level_iters_total) attribute of `ReasoningIterationStats` in `topogpt3.inference_hrm`
+- [`low_level_step`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-low_level_step) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`low_level_window`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-low_level_window) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+
+<a id="m"></a>
+
+## M
+
+- [`main`](modules/app.py.md#main) function in `app`
+- [`main`](modules/convert_weights.py.md#main) function in `convert_weights`
+- [`main`](modules/convert_weights_minios.py.md#main) function in `convert_weights_minios`
+- [`main`](modules/encode_tokens.py.md#main) function in `encode_tokens`
+- [`main`](modules/eval.analyze.py.md#main) function in `eval.analyze`
+- [`main`](modules/eval.analyze_results.py.md#main) function in `eval.analyze_results`
+- [`main`](modules/eval.diag_static.py.md#main) function in `eval.diag_static`
+- [`main`](modules/eval.harness.py.md#main) function in `eval.harness`
+- [`main`](modules/eval.integration_smoke.py.md#main) function in `eval.integration_smoke`
+- [`main`](modules/eval.noise_analysis.py.md#main) function in `eval.noise_analysis`
+- [`main`](modules/eval.noise_sweep.py.md#main) function in `eval.noise_sweep`
+- [`main`](modules/eval.repair.py.md#main) function in `eval.repair`
+- [`main`](modules/eval.report.py.md#main) function in `eval.report`
+- [`main`](modules/eval.sandbox_smoke.py.md#main) function in `eval.sandbox_smoke`
+- [`main`](modules/eval.temp_sweep.py.md#main) function in `eval.temp_sweep`
+- [`main`](modules/synthetic_dataset.py.md#main) function in `synthetic_dataset`
+- [`main`](modules/topogpt3.c.md#main) function in `topogpt3.c`
+- [`main`](modules/topogpt3.__main__.py.md#main) function in `topogpt3.__main__`
+- [`main`](modules/topogpt3.api_server.py.md#main) function in `topogpt3.api_server`
+- [`main`](modules/topogpt3.convert.py.md#main) function in `topogpt3.convert`
+- [`main`](modules/topogpt3.export_chat.py.md#main) function in `topogpt3.export_chat`
+- [`main`](modules/topogpt3.inference.py.md#main) function in `topogpt3.inference`
+- [`main`](modules/topogpt3.inference_hrm.py.md#main) function in `topogpt3.inference_hrm`
+- [`main`](modules/topogpt3.model.py.md#main) function in `topogpt3.model`
+- [`main`](modules/topogpt3.train.py.md#main) function in `topogpt3.train`
+- [`main`](modules/topogpt3.train_agent.py.md#main) function in `topogpt3.train_agent`
+- [`main`](modules/topogpt3.train_distill.py.md#main) function in `topogpt3.train_distill`
+- [`main`](modules/topogpt3.train_dpo.py.md#main) function in `topogpt3.train_dpo`
+- [`main`](modules/topogpt3.train_grpo.py.md#main) function in `topogpt3.train_grpo`
+- [`main`](modules/topogpt3.train_lora.py.md#main) function in `topogpt3.train_lora`
+- [`main`](modules/topogpt3.train_ppo.py.md#main) function in `topogpt3.train_ppo`
+- [`make_loop_detector`](modules/eval.governor.py.md#make_loop_detector) function in `eval.governor`
+- [`make_sampler`](modules/eval.harness.py.md#make_sampler) function in `eval.harness`
+- [`make_timeout_hook`](modules/eval.governor.py.md#make_timeout_hook) function in `eval.governor`
+- [`malloc`](modules/topogpt3.c.md#malloc) function in `topogpt3.c`
+- [`MappedTokenDataset`](modules/topogpt3.model.py.md#mappedtokendataset) class in `topogpt3.model`
+- [`mark_done`](modules/eval.governor.py.md#tokenstream-mark_done) method of `TokenStream` in `eval.governor`
+- [`max_ast_depth`](modules/eval.sandbox.py.md#sandboxconfig-max_ast_depth) attribute of `SandboxConfig` in `eval.sandbox`
+- [`MAX_AUTH_FAILURES`](modules/topogpt3.api_server.py.md#max_auth_failures) constant in `topogpt3.api_server`
+- [`max_checkpoint_bytes`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-max_checkpoint_bytes) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`max_checkpoint_bytes`](modules/topogpt3.inference.py.md#inferencesettings-max_checkpoint_bytes) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`MAX_CHECKPOINTS`](modules/topogpt3.model.py.md#topogpt2config-max_checkpoints) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`MAX_CHECKPOINTS`](modules/topogpt3.train.py.md#topogpt3config-max_checkpoints) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`MAX_CONCURRENT_REQUESTS`](modules/topogpt3.api_server.py.md#max_concurrent_requests) constant in `topogpt3.api_server`
+- [`MAX_CONTENT_LEN`](modules/topogpt3.api_server.py.md#max_content_len) constant in `topogpt3.api_server`
+- [`max_continuations`](modules/topogpt3.api_server.py.md#chatcompletionrequest-max_continuations) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`max_continuations`](modules/topogpt3.api_server.py.md#completionrequest-max_continuations) attribute of `CompletionRequest` in `topogpt3.api_server`
+- [`max_continuations`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-max_continuations) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`max_continuations`](modules/topogpt3.inference.py.md#inferencesettings-max_continuations) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`max_drift_relative`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-max_drift_relative) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`MAX_EVAL_BATCHES`](modules/topogpt3.train.py.md#topogpt3config-max_eval_batches) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`MAX_FILE_SIZE`](modules/synthetic_dataset.py.md#syntheticdatasetgenerator-max_file_size) attribute of `SyntheticDatasetGenerator` in `synthetic_dataset`
+- [`max_high_level_iters`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-max_high_level_iters) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`max_hrm_drift`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-max_hrm_drift) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`max_hrm_h_iters`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-max_hrm_h_iters) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`max_hrm_h_window`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-max_hrm_h_window) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`max_hrm_l_iters`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-max_hrm_l_iters) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`max_hrm_l_window`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-max_hrm_l_window) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`max_hrm_persist`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-max_hrm_persist) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`max_hrm_step`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-max_hrm_step) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`max_hrm_warm_start`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-max_hrm_warm_start) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`MAX_LINE`](modules/topogpt3.c.md#max_line) macro in `topogpt3.c`
+- [`MAX_LINES_SHOWN`](modules/synthetic_dataset.py.md#syntheticdatasetgenerator-max_lines_shown) attribute of `SyntheticDatasetGenerator` in `synthetic_dataset`
+- [`max_low_level_iters`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-max_low_level_iters) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`max_max_new_tokens`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-max_max_new_tokens) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`max_max_new_tokens`](modules/topogpt3.inference.py.md#inferencesettings-max_max_new_tokens) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`MAX_MESSAGES`](modules/topogpt3.api_server.py.md#max_messages) constant in `topogpt3.api_server`
+- [`max_new_tokens`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-max_new_tokens) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`max_new_tokens`](modules/topogpt3.inference.py.md#inferencesettings-max_new_tokens) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`max_new_tokens`](modules/topogpt3.inference.py.md#samplingpolicy-max_new_tokens) attribute of `SamplingPolicy` in `topogpt3.inference`
+- [`max_new_tokens`](modules/topogpt3.inference_hrm.py.md#samplingpolicy-max_new_tokens) attribute of `SamplingPolicy` in `topogpt3.inference_hrm`
+- [`MAX_OUTPUT_TOKENS`](modules/topogpt3.api_server.py.md#max_output_tokens) constant in `topogpt3.api_server`
+- [`max_program_bytes`](modules/eval.sandbox.py.md#sandboxconfig-max_program_bytes) attribute of `SandboxConfig` in `eval.sandbox`
+- [`MAX_PROMPT_CHARS`](modules/topogpt3.api_server.py.md#max_prompt_chars) constant in `topogpt3.api_server`
+- [`MAX_PROMPT_LEN`](modules/topogpt3.c.md#max_prompt_len) macro in `topogpt3.c`
+- [`max_repetition_penalty`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-max_repetition_penalty) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`max_repetition_penalty`](modules/topogpt3.inference.py.md#inferencesettings-max_repetition_penalty) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`MAX_REQUEST_BODY`](modules/topogpt3.api_server.py.md#max_request_body) constant in `topogpt3.api_server`
+- [`MAX_SEQ_LEN`](modules/topogpt3.c.md#max_seq_len) macro in `topogpt3.c`
+- [`max_seq_len`](modules/topogpt3.inference.py.md#scalepreset-max_seq_len) attribute of `ScalePreset` in `topogpt3.inference`
+- [`max_seq_len`](modules/topogpt3.inference_hrm.py.md#scalepreset-max_seq_len) attribute of `ScalePreset` in `topogpt3.inference_hrm`
+- [`MAX_SEQ_LEN`](modules/topogpt3.model.py.md#topogpt2config-max_seq_len) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`max_seq_len`](modules/topogpt3.jlens.py.md#topogpt3jlensappconfig-max_seq_len) attribute of `TopoGPT3JLensAppConfig` in `topogpt3.jlens`
+- [`max_seq_len`](modules/topogpt3.jlens.py.md#topogpt3jlensfitconfig-max_seq_len) attribute of `TopoGPT3JLensFitConfig` in `topogpt3.jlens`
+- [`max_seq_len`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-max_seq_len) attribute of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`MAX_STOP_STRING_LEN`](modules/topogpt3.api_server.py.md#max_stop_string_len) constant in `topogpt3.api_server`
+- [`MAX_STOP_STRINGS`](modules/topogpt3.api_server.py.md#max_stop_strings) constant in `topogpt3.api_server`
+- [`max_temperature`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-max_temperature) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`max_temperature`](modules/topogpt3.inference.py.md#inferencesettings-max_temperature) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`MAX_TEMPERATURE`](modules/topogpt3.api_server.py.md#max_temperature) constant in `topogpt3.api_server`
+- [`max_tokens`](modules/topogpt3.api_server.py.md#chatcompletionrequest-max_tokens) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`max_tokens`](modules/topogpt3.api_server.py.md#completionrequest-max_tokens) attribute of `CompletionRequest` in `topogpt3.api_server`
+- [`MAX_TOKENS`](modules/topogpt3.c.md#max_tokens) macro in `topogpt3.c`
+- [`MAX_TOKENS`](modules/eval.governor.py.md#stopreason-max_tokens) attribute of `StopReason` in `eval.governor`
+- [`MAX_TOKENS_PER_TIER`](modules/topogpt3.train.py.md#topogpt3config-max_tokens_per_tier) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`MAX_TRAIN_BATCHES_PER_EPOCH`](modules/topogpt3.train.py.md#topogpt3config-max_train_batches_per_epoch) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`MAX_TRAIN_TOKENS`](modules/topogpt3.model.py.md#topogpt2config-max_train_tokens) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`measure_throughput`](modules/topogpt3.train.py.md#efficiencymetrics-measure_throughput) method of `EfficiencyMetrics` in `topogpt3.train`
+- [`MechanisticMetrics`](modules/topogpt3.model.py.md#mechanisticmetrics) class in `topogpt3.model`
+- [`memcpy`](modules/topogpt3.c.md#memcpy) function in `topogpt3.c`
+- [`MemmapTokenizer`](modules/topogpt3.model.py.md#memmaptokenizer) class in `topogpt3.model`
+- [`MEMORY_SEGMENT_LEN`](modules/topogpt3.model.py.md#topogpt2config-memory_segment_len) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`memset`](modules/topogpt3.c.md#memset) function in `topogpt3.c`
+- [`merge`](modules/topogpt3.jlens.py.md#jacobianlens-merge) classmethod of `JacobianLens` in `topogpt3.jlens`
+- [`merge_base_lora`](modules/topogpt3.convert.py.md#merge_base_lora) function in `topogpt3.convert`
+- [`merge_lora`](modules/topogpt3.lora.py.md#merge_lora) function in `topogpt3.lora`
+- [`Message`](modules/topogpt3.api_server.py.md#message) class in `topogpt3.api_server`
+- [`messages`](modules/topogpt3.api_server.py.md#chatcompletionrequest-messages) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`min_checkpoint_bytes`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_checkpoint_bytes) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`min_checkpoint_bytes`](modules/topogpt3.inference.py.md#inferencesettings-min_checkpoint_bytes) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`min_hrm_drift`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_hrm_drift) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`min_hrm_h_iters`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_hrm_h_iters) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`min_hrm_h_window`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_hrm_h_window) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`min_hrm_l_iters`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_hrm_l_iters) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`min_hrm_l_window`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_hrm_l_window) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`min_hrm_persist`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_hrm_persist) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`min_hrm_step`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_hrm_step) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`min_hrm_warm_start`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_hrm_warm_start) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`min_max_new_tokens`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_max_new_tokens) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`min_max_new_tokens`](modules/topogpt3.inference.py.md#inferencesettings-min_max_new_tokens) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`min_repetition_penalty`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_repetition_penalty) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`min_repetition_penalty`](modules/topogpt3.inference.py.md#inferencesettings-min_repetition_penalty) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`min_temperature`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_temperature) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`min_temperature`](modules/topogpt3.inference.py.md#inferencesettings-min_temperature) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`min_top_k`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-min_top_k) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`min_top_k`](modules/topogpt3.inference.py.md#inferencesettings-min_top_k) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`mine`](modules/topogpt3.model.py.md#phase2_seedminer-mine) method of `Phase2_SeedMiner` in `topogpt3.model`
+- [`minimum_high_level_iters`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-minimum_high_level_iters) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`minimum_low_level_iters`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-minimum_low_level_iters) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`MOCK`](modules/topogpt3.tools_agent.py.md#mock) constant in `topogpt3.tools_agent`
+- [`model`](modules/topogpt3.api_server.py.md#chatcompletionrequest-model) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`model`](modules/topogpt3.api_server.py.md#completionrequest-model) attribute of `CompletionRequest` in `topogpt3.api_server`
+- [`model`](modules/topogpt3.model.py.md#curriculumtrainer-model) property of `CurriculumTrainer` in `topogpt3.model`
+- [`model`](modules/topogpt3.api_server.py.md#servermodel-model) attribute of `ServerModel` in `topogpt3.api_server`
+- [`model_config`](modules/topogpt3.api_server.py.md#chatcompletionrequest-model_config) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`model_config`](modules/topogpt3.api_server.py.md#completionrequest-model_config) attribute of `CompletionRequest` in `topogpt3.api_server`
+- [`model_config`](modules/topogpt3.api_server.py.md#message-model_config) attribute of `Message` in `topogpt3.api_server`
+- [`model_file`](modules/topogpt3.inference.py.md#checkpointpaths-model_file) method of `CheckpointPaths` in `topogpt3.inference`
+- [`model_file`](modules/topogpt3.inference_hrm.py.md#checkpointpaths-model_file) method of `CheckpointPaths` in `topogpt3.inference_hrm`
+- [`model_filename`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-model_filename) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`model_filename`](modules/topogpt3.inference.py.md#inferencesettings-model_filename) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`model_scale`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-model_scale) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`model_scale`](modules/topogpt3.inference.py.md#inferencesettings-model_scale) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`ModelAssembler`](modules/topogpt3.inference.py.md#modelassembler) class in `topogpt3.inference`
+- [`ModelAssembler`](modules/topogpt3.inference_hrm.py.md#modelassembler) class in `topogpt3.inference_hrm`
+- [`ModelLoader`](modules/eval.harness.py.md#modelloader) class in `eval.harness`
+- [`ModelWeights`](modules/topogpt3.c.md#modelweights) struct in `topogpt3.c`
+- [`MOE_AUX_LOSS_WEIGHT`](modules/topogpt3.model.py.md#topogpt2config-moe_aux_loss_weight) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`MOE_ENABLED`](modules/topogpt3.model.py.md#topogpt2config-moe_enabled) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`moe_enabled`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-moe_enabled) attribute of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`MOE_TOP_K`](modules/topogpt3.c.md#moe_top_k) macro in `topogpt3.c`
+- [`MOE_TOP_K`](modules/topogpt3.model.py.md#topogpt2config-moe_top_k) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`moe_top_k`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-moe_top_k) attribute of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`MultiHeadAttention`](modules/topogpt3.model.py.md#multiheadattention) class in `topogpt3.model`
+
+<a id="n"></a>
+
+## N
+
+- [`N_ANGULAR`](modules/topogpt3.c.md#n_angular) macro in `topogpt3.c`
+- [`N_EDGE_TYPES`](modules/topogpt3.c.md#n_edge_types) macro in `topogpt3.c`
+- [`N_EDGES`](modules/topogpt3.c.md#n_edges) macro in `topogpt3.c`
+- [`N_EXPERTS`](modules/topogpt3.c.md#n_experts) macro in `topogpt3.c`
+- [`N_EXPERTS`](modules/topogpt3.model.py.md#topogpt2config-n_experts) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`n_experts`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-n_experts) attribute of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`N_HEADS`](modules/topogpt3.c.md#n_heads) macro in `topogpt3.c`
+- [`n_heads`](modules/topogpt3.inference.py.md#scalepreset-n_heads) attribute of `ScalePreset` in `topogpt3.inference`
+- [`n_heads`](modules/topogpt3.inference_hrm.py.md#scalepreset-n_heads) attribute of `ScalePreset` in `topogpt3.inference_hrm`
+- [`N_HEADS`](modules/topogpt3.model.py.md#topogpt2config-n_heads) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`n_heads`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-n_heads) attribute of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`N_KV_HEADS`](modules/topogpt3.c.md#n_kv_heads) macro in `topogpt3.c`
+- [`N_KV_HEADS`](modules/topogpt3.model.py.md#topogpt2config-n_kv_heads) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`n_kv_heads`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-n_kv_heads) attribute of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`n_layers`](modules/topogpt3.lens_model.py.md#lensmodel-n_layers) attribute of `LensModel` in `topogpt3.lens_model`
+- [`N_LAYERS`](modules/topogpt3.c.md#n_layers) macro in `topogpt3.c`
+- [`n_layers`](modules/topogpt3.inference.py.md#scalepreset-n_layers) attribute of `ScalePreset` in `topogpt3.inference`
+- [`n_layers`](modules/topogpt3.inference_hrm.py.md#scalepreset-n_layers) attribute of `ScalePreset` in `topogpt3.inference_hrm`
+- [`N_LAYERS`](modules/topogpt3.model.py.md#topogpt2config-n_layers) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`n_layers`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-n_layers) attribute of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`n_layers`](modules/topogpt3.lens_model.py.md#topogpt3lensmodel-n_layers) property of `TopoGPT3LensModel` in `topogpt3.lens_model`
+- [`N_MEMORY_TOKENS`](modules/topogpt3.model.py.md#topogpt2config-n_memory_tokens) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`N_NODES`](modules/topogpt3.c.md#n_nodes) macro in `topogpt3.c`
+- [`N_RADIAL`](modules/topogpt3.c.md#n_radial) macro in `topogpt3.c`
+- [`N_SPECTRAL_LAYERS`](modules/topogpt3.c.md#n_spectral_layers) macro in `topogpt3.c`
+- [`n_tokens`](modules/eval.governor.py.md#generationresult-n_tokens) attribute of `GenerationResult` in `eval.governor`
+- [`name`](modules/synthetic_dataset.py.md#groqbackend-name) method of `GroqBackend` in `synthetic_dataset`
+- [`name`](modules/synthetic_dataset.py.md#llmbackend-name) method of `LLMBackend` in `synthetic_dataset`
+- [`name`](modules/synthetic_dataset.py.md#ollamabackend-name) method of `OllamaBackend` in `synthetic_dataset`
+- [`name`](modules/synthetic_dataset.py.md#openrouterbackend-name) method of `OpenRouterBackend` in `synthetic_dataset`
+- [`new_tokens`](modules/topogpt3.inference.py.md#generationreport-new_tokens) attribute of `GenerationReport` in `topogpt3.inference`
+- [`new_tokens`](modules/topogpt3.inference_hrm.py.md#generationreport-new_tokens) attribute of `GenerationReport` in `topogpt3.inference_hrm`
+- [`normalize`](modules/topogpt3.model.py.md#quaternionops-normalize) staticmethod of `QuaternionOps` in `topogpt3.model`
+- [`NULL`](modules/topogpt3.c.md#null) macro in `topogpt3.c`
+- [`num_layers`](modules/topogpt3.inference_hrm.py.md#hierarchicalrecursivereasoner-num_layers) property of `HierarchicalRecursiveReasoner` in `topogpt3.inference_hrm`
+- [`NUM_SPECTRAL_LAYERS`](modules/topogpt3.model.py.md#topogpt2config-num_spectral_layers) attribute of `TopoGPT2Config` in `topogpt3.model`
+
+<a id="o"></a>
+
+## O
+
+- [`OllamaBackend`](modules/synthetic_dataset.py.md#ollamabackend) class in `synthetic_dataset`
+- [`open_memmap`](modules/topogpt3.train.py.md#codecurriculumloader-open_memmap) method of `CodeCurriculumLoader` in `topogpt3.train`
+- [`open_thinking`](modules/topogpt3.api_server.py.md#chatcompletionrequest-open_thinking) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`OpenRouterBackend`](modules/synthetic_dataset.py.md#openrouterbackend) class in `synthetic_dataset`
+- [`optimize`](modules/topogpt3.model.py.md#phase0_kerneloptimizer-optimize) method of `Phase0_KernelOptimizer` in `topogpt3.model`
+- [`optimizer`](modules/topogpt3.model.py.md#curriculumtrainer-optimizer) property of `CurriculumTrainer` in `topogpt3.model`
+- [`orig_max`](modules/topogpt3.yarn.py.md#yarnconfig-orig_max) attribute of `YaRNConfig` in `topogpt3.yarn`
+- [`output`](modules/topogpt3.inference.py.md#generationreport-output) attribute of `GenerationReport` in `topogpt3.inference`
+- [`output`](modules/topogpt3.inference_hrm.py.md#generationreport-output) attribute of `GenerationReport` in `topogpt3.inference_hrm`
+- [`output_ids`](modules/topogpt3.rollout.py.md#rolloutresult-output_ids) attribute of `RolloutResult` in `topogpt3.rollout`
+- [`output_path`](modules/synthetic_dataset.py.md#processedmanifest-output_path) attribute of `ProcessedManifest` in `synthetic_dataset`
+
+<a id="p"></a>
+
+## P
+
+- [`parse`](modules/topogpt3.inference.py.md#cliargumentparser-parse) staticmethod of `CliArgumentParser` in `topogpt3.inference`
+- [`parse`](modules/topogpt3.inference_hrm.py.md#cliargumentparser-parse) staticmethod of `CliArgumentParser` in `topogpt3.inference_hrm`
+- [`parse_args`](modules/synthetic_dataset.py.md#parse_args) function in `synthetic_dataset`
+- [`parse_args`](modules/topogpt3.train.py.md#parse_args) function in `topogpt3.train`
+- [`parse_thinking`](modules/topogpt3.chat.py.md#parse_thinking) function in `topogpt3.chat`
+- [`parse_tool_calls`](modules/topogpt3.chat.py.md#parse_tool_calls) function in `topogpt3.chat`
+- [`pass_at_k`](modules/eval.analyze.py.md#pass_at_k) function in `eval.analyze`
+- [`pass_at_k`](modules/eval.report.py.md#pass_at_k) function in `eval.report`
+- [`pass_at_k_unbiased`](modules/eval.temp_sweep.py.md#pass_at_k_unbiased) function in `eval.temp_sweep`
+- [`patch_config_for_resume`](modules/topogpt3.model.py.md#checkpointmanager-patch_config_for_resume) method of `CheckpointManager` in `topogpt3.model`
+- [`per_token_logps`](modules/topogpt3.rollout.py.md#rolloutresult-per_token_logps) attribute of `RolloutResult` in `topogpt3.rollout`
+- [`Phase0_KernelOptimizer`](modules/topogpt3.model.py.md#phase0_kerneloptimizer) class in `topogpt3.model`
+- [`Phase1_BatchProspector`](modules/topogpt3.model.py.md#phase1_batchprospector) class in `topogpt3.model`
+- [`Phase2_SeedMiner`](modules/topogpt3.model.py.md#phase2_seedminer) class in `topogpt3.model`
+- [`Phase4_AnnealingRefiner`](modules/topogpt3.model.py.md#phase4_annealingrefiner) class in `topogpt3.model`
+- [`phase_discretization`](modules/eval.diag_static.py.md#phase_discretization) function in `eval.diag_static`
+- [`PI`](modules/topogpt3.c.md#pi) macro in `topogpt3.c`
+- [`positions`](modules/topogpt3.jlens.py.md#topogpt3jlensappconfig-positions) attribute of `TopoGPT3JLensAppConfig` in `topogpt3.jlens`
+- [`post_processing_chat`](modules/topogpt3.chat.py.md#post_processing_chat) function in `topogpt3.chat`
+- [`pre_processing_chat`](modules/topogpt3.chat.py.md#pre_processing_chat) function in `topogpt3.chat`
+- [`prepare_all`](modules/topogpt3.train.py.md#topogpt3trainer-prepare_all) method of `TopoGPT3Trainer` in `topogpt3.train`
+- [`prepare_tier`](modules/topogpt3.train.py.md#codecurriculumloader-prepare_tier) method of `CodeCurriculumLoader` in `topogpt3.train`
+- [`preset`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-preset) method of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`preset`](modules/topogpt3.inference.py.md#inferencesettings-preset) method of `InferenceSettings` in `topogpt3.inference`
+- [`printf`](modules/topogpt3.c.md#printf) function in `topogpt3.c`
+- [`probe_checkpoint`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-probe_checkpoint) classmethod of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`process_batch`](modules/synthetic_dataset.py.md#syntheticdatasetgenerator-process_batch) method of `SyntheticDatasetGenerator` in `synthetic_dataset`
+- [`process_file`](modules/synthetic_dataset.py.md#syntheticdatasetgenerator-process_file) method of `SyntheticDatasetGenerator` in `synthetic_dataset`
+- [`process_torus_grid`](modules/topogpt3.model.py.md#spectralautoencoder-process_torus_grid) method of `SpectralAutoencoder` in `topogpt3.model`
+- [`processed_files`](modules/synthetic_dataset.py.md#processedmanifest-processed_files) attribute of `ProcessedManifest` in `synthetic_dataset`
+- [`ProcessedManifest`](modules/synthetic_dataset.py.md#processedmanifest) class in `synthetic_dataset`
+- [`PROGRESSIVE_SEQ`](modules/topogpt3.model.py.md#topogpt2config-progressive_seq) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`PROGRESSIVE_SEQ_EPOCHS`](modules/topogpt3.model.py.md#topogpt2config-progressive_seq_epochs) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`PROGRESSIVE_SEQ_STEPS`](modules/topogpt3.model.py.md#topogpt2config-progressive_seq_steps) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`PROGRESSIVE_WINDOW`](modules/topogpt3.train.py.md#topogpt3config-progressive_window) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`ProgressiveSeqLenTrainer`](modules/topogpt3.model.py.md#progressiveseqlentrainer) class in `topogpt3.model`
+- [`prompt`](modules/topogpt3.api_server.py.md#completionrequest-prompt) attribute of `CompletionRequest` in `topogpt3.api_server`
+- [`prompt`](modules/topogpt3.inference.py.md#generationreport-prompt) attribute of `GenerationReport` in `topogpt3.inference`
+- [`prompt`](modules/topogpt3.inference_hrm.py.md#generationreport-prompt) attribute of `GenerationReport` in `topogpt3.inference_hrm`
+- [`prompt`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-prompt) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`prompt`](modules/topogpt3.inference.py.md#inferencesettings-prompt) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`prompt`](modules/topogpt3.jlens.py.md#slicedata-prompt) attribute of `SliceData` in `topogpt3.jlens`
+- [`prompt_label`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-prompt_label) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`prompt_label`](modules/topogpt3.inference.py.md#inferencesettings-prompt_label) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`prompt_lens`](modules/topogpt3.rollout.py.md#rolloutresult-prompt_lens) attribute of `RolloutResult` in `topogpt3.rollout`
+- [`prompt_tokens`](modules/topogpt3.inference.py.md#generationreport-prompt_tokens) attribute of `GenerationReport` in `topogpt3.inference`
+- [`prompt_tokens`](modules/topogpt3.inference_hrm.py.md#generationreport-prompt_tokens) attribute of `GenerationReport` in `topogpt3.inference_hrm`
+- [`prospect`](modules/topogpt3.model.py.md#phase1_batchprospector-prospect) method of `Phase1_BatchProspector` in `topogpt3.model`
+- [`put`](modules/eval.governor.py.md#tokenstream-put) method of `TokenStream` in `eval.governor`
+- [`putchar`](modules/topogpt3.c.md#putchar) function in `topogpt3.c`
+- [`puts`](modules/topogpt3.c.md#puts) function in `topogpt3.c`
+
+<a id="q"></a>
+
+## Q
+
+- [`QUANT_EMBED_BITS`](modules/topogpt3.model.py.md#topogpt2config-quant_embed_bits) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`QUANTIZE_EMBEDDINGS`](modules/topogpt3.model.py.md#topogpt2config-quantize_embeddings) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`QUANTIZE_FFN`](modules/topogpt3.model.py.md#topogpt2config-quantize_ffn) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`QuantizedEmbedding`](modules/topogpt3.model.py.md#quantizedembedding) class in `topogpt3.model`
+- [`QuaternionLinear`](modules/topogpt3.model.py.md#quaternionlinear) class in `topogpt3.model`
+- [`QuaternionOps`](modules/topogpt3.model.py.md#quaternionops) class in `topogpt3.model`
+- [`QuaternionSpectralLayer`](modules/topogpt3.model.py.md#quaternionspectrallayer) class in `topogpt3.model`
+- [`QuaternionTorusBrain`](modules/topogpt3.model.py.md#quaterniontorusbrain) class in `topogpt3.model`
+
+<a id="r"></a>
+
+## R
+
+- [`RANDOM_SEED`](modules/topogpt3.model.py.md#topogpt2config-random_seed) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`RANDOM_SEED`](modules/topogpt3.train.py.md#topogpt3config-random_seed) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`rate`](modules/topogpt3.api_server.py.md#tokenbucket-rate) attribute of `TokenBucket` in `topogpt3.api_server`
+- [`RATE_BUCKET_CAPACITY`](modules/topogpt3.api_server.py.md#rate_bucket_capacity) constant in `topogpt3.api_server`
+- [`RATE_LIMIT_ADMIN_RPS`](modules/topogpt3.api_server.py.md#rate_limit_admin_rps) constant in `topogpt3.api_server`
+- [`RATE_LIMIT_USER_RPS`](modules/topogpt3.api_server.py.md#rate_limit_user_rps) constant in `topogpt3.api_server`
+- [`RateLimiter`](modules/topogpt3.api_server.py.md#ratelimiter) class in `topogpt3.api_server`
+- [`RATIOS_TO_TEST`](modules/topogpt3.model.py.md#phase0_kerneloptimizer-ratios_to_test) attribute of `Phase0_KernelOptimizer` in `topogpt3.model`
+- [`READ_TENSOR`](modules/topogpt3.c.md#read_tensor) macro in `topogpt3.c`
+- [`READ_TENSOR16`](modules/topogpt3.c.md#read_tensor16) macro in `topogpt3.c`
+- [`READOUT_INNER`](modules/topogpt3.c.md#readout_inner) macro in `topogpt3.c`
+- [`reason`](modules/topogpt3.inference_hrm.py.md#hierarchicalrecursivereasoner-reason) method of `HierarchicalRecursiveReasoner` in `topogpt3.inference_hrm`
+- [`reasoning`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-reasoning) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`reasoning_label`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-reasoning_label) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`reasoning_summary`](modules/topogpt3.inference_hrm.py.md#generationreport-reasoning_summary) attribute of `GenerationReport` in `topogpt3.inference_hrm`
+- [`ReasoningIterationStats`](modules/topogpt3.inference_hrm.py.md#reasoningiterationstats) class in `topogpt3.inference_hrm`
+- [`record_failure`](modules/topogpt3.api_server.py.md#ipbanner-record_failure) method of `IpBanner` in `topogpt3.api_server`
+- [`RecursiveReasoningConfig`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig) class in `topogpt3.inference_hrm`
+- [`refine`](modules/topogpt3.model.py.md#phase4_annealingrefiner-refine) method of `Phase4_AnnealingRefiner` in `topogpt3.model`
+- [`register_sampler`](modules/eval.samplers.py.md#register_sampler) function in `eval.samplers`
+- [`relative_change`](modules/topogpt3.inference_hrm.py.md#latentchangemetric-relative_change) method of `LatentChangeMetric` in `topogpt3.inference_hrm`
+- [`render`](modules/topogpt3.inference.py.md#resultrenderer-render) method of `ResultRenderer` in `topogpt3.inference`
+- [`render`](modules/topogpt3.inference_hrm.py.md#resultrenderer-render) method of `ResultRenderer` in `topogpt3.inference_hrm`
+- [`rep_penalty`](modules/topogpt3.rewards.py.md#rep_penalty) function in `topogpt3.rewards`
+- [`repair_summary`](modules/eval.report.py.md#repair_summary) function in `eval.report`
+- [`repetition_penalty`](modules/topogpt3.api_server.py.md#chatcompletionrequest-repetition_penalty) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`repetition_penalty`](modules/topogpt3.api_server.py.md#completionrequest-repetition_penalty) attribute of `CompletionRequest` in `topogpt3.api_server`
+- [`repetition_penalty`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-repetition_penalty) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`repetition_penalty`](modules/topogpt3.inference.py.md#inferencesettings-repetition_penalty) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`repetition_penalty`](modules/topogpt3.inference.py.md#samplingpolicy-repetition_penalty) attribute of `SamplingPolicy` in `topogpt3.inference`
+- [`repetition_penalty`](modules/topogpt3.inference_hrm.py.md#samplingpolicy-repetition_penalty) attribute of `SamplingPolicy` in `topogpt3.inference_hrm`
+- [`REPO_ROOT`](modules/eval.diag_static.py.md#repo_root) constant in `eval.diag_static`
+- [`REPO_ROOT`](modules/eval.noise_analysis.py.md#repo_root) constant in `eval.noise_analysis`
+- [`REPO_ROOT`](modules/eval.noise_sweep.py.md#repo_root) constant in `eval.noise_sweep`
+- [`REPO_ROOT`](modules/eval.temp_sweep.py.md#repo_root) constant in `eval.temp_sweep`
+- [`report`](modules/topogpt3.model.py.md#textfilter-report) method of `TextFilter` in `topogpt3.model`
+- [`require_existing_file`](modules/topogpt3.inference.py.md#securepathresolver-require_existing_file) staticmethod of `SecurePathResolver` in `topogpt3.inference`
+- [`require_existing_file`](modules/topogpt3.inference_hrm.py.md#securepathresolver-require_existing_file) staticmethod of `SecurePathResolver` in `topogpt3.inference_hrm`
+- [`resolve_under`](modules/topogpt3.inference.py.md#securepathresolver-resolve_under) staticmethod of `SecurePathResolver` in `topogpt3.inference`
+- [`resolve_under`](modules/topogpt3.inference_hrm.py.md#securepathresolver-resolve_under) staticmethod of `SecurePathResolver` in `topogpt3.inference_hrm`
+- [`result_separator_char`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-result_separator_char) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`result_separator_char`](modules/topogpt3.inference.py.md#inferencesettings-result_separator_char) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`result_separator_width`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-result_separator_width) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`result_separator_width`](modules/topogpt3.inference.py.md#inferencesettings-result_separator_width) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`ResultRenderer`](modules/topogpt3.inference.py.md#resultrenderer) class in `topogpt3.inference`
+- [`ResultRenderer`](modules/topogpt3.inference_hrm.py.md#resultrenderer) class in `topogpt3.inference_hrm`
+- [`resume`](modules/topogpt3.model.py.md#curriculumtrainer-resume) method of `CurriculumTrainer` in `topogpt3.model`
+- [`resume`](modules/topogpt3.model.py.md#topogpt2trainer-resume) method of `TopoGPT2Trainer` in `topogpt3.model`
+- [`resume`](modules/topogpt3.jlens.py.md#topogpt3jlensfitconfig-resume) attribute of `TopoGPT3JLensFitConfig` in `topogpt3.jlens`
+- [`RETRY_ATTEMPTS`](modules/synthetic_dataset.py.md#syntheticdatasetgenerator-retry_attempts) attribute of `SyntheticDatasetGenerator` in `synthetic_dataset`
+- [`RETRY_DELAY`](modules/synthetic_dataset.py.md#syntheticdatasetgenerator-retry_delay) attribute of `SyntheticDatasetGenerator` in `synthetic_dataset`
+- [`RMSNorm`](modules/topogpt3.model.py.md#rmsnorm) class in `topogpt3.model`
+- [`role`](modules/topogpt3.api_server.py.md#apikey-role) attribute of `ApiKey` in `topogpt3.api_server`
+- [`role`](modules/topogpt3.api_server.py.md#message-role) attribute of `Message` in `topogpt3.api_server`
+- [`rollout`](modules/topogpt3.rollout.py.md#rolloutengine-rollout) method of `RolloutEngine` in `topogpt3.rollout`
+- [`rollout`](modules/topogpt3.rollout.py.md#torchrolloutengine-rollout) method of `TorchRolloutEngine` in `topogpt3.rollout`
+- [`rollout_multiturn`](modules/topogpt3.tools_agent.py.md#rollout_multiturn) function in `topogpt3.tools_agent`
+- [`RolloutEngine`](modules/topogpt3.rollout.py.md#rolloutengine) class in `topogpt3.rollout`
+- [`RolloutResult`](modules/topogpt3.rollout.py.md#rolloutresult) class in `topogpt3.rollout`
+- [`RotaryEmbedding`](modules/topogpt3.model.py.md#rotaryembedding) class in `topogpt3.model`
+- [`rotate_vector`](modules/topogpt3.model.py.md#quaternionops-rotate_vector) staticmethod of `QuaternionOps` in `topogpt3.model`
+- [`run`](modules/topogpt3.inference.py.md#generationengine-run) method of `GenerationEngine` in `topogpt3.inference`
+- [`run`](modules/eval.governor.py.md#generationgovernor-run) method of `GenerationGovernor` in `eval.governor`
+- [`run`](modules/topogpt3.inference_hrm.py.md#hrmgenerationengine-run) method of `HRMGenerationEngine` in `topogpt3.inference_hrm`
+- [`run`](modules/topogpt3.model.py.md#progressiveseqlentrainer-run) method of `ProgressiveSeqLenTrainer` in `topogpt3.model`
+- [`run`](modules/topogpt3.train.py.md#topogpt3trainer-run) method of `TopoGPT3Trainer` in `topogpt3.train`
+- [`run`](modules/topogpt3.model.py.md#topophasepipeline-run) method of `TopoPhasePipeline` in `topogpt3.model`
+- [`run`](modules/topogpt3.model.py.md#topophasepipelinev2-run) method of `TopoPhasePipelineV2` in `topogpt3.model`
+- [`run_case`](modules/topogpt3.eval_toolcall.py.md#run_case) function in `topogpt3.eval_toolcall`
+- [`run_curriculum`](modules/topogpt3.model.py.md#curriculumtrainer-run_curriculum) method of `CurriculumTrainer` in `topogpt3.model`
+- [`run_hrm`](modules/eval.smoke.py.md#run_hrm) function in `eval.smoke`
+- [`run_hrm_inference`](modules/gradio_app.py.md#run_hrm_inference) function in `gradio_app`
+- [`run_inference`](modules/app.py.md#run_inference) function in `app`
+- [`run_inference_hrm`](modules/app.py.md#run_inference_hrm) function in `app`
+- [`run_one_test`](modules/eval.harness.py.md#run_one_test) function in `eval.harness`
+- [`run_one_test_sandboxed`](modules/eval.harness.py.md#run_one_test_sandboxed) function in `eval.harness`
+- [`run_standard`](modules/eval.smoke.py.md#run_standard) function in `eval.smoke`
+- [`run_standard_inference`](modules/gradio_app.py.md#run_standard_inference) function in `gradio_app`
+- [`run_test`](modules/eval.repair.py.md#run_test) function in `eval.repair`
+- [`run_training`](modules/app.py.md#run_training) function in `app`
+- [`runtime_module_alias`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-runtime_module_alias) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`runtime_module_alias`](modules/topogpt3.inference.py.md#inferencesettings-runtime_module_alias) attribute of `InferenceSettings` in `topogpt3.inference`
+
+<a id="s"></a>
+
+## S
+
+- [`safe_exec`](modules/eval.sandbox.py.md#safe_exec) function in `eval.sandbox`
+- [`safety_halts`](modules/topogpt3.inference_hrm.py.md#generationreasoningsummary-safety_halts) attribute of `GenerationReasoningSummary` in `topogpt3.inference_hrm`
+- [`safety_max_total_iterations`](modules/topogpt3.inference_hrm.py.md#recursivereasoningconfig-safety_max_total_iterations) attribute of `RecursiveReasoningConfig` in `topogpt3.inference_hrm`
+- [`sample`](modules/topogpt3.inference_hrm.py.md#logitssampler-sample) method of `LogitsSampler` in `topogpt3.inference_hrm`
+- [`SAMPLER_REGISTRY`](modules/eval.samplers.py.md#sampler_registry) constant in `eval.samplers`
+- [`SamplingPolicy`](modules/topogpt3.inference.py.md#samplingpolicy) class in `topogpt3.inference`
+- [`SamplingPolicy`](modules/topogpt3.inference_hrm.py.md#samplingpolicy) class in `topogpt3.inference_hrm`
+- [`SandboxConfig`](modules/eval.sandbox.py.md#sandboxconfig) class in `eval.sandbox`
+- [`save`](modules/topogpt3.model.py.md#checkpointmanager-save) method of `CheckpointManager` in `topogpt3.model`
+- [`save`](modules/topogpt3.train.py.md#checkpointstore-save) method of `CheckpointStore` in `topogpt3.train`
+- [`save`](modules/topogpt3.train.py.md#grassmanniantracker-save) method of `GrassmannianTracker` in `topogpt3.train`
+- [`save`](modules/topogpt3.jlens.py.md#jacobianlens-save) method of `JacobianLens` in `topogpt3.jlens`
+- [`save`](modules/synthetic_dataset.py.md#processedmanifest-save) method of `ProcessedManifest` in `synthetic_dataset`
+- [`save_lora`](modules/topogpt3.lora.py.md#save_lora) function in `topogpt3.lora`
+- [`SCALE`](modules/topogpt3.model.py.md#topogpt2config-scale) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`SCALE`](modules/topogpt3.train.py.md#topogpt3config-scale) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`scale`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-scale) attribute of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`scale_presets`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-scale_presets) staticmethod of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`scale_presets`](modules/topogpt3.inference.py.md#inferencesettings-scale_presets) staticmethod of `InferenceSettings` in `topogpt3.inference`
+- [`ScalePreset`](modules/topogpt3.inference.py.md#scalepreset) class in `topogpt3.inference`
+- [`ScalePreset`](modules/topogpt3.inference_hrm.py.md#scalepreset) class in `topogpt3.inference_hrm`
+- [`scaler`](modules/topogpt3.model.py.md#curriculumtrainer-scaler) property of `CurriculumTrainer` in `topogpt3.model`
+- [`scan`](modules/topogpt3.model.py.md#filemanifest-scan) method of `FileManifest` in `topogpt3.model`
+- [`SecurePathResolver`](modules/topogpt3.inference.py.md#securepathresolver) class in `topogpt3.inference`
+- [`SecurePathResolver`](modules/topogpt3.inference_hrm.py.md#securepathresolver) class in `topogpt3.inference_hrm`
+- [`seed`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-seed) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`seed`](modules/topogpt3.inference.py.md#inferencesettings-seed) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`seed`](modules/topogpt3.jlens.py.md#topogpt3jlensfitconfig-seed) attribute of `TopoGPT3JLensFitConfig` in `topogpt3.jlens`
+- [`SeedSynchronizer`](modules/topogpt3.inference.py.md#seedsynchronizer) class in `topogpt3.inference`
+- [`SeedSynchronizer`](modules/topogpt3.inference_hrm.py.md#seedsynchronizer) class in `topogpt3.inference_hrm`
+- [`SEEK_CUR`](modules/topogpt3.c.md#seek_cur) macro in `topogpt3.c`
+- [`SEEK_END`](modules/topogpt3.c.md#seek_end) macro in `topogpt3.c`
+- [`SEEK_SET`](modules/topogpt3.c.md#seek_set) macro in `topogpt3.c`
+- [`seen_hashes`](modules/synthetic_dataset.py.md#processedmanifest-seen_hashes) attribute of `ProcessedManifest` in `synthetic_dataset`
+- [`seq_len`](modules/topogpt3.jlens.py.md#slicedata-seq_len) attribute of `SliceData` in `topogpt3.jlens`
+- [`ServerModel`](modules/topogpt3.api_server.py.md#servermodel) class in `topogpt3.api_server`
+- [`set_seed`](modules/topogpt3.model.py.md#set_seed) function in `topogpt3.model`
+- [`set_tier`](modules/topogpt3.model.py.md#curriculumdataset-set_tier) method of `CurriculumDataset` in `topogpt3.model`
+- [`setup_logger`](modules/topogpt3.model.py.md#setup_logger) function in `topogpt3.model`
+- [`setup_seed`](modules/topogpt3.trainer_utils_topo.py.md#setup_seed) function in `topogpt3.trainer_utils_topo`
+- [`should_save`](modules/topogpt3.model.py.md#checkpointmanager-should_save) method of `CheckpointManager` in `topogpt3.model`
+- [`should_save`](modules/topogpt3.train.py.md#checkpointstore-should_save) method of `CheckpointStore` in `topogpt3.train`
+- [`show_failures`](modules/eval.analyze_results.py.md#show_failures) function in `eval.analyze_results`
+- [`skip_first`](modules/topogpt3.jlens.py.md#topogpt3jlensfitconfig-skip_first) attribute of `TopoGPT3JLensFitConfig` in `topogpt3.jlens`
+- [`SKIP_TENSOR`](modules/topogpt3.c.md#skip_tensor) macro in `topogpt3.c`
+- [`SKIP_TENSOR16`](modules/topogpt3.c.md#skip_tensor16) macro in `topogpt3.c`
+- [`SkipBatchSampler`](modules/topogpt3.trainer_utils_topo.py.md#skipbatchsampler) class in `topogpt3.trainer_utils_topo`
+- [`SliceData`](modules/topogpt3.jlens.py.md#slicedata) class in `topogpt3.jlens`
+- [`slot_dir`](modules/topogpt3.inference.py.md#checkpointpaths-slot_dir) property of `CheckpointPaths` in `topogpt3.inference`
+- [`slot_dir`](modules/topogpt3.inference_hrm.py.md#checkpointpaths-slot_dir) property of `CheckpointPaths` in `topogpt3.inference_hrm`
+- [`snapshot`](modules/topogpt3.train.py.md#grassmanniantracker-snapshot) method of `GrassmannianTracker` in `topogpt3.train`
+- [`snprintf`](modules/topogpt3.c.md#snprintf) function in `topogpt3.c`
+- [`source_directory`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-source_directory) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`source_directory`](modules/topogpt3.inference.py.md#inferencesettings-source_directory) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`source_layers`](modules/topogpt3.jlens.py.md#topogpt3jlensfitconfig-source_layers) attribute of `TopoGPT3JLensFitConfig` in `topogpt3.jlens`
+- [`SourceModuleLoader`](modules/topogpt3.inference.py.md#sourcemoduleloader) class in `topogpt3.inference`
+- [`SourceModuleLoader`](modules/topogpt3.inference_hrm.py.md#sourcemoduleloader) class in `topogpt3.inference_hrm`
+- [`SparseHighLevelStateCache`](modules/topogpt3.inference_hrm.py.md#sparsehighlevelstatecache) class in `topogpt3.inference_hrm`
+- [`SPEC_DECODE_DRAFT_SCALE`](modules/topogpt3.model.py.md#topogpt2config-spec_decode_draft_scale) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`SPEC_DECODE_ENABLED`](modules/topogpt3.model.py.md#topogpt2config-spec_decode_enabled) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`SPEC_DECODE_K`](modules/topogpt3.model.py.md#topogpt2config-spec_decode_k) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`spectral_bonus`](modules/topogpt3.rewards.py.md#spectral_bonus) function in `topogpt3.rewards`
+- [`SPECTRAL_KERNEL_INIT_SCALE`](modules/topogpt3.model.py.md#topogpt2config-spectral_kernel_init_scale) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`SPECTRAL_LATENT_DIM`](modules/topogpt3.c.md#spectral_latent_dim) macro in `topogpt3.c`
+- [`SPECTRAL_LATENT_RATIO`](modules/topogpt3.model.py.md#topogpt2config-spectral_latent_ratio) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`SPECTRAL_WARNING_TOKEN`](modules/topogpt3.chat.py.md#spectral_warning_token) constant in `topogpt3.chat`
+- [`SpectralAutoencoder`](modules/topogpt3.model.py.md#spectralautoencoder) class in `topogpt3.model`
+- [`SpeculativeDecoder`](modules/topogpt3.model.py.md#speculativedecoder) class in `topogpt3.model`
+- [`split_at_last_newline`](modules/topogpt3.continuation.py.md#split_at_last_newline) function in `topogpt3.continuation`
+- [`split_reasoning_content`](modules/topogpt3.chat.py.md#split_reasoning_content) function in `topogpt3.chat`
+- [`SPLIT_SEED`](modules/topogpt3.train.py.md#topogpt3config-split_seed) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`sprintf`](modules/topogpt3.c.md#sprintf) function in `topogpt3.c`
+- [`started_at`](modules/synthetic_dataset.py.md#processedmanifest-started_at) attribute of `ProcessedManifest` in `synthetic_dataset`
+- [`state_file`](modules/topogpt3.inference.py.md#checkpointpaths-state_file) method of `CheckpointPaths` in `topogpt3.inference`
+- [`state_file`](modules/topogpt3.inference_hrm.py.md#checkpointpaths-state_file) method of `CheckpointPaths` in `topogpt3.inference_hrm`
+- [`state_filename`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-state_filename) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`state_filename`](modules/topogpt3.inference.py.md#inferencesettings-state_filename) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`static_kappa`](modules/eval.diag_static.py.md#static_kappa) function in `eval.diag_static`
+- [`stderr`](modules/topogpt3.c.md#stderr) variable in `topogpt3.c`
+- [`stdin`](modules/topogpt3.c.md#stdin) variable in `topogpt3.c`
+- [`stdout`](modules/topogpt3.c.md#stdout) variable in `topogpt3.c`
+- [`stop`](modules/topogpt3.api_server.py.md#chatcompletionrequest-stop) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`stop`](modules/topogpt3.api_server.py.md#completionrequest-stop) attribute of `CompletionRequest` in `topogpt3.api_server`
+- [`stop_reason`](modules/eval.governor.py.md#generationresult-stop_reason) attribute of `GenerationResult` in `eval.governor`
+- [`StopReason`](modules/eval.governor.py.md#stopreason) enum in `eval.governor`
+- [`strcmp`](modules/topogpt3.c.md#strcmp) function in `topogpt3.c`
+- [`stream`](modules/topogpt3.api_server.py.md#chatcompletionrequest-stream) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`stream`](modules/topogpt3.api_server.py.md#completionrequest-stream) attribute of `CompletionRequest` in `topogpt3.api_server`
+- [`stream_complete`](modules/topogpt3.api_server.py.md#servermodel-stream_complete) method of `ServerModel` in `topogpt3.api_server`
+- [`strict_state_dict`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-strict_state_dict) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`strict_state_dict`](modules/topogpt3.inference.py.md#inferencesettings-strict_state_dict) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`strlen`](modules/topogpt3.c.md#strlen) function in `topogpt3.c`
+- [`strncmp`](modules/topogpt3.c.md#strncmp) function in `topogpt3.c`
+- [`strstr`](modules/topogpt3.c.md#strstr) function in `topogpt3.c`
+- [`summarize`](modules/eval.analyze.py.md#summarize) function in `eval.analyze`
+- [`summarize`](modules/eval.analyze_results.py.md#summarize) function in `eval.analyze_results`
+- [`summarize`](modules/eval.temp_sweep.py.md#summarize) function in `eval.temp_sweep`
+- [`summarize_run`](modules/eval.report.py.md#summarize_run) function in `eval.report`
+- [`SwiGLU`](modules/topogpt3.model.py.md#swiglu) class in `topogpt3.model`
+- [`synthetic_winding`](modules/eval.diag_static.py.md#synthetic_winding) function in `eval.diag_static`
+- [`SyntheticDatasetGenerator`](modules/synthetic_dataset.py.md#syntheticdatasetgenerator) class in `synthetic_dataset`
+- [`SYSTEM_PROMPTS`](modules/topogpt3.chat.py.md#system_prompts) constant in `topogpt3.chat`
+
+<a id="t"></a>
+
+## T
+
+- [`T_INIT`](modules/topogpt3.model.py.md#topogpt2config-t_init) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`target_layer`](modules/topogpt3.jlens.py.md#topogpt3jlensfitconfig-target_layer) attribute of `TopoGPT3JLensFitConfig` in `topogpt3.jlens`
+- [`temperature`](modules/topogpt3.api_server.py.md#chatcompletionrequest-temperature) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`temperature`](modules/topogpt3.api_server.py.md#completionrequest-temperature) attribute of `CompletionRequest` in `topogpt3.api_server`
+- [`temperature`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-temperature) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`temperature`](modules/topogpt3.inference.py.md#inferencesettings-temperature) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`temperature`](modules/topogpt3.inference.py.md#samplingpolicy-temperature) attribute of `SamplingPolicy` in `topogpt3.inference`
+- [`temperature`](modules/topogpt3.inference_hrm.py.md#samplingpolicy-temperature) attribute of `SamplingPolicy` in `topogpt3.inference_hrm`
+- [`test_cancel`](modules/eval.governor_smoke.py.md#test_cancel) function in `eval.governor_smoke`
+- [`test_governor_basic`](modules/eval.governor_smoke.py.md#test_governor_basic) function in `eval.governor_smoke`
+- [`test_loop_detector`](modules/eval.governor_smoke.py.md#test_loop_detector) function in `eval.governor_smoke`
+- [`test_tokenstream_threadsafety`](modules/eval.governor_smoke.py.md#test_tokenstream_threadsafety) function in `eval.governor_smoke`
+- [`text_slice`](modules/topogpt3.jlens.py.md#text_slice) function in `topogpt3.jlens`
+- [`TextFilter`](modules/topogpt3.model.py.md#textfilter) class in `topogpt3.model`
+- [`THINK_CLOSE`](modules/topogpt3.chat.py.md#think_close) constant in `topogpt3.chat`
+- [`THINK_OPEN`](modules/topogpt3.chat.py.md#think_open) constant in `topogpt3.chat`
+- [`THINK_RE`](modules/topogpt3.chat.py.md#think_re) constant in `topogpt3.chat`
+- [`thinking_mode`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-thinking_mode) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`TIER_EPOCHS`](modules/topogpt3.train.py.md#topogpt3config-tier_epochs) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`TIER_NAMES`](modules/topogpt3.train.py.md#topogpt3config-tier_names) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`TIER_SEQ_LEN`](modules/topogpt3.train.py.md#topogpt3config-tier_seq_len) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`timeout`](modules/eval.sandbox.py.md#sandboxconfig-timeout) attribute of `SandboxConfig` in `eval.sandbox`
+- [`TIMEOUT`](modules/eval.governor.py.md#stopreason-timeout) attribute of `StopReason` in `eval.governor`
+- [`TinyDecoder`](modules/topogpt3.lens_model.py.md#tinydecoder) class in `topogpt3.lens_model`
+- [`TOK_TAB_SIZE`](modules/topogpt3.c.md#tok_tab_size) macro in `topogpt3.c`
+- [`TOK_VOCAB_SIZE`](modules/topogpt3.c.md#tok_vocab_size) macro in `topogpt3.c`
+- [`token_ids`](modules/eval.governor.py.md#generationresult-token_ids) attribute of `GenerationResult` in `eval.governor`
+- [`token_strs`](modules/topogpt3.jlens.py.md#slicedata-token_strs) attribute of `SliceData` in `topogpt3.jlens`
+- [`TokenBucket`](modules/topogpt3.api_server.py.md#tokenbucket) class in `topogpt3.api_server`
+- [`tokenize`](modules/topogpt3.model.py.md#memmaptokenizer-tokenize) method of `MemmapTokenizer` in `topogpt3.model`
+- [`tokenizer`](modules/topogpt3.lens_model.py.md#lensmodel-tokenizer) attribute of `LensModel` in `topogpt3.lens_model`
+- [`tokenizer`](modules/topogpt3.api_server.py.md#servermodel-tokenizer) attribute of `ServerModel` in `topogpt3.api_server`
+- [`tokenizer`](modules/topogpt3.lens_model.py.md#topogpt3lensmodel-tokenizer) property of `TopoGPT3LensModel` in `topogpt3.lens_model`
+- [`tokenizer_encoding`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-tokenizer_encoding) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`tokenizer_encoding`](modules/topogpt3.inference.py.md#inferencesettings-tokenizer_encoding) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`TokenizerFactory`](modules/topogpt3.inference.py.md#tokenizerfactory) class in `topogpt3.inference`
+- [`TokenizerFactory`](modules/topogpt3.inference_hrm.py.md#tokenizerfactory) class in `topogpt3.inference_hrm`
+- [`tokens`](modules/topogpt3.api_server.py.md#tokenbucket-tokens) attribute of `TokenBucket` in `topogpt3.api_server`
+- [`tokens_generated`](modules/topogpt3.inference_hrm.py.md#generationreasoningsummary-tokens_generated) attribute of `GenerationReasoningSummary` in `topogpt3.inference_hrm`
+- [`tokens_per_second`](modules/topogpt3.inference.py.md#generationreport-tokens_per_second) method of `GenerationReport` in `topogpt3.inference`
+- [`tokens_per_second`](modules/topogpt3.inference_hrm.py.md#generationreport-tokens_per_second) method of `GenerationReport` in `topogpt3.inference_hrm`
+- [`TokenStream`](modules/eval.governor.py.md#tokenstream) class in `eval.governor`
+- [`TOOL_CALL_CLOSE`](modules/topogpt3.chat.py.md#tool_call_close) constant in `topogpt3.chat`
+- [`TOOL_CALL_OPEN`](modules/topogpt3.chat.py.md#tool_call_open) constant in `topogpt3.chat`
+- [`TOOL_CALL_RE`](modules/topogpt3.chat.py.md#tool_call_re) constant in `topogpt3.chat`
+- [`TOOL_RESPONSE_CLOSE`](modules/topogpt3.chat.py.md#tool_response_close) constant in `topogpt3.chat`
+- [`TOOL_RESPONSE_OPEN`](modules/topogpt3.chat.py.md#tool_response_open) constant in `topogpt3.chat`
+- [`tools`](modules/topogpt3.api_server.py.md#chatcompletionrequest-tools) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`TOOLS`](modules/topogpt3.tools_agent.py.md#tools) constant in `topogpt3.tools_agent`
+- [`top_ids`](modules/topogpt3.jlens.py.md#slicedata-top_ids) attribute of `SliceData` in `topogpt3.jlens`
+- [`top_k`](modules/topogpt3.api_server.py.md#chatcompletionrequest-top_k) attribute of `ChatCompletionRequest` in `topogpt3.api_server`
+- [`top_k`](modules/topogpt3.api_server.py.md#completionrequest-top_k) attribute of `CompletionRequest` in `topogpt3.api_server`
+- [`top_k`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-top_k) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`top_k`](modules/topogpt3.inference.py.md#inferencesettings-top_k) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`top_k`](modules/topogpt3.inference.py.md#samplingpolicy-top_k) attribute of `SamplingPolicy` in `topogpt3.inference`
+- [`top_k`](modules/topogpt3.inference_hrm.py.md#samplingpolicy-top_k) attribute of `SamplingPolicy` in `topogpt3.inference_hrm`
+- [`top_n`](modules/topogpt3.jlens.py.md#slicedata-top_n) attribute of `SliceData` in `topogpt3.jlens`
+- [`top_probs`](modules/topogpt3.jlens.py.md#slicedata-top_probs) attribute of `SliceData` in `topogpt3.jlens`
+- [`top_token_strs`](modules/topogpt3.jlens.py.md#slicedata-top_token_strs) attribute of `SliceData` in `topogpt3.jlens`
+- [`topo_checkpoint`](modules/topogpt3.trainer_utils_topo.py.md#topo_checkpoint) function in `topogpt3.trainer_utils_topo`
+- [`TopoCritic`](modules/topogpt3.train_ppo.py.md#topocritic) class in `topogpt3.train_ppo`
+- [`TopoGPT2`](modules/topogpt3.model.py.md#topogpt2) class in `topogpt3.model`
+- [`topogpt2_source_filename`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-topogpt2_source_filename) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`topogpt2_source_filename`](modules/topogpt3.inference.py.md#inferencesettings-topogpt2_source_filename) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`TopoGPT2Config`](modules/topogpt3.model.py.md#topogpt2config) class in `topogpt3.model`
+- [`TopoGPT2ConfigAligner`](modules/topogpt3.inference.py.md#topogpt2configaligner) class in `topogpt3.inference`
+- [`TopoGPT2ConfigAligner`](modules/topogpt3.inference_hrm.py.md#topogpt2configaligner) class in `topogpt3.inference_hrm`
+- [`TopoGPT2Layer`](modules/topogpt3.model.py.md#topogpt2layer) class in `topogpt3.model`
+- [`TopoGPT2Trainer`](modules/topogpt3.model.py.md#topogpt2trainer) class in `topogpt3.model`
+- [`topogpt31_source_filename`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-topogpt31_source_filename) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`topogpt3_source_filename`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-topogpt3_source_filename) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`topogpt3_source_filename`](modules/topogpt3.inference.py.md#inferencesettings-topogpt3_source_filename) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`TopoGPT3Config`](modules/topogpt3.train.py.md#topogpt3config) class in `topogpt3.train`
+- [`TopoGPT3JLensAppConfig`](modules/topogpt3.jlens.py.md#topogpt3jlensappconfig) class in `topogpt3.jlens`
+- [`TopoGPT3JLensFitConfig`](modules/topogpt3.jlens.py.md#topogpt3jlensfitconfig) class in `topogpt3.jlens`
+- [`TopoGPT3LensConfig`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig) class in `topogpt3.lens_model`
+- [`TopoGPT3LensModel`](modules/topogpt3.lens_model.py.md#topogpt3lensmodel) class in `topogpt3.lens_model`
+- [`TopoGPT3Trainer`](modules/topogpt3.train.py.md#topogpt3trainer) class in `topogpt3.train`
+- [`TopoMoEBrain`](modules/topogpt3.model.py.md#topomoebrain) class in `topogpt3.model`
+- [`TopoPhasePipeline`](modules/topogpt3.model.py.md#topophasepipeline) class in `topogpt3.model`
+- [`TopoPhasePipelineV2`](modules/topogpt3.model.py.md#topophasepipelinev2) class in `topogpt3.model`
+- [`TorchRolloutEngine`](modules/topogpt3.rollout.py.md#torchrolloutengine) class in `topogpt3.rollout`
+- [`TORUS_ANGULAR_BINS`](modules/topogpt3.model.py.md#topogpt2config-torus_angular_bins) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`TORUS_GRID_SIZE`](modules/topogpt3.model.py.md#topogpt2config-torus_grid_size) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`TORUS_GRID_W`](modules/topogpt3.c.md#torus_grid_w) macro in `topogpt3.c`
+- [`TORUS_RADIAL_BINS`](modules/topogpt3.model.py.md#topogpt2config-torus_radial_bins) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`TORUS_TEMP`](modules/topogpt3.c.md#torus_temp) macro in `topogpt3.c`
+- [`total_high_level_iters`](modules/topogpt3.inference_hrm.py.md#generationreasoningsummary-total_high_level_iters) attribute of `GenerationReasoningSummary` in `topogpt3.inference_hrm`
+- [`total_low_level_iters`](modules/topogpt3.inference_hrm.py.md#generationreasoningsummary-total_low_level_iters) attribute of `GenerationReasoningSummary` in `topogpt3.inference_hrm`
+- [`total_samples`](modules/synthetic_dataset.py.md#processedmanifest-total_samples) attribute of `ProcessedManifest` in `synthetic_dataset`
+- [`train`](modules/topogpt3.model.py.md#curriculumtrainer-train) method of `CurriculumTrainer` in `topogpt3.model`
+- [`train`](modules/topogpt3.model.py.md#topogpt2trainer-train) method of `TopoGPT2Trainer` in `topogpt3.model`
+- [`transport`](modules/topogpt3.jlens.py.md#jacobianlens-transport) method of `JacobianLens` in `topogpt3.jlens`
+
+<a id="u"></a>
+
+## U
+
+- [`unembed`](modules/topogpt3.lens_model.py.md#lensmodel-unembed) method of `LensModel` in `topogpt3.lens_model`
+- [`unembed`](modules/topogpt3.lens_model.py.md#topogpt3lensmodel-unembed) method of `TopoGPT3LensModel` in `topogpt3.lens_model`
+- [`update_grad_buffer`](modules/topogpt3.model.py.md#mechanisticmetrics-update_grad_buffer) method of `MechanisticMetrics` in `topogpt3.model`
+- [`update_holonomy`](modules/topogpt3.train.py.md#grassmanniantracker-update_holonomy) method of `GrassmannianTracker` in `topogpt3.train`
+- [`update_policy`](modules/topogpt3.rollout.py.md#rolloutengine-update_policy) method of `RolloutEngine` in `topogpt3.rollout`
+- [`update_policy`](modules/topogpt3.rollout.py.md#torchrolloutengine-update_policy) method of `TorchRolloutEngine` in `topogpt3.rollout`
+- [`USE_AMP`](modules/topogpt3.model.py.md#topogpt2config-use_amp) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`USE_AMP`](modules/topogpt3.train.py.md#topogpt3config-use_amp) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`USE_GAUSS_COMPLEX_MULT`](modules/topogpt3.train.py.md#topogpt3config-use_gauss_complex_mult) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`use_jacobian`](modules/topogpt3.jlens.py.md#topogpt3jlensappconfig-use_jacobian) attribute of `TopoGPT3JLensAppConfig` in `topogpt3.jlens`
+- [`USER_ABORT`](modules/eval.governor.py.md#stopreason-user_abort) attribute of `StopReason` in `eval.governor`
+
+<a id="v"></a>
+
+## V
+
+- [`VAL_FRACTION`](modules/topogpt3.train.py.md#topogpt3config-val_fraction) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`valid_position_mask`](modules/topogpt3.jlens.py.md#valid_position_mask) function in `topogpt3.jlens`
+- [`validate`](modules/topogpt3.api_server.py.md#authstate-validate) method of `AuthState` in `topogpt3.api_server`
+- [`validate`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-validate) method of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`validate`](modules/topogpt3.inference.py.md#inferencesettings-validate) method of `InferenceSettings` in `topogpt3.inference`
+- [`validate_sample`](modules/synthetic_dataset.py.md#validate_sample) function in `synthetic_dataset`
+- [`VOCAB_SIZE`](modules/topogpt3.model.py.md#topogpt2config-vocab_size) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`vocab_size`](modules/topogpt3.lens_model.py.md#topogpt3lensconfig-vocab_size) attribute of `TopoGPT3LensConfig` in `topogpt3.lens_model`
+- [`VOCAB_SIZE`](modules/topogpt3.c.md#vocab_size) macro in `topogpt3.c`
+
+<a id="w"></a>
+
+## W
+
+- [`wait_for_new`](modules/eval.governor.py.md#tokenstream-wait_for_new) method of `TokenStream` in `eval.governor`
+- [`WARMUP_RATIO`](modules/topogpt3.model.py.md#topogpt2config-warmup_ratio) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`WARMUP_RATIO`](modules/topogpt3.train.py.md#topogpt3config-warmup_ratio) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`WEIGHT_DECAY`](modules/topogpt3.model.py.md#topogpt2config-weight_decay) attribute of `TopoGPT2Config` in `topogpt3.model`
+- [`WEIGHT_DECAY`](modules/topogpt3.train.py.md#topogpt3config-weight_decay) attribute of `TopoGPT3Config` in `topogpt3.train`
+- [`WEIGHT_ORDER`](modules/convert_weights.py.md#weight_order) constant in `convert_weights`
+- [`WEIGHT_ORDER`](modules/convert_weights_minios.py.md#weight_order) constant in `convert_weights_minios`
+- [`weight_probe_key`](modules/topogpt3.inference_hrm.py.md#hrminferencesettings-weight_probe_key) attribute of `HRMInferenceSettings` in `topogpt3.inference_hrm`
+- [`weight_probe_key`](modules/topogpt3.inference.py.md#inferencesettings-weight_probe_key) attribute of `InferenceSettings` in `topogpt3.inference`
+- [`WeightShapeProbe`](modules/topogpt3.inference.py.md#weightshapeprobe) class in `topogpt3.inference`
+- [`WeightShapeProbe`](modules/topogpt3.inference_hrm.py.md#weightshapeprobe) class in `topogpt3.inference_hrm`
+
+<a id="y"></a>
+
+## Y
+
+- [`yarn_scale_inv_freq`](modules/topogpt3.yarn.py.md#yarn_scale_inv_freq) function in `topogpt3.yarn`
+- [`YaRNConfig`](modules/topogpt3.yarn.py.md#yarnconfig) class in `topogpt3.yarn`

@@ -41,8 +41,8 @@ This community groups 8 file(s) rooted at `topogpt3` with dominant language py (
 - `__init__` (method, `synthetic_dataset.py:184`) `def __init__(self, model, host, max_tokens, temperature, timeout)`
 - `name` (method, `synthetic_dataset.py:198`) `def name(self)`
 - `generate` (method, `synthetic_dataset.py:201`) `def generate(self, prompt)`
-- `build_backend` (method, `synthetic_dataset.py:227`) `def build_backend(provider, model)` - Factory for LLM backends.
-- `validate_sample` (method, `synthetic_dataset.py:330`) `def validate_sample(sample)` - Validate that a generated sample meets quality bar.
+- `build_backend` (function, `synthetic_dataset.py:227`) `def build_backend(provider, model)` - Factory for LLM backends.
+- `validate_sample` (function, `synthetic_dataset.py:330`) `def validate_sample(sample)` - Validate that a generated sample meets quality bar.
 - `ProcessedManifest` (class, `synthetic_dataset.py:364`) `class ProcessedManifest` - Tracks processed files for resumability.
 - `load` (method, `synthetic_dataset.py:374`) `def load(path)`
 - `save` (method, `synthetic_dataset.py:387`) `def save(self, path)`
@@ -70,11 +70,11 @@ This community groups 8 file(s) rooted at `topogpt3` with dominant language py (
 
 ## Risks
 
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/train.py` via `eval` (2 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/model.py` via `eval` (2 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/inference_hrm.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/train.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/continuation.py` via `eval` (3 hops)
 - [taint critical] `eval/governor_smoke.py` -> `synthetic_dataset.py` via `eval` (3 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/continuation.py` via `eval` (3 hops)
 - [dataflow UNCHECKED_ALLOC] `topogpt3/export_chat.py:105` `main` `sft`: Result of allocator stored in `sft` is never checked against NULL.
 - [dataflow UNCHECKED_ALLOC] `topogpt3/export_chat.py:106` `main` `rla`: Result of allocator stored in `rla` is never checked against NULL.
 - [dataflow UNCHECKED_ALLOC] `topogpt3/export_chat.py:107` `main` `dpo`: Result of allocator stored in `dpo` is never checked against NULL.

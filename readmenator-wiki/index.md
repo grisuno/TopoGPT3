@@ -1,6 +1,6 @@
 # Second Brain
 
-*Last synthesized: 2026-10-07 | 53 files | 7 concept pages | offline, zero tokens*
+*Last synthesized: 2026-10-24 | 53 files | 7 concept pages | offline, zero tokens*
 
 > Raw sources -> readmenator wiki -> links (Karpathy LLM Wiki Pattern, deterministic).
 > Start here, then open one community page. Prefer grep over full reads.
@@ -34,7 +34,7 @@ Open work clusters around documentation (87% file coverage), 0 security findings
 
 ```
 grep -rn '<keyword>' index.md community_*.md
-readmenator query "<question>" --target readmenator_TopoGPT3_dnp72ga8
+readmenator query "<question>" --target TopoGPT3
 ```
 
 ## Concept Wiki

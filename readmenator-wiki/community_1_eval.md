@@ -40,10 +40,10 @@ This community groups 11 file(s) rooted at `eval` with dominant language py (coh
 - `cancel` (method, `eval/governor.py:177`) `def cancel(self)` - Asynchronously stop the generation. Safe to call from any
 - `_should_cancel` (method, `eval/governor.py:182`) `def _should_cancel(self)`
 - `run` (method, `eval/governor.py:185`) `def run(self, stop_hooks)` - Execute the generation loop. Returns when the model emits
-- `make_loop_detector` (method, `eval/governor.py:285`) `def make_loop_detector(window, min_repeats)` - Return True if the last `window` tokens contain a sub-sequence
-- `hook` (method, `eval/governor.py:292`) `def hook(generated)`
-- `make_timeout_hook` (method, `eval/governor.py:314`) `def make_timeout_hook(per_token_s)` - Return True if the per-token wall time exceeds `per_token_s`.
-- `hook` (method, `eval/governor.py:320`) `def hook(generated)`
+- `make_loop_detector` (function, `eval/governor.py:285`) `def make_loop_detector(window, min_repeats)` - Return True if the last `window` tokens contain a sub-sequence
+- `hook` (function, `eval/governor.py:292`) `def hook(generated)`
+- `make_timeout_hook` (function, `eval/governor.py:314`) `def make_timeout_hook(per_token_s)` - Return True if the per-token wall time exceeds `per_token_s`.
+- `hook` (function, `eval/governor.py:320`) `def hook(generated)`
 - `load_model` (function, `eval/governor_smoke.py:30`) `def load_model()`
 - `test_tokenstream_threadsafety` (function, `eval/governor_smoke.py:49`) `def test_tokenstream_threadsafety()`
 - `producer` (function, `eval/governor_smoke.py:53`) `def producer()`
@@ -73,20 +73,20 @@ This community groups 11 file(s) rooted at `eval` with dominant language py (coh
 ## Risks
 
 - [taint critical] `eval/governor_smoke.py` -> `eval/governor_smoke.py` via `eval` (0 hops)
-- [taint critical] `eval/governor_smoke.py` -> `eval/governor.py` via `eval` (1 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/__init__.py` via `eval` (1 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/rewards.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `eval/governor.py` via `eval` (1 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/train.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/chat.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/rollout.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/inference.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/tools_agent.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/model.py` via `eval` (2 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/trainer_utils_topo.py` via `eval` (2 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/lora.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/model.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/inference_hrm.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/train.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/jlens.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/tools_agent.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/eval_toolcall.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/lens_model.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/chat.py` via `eval` (2 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/yarn.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/jlens.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/eval_toolcall.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/rewards.py` via `eval` (2 hops)
 
 ## Open Questions
 

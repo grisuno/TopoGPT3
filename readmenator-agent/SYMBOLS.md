@@ -37,11 +37,11 @@ Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `_should_cancel` | method | `eval/governor.py:182` | `def _should_cancel(self)` |
 | `cancel` | method | `eval/governor.py:177` | `def cancel(self)` |
 | `drain` | method | `eval/governor.py:72` | `def drain(self)` |
-| `hook` | method | `eval/governor.py:292` | `def hook(generated)` |
-| `hook` | method | `eval/governor.py:320` | `def hook(generated)` |
+| `hook` | function | `eval/governor.py:292` | `def hook(generated)` |
+| `hook` | function | `eval/governor.py:320` | `def hook(generated)` |
 | `is_closed` | method | `eval/governor.py:86` | `def is_closed(self)` |
-| `make_loop_detector` | method | `eval/governor.py:285` | `def make_loop_detector(window, min_repeats)` |
-| `make_timeout_hook` | method | `eval/governor.py:314` | `def make_timeout_hook(per_token_s)` |
+| `make_loop_detector` | function | `eval/governor.py:285` | `def make_loop_detector(window, min_repeats)` |
+| `make_timeout_hook` | function | `eval/governor.py:314` | `def make_timeout_hook(per_token_s)` |
 | `mark_done` | method | `eval/governor.py:67` | `def mark_done(self)` |
 | `put` | method | `eval/governor.py:62` | `def put(self, tok)` |
 | `run` | method | `eval/governor.py:185` | `def run(self, stop_hooks)` |
@@ -57,11 +57,11 @@ Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `__init__` | method | `eval/harness.py:220` | `def __init__(self, ckpt_dir, ckpt_name, device)` |
 | `build_prompt` | function | `eval/harness.py:75` | `def build_prompt(problem)` |
 | `completion_for_problem` | function | `eval/harness.py:204` | `def completion_for_problem(sampler, prompt)` |
-| `evaluate_problem` | method | `eval/harness.py:272` | `def evaluate_problem(problem, loader, args, sample_idx)` |
+| `evaluate_problem` | function | `eval/harness.py:272` | `def evaluate_problem(problem, loader, args, sample_idx)` |
 | `extract_candidate` | function | `eval/harness.py:100` | `def extract_candidate(prompt, completion)` |
 | `generate` | method | `eval/harness.py:246` | `def generate(self, prompt, max_new_tokens, temperature, top_k, repetition_penalty)` |
 | `load_humaneval` | function | `eval/harness.py:59` | `def load_humaneval(cache_dir)` |
-| `main` | method | `eval/harness.py:315` | `def main()` |
+| `main` | function | `eval/harness.py:315` | `def main()` |
 | `make_sampler` | function | `eval/harness.py:195` | `def make_sampler(mode, settings_kwargs)` |
 | `run_one_test` | function | `eval/harness.py:150` | `def run_one_test(problem, candidate_src, timeout)` |
 | `run_one_test_sandboxed` | function | `eval/harness.py:172` | `def run_one_test_sandboxed(problem, candidate_src, timeout, sandbox_cfg)` |
@@ -93,14 +93,14 @@ Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `list_samplers` | function | `eval/samplers.py:86` | `def list_samplers()` |
 | `register_sampler` | function | `eval/samplers.py:36` | `def register_sampler(name)` |
 | `SandboxConfig` | class | `eval/sandbox.py:53` | `class SandboxConfig` |
-| `_blocked_dunder_access` | method | `eval/sandbox.py:114` | `def _blocked_dunder_access(tree, blocked)` |
-| `_build_worker_src` | method | `eval/sandbox.py:254` | `def _build_worker_src(allowed_builtin_names, program_src, blocked_modules)` |
-| `_max_depth` | method | `eval/sandbox.py:123` | `def _max_depth(tree)` |
-| `_names_imported` | method | `eval/sandbox.py:100` | `def _names_imported(tree)` |
-| `check_safety` | method | `eval/sandbox.py:133` | `def check_safety(source, cfg)` |
-| `d` | method | `eval/sandbox.py:125` | `def d(node, cur)` |
-| `describe_policy` | method | `eval/sandbox.py:373` | `def describe_policy(cfg)` |
-| `safe_exec` | method | `eval/sandbox.py:270` | `def safe_exec(program_src, cfg, extra_globals)` |
+| `_blocked_dunder_access` | function | `eval/sandbox.py:114` | `def _blocked_dunder_access(tree, blocked)` |
+| `_build_worker_src` | function | `eval/sandbox.py:254` | `def _build_worker_src(allowed_builtin_names, program_src, blocked_modules)` |
+| `_max_depth` | function | `eval/sandbox.py:123` | `def _max_depth(tree)` |
+| `_names_imported` | function | `eval/sandbox.py:100` | `def _names_imported(tree)` |
+| `check_safety` | function | `eval/sandbox.py:133` | `def check_safety(source, cfg)` |
+| `d` | function | `eval/sandbox.py:125` | `def d(node, cur)` |
+| `describe_policy` | function | `eval/sandbox.py:373` | `def describe_policy(cfg)` |
+| `safe_exec` | function | `eval/sandbox.py:270` | `def safe_exec(program_src, cfg, extra_globals)` |
 | `main` | function | `eval/sandbox_smoke.py:15` | `def main()` |
 | `run_hrm` | function | `eval/smoke.py:36` | `def run_hrm()` |
 | `run_standard` | function | `eval/smoke.py:17` | `def run_standard()` |
@@ -129,25 +129,25 @@ Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `_generate_sample` | method | `synthetic_dataset.py:496` | `def _generate_sample(self, content, lang)` |
 | `_jsonl_writer` | method | `synthetic_dataset.py:447` | `def _jsonl_writer(self)` |
 | `_read_file` | method | `synthetic_dataset.py:477` | `def _read_file(self, path)` |
-| `build_backend` | method | `synthetic_dataset.py:227` | `def build_backend(provider, model)` |
-| `build_logger` | method | `synthetic_dataset.py:614` | `def build_logger(level)` |
+| `build_backend` | function | `synthetic_dataset.py:227` | `def build_backend(provider, model)` |
+| `build_logger` | function | `synthetic_dataset.py:614` | `def build_logger(level)` |
 | `finish` | method | `synthetic_dataset.py:590` | `def finish(self)` |
 | `generate` | method | `synthetic_dataset.py:64` | `def generate(self, prompt)` |
 | `generate` | method | `synthetic_dataset.py:98` | `def generate(self, prompt)` |
 | `generate` | method | `synthetic_dataset.py:154` | `def generate(self, prompt)` |
 | `generate` | method | `synthetic_dataset.py:201` | `def generate(self, prompt)` |
 | `load` | method | `synthetic_dataset.py:374` | `def load(path)` |
-| `load_paths` | method | `synthetic_dataset.py:652` | `def load_paths(paths_arg, paths_file, max_files)` |
-| `main` | method | `synthetic_dataset.py:667` | `def main()` |
+| `load_paths` | function | `synthetic_dataset.py:652` | `def load_paths(paths_arg, paths_file, max_files)` |
+| `main` | function | `synthetic_dataset.py:667` | `def main()` |
 | `name` | method | `synthetic_dataset.py:67` | `def name(self)` |
 | `name` | method | `synthetic_dataset.py:95` | `def name(self)` |
 | `name` | method | `synthetic_dataset.py:151` | `def name(self)` |
 | `name` | method | `synthetic_dataset.py:198` | `def name(self)` |
-| `parse_args` | method | `synthetic_dataset.py:625` | `def parse_args()` |
+| `parse_args` | function | `synthetic_dataset.py:625` | `def parse_args()` |
 | `process_batch` | method | `synthetic_dataset.py:568` | `def process_batch(self, paths)` |
 | `process_file` | method | `synthetic_dataset.py:533` | `def process_file(self, path)` |
 | `save` | method | `synthetic_dataset.py:387` | `def save(self, path)` |
-| `validate_sample` | method | `synthetic_dataset.py:330` | `def validate_sample(sample)` |
+| `validate_sample` | function | `synthetic_dataset.py:330` | `def validate_sample(sample)` |
 | `_micro` | function | `tests/test_heritage.py:18` | `def _micro()` |
 | `test_chat_template_tools_think` | function | `tests/test_heritage.py:24` | `def test_chat_template_tools_think()` |
 | `test_distill_loss_finite` | function | `tests/test_heritage.py:96` | `def test_distill_loss_finite()` |
@@ -382,38 +382,38 @@ Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `TokenBucket` | class | `topogpt3/api_server.py:202` | `class TokenBucket` |
 | `__init__` | method | `topogpt3/api_server.py:220` | `def __init__(self, user_rps, admin_rps, capacity)` |
 | `__init__` | method | `topogpt3/api_server.py:251` | `def __init__(self, max_failures, window)` |
-| `_authenticate` | method | `topogpt3/api_server.py:628` | `def _authenticate(request)` |
-| `_build_chat_prompt` | method | `topogpt3/api_server.py:827` | `def _build_chat_prompt(messages)` |
-| `_check_model` | method | `topogpt3/api_server.py:818` | `def _check_model()` |
-| `_check_rate_limit` | method | `topogpt3/api_server.py:646` | `def _check_rate_limit(api_key, request)` |
+| `_authenticate` | function | `topogpt3/api_server.py:628` | `def _authenticate(request)` |
+| `_build_chat_prompt` | function | `topogpt3/api_server.py:827` | `def _build_chat_prompt(messages)` |
+| `_check_model` | function | `topogpt3/api_server.py:818` | `def _check_model()` |
+| `_check_rate_limit` | function | `topogpt3/api_server.py:646` | `def _check_rate_limit(api_key, request)` |
 | `_cleanup` | method | `topogpt3/api_server.py:227` | `def _cleanup(self)` |
-| `_extract_text` | method | `topogpt3/api_server.py:846` | `def _extract_text(content)` |
+| `_extract_text` | function | `topogpt3/api_server.py:846` | `def _extract_text(content)` |
 | `_is_eos` | method | `topogpt3/api_server.py:485` | `def _is_eos(self, token_id)` |
-| `_json_error` | method | `topogpt3/api_server.py:616` | `def _json_error(status, detail)` |
+| `_json_error` | function | `topogpt3/api_server.py:616` | `def _json_error(status, detail)` |
 | `_normalize_stop` | method | `topogpt3/api_server.py:306` | `def _normalize_stop(cls, v)` |
 | `_normalize_stop` | method | `topogpt3/api_server.py:334` | `def _normalize_stop(cls, v)` |
-| `_parse_keys` | method | `topogpt3/api_server.py:164` | `def _parse_keys(raw)` |
-| `_probe_n_kv` | method | `topogpt3/api_server.py:508` | `def _probe_n_kv(checkpoint_dir)` |
-| `_real_ip` | method | `topogpt3/api_server.py:605` | `def _real_ip(request)` |
-| `_resolve_device` | method | `topogpt3/api_server.py:502` | `def _resolve_device(device)` |
-| `_sanitize_stop` | method | `topogpt3/api_server.py:281` | `def _sanitize_stop(stop)` |
-| `_security_middleware` | method | `topogpt3/api_server.py:577` | `def _security_middleware(request, call_next)` |
+| `_parse_keys` | function | `topogpt3/api_server.py:164` | `def _parse_keys(raw)` |
+| `_probe_n_kv` | function | `topogpt3/api_server.py:508` | `def _probe_n_kv(checkpoint_dir)` |
+| `_real_ip` | function | `topogpt3/api_server.py:605` | `def _real_ip(request)` |
+| `_resolve_device` | function | `topogpt3/api_server.py:502` | `def _resolve_device(device)` |
+| `_sanitize_stop` | function | `topogpt3/api_server.py:281` | `def _sanitize_stop(stop)` |
+| `_security_middleware` | function | `topogpt3/api_server.py:577` | `def _security_middleware(request, call_next)` |
 | `_setup_logging` | function | `topogpt3/api_server.py:116` | `def _setup_logging(verbose)` |
-| `_sha256` | method | `topogpt3/api_server.py:192` | `def _sha256(raw)` |
-| `_short_id` | method | `topogpt3/api_server.py:823` | `def _short_id()` |
-| `_stream_chat` | method | `topogpt3/api_server.py:895` | `def _stream_chat(t0_ms, prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...` |
-| `_stream_completion` | method | `topogpt3/api_server.py:860` | `def _stream_completion(prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...` |
+| `_sha256` | function | `topogpt3/api_server.py:192` | `def _sha256(raw)` |
+| `_short_id` | function | `topogpt3/api_server.py:823` | `def _short_id()` |
+| `_stream_chat` | function | `topogpt3/api_server.py:895` | `def _stream_chat(t0_ms, prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...` |
+| `_stream_completion` | function | `topogpt3/api_server.py:860` | `def _stream_completion(prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...` |
 | `allow` | method | `topogpt3/api_server.py:233` | `def allow(self, key, role)` |
-| `chat_completions` | method | `topogpt3/api_server.py:744` | `def chat_completions(req, request)` |
+| `chat_completions` | function | `topogpt3/api_server.py:744` | `def chat_completions(req, request)` |
 | `complete` | method | `topogpt3/api_server.py:351` | `def complete(self, prompt)` |
-| `completions` | method | `topogpt3/api_server.py:688` | `def completions(req, request)` |
+| `completions` | function | `topogpt3/api_server.py:688` | `def completions(req, request)` |
 | `consume` | method | `topogpt3/api_server.py:208` | `def consume(self, n)` |
-| `health` | method | `topogpt3/api_server.py:664` | `def health(request)` |
+| `health` | function | `topogpt3/api_server.py:664` | `def health(request)` |
 | `is_banned` | method | `topogpt3/api_server.py:265` | `def is_banned(self, ip)` |
-| `lifespan` | method | `topogpt3/api_server.py:537` | `def lifespan(app)` |
-| `list_models` | method | `topogpt3/api_server.py:671` | `def list_models(request)` |
-| `load_model` | method | `topogpt3/api_server.py:516` | `def load_model(checkpoint, device)` |
-| `main` | method | `topogpt3/api_server.py:933` | `def main()` |
+| `lifespan` | function | `topogpt3/api_server.py:537` | `def lifespan(app)` |
+| `list_models` | function | `topogpt3/api_server.py:671` | `def list_models(request)` |
+| `load_model` | function | `topogpt3/api_server.py:516` | `def load_model(checkpoint, device)` |
+| `main` | function | `topogpt3/api_server.py:933` | `def main()` |
 | `record_failure` | method | `topogpt3/api_server.py:257` | `def record_failure(self, ip)` |
 | `stream_complete` | method | `topogpt3/api_server.py:396` | `def stream_complete(self, prompt)` |
 | `validate` | method | `topogpt3/api_server.py:148` | `def validate(self, raw)` |
@@ -480,7 +480,7 @@ Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `execute` | method | `topogpt3/inference.py:571` | `def execute(self)` |
 | `from_settings` | method | `topogpt3/inference.py:450` | `def from_settings(cls, settings)` |
 | `load` | method | `topogpt3/inference.py:219` | `def load(self)` |
-| `main` | method | `topogpt3/inference.py:721` | `def main(argv)` |
+| `main` | function | `topogpt3/inference.py:721` | `def main(argv)` |
 | `model_file` | method | `topogpt3/inference.py:243` | `def model_file(self)` |
 | `parse` | method | `topogpt3/inference.py:698` | `def parse(argv)` |
 | `preset` | method | `topogpt3/inference.py:116` | `def preset(self)` |

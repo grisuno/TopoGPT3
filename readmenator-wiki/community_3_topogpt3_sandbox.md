@@ -21,14 +21,14 @@ This community groups 7 file(s) rooted at `topogpt3` with dominant language py (
 ## Key Symbols
 
 - `SandboxConfig` (class, `eval/sandbox.py:53`) `class SandboxConfig` - One knob per defence layer. Defaults match HumanEval-style eval.
-- `_names_imported` (method, `eval/sandbox.py:100`) `def _names_imported(tree)` - Return the set of top-level names brought into scope by imports.
-- `_blocked_dunder_access` (method, `eval/sandbox.py:114`) `def _blocked_dunder_access(tree, blocked)` - Find Attribute nodes whose attr is in `blocked`. Returns attr names found.
-- `_max_depth` (method, `eval/sandbox.py:123`) `def _max_depth(tree)` - Compute max nesting depth of the AST. Catches obfuscated huge trees.
-- `d` (method, `eval/sandbox.py:125`) `def d(node, cur)`
-- `check_safety` (method, `eval/sandbox.py:133`) `def check_safety(source, cfg)` - Return (ok, reason). `reason` is "" when ok, else a human-readable
-- `_build_worker_src` (method, `eval/sandbox.py:254`) `def _build_worker_src(allowed_builtin_names, program_src, blocked_modules)`
-- `safe_exec` (method, `eval/sandbox.py:270`) `def safe_exec(program_src, cfg, extra_globals)` - Execute `program_src` in a sandboxed child process. Returns the same
-- `describe_policy` (method, `eval/sandbox.py:373`) `def describe_policy(cfg)`
+- `_names_imported` (function, `eval/sandbox.py:100`) `def _names_imported(tree)` - Return the set of top-level names brought into scope by imports.
+- `_blocked_dunder_access` (function, `eval/sandbox.py:114`) `def _blocked_dunder_access(tree, blocked)` - Find Attribute nodes whose attr is in `blocked`. Returns attr names found.
+- `_max_depth` (function, `eval/sandbox.py:123`) `def _max_depth(tree)` - Compute max nesting depth of the AST. Catches obfuscated huge trees.
+- `d` (function, `eval/sandbox.py:125`) `def d(node, cur)`
+- `check_safety` (function, `eval/sandbox.py:133`) `def check_safety(source, cfg)` - Return (ok, reason). `reason` is "" when ok, else a human-readable
+- `_build_worker_src` (function, `eval/sandbox.py:254`) `def _build_worker_src(allowed_builtin_names, program_src, blocked_modules)`
+- `safe_exec` (function, `eval/sandbox.py:270`) `def safe_exec(program_src, cfg, extra_globals)` - Execute `program_src` in a sandboxed child process. Returns the same
+- `describe_policy` (function, `eval/sandbox.py:373`) `def describe_policy(cfg)`
 - `main` (function, `eval/sandbox_smoke.py:15`) `def main()`
 - `_micro` (function, `tests/test_heritage.py:18`) `def _micro()`
 - `test_chat_template_tools_think` (function, `tests/test_heritage.py:24`) `def test_chat_template_tools_think()`
@@ -69,10 +69,10 @@ This community groups 7 file(s) rooted at `topogpt3` with dominant language py (
 
 ## Risks
 
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/tools_agent.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/eval_toolcall.py` via `eval` (2 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/chat.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/tools_agent.py` via `eval` (2 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/yarn.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/eval_toolcall.py` via `eval` (2 hops)
 - [taint critical] `eval/governor_smoke.py` -> `eval/sandbox.py` via `eval` (3 hops)
 
 ## Open Questions

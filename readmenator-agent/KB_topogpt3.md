@@ -24,36 +24,36 @@ Pages: [KB_topogpt3.md](KB_topogpt3.md), [KB_topogpt3_p2.md](KB_topogpt3_p2.md)
   - `_setup_logging` (function, line 116) `def _setup_logging(verbose)`
   - `ApiKey` (class, line 137) `class ApiKey`
   - `AuthState` (class, line 143) `class AuthState`
-  - `_parse_keys` (method, line 164) `def _parse_keys(raw)`
-  - `_sha256` (method, line 192) `def _sha256(raw)`
+  - `_parse_keys` (function, line 164) `def _parse_keys(raw)`
+  - `_sha256` (function, line 192) `def _sha256(raw)`
   - `TokenBucket` (class, line 202) `class TokenBucket`
   - `RateLimiter` (class, line 219) `class RateLimiter`
   - `IpBanner` (class, line 250) `class IpBanner`
-  - `_sanitize_stop` (method, line 281) `def _sanitize_stop(stop)`
+  - `_sanitize_stop` (function, line 281) `def _sanitize_stop(stop)`
   - `CompletionRequest` (class, line 291) `class CompletionRequest(BaseModel)`
   - `Message` (class, line 310) `class Message(BaseModel)`
   - `ChatCompletionRequest` (class, line 316) `class ChatCompletionRequest(BaseModel)`
   - `ServerModel` (class, line 344) `class ServerModel`
-  - `_resolve_device` (method, line 502) `def _resolve_device(device)`
-  - `_probe_n_kv` (method, line 508) `def _probe_n_kv(checkpoint_dir)`
-  - `load_model` (method, line 516) `def load_model(checkpoint, device)`
-  - `lifespan` (method, line 537) `def lifespan(app)`
-  - `_security_middleware` (method, line 577) `def _security_middleware(request, call_next)`
-  - `_real_ip` (method, line 605) `def _real_ip(request)`
-  - `_json_error` (method, line 616) `def _json_error(status, detail)`
-  - `_authenticate` (method, line 628) `def _authenticate(request)`
-  - `_check_rate_limit` (method, line 646) `def _check_rate_limit(api_key, request)`
-  - `health` (method, line 664) `def health(request)`
-  - `list_models` (method, line 671) `def list_models(request)`
-  - `completions` (method, line 688) `def completions(req, request)`
-  - `chat_completions` (method, line 744) `def chat_completions(req, request)`
-  - `_check_model` (method, line 818) `def _check_model()`
-  - `_short_id` (method, line 823) `def _short_id()`
-  - `_build_chat_prompt` (method, line 827) `def _build_chat_prompt(messages)`
-  - `_extract_text` (method, line 846) `def _extract_text(content)`
-  - `_stream_completion` (method, line 860) `def _stream_completion(prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...`
-  - `_stream_chat` (method, line 895) `def _stream_chat(t0_ms, prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...`
-  - `main` (method, line 933) `def main()`
+  - `_resolve_device` (function, line 502) `def _resolve_device(device)`
+  - `_probe_n_kv` (function, line 508) `def _probe_n_kv(checkpoint_dir)`
+  - `load_model` (function, line 516) `def load_model(checkpoint, device)`
+  - `lifespan` (function, line 537) `def lifespan(app)`
+  - `_security_middleware` (function, line 577) `def _security_middleware(request, call_next)`
+  - `_real_ip` (function, line 605) `def _real_ip(request)`
+  - `_json_error` (function, line 616) `def _json_error(status, detail)`
+  - `_authenticate` (function, line 628) `def _authenticate(request)`
+  - `_check_rate_limit` (function, line 646) `def _check_rate_limit(api_key, request)`
+  - `health` (function, line 664) `def health(request)`
+  - `list_models` (function, line 671) `def list_models(request)`
+  - `completions` (function, line 688) `def completions(req, request)`
+  - `chat_completions` (function, line 744) `def chat_completions(req, request)`
+  - `_check_model` (function, line 818) `def _check_model()`
+  - `_short_id` (function, line 823) `def _short_id()`
+  - `_build_chat_prompt` (function, line 827) `def _build_chat_prompt(messages)`
+  - `_extract_text` (function, line 846) `def _extract_text(content)`
+  - `_stream_completion` (function, line 860) `def _stream_completion(prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...`
+  - `_stream_chat` (function, line 895) `def _stream_chat(t0_ms, prompt, max_tokens, temperature, top_k, repetition_penalty, stop, auto_continue...`
+  - `main` (function, line 933) `def main()`
   - `validate` (method, line 148) `def validate(self, raw)`
   - `consume` (method, line 208) `def consume(self, n)`
   - `__init__` (method, line 220) `def __init__(self, user_rps, admin_rps, capacity)`
@@ -153,7 +153,7 @@ Pages: [KB_topogpt3.md](KB_topogpt3.md), [KB_topogpt3_p2.md](KB_topogpt3_p2.md)
   - `ResultRenderer` (class, line 533) `class ResultRenderer`
   - `InferencePipeline` (class, line 562) `class InferencePipeline`
   - `CliArgumentParser` (class, line 615) `class CliArgumentParser`
-  - `main` (method, line 721) `def main(argv)`
+  - `main` (function, line 721) `def main(argv)`
   - `scale_presets` (method, line 103) `def scale_presets()`
   - `preset` (method, line 116) `def preset(self)`
   - `validate` (method, line 126) `def validate(self)`
@@ -221,7 +221,7 @@ Pages: [KB_topogpt3.md](KB_topogpt3.md), [KB_topogpt3_p2.md](KB_topogpt3_p2.md)
   - `ResultRenderer` (class, line 1189) `class ResultRenderer`
   - `HRMInferencePipeline` (class, line 1230) `class HRMInferencePipeline`
   - `CliArgumentParser` (class, line 1283) `class CliArgumentParser`
-  - `main` (method, line 1494) `def main(argv)`
+  - `main` (function, line 1494) `def main(argv)`
   - `scale_presets` (method, line 221) `def scale_presets()`
   - `preset` (method, line 234) `def preset(self)`
   - `validate` (method, line 244) `def validate(self)`
@@ -283,21 +283,21 @@ Pages: [KB_topogpt3.md](KB_topogpt3.md), [KB_topogpt3_p2.md](KB_topogpt3_p2.md)
   - `TopoGPT3JLensFitConfig` (class, line 37) `class TopoGPT3JLensFitConfig`
   - `TopoGPT3JLensAppConfig` (class, line 56) `class TopoGPT3JLensAppConfig`
   - `ActivationRecorder` (class, line 69) `class ActivationRecorder`
-  - `valid_position_mask` (method, line 132) `def valid_position_mask(seq_len)`
-  - `_check_layer_indices` (method, line 162) `def _check_layer_indices(source_layers, target_layer, n_layers)`
-  - `jacobian_for_prompt` (method, line 187) `def jacobian_for_prompt(model, prompt, source_layers)`
-  - `_atomic_save` (method, line 283) `def _atomic_save(obj, path)`
-  - `fit` (method, line 291) `def fit(model, prompts)`
+  - `valid_position_mask` (function, line 132) `def valid_position_mask(seq_len)`
+  - `_check_layer_indices` (function, line 162) `def _check_layer_indices(source_layers, target_layer, n_layers)`
+  - `jacobian_for_prompt` (function, line 187) `def jacobian_for_prompt(model, prompt, source_layers)`
+  - `_atomic_save` (function, line 283) `def _atomic_save(obj, path)`
+  - `fit` (function, line 291) `def fit(model, prompts)`
   - `JacobianLens` (class, line 459) `class JacobianLens`
   - `SliceData` (class, line 664) `class SliceData`
-  - `compute_slice` (method, line 705) `def compute_slice(model, lens, prompt)`
-  - `text_slice` (method, line 789) `def text_slice(slice_data, tokenizer, n_cols)`
-  - `_demo_jlens` (method, line 842) `def _demo_jlens()`
+  - `compute_slice` (function, line 705) `def compute_slice(model, lens, prompt)`
+  - `text_slice` (function, line 789) `def text_slice(slice_data, tokenizer, n_cols)`
+  - `_demo_jlens` (function, line 842) `def _demo_jlens()`
   - `__init__` (method, line 87) `def __init__(self, blocks, at)`
   - `_make_hook` (method, line 102) `def _make_hook(self, index)`
   - `__enter__` (method, line 113) `def __enter__(self)`
   - `__exit__` (method, line 126) `def __exit__(self)`
-  - `write_checkpoint` (method, line 378) `def write_checkpoint()`
+  - `write_checkpoint` (function, line 378) `def write_checkpoint()`
   - `__init__` (method, line 470) `def __init__(self, jacobians)`
   - `__repr__` (method, line 482) `def __repr__(self)`
   - `save` (method, line 489) `def save(self, path)`
@@ -307,8 +307,8 @@ Pages: [KB_topogpt3.md](KB_topogpt3.md), [KB_topogpt3_p2.md](KB_topogpt3_p2.md)
   - `transport` (method, line 574) `def transport(self, residual, layer)`
   - `apply` (method, line 585) `def apply(self, model, prompt)`
   - `__post_init__` (method, line 692) `def __post_init__(self)`
-  - `hook` (method, line 105) `def hook(module, inputs, output)`
-  - `select` (method, line 646) `def select(layer)`
+  - `hook` (function, line 105) `def hook(module, inputs, output)`
+  - `select` (function, line 646) `def select(layer)`
 - Depends on: `topogpt3/lens_model.py`
 - Imported by: `tests/test_jlens.py`, `tests/test_lens_model.py`, `topogpt3/__init__.py`, `topogpt3/__main__.py`
 
@@ -355,17 +355,17 @@ Pages: [KB_topogpt3.md](KB_topogpt3.md), [KB_topogpt3_p2.md](KB_topogpt3_p2.md)
 - Language: py
 - Symbols:
   - `LoRA` (class, line 16) `class LoRA(Module)`
-  - `_is_quaternion_sublayer` (method, line 29) `def _is_quaternion_sublayer(name)`
-  - `lora_targets` (method, line 34) `def lora_targets(model, include_mlp)`
-  - `apply_lora` (method, line 54) `def apply_lora(model, rank, include_mlp)`
-  - `lora_parameters` (method, line 73) `def lora_parameters(model)`
-  - `freeze_non_lora` (method, line 80) `def freeze_non_lora(model)`
-  - `save_lora` (method, line 88) `def save_lora(model, path)`
-  - `load_lora` (method, line 99) `def load_lora(model, path, device)`
-  - `merge_lora` (method, line 110) `def merge_lora(model, lora_path, save_path)`
+  - `_is_quaternion_sublayer` (function, line 29) `def _is_quaternion_sublayer(name)`
+  - `lora_targets` (function, line 34) `def lora_targets(model, include_mlp)`
+  - `apply_lora` (function, line 54) `def apply_lora(model, rank, include_mlp)`
+  - `lora_parameters` (function, line 73) `def lora_parameters(model)`
+  - `freeze_non_lora` (function, line 80) `def freeze_non_lora(model)`
+  - `save_lora` (function, line 88) `def save_lora(model, path)`
+  - `load_lora` (function, line 99) `def load_lora(model, path, device)`
+  - `merge_lora` (function, line 110) `def merge_lora(model, lora_path, save_path)`
   - `__init__` (method, line 17) `def __init__(self, in_features, out_features, rank)`
   - `forward` (method, line 25) `def forward(self, x)`
-  - `_fwd` (method, line 66) `def _fwd(x, _o, _l)`
+  - `_fwd` (function, line 66) `def _fwd(x, _o, _l)`
 - Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/convert.py`, `topogpt3/train_lora.py`
 
 

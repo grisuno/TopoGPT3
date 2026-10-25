@@ -58,14 +58,14 @@
   - `GroqBackend` (class, line 71) `class GroqBackend(LLMBackend)`
   - `OpenRouterBackend` (class, line 121) `class OpenRouterBackend(LLMBackend)`
   - `OllamaBackend` (class, line 177) `class OllamaBackend(LLMBackend)`
-  - `build_backend` (method, line 227) `def build_backend(provider, model)`
-  - `validate_sample` (method, line 330) `def validate_sample(sample)`
+  - `build_backend` (function, line 227) `def build_backend(provider, model)`
+  - `validate_sample` (function, line 330) `def validate_sample(sample)`
   - `ProcessedManifest` (class, line 364) `class ProcessedManifest`
   - `SyntheticDatasetGenerator` (class, line 399) `class SyntheticDatasetGenerator`
-  - `build_logger` (method, line 614) `def build_logger(level)`
-  - `parse_args` (method, line 625) `def parse_args()`
-  - `load_paths` (method, line 652) `def load_paths(paths_arg, paths_file, max_files)`
-  - `main` (method, line 667) `def main()`
+  - `build_logger` (function, line 614) `def build_logger(level)`
+  - `parse_args` (function, line 625) `def parse_args()`
+  - `load_paths` (function, line 652) `def load_paths(paths_arg, paths_file, max_files)`
+  - `main` (function, line 667) `def main()`
   - `generate` (method, line 64) `def generate(self, prompt)`
   - `name` (method, line 67) `def name(self)`
   - `__init__` (method, line 78) `def __init__(self, model, api_key, max_tokens, temperature, timeout)`

@@ -1,0 +1,616 @@
+{
+ "schema_version": 1,
+ "format": "jsonl",
+ "meta": {
+  "modules": 50,
+  "entities": 1116,
+  "languages": {
+   "c": 1,
+   "py": 48,
+   "sh": 1
+  },
+  "kinds": {
+   "attribute": 388,
+   "class": 117,
+   "classmethod": 8,
+   "constant": 50,
+   "constructor": 79,
+   "enum": 1,
+   "function": 179,
+   "macro": 41,
+   "method": 161,
+   "module": 50,
+   "property": 17,
+   "protocol": 1,
+   "staticmethod": 18,
+   "struct": 3,
+   "variable": 3
+  },
+  "truncated": false,
+  "skipped_files": 3,
+  "privacy_mode": false
+ },
+ "coverage": {
+  "overall": {
+   "documented": 339,
+   "total": 675,
+   "percent": 50.2
+  },
+  "by_kind": {
+   "class": {
+    "documented": 101,
+    "total": 117,
+    "percent": 86.3
+   },
+   "classmethod": {
+    "documented": 8,
+    "total": 8,
+    "percent": 100.0
+   },
+   "constructor": {
+    "documented": 1,
+    "total": 79,
+    "percent": 1.3
+   },
+   "enum": {
+    "documented": 0,
+    "total": 1,
+    "percent": 0.0
+   },
+   "function": {
+    "documented": 58,
+    "total": 179,
+    "percent": 32.4
+   },
+   "macro": {
+    "documented": 4,
+    "total": 41,
+    "percent": 9.8
+   },
+   "method": {
+    "documented": 102,
+    "total": 161,
+    "percent": 63.4
+   },
+   "module": {
+    "documented": 45,
+    "total": 50,
+    "percent": 90.0
+   },
+   "property": {
+    "documented": 3,
+    "total": 17,
+    "percent": 17.6
+   },
+   "protocol": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "staticmethod": {
+    "documented": 15,
+    "total": 18,
+    "percent": 83.3
+   },
+   "struct": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   }
+  },
+  "by_module": {
+   "app.py": {
+    "documented": 5,
+    "total": 5,
+    "percent": 100.0
+   },
+   "convert_weights.py": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "convert_weights_minios.py": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "encode_tokens.py": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "eval/analyze.py": {
+    "documented": 3,
+    "total": 6,
+    "percent": 50.0
+   },
+   "eval/analyze_results.py": {
+    "documented": 1,
+    "total": 5,
+    "percent": 20.0
+   },
+   "eval/diag_static.py": {
+    "documented": 3,
+    "total": 6,
+    "percent": 50.0
+   },
+   "eval/governor.py": {
+    "documented": 10,
+    "total": 16,
+    "percent": 62.5
+   },
+   "eval/governor_smoke.py": {
+    "documented": 1,
+    "total": 6,
+    "percent": 16.7
+   },
+   "eval/harness.py": {
+    "documented": 8,
+    "total": 13,
+    "percent": 61.5
+   },
+   "eval/integration_smoke.py": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "eval/noise_analysis.py": {
+    "documented": 2,
+    "total": 3,
+    "percent": 66.7
+   },
+   "eval/noise_sweep.py": {
+    "documented": 3,
+    "total": 5,
+    "percent": 60.0
+   },
+   "eval/repair.py": {
+    "documented": 1,
+    "total": 6,
+    "percent": 16.7
+   },
+   "eval/report.py": {
+    "documented": 1,
+    "total": 7,
+    "percent": 14.3
+   },
+   "eval/samplers.py": {
+    "documented": 3,
+    "total": 4,
+    "percent": 75.0
+   },
+   "eval/sandbox.py": {
+    "documented": 4,
+    "total": 5,
+    "percent": 80.0
+   },
+   "eval/sandbox_smoke.py": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "eval/smoke.py": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "eval/temp_sweep.py": {
+    "documented": 1,
+    "total": 6,
+    "percent": 16.7
+   },
+   "gradio_app.py": {
+    "documented": 5,
+    "total": 5,
+    "percent": 100.0
+   },
+   "install.sh": {
+    "documented": 0,
+    "total": 1,
+    "percent": 0.0
+   },
+   "synthetic_dataset.py": {
+    "documented": 13,
+    "total": 30,
+    "percent": 43.3
+   },
+   "topogpt3.c": {
+    "documented": 6,
+    "total": 69,
+    "percent": 8.7
+   },
+   "topogpt3/__init__.py": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "topogpt3/__main__.py": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "topogpt3/api_server.py": {
+    "documented": 1,
+    "total": 26,
+    "percent": 3.8
+   },
+   "topogpt3/chat.py": {
+    "documented": 4,
+    "total": 7,
+    "percent": 57.1
+   },
+   "topogpt3/continuation.py": {
+    "documented": 4,
+    "total": 4,
+    "percent": 100.0
+   },
+   "topogpt3/convert.py": {
+    "documented": 1,
+    "total": 4,
+    "percent": 25.0
+   },
+   "topogpt3/eval_toolcall.py": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "topogpt3/export_chat.py": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "topogpt3/inference.py": {
+    "documented": 44,
+    "total": 55,
+    "percent": 80.0
+   },
+   "topogpt3/inference_hrm.py": {
+    "documented": 59,
+    "total": 74,
+    "percent": 79.7
+   },
+   "topogpt3/jlens.py": {
+    "documented": 17,
+    "total": 19,
+    "percent": 89.5
+   },
+   "topogpt3/lens_model.py": {
+    "documented": 13,
+    "total": 22,
+    "percent": 59.1
+   },
+   "topogpt3/lora.py": {
+    "documented": 4,
+    "total": 11,
+    "percent": 36.4
+   },
+   "topogpt3/model.py": {
+    "documented": 77,
+    "total": 142,
+    "percent": 54.2
+   },
+   "topogpt3/rewards.py": {
+    "documented": 4,
+    "total": 10,
+    "percent": 40.0
+   },
+   "topogpt3/rollout.py": {
+    "documented": 1,
+    "total": 11,
+    "percent": 9.1
+   },
+   "topogpt3/tools_agent.py": {
+    "documented": 2,
+    "total": 3,
+    "percent": 66.7
+   },
+   "topogpt3/train.py": {
+    "documented": 17,
+    "total": 36,
+    "percent": 47.2
+   },
+   "topogpt3/train_agent.py": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "topogpt3/train_distill.py": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "topogpt3/train_dpo.py": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "topogpt3/train_grpo.py": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "topogpt3/train_lora.py": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "topogpt3/train_ppo.py": {
+    "documented": 1,
+    "total": 5,
+    "percent": 20.0
+   },
+   "topogpt3/trainer_utils_topo.py": {
+    "documented": 2,
+    "total": 9,
+    "percent": 22.2
+   },
+   "topogpt3/yarn.py": {
+    "documented": 3,
+    "total": 4,
+    "percent": 75.0
+   }
+  }
+ },
+ "modules": [
+  {
+   "uid": "app.py",
+   "path": "modules/app.py.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "convert_weights.py",
+   "path": "modules/convert_weights.py.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "convert_weights_minios.py",
+   "path": "modules/convert_weights_minios.py.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "encode_tokens.py",
+   "path": "modules/encode_tokens.py.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "eval/analyze.py",
+   "path": "modules/eval.analyze.py.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "eval/analyze_results.py",
+   "path": "modules/eval.analyze_results.py.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "eval/diag_static.py",
+   "path": "modules/eval.diag_static.py.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "eval/governor.py",
+   "path": "modules/eval.governor.py.jsonl",
+   "entities": 28
+  },
+  {
+   "uid": "eval/governor_smoke.py",
+   "path": "modules/eval.governor_smoke.py.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "eval/harness.py",
+   "path": "modules/eval.harness.py.jsonl",
+   "entities": 14
+  },
+  {
+   "uid": "eval/integration_smoke.py",
+   "path": "modules/eval.integration_smoke.py.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "eval/noise_analysis.py",
+   "path": "modules/eval.noise_analysis.py.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "eval/noise_sweep.py",
+   "path": "modules/eval.noise_sweep.py.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "eval/repair.py",
+   "path": "modules/eval.repair.py.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "eval/report.py",
+   "path": "modules/eval.report.py.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "eval/samplers.py",
+   "path": "modules/eval.samplers.py.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "eval/sandbox.py",
+   "path": "modules/eval.sandbox.py.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "eval/sandbox_smoke.py",
+   "path": "modules/eval.sandbox_smoke.py.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "eval/smoke.py",
+   "path": "modules/eval.smoke.py.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "eval/temp_sweep.py",
+   "path": "modules/eval.temp_sweep.py.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "gradio_app.py",
+   "path": "modules/gradio_app.py.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "install.sh",
+   "path": "modules/install.sh.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "synthetic_dataset.py",
+   "path": "modules/synthetic_dataset.py.jsonl",
+   "entities": 40
+  },
+  {
+   "uid": "topogpt3.c",
+   "path": "modules/topogpt3.c.jsonl",
+   "entities": 72
+  },
+  {
+   "uid": "topogpt3/__init__.py",
+   "path": "modules/topogpt3.__init__.py.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "topogpt3/__main__.py",
+   "path": "modules/topogpt3.__main__.py.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "topogpt3/api_server.py",
+   "path": "modules/topogpt3.api_server.py.jsonl",
+   "entities": 80
+  },
+  {
+   "uid": "topogpt3/chat.py",
+   "path": "modules/topogpt3.chat.py.jsonl",
+   "entities": 21
+  },
+  {
+   "uid": "topogpt3/continuation.py",
+   "path": "modules/topogpt3.continuation.py.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "topogpt3/convert.py",
+   "path": "modules/topogpt3.convert.py.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "topogpt3/eval_toolcall.py",
+   "path": "modules/topogpt3.eval_toolcall.py.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "topogpt3/export_chat.py",
+   "path": "modules/topogpt3.export_chat.py.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "topogpt3/inference.py",
+   "path": "modules/topogpt3.inference.py.jsonl",
+   "entities": 109
+  },
+  {
+   "uid": "topogpt3/inference_hrm.py",
+   "path": "modules/topogpt3.inference_hrm.py.jsonl",
+   "entities": 181
+  },
+  {
+   "uid": "topogpt3/jlens.py",
+   "path": "modules/topogpt3.jlens.py.jsonl",
+   "entities": 41
+  },
+  {
+   "uid": "topogpt3/lens_model.py",
+   "path": "modules/topogpt3.lens_model.py.jsonl",
+   "entities": 40
+  },
+  {
+   "uid": "topogpt3/lora.py",
+   "path": "modules/topogpt3.lora.py.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "topogpt3/model.py",
+   "path": "modules/topogpt3.model.py.jsonl",
+   "entities": 209
+  },
+  {
+   "uid": "topogpt3/rewards.py",
+   "path": "modules/topogpt3.rewards.py.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "topogpt3/rollout.py",
+   "path": "modules/topogpt3.rollout.py.jsonl",
+   "entities": 17
+  },
+  {
+   "uid": "topogpt3/tools_agent.py",
+   "path": "modules/topogpt3.tools_agent.py.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "topogpt3/train.py",
+   "path": "modules/topogpt3.train.py.jsonl",
+   "entities": 76
+  },
+  {
+   "uid": "topogpt3/train_agent.py",
+   "path": "modules/topogpt3.train_agent.py.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "topogpt3/train_distill.py",
+   "path": "modules/topogpt3.train_distill.py.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "topogpt3/train_dpo.py",
+   "path": "modules/topogpt3.train_dpo.py.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "topogpt3/train_grpo.py",
+   "path": "modules/topogpt3.train_grpo.py.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "topogpt3/train_lora.py",
+   "path": "modules/topogpt3.train_lora.py.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "topogpt3/train_ppo.py",
+   "path": "modules/topogpt3.train_ppo.py.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "topogpt3/trainer_utils_topo.py",
+   "path": "modules/topogpt3.trainer_utils_topo.py.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "topogpt3/yarn.py",
+   "path": "modules/topogpt3.yarn.py.jsonl",
+   "entities": 9
+  }
+ ],
+ "warnings": {
+  "path": "warnings.jsonl",
+  "total": 266
+ },
+ "usage": [
+  "grep -h '\"name\":\"<Name>\"' readmenator-apidocs/api/modules/*.jsonl",
+  "grep -h '\"qualname\":\"<Owner.method>\"' readmenator-apidocs/api/modules/*.jsonl",
+  "cat readmenator-apidocs/api/modules/<module-slug>.jsonl",
+  "grep -h '\"code\":\"DOC001\"' readmenator-apidocs/api/warnings.jsonl"
+ ]
+}

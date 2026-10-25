@@ -59,7 +59,7 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `get_or_init` | method | `topogpt3/inference_hrm.py:700` | `def get_or_init(self, reference)` |
 | `invalidate` | method | `topogpt3/inference_hrm.py:721` | `def invalidate(self)` |
 | `load` | method | `topogpt3/inference_hrm.py:404` | `def load(self)` |
-| `main` | method | `topogpt3/inference_hrm.py:1494` | `def main(argv)` |
+| `main` | function | `topogpt3/inference_hrm.py:1494` | `def main(argv)` |
 | `model_file` | method | `topogpt3/inference_hrm.py:428` | `def model_file(self)` |
 | `num_layers` | method | `topogpt3/inference_hrm.py:789` | `def num_layers(self)` |
 | `parse` | method | `topogpt3/inference_hrm.py:1448` | `def parse(argv)` |
@@ -87,24 +87,24 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `__init__` | method | `topogpt3/jlens.py:470` | `def __init__(self, jacobians)` |
 | `__post_init__` | method | `topogpt3/jlens.py:692` | `def __post_init__(self)` |
 | `__repr__` | method | `topogpt3/jlens.py:482` | `def __repr__(self)` |
-| `_atomic_save` | method | `topogpt3/jlens.py:283` | `def _atomic_save(obj, path)` |
-| `_check_layer_indices` | method | `topogpt3/jlens.py:162` | `def _check_layer_indices(source_layers, target_layer, n_layers)` |
-| `_demo_jlens` | method | `topogpt3/jlens.py:842` | `def _demo_jlens()` |
+| `_atomic_save` | function | `topogpt3/jlens.py:283` | `def _atomic_save(obj, path)` |
+| `_check_layer_indices` | function | `topogpt3/jlens.py:162` | `def _check_layer_indices(source_layers, target_layer, n_layers)` |
+| `_demo_jlens` | function | `topogpt3/jlens.py:842` | `def _demo_jlens()` |
 | `_make_hook` | method | `topogpt3/jlens.py:102` | `def _make_hook(self, index)` |
 | `apply` | method | `topogpt3/jlens.py:585` | `def apply(self, model, prompt)` |
-| `compute_slice` | method | `topogpt3/jlens.py:705` | `def compute_slice(model, lens, prompt)` |
-| `fit` | method | `topogpt3/jlens.py:291` | `def fit(model, prompts)` |
+| `compute_slice` | function | `topogpt3/jlens.py:705` | `def compute_slice(model, lens, prompt)` |
+| `fit` | function | `topogpt3/jlens.py:291` | `def fit(model, prompts)` |
 | `from_pretrained` | method | `topogpt3/jlens.py:519` | `def from_pretrained(cls, name_or_path)` |
-| `hook` | method | `topogpt3/jlens.py:105` | `def hook(module, inputs, output)` |
-| `jacobian_for_prompt` | method | `topogpt3/jlens.py:187` | `def jacobian_for_prompt(model, prompt, source_layers)` |
+| `hook` | function | `topogpt3/jlens.py:105` | `def hook(module, inputs, output)` |
+| `jacobian_for_prompt` | function | `topogpt3/jlens.py:187` | `def jacobian_for_prompt(model, prompt, source_layers)` |
 | `load` | method | `topogpt3/jlens.py:504` | `def load(cls, path)` |
 | `merge` | method | `topogpt3/jlens.py:543` | `def merge(cls, lenses)` |
 | `save` | method | `topogpt3/jlens.py:489` | `def save(self, path)` |
-| `select` | method | `topogpt3/jlens.py:646` | `def select(layer)` |
-| `text_slice` | method | `topogpt3/jlens.py:789` | `def text_slice(slice_data, tokenizer, n_cols)` |
+| `select` | function | `topogpt3/jlens.py:646` | `def select(layer)` |
+| `text_slice` | function | `topogpt3/jlens.py:789` | `def text_slice(slice_data, tokenizer, n_cols)` |
 | `transport` | method | `topogpt3/jlens.py:574` | `def transport(self, residual, layer)` |
-| `valid_position_mask` | method | `topogpt3/jlens.py:132` | `def valid_position_mask(seq_len)` |
-| `write_checkpoint` | method | `topogpt3/jlens.py:378` | `def write_checkpoint()` |
+| `valid_position_mask` | function | `topogpt3/jlens.py:132` | `def valid_position_mask(seq_len)` |
+| `write_checkpoint` | function | `topogpt3/jlens.py:378` | `def write_checkpoint()` |
 | `LensModel` | class | `topogpt3/lens_model.py:23` | `class LensModel(Protocol)` |
 | `TinyDecoder` | class | `topogpt3/lens_model.py:306` | `class TinyDecoder(Module)` |
 | `TopoGPT3LensConfig` | class | `topogpt3/lens_model.py:59` | `class TopoGPT3LensConfig` |
@@ -136,16 +136,16 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `unembed` | method | `topogpt3/lens_model.py:237` | `def unembed(self, residual)` |
 | `LoRA` | class | `topogpt3/lora.py:16` | `class LoRA(Module)` |
 | `__init__` | method | `topogpt3/lora.py:17` | `def __init__(self, in_features, out_features, rank)` |
-| `_fwd` | method | `topogpt3/lora.py:66` | `def _fwd(x, _o, _l)` |
-| `_is_quaternion_sublayer` | method | `topogpt3/lora.py:29` | `def _is_quaternion_sublayer(name)` |
-| `apply_lora` | method | `topogpt3/lora.py:54` | `def apply_lora(model, rank, include_mlp)` |
+| `_fwd` | function | `topogpt3/lora.py:66` | `def _fwd(x, _o, _l)` |
+| `_is_quaternion_sublayer` | function | `topogpt3/lora.py:29` | `def _is_quaternion_sublayer(name)` |
+| `apply_lora` | function | `topogpt3/lora.py:54` | `def apply_lora(model, rank, include_mlp)` |
 | `forward` | method | `topogpt3/lora.py:25` | `def forward(self, x)` |
-| `freeze_non_lora` | method | `topogpt3/lora.py:80` | `def freeze_non_lora(model)` |
-| `load_lora` | method | `topogpt3/lora.py:99` | `def load_lora(model, path, device)` |
-| `lora_parameters` | method | `topogpt3/lora.py:73` | `def lora_parameters(model)` |
-| `lora_targets` | method | `topogpt3/lora.py:34` | `def lora_targets(model, include_mlp)` |
-| `merge_lora` | method | `topogpt3/lora.py:110` | `def merge_lora(model, lora_path, save_path)` |
-| `save_lora` | method | `topogpt3/lora.py:88` | `def save_lora(model, path)` |
+| `freeze_non_lora` | function | `topogpt3/lora.py:80` | `def freeze_non_lora(model)` |
+| `load_lora` | function | `topogpt3/lora.py:99` | `def load_lora(model, path, device)` |
+| `lora_parameters` | function | `topogpt3/lora.py:73` | `def lora_parameters(model)` |
+| `lora_targets` | function | `topogpt3/lora.py:34` | `def lora_targets(model, include_mlp)` |
+| `merge_lora` | function | `topogpt3/lora.py:110` | `def merge_lora(model, lora_path, save_path)` |
+| `save_lora` | function | `topogpt3/lora.py:88` | `def save_lora(model, path)` |
 | `BPETokenizer` | class | `topogpt3/model.py:1279` | `class BPETokenizer` |
 | `CheckpointManager` | class | `topogpt3/model.py:2174` | `class CheckpointManager` |
 | `CurriculumDataset` | class | `topogpt3/model.py:1699` | `class CurriculumDataset(Dataset)` |
@@ -248,16 +248,16 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `_set_lr` | method | `topogpt3/model.py:2097` | `def _set_lr(self)` |
 | `_set_lr` | method | `topogpt3/model.py:2498` | `def _set_lr(self, lr)` |
 | `_special_token_ratio` | method | `topogpt3/model.py:1628` | `def _special_token_ratio(self, text, tokenizer)` |
-| `_tokenize_text_to_memmap` | method | `topogpt3/model.py:2162` | `def _tokenize_text_to_memmap(text, tokenizer, path, max_tokens)` |
+| `_tokenize_text_to_memmap` | function | `topogpt3/model.py:2162` | `def _tokenize_text_to_memmap(text, tokenizer, path, max_tokens)` |
 | `_torus_soft_assign` | method | `topogpt3/model.py:560` | `def _torus_soft_assign(self, phi1, phi2)` |
 | `_update_len` | method | `topogpt3/model.py:1716` | `def _update_len(self)` |
 | `amp_dtype` | method | `topogpt3/model.py:2053` | `def amp_dtype(self)` |
-| `apply_quantization` | method | `topogpt3/model.py:1994` | `def apply_quantization(model, config)` |
+| `apply_quantization` | function | `topogpt3/model.py:1994` | `def apply_quantization(model, config)` |
 | `best_val_loss` | method | `topogpt3/model.py:2073` | `def best_val_loss(self)` |
 | `best_val_loss` | method | `topogpt3/model.py:2077` | `def best_val_loss(self, v)` |
-| `build_file_tiers` | method | `topogpt3/model.py:1737` | `def build_file_tiers(paths, short, med)` |
+| `build_file_tiers` | function | `topogpt3/model.py:1737` | `def build_file_tiers(paths, short, med)` |
 | `cache_tokens` | method | `topogpt3/model.py:2037` | `def cache_tokens(self, key, tokens)` |
-| `ckpt_fn` | method | `topogpt3/model.py:1050` | `def ckpt_fn(x_in)` |
+| `ckpt_fn` | function | `topogpt3/model.py:1050` | `def ckpt_fn(x_in)` |
 | `ckpt_mgr` | method | `topogpt3/model.py:2085` | `def ckpt_mgr(self)` |
 | `classify_phase` | method | `topogpt3/model.py:2875` | `def classify_phase(self, delta, kappa, berry)` |
 | `completed_epochs` | method | `topogpt3/model.py:2057` | `def completed_epochs(self)` |
@@ -305,7 +305,7 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `history` | method | `topogpt3/model.py:2081` | `def history(self)` |
 | `load_best` | method | `topogpt3/model.py:2385` | `def load_best(self, model)` |
 | `load_latest` | method | `topogpt3/model.py:2358` | `def load_latest(self, model, optimizer)` |
-| `main` | method | `topogpt3/model.py:3589` | `def main()` |
+| `main` | function | `topogpt3/model.py:3589` | `def main()` |
 | `mine` | method | `topogpt3/model.py:3115` | `def mine(self, seed_start, n_seeds, train_dataset, prospect_steps)` |
 | `model` | method | `topogpt3/model.py:2041` | `def model(self)` |
 | `normalize` | method | `topogpt3/model.py:234` | `def normalize(q, eps)` |
@@ -326,9 +326,9 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `save` | method | `topogpt3/model.py:2313` | `def save(self, model, optimizer, state, is_best)` |
 | `scaler` | method | `topogpt3/model.py:2049` | `def scaler(self)` |
 | `scan` | method | `topogpt3/model.py:1415` | `def scan(self, force)` |
-| `set_seed` | method | `topogpt3/model.py:202` | `def set_seed(seed, device)` |
+| `set_seed` | function | `topogpt3/model.py:202` | `def set_seed(seed, device)` |
 | `set_tier` | method | `topogpt3/model.py:1722` | `def set_tier(self, tier)` |
-| `setup_logger` | method | `topogpt3/model.py:192` | `def setup_logger(name, level)` |
+| `setup_logger` | function | `topogpt3/model.py:192` | `def setup_logger(name, level)` |
 | `should_save` | method | `topogpt3/model.py:2310` | `def should_save(self)` |
 | `tokenize` | method | `topogpt3/model.py:1487` | `def tokenize(self, file_paths, tokenizer, cache_key, max_tokens, min_chars)` |
 | `train` | method | `topogpt3/model.py:2145` | `def train(self, train_dl, val_dl)` |
@@ -347,8 +347,8 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `RolloutResult` | class | `topogpt3/rollout.py:18` | `class RolloutResult` |
 | `TorchRolloutEngine` | class | `topogpt3/rollout.py:50` | `class TorchRolloutEngine(RolloutEngine)` |
 | `__init__` | method | `topogpt3/rollout.py:51` | `def __init__(self, policy_model, tokenizer, device, decode)` |
-| `compute_per_token_logps` | method | `topogpt3/rollout.py:27` | `def compute_per_token_logps(model, input_ids, n_keep)` |
-| `create_rollout_engine` | method | `topogpt3/rollout.py:83` | `def create_rollout_engine(policy_model, tokenizer, device)` |
+| `compute_per_token_logps` | function | `topogpt3/rollout.py:27` | `def compute_per_token_logps(model, input_ids, n_keep)` |
+| `create_rollout_engine` | function | `topogpt3/rollout.py:83` | `def create_rollout_engine(policy_model, tokenizer, device)` |
 | `rollout` | method | `topogpt3/rollout.py:41` | `def rollout(self, prompt_ids, num_generations, max_new_tokens, temperature, tokenizer)` |
 | `rollout` | method | `topogpt3/rollout.py:57` | `def rollout(self, prompt_ids, num_generations, max_new_tokens, temperature, tokenizer)` |
 | `update_policy` | method | `topogpt3/rollout.py:46` | `def update_policy(self, model)` |
@@ -384,7 +384,7 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `_format_codealpaca` | method | `topogpt3/train.py:746` | `def _format_codealpaca(ex)` |
 | `_format_magicoder` | method | `topogpt3/train.py:777` | `def _format_magicoder(ex)` |
 | `_format_tiny_stack` | method | `topogpt3/train.py:785` | `def _format_tiny_stack(ex)` |
-| `_gauss_complex_contract` | method | `topogpt3/train.py:532` | `def _gauss_complex_contract(self, W, X)` |
+| `_gauss_complex_contract` | function | `topogpt3/train.py:532` | `def _gauss_complex_contract(self, W, X)` |
 | `_get_formatter` | method | `topogpt3/train.py:797` | `def _get_formatter(cls, tier)` |
 | `_load_hf_with_fallback` | method | `topogpt3/train.py:858` | `def _load_hf_with_fallback(self, tier)` |
 | `_manifest_path` | method | `topogpt3/train.py:825` | `def _manifest_path(self, tier)` |
@@ -394,21 +394,21 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `_state_dict` | method | `topogpt3/train.py:1436` | `def _state_dict(self)` |
 | `_tier_paths` | method | `topogpt3/train.py:819` | `def _tier_paths(self, tier)` |
 | `_train_one_tier` | method | `topogpt3/train.py:1237` | `def _train_one_tier(self, tier_index)` |
-| `apply_gauss_patch` | method | `topogpt3/train.py:568` | `def apply_gauss_patch(logger)` |
+| `apply_gauss_patch` | function | `topogpt3/train.py:568` | `def apply_gauss_patch(logger)` |
 | `build_topogpt2_config` | method | `topogpt3/train.py:170` | `def build_topogpt2_config(self, max_seq_len, attn_window)` |
 | `compute` | method | `topogpt3/train.py:664` | `def compute(self, dataloader, vocab_size, val_loss, val_ppl, val_acc, batch_size, seq_len)` |
 | `conjugation_distance_su2` | method | `topogpt3/train.py:412` | `def conjugation_distance_su2(U1, U2)` |
 | `estimate_bytes_per_step` | method | `topogpt3/train.py:656` | `def estimate_bytes_per_step(self, batch_size, seq_len, dtype_bytes)` |
 | `estimate_fisher_gap` | method | `topogpt3/train.py:313` | `def estimate_fisher_gap(self, model, dataloader, vocab_size, r_target)` |
 | `estimate_flops_per_step` | method | `topogpt3/train.py:651` | `def estimate_flops_per_step(self, batch_size, seq_len)` |
-| `flush` | method | `topogpt3/train.py:922` | `def flush(split)` |
+| `flush` | function | `topogpt3/train.py:922` | `def flush(split)` |
 | `format_log` | method | `topogpt3/train.py:500` | `def format_log(self, snap)` |
 | `format_log` | method | `topogpt3/train.py:696` | `def format_log(self, m)` |
 | `load_latest` | method | `topogpt3/train.py:1071` | `def load_latest(self, model, optimizer)` |
-| `main` | method | `topogpt3/train.py:1567` | `def main()` |
+| `main` | function | `topogpt3/train.py:1567` | `def main()` |
 | `measure_throughput` | method | `topogpt3/train.py:619` | `def measure_throughput(self, dataloader, vocab_size)` |
 | `open_memmap` | method | `topogpt3/train.py:986` | `def open_memmap(self, tier, split)` |
-| `parse_args` | method | `topogpt3/train.py:1538` | `def parse_args()` |
+| `parse_args` | function | `topogpt3/train.py:1538` | `def parse_args()` |
 | `prepare_all` | method | `topogpt3/train.py:1174` | `def prepare_all(self, force)` |
 | `prepare_tier` | method | `topogpt3/train.py:891` | `def prepare_tier(self, tier_index, force)` |
 | `run` | method | `topogpt3/train.py:1449` | `def run(self)` |
@@ -429,7 +429,7 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `TopoCritic` | class | `topogpt3/train_ppo.py:29` | `class TopoCritic(Module)` |
 | `__init__` | method | `topogpt3/train_ppo.py:30` | `def __init__(self, trunk)` |
 | `forward` | method | `topogpt3/train_ppo.py:36` | `def forward(self, ids)` |
-| `main` | method | `topogpt3/train_ppo.py:45` | `def main()` |
+| `main` | function | `topogpt3/train_ppo.py:45` | `def main()` |
 | `Logger` | function | `topogpt3/trainer_utils_topo.py:20` | `def Logger(content, quiet)` |
 | `SkipBatchSampler` | class | `topogpt3/trainer_utils_topo.py:52` | `class SkipBatchSampler(Sampler)` |
 | `__init__` | method | `topogpt3/trainer_utils_topo.py:53` | `def __init__(self, sampler, batch_size, skip_batches)` |
@@ -439,8 +439,8 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `init_distributed_mode` | function | `topogpt3/trainer_utils_topo.py:43` | `def init_distributed_mode()` |
 | `is_main_process` | function | `topogpt3/trainer_utils_topo.py:25` | `def is_main_process()` |
 | `setup_seed` | function | `topogpt3/trainer_utils_topo.py:34` | `def setup_seed(seed)` |
-| `topo_checkpoint` | method | `topogpt3/trainer_utils_topo.py:77` | `def topo_checkpoint(save_dir, weight, model, optimizer, scheduler, scaler, epoch, step, wandb, extra)` |
+| `topo_checkpoint` | function | `topogpt3/trainer_utils_topo.py:77` | `def topo_checkpoint(save_dir, weight, model, optimizer, scheduler, scaler, epoch, step, wandb, extra)` |
 | `YaRNConfig` | class | `topogpt3/yarn.py:18` | `class YaRNConfig` |
-| `apply_yarn_to_rope` | method | `topogpt3/yarn.py:50` | `def apply_yarn_to_rope(rope_module, cfg)` |
-| `yarn_scale_inv_freq` | method | `topogpt3/yarn.py:26` | `def yarn_scale_inv_freq(inv_freq, d_head, cfg)` |
+| `apply_yarn_to_rope` | function | `topogpt3/yarn.py:50` | `def apply_yarn_to_rope(rope_module, cfg)` |
+| `yarn_scale_inv_freq` | function | `topogpt3/yarn.py:26` | `def yarn_scale_inv_freq(inv_freq, d_head, cfg)` |
 

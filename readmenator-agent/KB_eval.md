@@ -42,8 +42,8 @@
   - `StopReason` (class, line 99) `class StopReason(str, Enum)`
   - `GenerationResult` (class, line 109) `class GenerationResult`
   - `GenerationGovernor` (class, line 134) `class GenerationGovernor`
-  - `make_loop_detector` (method, line 285) `def make_loop_detector(window, min_repeats)`
-  - `make_timeout_hook` (method, line 314) `def make_timeout_hook(per_token_s)`
+  - `make_loop_detector` (function, line 285) `def make_loop_detector(window, min_repeats)`
+  - `make_timeout_hook` (function, line 314) `def make_timeout_hook(per_token_s)`
   - `__init__` (method, line 56) `def __init__(self)`
   - `put` (method, line 62) `def put(self, tok)`
   - `mark_done` (method, line 67) `def mark_done(self)`
@@ -56,8 +56,8 @@
   - `cancel` (method, line 177) `def cancel(self)`
   - `_should_cancel` (method, line 182) `def _should_cancel(self)`
   - `run` (method, line 185) `def run(self, stop_hooks)`
-  - `hook` (method, line 292) `def hook(generated)`
-  - `hook` (method, line 320) `def hook(generated)`
+  - `hook` (function, line 292) `def hook(generated)`
+  - `hook` (function, line 320) `def hook(generated)`
 - Imported by: `eval/governor_smoke.py`
 
 ## eval/governor_smoke.py
@@ -87,8 +87,8 @@
   - `make_sampler` (function, line 195) `def make_sampler(mode, settings_kwargs)`
   - `completion_for_problem` (function, line 204) `def completion_for_problem(sampler, prompt)`
   - `ModelLoader` (class, line 217) `class ModelLoader`
-  - `evaluate_problem` (method, line 272) `def evaluate_problem(problem, loader, args, sample_idx)`
-  - `main` (method, line 315) `def main()`
+  - `evaluate_problem` (function, line 272) `def evaluate_problem(problem, loader, args, sample_idx)`
+  - `main` (function, line 315) `def main()`
   - `__init__` (method, line 220) `def __init__(self, ckpt_dir, ckpt_name, device)`
   - `generate` (method, line 246) `def generate(self, prompt, max_new_tokens, temperature, top_k, repetition_penalty)`
 - Depends on: `eval/samplers.py`, `eval/sandbox.py`, `topogpt3/__init__.py`
@@ -169,14 +169,14 @@
 - Language: py
 - Symbols:
   - `SandboxConfig` (class, line 53) `class SandboxConfig`
-  - `_names_imported` (method, line 100) `def _names_imported(tree)`
-  - `_blocked_dunder_access` (method, line 114) `def _blocked_dunder_access(tree, blocked)`
-  - `_max_depth` (method, line 123) `def _max_depth(tree)`
-  - `check_safety` (method, line 133) `def check_safety(source, cfg)`
-  - `_build_worker_src` (method, line 254) `def _build_worker_src(allowed_builtin_names, program_src, blocked_modules)`
-  - `safe_exec` (method, line 270) `def safe_exec(program_src, cfg, extra_globals)`
-  - `describe_policy` (method, line 373) `def describe_policy(cfg)`
-  - `d` (method, line 125) `def d(node, cur)`
+  - `_names_imported` (function, line 100) `def _names_imported(tree)`
+  - `_blocked_dunder_access` (function, line 114) `def _blocked_dunder_access(tree, blocked)`
+  - `_max_depth` (function, line 123) `def _max_depth(tree)`
+  - `check_safety` (function, line 133) `def check_safety(source, cfg)`
+  - `_build_worker_src` (function, line 254) `def _build_worker_src(allowed_builtin_names, program_src, blocked_modules)`
+  - `safe_exec` (function, line 270) `def safe_exec(program_src, cfg, extra_globals)`
+  - `describe_policy` (function, line 373) `def describe_policy(cfg)`
+  - `d` (function, line 125) `def d(node, cur)`
 - Imported by: `eval/harness.py`, `eval/sandbox_smoke.py`, `topogpt3/tools_agent.py`
 
 ## eval/sandbox_smoke.py

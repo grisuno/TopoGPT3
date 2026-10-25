@@ -4,8 +4,8 @@ Previous: [API.md](API.md)
 ## topogpt3/model.py
 Depends on: `synthetic_dataset.py`, `topogpt3/continuation.py`, `topogpt3/yarn.py`
 Imported by: `eval/diag_static.py`, `eval/noise_sweep.py`, `tests/test_heritage.py`, `tests/test_lens_model.py`, `topogpt3/__init__.py`, `topogpt3/api_server.py`, `topogpt3/convert.py`, `topogpt3/export_chat.py`, `topogpt3/lens_model.py`, `topogpt3/train.py`, `topogpt3/train_agent.py`, `topogpt3/train_distill.py`, `topogpt3/train_dpo.py`, `topogpt3/train_grpo.py`, `topogpt3/train_lora.py`, `topogpt3/train_ppo.py`
-- `TopoGPT2Config.setup_logger` (method) `topogpt3/model.py:192` `def setup_logger(name, level)`
-- `TopoGPT2Config.set_seed` (method) `topogpt3/model.py:202` `def set_seed(seed, device)`
+- `setup_logger` (function) `topogpt3/model.py:192` `def setup_logger(name, level)`
+- `set_seed` (function) `topogpt3/model.py:202` `def set_seed(seed, device)`
 - `QuaternionOps.hamilton_product` (method) `topogpt3/model.py:222` `def hamilton_product(q1, q2)` -- Producto de Hamilton q1 ⊗ q2.
 - `QuaternionOps.normalize` (method) `topogpt3/model.py:234` `def normalize(q, eps)`
 - `QuaternionOps.conjugate` (method) `topogpt3/model.py:238` `def conjugate(q)`
@@ -34,7 +34,7 @@ Imported by: `eval/diag_static.py`, `eval/noise_sweep.py`, `tests/test_heritage.
 - `MultiHeadAttention.forward` (method) `topogpt3/model.py:940` `def forward(self, x, is_causal, past_kv)` -- Args: is_causal: usar mascara causal past_kv:  (K_cache, V_cache) de pasos anteriores o None Returns: out:      [B...
 - `TopoGPT2Layer.__init__` (method) `topogpt3/model.py:1024` `def __init__(self, d_model, n_heads, config)`
 - `TopoGPT2Layer.forward` (method) `topogpt3/model.py:1042` `def forward(self, x, past_kv)` -- Retorna (x_out, aux_loss, kv_cache).
-- `TopoGPT2Layer.ckpt_fn` (method) `topogpt3/model.py:1050` `def ckpt_fn(x_in)`
+- `ckpt_fn` (function) `topogpt3/model.py:1050` `def ckpt_fn(x_in)`
 - `TopoGPT2.__init__` (method) `topogpt3/model.py:1073` `def __init__(self, config)`
 - `TopoGPT2.forward` (method) `topogpt3/model.py:1105` `def forward(self, token_ids, past_kvs)` -- token_ids: [B, S]  (enteros) past_kvs:  lista de (K, V) por capa, o None para entrenamiento → logits: [B, S...
 - `TopoGPT2.forward_with_memory` (method) `topogpt3/model.py:1128` `def forward_with_memory(self, token_ids)` -- Process long sequences with latent memory-token context compression.
@@ -55,14 +55,14 @@ Imported by: `eval/diag_static.py`, `eval/noise_sweep.py`, `tests/test_heritage.
 - `TextFilter.report` (method) `topogpt3/model.py:1685` `def report(self)`
 - `CurriculumDataset.__init__` (method) `topogpt3/model.py:1706` `def __init__(self, tokens, seq_len, file_tiers, active_tier, logger)`
 - `CurriculumDataset.set_tier` (method) `topogpt3/model.py:1722` `def set_tier(self, tier)`
-- `CurriculumDataset.build_file_tiers` (method) `topogpt3/model.py:1737` `def build_file_tiers(paths, short, med)` -- Classify file paths into complexity tiers by line count.
+- `build_file_tiers` (function) `topogpt3/model.py:1737` `def build_file_tiers(paths, short, med)` -- Classify file paths into complexity tiers by line count.
 - `ProgressiveSeqLenTrainer.__init__` (method) `topogpt3/model.py:1774` `def __init__(self, base_trainer)`
 - `ProgressiveSeqLenTrainer.run` (method) `topogpt3/model.py:1790` `def run(self, train_paths, val_paths, tokenizer, file_tiers, phases)` -- Run training with progressive sequence length across phases.
 - `SpeculativeDecoder.__init__` (method) `topogpt3/model.py:1848` `def __init__(self, target_model, config, logger)`
 - `SpeculativeDecoder.generate` (method) `topogpt3/model.py:1870` `def generate(self, token_ids, max_new_tokens, temperature, top_k, repetition_penalty)` -- Autoregressive generation via speculative decoding.
 - `QuantizedEmbedding.__init__` (method) `topogpt3/model.py:1961` `def __init__(self, embed, mode)`
 - `QuantizedEmbedding.forward` (method) `topogpt3/model.py:1990` `def forward(self, indices)`
-- `QuantizedEmbedding.apply_quantization` (method) `topogpt3/model.py:1994` `def apply_quantization(model, config)` -- Quantize embedding and lm_head layers for reduced VRAM usage.
+- `apply_quantization` (function) `topogpt3/model.py:1994` `def apply_quantization(model, config)` -- Quantize embedding and lm_head layers for reduced VRAM usage.
 - `CurriculumTrainer.__init__` (method) `topogpt3/model.py:2030` `def __init__(self, model, config, tokenizer)`
 - `CurriculumTrainer.cache_tokens` (method) `topogpt3/model.py:2037` `def cache_tokens(self, key, tokens)`
 - `CurriculumTrainer.model` (method) `topogpt3/model.py:2041` `def model(self)`
@@ -116,7 +116,7 @@ Imported by: `eval/diag_static.py`, `eval/noise_sweep.py`, `tests/test_heritage.
 - `TopoPhasePipelineV2.run` (method) `topogpt3/model.py:3385` `def run(self, run_prospect, refine_epochs, resume, prospect_steps, probe_seeds, seed_start)`
 - `TopoPhasePipeline.__init__` (method) `topogpt3/model.py:3487` `def __init__(self, config, train_dataset, val_dataset, tokenizer, logger)`
 - `TopoPhasePipeline.run` (method) `topogpt3/model.py:3509` `def run(self, run_prospect, refine_epochs, resume, prospect_steps, probe_seeds, seed_start)` -- Ejecuta el pipeline completo.
-- `TopoPhasePipeline.main` (method) `topogpt3/model.py:3589` `def main()`
+- `main` (function) `topogpt3/model.py:3589` `def main()`
 
 ## topogpt3/rewards.py
 Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/train_agent.py`, `topogpt3/train_distill.py`, `topogpt3/train_dpo.py`, `topogpt3/train_grpo.py`, `topogpt3/train_ppo.py`
@@ -132,13 +132,13 @@ Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/train_a
 
 ## topogpt3/rollout.py
 Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/train_grpo.py`, `topogpt3/train_ppo.py`
-- `RolloutResult.compute_per_token_logps` (method) `topogpt3/rollout.py:27` `def compute_per_token_logps(model, input_ids, n_keep)`
+- `compute_per_token_logps` (function) `topogpt3/rollout.py:27` `def compute_per_token_logps(model, input_ids, n_keep)`
 - `RolloutEngine.rollout` (method) `topogpt3/rollout.py:41` `def rollout(self, prompt_ids, num_generations, max_new_tokens, temperature, tokenizer)`
 - `RolloutEngine.update_policy` (method) `topogpt3/rollout.py:46` `def update_policy(self, model)`
 - `TorchRolloutEngine.__init__` (method) `topogpt3/rollout.py:51` `def __init__(self, policy_model, tokenizer, device, decode)`
 - `TorchRolloutEngine.rollout` (method) `topogpt3/rollout.py:57` `def rollout(self, prompt_ids, num_generations, max_new_tokens, temperature, tokenizer)`
 - `TorchRolloutEngine.update_policy` (method) `topogpt3/rollout.py:79` `def update_policy(self, model)`
-- `TorchRolloutEngine.create_rollout_engine` (method) `topogpt3/rollout.py:83` `def create_rollout_engine(policy_model, tokenizer, device)`
+- `create_rollout_engine` (function) `topogpt3/rollout.py:83` `def create_rollout_engine(policy_model, tokenizer, device)`
 
 ## topogpt3/tools_agent.py
 Depends on: `eval/sandbox.py`, `topogpt3/chat.py`
@@ -157,7 +157,7 @@ Imported by: `eval/diag_static.py`, `topogpt3/__init__.py`, `topogpt3/__main__.p
 - `GrassmannianTracker.snapshot` (method) `topogpt3/train.py:445` `def snapshot(self, model, step, dataloader, vocab_size)`
 - `GrassmannianTracker.format_log` (method) `topogpt3/train.py:500` `def format_log(self, snap)`
 - `GrassmannianTracker.save` (method) `topogpt3/train.py:522` `def save(self, path)`
-- `GrassmannianTracker.apply_gauss_patch` (method) `topogpt3/train.py:568` `def apply_gauss_patch(logger)` -- Activa la version Gauss de _contract en QuaternionSpectralLayer.
+- `apply_gauss_patch` (function) `topogpt3/train.py:568` `def apply_gauss_patch(logger)` -- Activa la version Gauss de _contract en QuaternionSpectralLayer.
 - `EfficiencyMetrics.__init__` (method) `topogpt3/train.py:600` `def __init__(self, model, config, logger, gauss_enabled)`
 - `EfficiencyMetrics.measure_throughput` (method) `topogpt3/train.py:619` `def measure_throughput(self, dataloader, vocab_size)` -- Devuelve (tokens_por_segundo, segundos_por_step).
 - `EfficiencyMetrics.estimate_flops_per_step` (method) `topogpt3/train.py:651` `def estimate_flops_per_step(self, batch_size, seq_len)` -- Heuristica: 6 * N_no_embed * tokens (forward + backward).
@@ -166,7 +166,7 @@ Imported by: `eval/diag_static.py`, `topogpt3/__init__.py`, `topogpt3/__main__.p
 - `EfficiencyMetrics.format_log` (method) `topogpt3/train.py:696` `def format_log(self, m)`
 - `CodeCurriculumLoader.__init__` (method) `topogpt3/train.py:729` `def __init__(self, config, tokenizer, logger)`
 - `CodeCurriculumLoader.prepare_tier` (method) `topogpt3/train.py:891` `def prepare_tier(self, tier_index, force)`
-- `CodeCurriculumLoader.flush` (method) `topogpt3/train.py:922` `def flush(split)`
+- `flush` (function) `topogpt3/train.py:922` `def flush(split)`
 - `CodeCurriculumLoader.open_memmap` (method) `topogpt3/train.py:986` `def open_memmap(self, tier, split)`
 - `BlockTokenDataset.__init__` (method) `topogpt3/train.py:1006` `def __init__(self, tokens, seq_len)`
 - `CheckpointStore.__init__` (method) `topogpt3/train.py:1030` `def __init__(self, root, max_keep, logger)`
@@ -176,8 +176,8 @@ Imported by: `eval/diag_static.py`, `topogpt3/__init__.py`, `topogpt3/__main__.p
 - `TopoGPT3Trainer.__init__` (method) `topogpt3/train.py:1119` `def __init__(self, config, start_tier)`
 - `TopoGPT3Trainer.prepare_all` (method) `topogpt3/train.py:1174` `def prepare_all(self, force)` -- Prepara cada tier; un fallo en uno no detiene los demas.
 - `TopoGPT3Trainer.run` (method) `topogpt3/train.py:1449` `def run(self)`
-- `TopoGPT3Trainer.parse_args` (method) `topogpt3/train.py:1538` `def parse_args()`
-- `TopoGPT3Trainer.main` (method) `topogpt3/train.py:1567` `def main()`
+- `parse_args` (function) `topogpt3/train.py:1538` `def parse_args()`
+- `main` (function) `topogpt3/train.py:1567` `def main()`
 
 ## topogpt3/train_agent.py
 Depends on: `topogpt3/chat.py`, `topogpt3/model.py`, `topogpt3/rewards.py`, `topogpt3/tools_agent.py`, `topogpt3/trainer_utils_topo.py`
@@ -212,7 +212,7 @@ Depends on: `topogpt3/model.py`, `topogpt3/rewards.py`, `topogpt3/rollout.py`, `
 Imported by: `topogpt3/__main__.py`
 - `TopoCritic.__init__` (method) `topogpt3/train_ppo.py:30` `def __init__(self, trunk)`
 - `TopoCritic.forward` (method) `topogpt3/train_ppo.py:36` `def forward(self, ids)`
-- `TopoCritic.main` (method) `topogpt3/train_ppo.py:45` `def main()`
+- `main` (function) `topogpt3/train_ppo.py:45` `def main()`
 
 ## topogpt3/trainer_utils_topo.py
 Imported by: `topogpt3/__init__.py`, `topogpt3/train_agent.py`, `topogpt3/train_distill.py`, `topogpt3/train_dpo.py`, `topogpt3/train_grpo.py`, `topogpt3/train_lora.py`, `topogpt3/train_ppo.py`
@@ -222,10 +222,10 @@ Imported by: `topogpt3/__init__.py`, `topogpt3/train_agent.py`, `topogpt3/train_
 - `setup_seed` (function) `topogpt3/trainer_utils_topo.py:34` `def setup_seed(seed)`
 - `init_distributed_mode` (function) `topogpt3/trainer_utils_topo.py:43` `def init_distributed_mode()`
 - `SkipBatchSampler.__init__` (method) `topogpt3/trainer_utils_topo.py:53` `def __init__(self, sampler, batch_size, skip_batches)`
-- `SkipBatchSampler.topo_checkpoint` (method) `topogpt3/trainer_utils_topo.py:77` `def topo_checkpoint(save_dir, weight, model, optimizer, scheduler, scaler, epoch, step, wandb, extra)` -- Atomic double-save: fp16 weights + resume state (weights + optim).
+- `topo_checkpoint` (function) `topogpt3/trainer_utils_topo.py:77` `def topo_checkpoint(save_dir, weight, model, optimizer, scheduler, scaler, epoch, step, wandb, extra)` -- Atomic double-save: fp16 weights + resume state (weights + optim).
 
 ## topogpt3/yarn.py
 Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/model.py`
-- `YaRNConfig.yarn_scale_inv_freq` (method) `topogpt3/yarn.py:26` `def yarn_scale_inv_freq(inv_freq, d_head, cfg)` -- Apply NTK-by-parts ramp to inv_freq.
-- `YaRNConfig.apply_yarn_to_rope` (method) `topogpt3/yarn.py:50` `def apply_yarn_to_rope(rope_module, cfg)` -- Patch an existing RotaryEmbedding in-place + rebuild cache.
+- `yarn_scale_inv_freq` (function) `topogpt3/yarn.py:26` `def yarn_scale_inv_freq(inv_freq, d_head, cfg)` -- Apply NTK-by-parts ramp to inv_freq.
+- `apply_yarn_to_rope` (function) `topogpt3/yarn.py:50` `def apply_yarn_to_rope(rope_module, cfg)` -- Patch an existing RotaryEmbedding in-place + rebuild cache.
 

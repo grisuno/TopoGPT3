@@ -50,10 +50,10 @@ Imported by: `eval/governor_smoke.py`
 - `GenerationGovernor.__init__` (method) `eval/governor.py:156` `def __init__(self, model, ctx, stream, max_new_tokens, temperature, top_k, repetition_penalty, max_seq_len)`
 - `GenerationGovernor.cancel` (method) `eval/governor.py:177` `def cancel(self)` -- Asynchronously stop the generation.
 - `GenerationGovernor.run` (method) `eval/governor.py:185` `def run(self, stop_hooks)` -- Execute the generation loop.
-- `GenerationGovernor.make_loop_detector` (method) `eval/governor.py:285` `def make_loop_detector(window, min_repeats)` -- Return True if the last `window` tokens contain a sub-sequence of length >= `min_repeats` that repeats consecutively.
-- `GenerationGovernor.hook` (method) `eval/governor.py:292` `def hook(generated)`
-- `GenerationGovernor.make_timeout_hook` (method) `eval/governor.py:314` `def make_timeout_hook(per_token_s)` -- Return True if the per-token wall time exceeds `per_token_s`.
-- `GenerationGovernor.hook` (method) `eval/governor.py:320` `def hook(generated)`
+- `make_loop_detector` (function) `eval/governor.py:285` `def make_loop_detector(window, min_repeats)` -- Return True if the last `window` tokens contain a sub-sequence of length >= `min_repeats` that repeats consecutively.
+- `hook` (function) `eval/governor.py:292` `def hook(generated)`
+- `make_timeout_hook` (function) `eval/governor.py:314` `def make_timeout_hook(per_token_s)` -- Return True if the per-token wall time exceeds `per_token_s`.
+- `hook` (function) `eval/governor.py:320` `def hook(generated)`
 
 ## eval/governor_smoke.py
 Depends on: `eval/governor.py`, `topogpt3/__init__.py`
@@ -77,8 +77,8 @@ Imported by: `eval/integration_smoke.py`, `eval/noise_sweep.py`, `eval/temp_swee
 - `completion_for_problem` (function) `eval/harness.py:204` `def completion_for_problem(sampler, prompt)` -- Run a single completion and return (raw_output_text, metrics_dict).
 - `ModelLoader.__init__` (method) `eval/harness.py:220` `def __init__(self, ckpt_dir, ckpt_name, device)`
 - `ModelLoader.generate` (method) `eval/harness.py:246` `def generate(self, prompt, max_new_tokens, temperature, top_k, repetition_penalty)`
-- `ModelLoader.evaluate_problem` (method) `eval/harness.py:272` `def evaluate_problem(problem, loader, args, sample_idx)`
-- `ModelLoader.main` (method) `eval/harness.py:315` `def main()`
+- `evaluate_problem` (function) `eval/harness.py:272` `def evaluate_problem(problem, loader, args, sample_idx)`
+- `main` (function) `eval/harness.py:315` `def main()`
 
 ## eval/integration_smoke.py
 Depends on: `eval/harness.py`
@@ -122,10 +122,10 @@ Imported by: `eval/harness.py`
 
 ## eval/sandbox.py
 Imported by: `eval/harness.py`, `eval/sandbox_smoke.py`, `topogpt3/tools_agent.py`
-- `SandboxConfig.d` (method) `eval/sandbox.py:125` `def d(node, cur)`
-- `SandboxConfig.check_safety` (method) `eval/sandbox.py:133` `def check_safety(source, cfg)` -- Return (ok, reason).
-- `SandboxConfig.safe_exec` (method) `eval/sandbox.py:270` `def safe_exec(program_src, cfg, extra_globals)` -- Execute `program_src` in a sandboxed child process.
-- `SandboxConfig.describe_policy` (method) `eval/sandbox.py:373` `def describe_policy(cfg)`
+- `d` (function) `eval/sandbox.py:125` `def d(node, cur)`
+- `check_safety` (function) `eval/sandbox.py:133` `def check_safety(source, cfg)` -- Return (ok, reason).
+- `safe_exec` (function) `eval/sandbox.py:270` `def safe_exec(program_src, cfg, extra_globals)` -- Execute `program_src` in a sandboxed child process.
+- `describe_policy` (function) `eval/sandbox.py:373` `def describe_policy(cfg)`
 
 ## eval/sandbox_smoke.py
 Depends on: `eval/sandbox.py`
@@ -164,18 +164,18 @@ Imported by: `topogpt3/model.py`
 - `OllamaBackend.__init__` (method) `synthetic_dataset.py:184` `def __init__(self, model, host, max_tokens, temperature, timeout)`
 - `OllamaBackend.name` (method) `synthetic_dataset.py:198` `def name(self)`
 - `OllamaBackend.generate` (method) `synthetic_dataset.py:201` `def generate(self, prompt)`
-- `OllamaBackend.build_backend` (method) `synthetic_dataset.py:227` `def build_backend(provider, model)` -- Factory for LLM backends.
-- `OllamaBackend.validate_sample` (method) `synthetic_dataset.py:330` `def validate_sample(sample)` -- Validate that a generated sample meets quality bar.
+- `build_backend` (function) `synthetic_dataset.py:227` `def build_backend(provider, model)` -- Factory for LLM backends.
+- `validate_sample` (function) `synthetic_dataset.py:330` `def validate_sample(sample)` -- Validate that a generated sample meets quality bar.
 - `ProcessedManifest.load` (method) `synthetic_dataset.py:374` `def load(path)`
 - `ProcessedManifest.save` (method) `synthetic_dataset.py:387` `def save(self, path)`
 - `SyntheticDatasetGenerator.__init__` (method) `synthetic_dataset.py:418` `def __init__(self, backend, output_path, manifest_path, logger, max_workers, max_file_chars)`
 - `SyntheticDatasetGenerator.process_file` (method) `synthetic_dataset.py:533` `def process_file(self, path)` -- Process a single file.
 - `SyntheticDatasetGenerator.process_batch` (method) `synthetic_dataset.py:568` `def process_batch(self, paths)` -- Process a batch of files in parallel using thread pool.
 - `SyntheticDatasetGenerator.finish` (method) `synthetic_dataset.py:590` `def finish(self)` -- Signal end of processing and flush writer.
-- `SyntheticDatasetGenerator.build_logger` (method) `synthetic_dataset.py:614` `def build_logger(level)`
-- `SyntheticDatasetGenerator.parse_args` (method) `synthetic_dataset.py:625` `def parse_args()`
-- `SyntheticDatasetGenerator.load_paths` (method) `synthetic_dataset.py:652` `def load_paths(paths_arg, paths_file, max_files)` -- Load file paths from CLI args or file.
-- `SyntheticDatasetGenerator.main` (method) `synthetic_dataset.py:667` `def main()`
+- `build_logger` (function) `synthetic_dataset.py:614` `def build_logger(level)`
+- `parse_args` (function) `synthetic_dataset.py:625` `def parse_args()`
+- `load_paths` (function) `synthetic_dataset.py:652` `def load_paths(paths_arg, paths_file, max_files)` -- Load file paths from CLI args or file.
+- `main` (function) `synthetic_dataset.py:667` `def main()`
 
 ## topogpt3.c
 Imported by: `app.py`, `gradio_app.py`
@@ -291,13 +291,13 @@ Imported by: `topogpt3/__main__.py`
 - `IpBanner.is_banned` (method) `topogpt3/api_server.py:265` `def is_banned(self, ip)`
 - `ServerModel.complete` (method) `topogpt3/api_server.py:351` `def complete(self, prompt)`
 - `ServerModel.stream_complete` (method) `topogpt3/api_server.py:396` `def stream_complete(self, prompt)`
-- `ServerModel.load_model` (method) `topogpt3/api_server.py:516` `def load_model(checkpoint, device)`
-- `ServerModel.lifespan` (method) `topogpt3/api_server.py:537` `def lifespan(app)`
-- `ServerModel.health` (method) `topogpt3/api_server.py:664` `def health(request)`
-- `ServerModel.list_models` (method) `topogpt3/api_server.py:671` `def list_models(request)`
-- `ServerModel.completions` (method) `topogpt3/api_server.py:688` `def completions(req, request)`
-- `ServerModel.chat_completions` (method) `topogpt3/api_server.py:744` `def chat_completions(req, request)`
-- `ServerModel.main` (method) `topogpt3/api_server.py:933` `def main()`
+- `load_model` (function) `topogpt3/api_server.py:516` `def load_model(checkpoint, device)`
+- `lifespan` (function) `topogpt3/api_server.py:537` `def lifespan(app)`
+- `health` (function) `topogpt3/api_server.py:664` `def health(request)`
+- `list_models` (function) `topogpt3/api_server.py:671` `def list_models(request)`
+- `completions` (function) `topogpt3/api_server.py:688` `def completions(req, request)`
+- `chat_completions` (function) `topogpt3/api_server.py:744` `def chat_completions(req, request)`
+- `main` (function) `topogpt3/api_server.py:933` `def main()`
 
 ## topogpt3/chat.py
 Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/api_server.py`, `topogpt3/eval_toolcall.py`, `topogpt3/tools_agent.py`, `topogpt3/train_agent.py`
@@ -369,7 +369,7 @@ Imported by: `topogpt3/__init__.py`, `topogpt3/__main__.py`
 - `InferencePipeline.execute` (method) `topogpt3/inference.py:571` `def execute(self)` -- Run the full inference pipeline end-to-end and return the report.
 - `CliArgumentParser.build_parser` (method) `topogpt3/inference.py:619` `def build_parser()` -- Return the configured argparse.ArgumentParser.
 - `CliArgumentParser.parse` (method) `topogpt3/inference.py:698` `def parse(argv)` -- Parse `argv` (or sys.argv) and return a populated InferenceSettings.
-- `CliArgumentParser.main` (method) `topogpt3/inference.py:721` `def main(argv)` -- CLI entry point.
+- `main` (function) `topogpt3/inference.py:721` `def main(argv)` -- CLI entry point.
 
 ## topogpt3/inference_hrm.py
 Depends on: `topogpt3/continuation.py`
@@ -421,17 +421,17 @@ Imported by: `topogpt3/__init__.py`, `topogpt3/__main__.py`
 - `HRMInferencePipeline.execute` (method) `topogpt3/inference_hrm.py:1239` `def execute(self)` -- Run the full inference pipeline end-to-end and return the report.
 - `CliArgumentParser.build_parser` (method) `topogpt3/inference_hrm.py:1287` `def build_parser()` -- Return the configured argparse.ArgumentParser.
 - `CliArgumentParser.parse` (method) `topogpt3/inference_hrm.py:1448` `def parse(argv)` -- Parse argv (or sys.argv) and return a populated HRMInferenceSettings.
-- `CliArgumentParser.main` (method) `topogpt3/inference_hrm.py:1494` `def main(argv)` -- CLI entry point.
+- `main` (function) `topogpt3/inference_hrm.py:1494` `def main(argv)` -- CLI entry point.
 
 ## topogpt3/jlens.py
 Depends on: `topogpt3/lens_model.py`
 Imported by: `tests/test_jlens.py`, `tests/test_lens_model.py`, `topogpt3/__init__.py`, `topogpt3/__main__.py`
 - `ActivationRecorder.__init__` (method) `topogpt3/jlens.py:87` `def __init__(self, blocks, at)`
-- `ActivationRecorder.hook` (method) `topogpt3/jlens.py:105` `def hook(module, inputs, output)`
-- `ActivationRecorder.valid_position_mask` (method) `topogpt3/jlens.py:132` `def valid_position_mask(seq_len)` -- Boolean mask over sequence positions to include in the Jacobian average.
-- `ActivationRecorder.jacobian_for_prompt` (method) `topogpt3/jlens.py:187` `def jacobian_for_prompt(model, prompt, source_layers)` -- Compute the per-layer Jacobian estimator ``J_l`` for one prompt.
-- `ActivationRecorder.fit` (method) `topogpt3/jlens.py:291` `def fit(model, prompts)` -- Fit ``J_l`` over a list of prompts and return a JacobianLens.
-- `ActivationRecorder.write_checkpoint` (method) `topogpt3/jlens.py:378` `def write_checkpoint()`
+- `hook` (function) `topogpt3/jlens.py:105` `def hook(module, inputs, output)`
+- `valid_position_mask` (function) `topogpt3/jlens.py:132` `def valid_position_mask(seq_len)` -- Boolean mask over sequence positions to include in the Jacobian average.
+- `jacobian_for_prompt` (function) `topogpt3/jlens.py:187` `def jacobian_for_prompt(model, prompt, source_layers)` -- Compute the per-layer Jacobian estimator ``J_l`` for one prompt.
+- `fit` (function) `topogpt3/jlens.py:291` `def fit(model, prompts)` -- Fit ``J_l`` over a list of prompts and return a JacobianLens.
+- `write_checkpoint` (function) `topogpt3/jlens.py:378` `def write_checkpoint()`
 - `JacobianLens.__init__` (method) `topogpt3/jlens.py:470` `def __init__(self, jacobians)`
 - `JacobianLens.save` (method) `topogpt3/jlens.py:489` `def save(self, path)` -- Save to ``path``.
 - `JacobianLens.load` (method) `topogpt3/jlens.py:504` `def load(cls, path)` -- Load a lens previously written by ``save``.
@@ -439,9 +439,9 @@ Imported by: `tests/test_jlens.py`, `tests/test_lens_model.py`, `topogpt3/__init
 - `JacobianLens.merge` (method) `topogpt3/jlens.py:543` `def merge(cls, lenses)` -- Combine lenses fitted on disjoint prompt subsets into one (``n_prompts``-weighted mean of the inputs).
 - `JacobianLens.transport` (method) `topogpt3/jlens.py:574` `def transport(self, residual, layer)` -- Map a residual at ``layer`` into the final-layer basis: ``J_l @ h``.
 - `JacobianLens.apply` (method) `topogpt3/jlens.py:585` `def apply(self, model, prompt)` -- Run ``model`` on ``prompt`` and return lens logits at ``positions``.
-- `JacobianLens.select` (method) `topogpt3/jlens.py:646` `def select(layer)`
-- `SliceData.compute_slice` (method) `topogpt3/jlens.py:705` `def compute_slice(model, lens, prompt)` -- Compute a position x layer slice of top-K token predictions.
-- `SliceData.text_slice` (method) `topogpt3/jlens.py:789` `def text_slice(slice_data, tokenizer, n_cols)` -- Render a SliceData as a readable text table showing decoded words.
+- `select` (function) `topogpt3/jlens.py:646` `def select(layer)`
+- `compute_slice` (function) `topogpt3/jlens.py:705` `def compute_slice(model, lens, prompt)` -- Compute a position x layer slice of top-K token predictions.
+- `text_slice` (function) `topogpt3/jlens.py:789` `def text_slice(slice_data, tokenizer, n_cols)` -- Render a SliceData as a readable text table showing decoded words.
 
 ## topogpt3/lens_model.py
 Depends on: `topogpt3/model.py`
@@ -474,13 +474,13 @@ Imported by: `tests/test_jlens.py`, `tests/test_lens_model.py`, `topogpt3/__init
 Imported by: `tests/test_heritage.py`, `topogpt3/__init__.py`, `topogpt3/convert.py`, `topogpt3/train_lora.py`
 - `LoRA.__init__` (method) `topogpt3/lora.py:17` `def __init__(self, in_features, out_features, rank)`
 - `LoRA.forward` (method) `topogpt3/lora.py:25` `def forward(self, x)`
-- `LoRA.lora_targets` (method) `topogpt3/lora.py:34` `def lora_targets(model, include_mlp)` -- Yield (name, nn.Linear) candidates.
-- `LoRA.apply_lora` (method) `topogpt3/lora.py:54` `def apply_lora(model, rank, include_mlp)` -- Monkey-patch target linears with additive LoRA.
-- `LoRA.lora_parameters` (method) `topogpt3/lora.py:73` `def lora_parameters(model)`
-- `LoRA.freeze_non_lora` (method) `topogpt3/lora.py:80` `def freeze_non_lora(model)`
-- `LoRA.save_lora` (method) `topogpt3/lora.py:88` `def save_lora(model, path)`
-- `LoRA.load_lora` (method) `topogpt3/lora.py:99` `def load_lora(model, path, device)`
-- `LoRA.merge_lora` (method) `topogpt3/lora.py:110` `def merge_lora(model, lora_path, save_path)` -- Merge LoRA deltas into base weights and save (fp16, no .lora. keys).
+- `lora_targets` (function) `topogpt3/lora.py:34` `def lora_targets(model, include_mlp)` -- Yield (name, nn.Linear) candidates.
+- `apply_lora` (function) `topogpt3/lora.py:54` `def apply_lora(model, rank, include_mlp)` -- Monkey-patch target linears with additive LoRA.
+- `lora_parameters` (function) `topogpt3/lora.py:73` `def lora_parameters(model)`
+- `freeze_non_lora` (function) `topogpt3/lora.py:80` `def freeze_non_lora(model)`
+- `save_lora` (function) `topogpt3/lora.py:88` `def save_lora(model, path)`
+- `load_lora` (function) `topogpt3/lora.py:99` `def load_lora(model, path, device)`
+- `merge_lora` (function) `topogpt3/lora.py:110` `def merge_lora(model, lora_path, save_path)` -- Merge LoRA deltas into base weights and save (fp16, no .lora. keys).
 
 
 Next: [API_p2.md](API_p2.md)

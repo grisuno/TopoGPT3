@@ -32,15 +32,15 @@ This community groups 12 file(s) rooted at `topogpt3` with dominant language py 
 - `LoRA` (class, `topogpt3/lora.py:16`) `class LoRA(Module)`
 - `__init__` (method, `topogpt3/lora.py:17`) `def __init__(self, in_features, out_features, rank)`
 - `forward` (method, `topogpt3/lora.py:25`) `def forward(self, x)`
-- `_is_quaternion_sublayer` (method, `topogpt3/lora.py:29`) `def _is_quaternion_sublayer(name)`
-- `lora_targets` (method, `topogpt3/lora.py:34`) `def lora_targets(model, include_mlp)` - Yield (name, nn.Linear) candidates.
-- `apply_lora` (method, `topogpt3/lora.py:54`) `def apply_lora(model, rank, include_mlp)` - Monkey-patch target linears with additive LoRA. Returns patched names.
-- `_fwd` (method, `topogpt3/lora.py:66`) `def _fwd(x, _o, _l)`
-- `lora_parameters` (method, `topogpt3/lora.py:73`) `def lora_parameters(model)`
-- `freeze_non_lora` (method, `topogpt3/lora.py:80`) `def freeze_non_lora(model)`
-- `save_lora` (method, `topogpt3/lora.py:88`) `def save_lora(model, path)`
-- `load_lora` (method, `topogpt3/lora.py:99`) `def load_lora(model, path, device)`
-- `merge_lora` (method, `topogpt3/lora.py:110`) `def merge_lora(model, lora_path, save_path)` - Merge LoRA deltas into base weights and save (fp16, no .lora. keys).
+- `_is_quaternion_sublayer` (function, `topogpt3/lora.py:29`) `def _is_quaternion_sublayer(name)`
+- `lora_targets` (function, `topogpt3/lora.py:34`) `def lora_targets(model, include_mlp)` - Yield (name, nn.Linear) candidates.
+- `apply_lora` (function, `topogpt3/lora.py:54`) `def apply_lora(model, rank, include_mlp)` - Monkey-patch target linears with additive LoRA. Returns patched names.
+- `_fwd` (function, `topogpt3/lora.py:66`) `def _fwd(x, _o, _l)`
+- `lora_parameters` (function, `topogpt3/lora.py:73`) `def lora_parameters(model)`
+- `freeze_non_lora` (function, `topogpt3/lora.py:80`) `def freeze_non_lora(model)`
+- `save_lora` (function, `topogpt3/lora.py:88`) `def save_lora(model, path)`
+- `load_lora` (function, `topogpt3/lora.py:99`) `def load_lora(model, path, device)`
+- `merge_lora` (function, `topogpt3/lora.py:110`) `def merge_lora(model, lora_path, save_path)` - Merge LoRA deltas into base weights and save (fp16, no .lora. keys).
 - `rep_penalty` (function, `topogpt3/rewards.py:17`) `def rep_penalty(text, n, cap)`
 - `base_rewards` (function, `topogpt3/rewards.py:25`) `def base_rewards(prompts, completions, reward_fn, device)` - Group-RL reward skeleton: length + thinking + RM - repetition.
 - `spectral_bonus` (function, `topogpt3/rewards.py:55`) `def spectral_bonus(fisher_gap, drift, w_fisher, w_drift)` - Small bonus preserving topological identity (0 when stats absent).
@@ -51,7 +51,7 @@ This community groups 12 file(s) rooted at `topogpt3` with dominant language py 
 - `dpo_loss_fn` (function, `topogpt3/rewards.py:99`) `def dpo_loss_fn(ref_lp, pol_lp, mask, beta)`
 - `distillation_loss` (function, `topogpt3/rewards.py:108`) `def distillation_loss(student_logits, teacher_logits, mask, labels, alpha, temp)` - White-box distill: CE + T^2*KL on masked response tokens.
 - `RolloutResult` (class, `topogpt3/rollout.py:18`) `class RolloutResult`
-- `compute_per_token_logps` (method, `topogpt3/rollout.py:27`) `def compute_per_token_logps(model, input_ids, n_keep)`
+- `compute_per_token_logps` (function, `topogpt3/rollout.py:27`) `def compute_per_token_logps(model, input_ids, n_keep)`
 - `RolloutEngine` (class, `topogpt3/rollout.py:39`) `class RolloutEngine(ABC)`
 - `rollout` (method, `topogpt3/rollout.py:41`) `def rollout(self, prompt_ids, num_generations, max_new_tokens, temperature, toke`
 - `update_policy` (method, `topogpt3/rollout.py:46`) `def update_policy(self, model)`
@@ -72,10 +72,10 @@ This community groups 12 file(s) rooted at `topogpt3` with dominant language py 
 
 ## Risks
 
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/rewards.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/rollout.py` via `eval` (2 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/trainer_utils_topo.py` via `eval` (2 hops)
 - [taint critical] `eval/governor_smoke.py` -> `topogpt3/lora.py` via `eval` (2 hops)
-- [taint critical] `eval/governor_smoke.py` -> `topogpt3/rollout.py` via `eval` (2 hops)
+- [taint critical] `eval/governor_smoke.py` -> `topogpt3/rewards.py` via `eval` (2 hops)
 
 ## Open Questions
 
